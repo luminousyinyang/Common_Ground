@@ -1,0 +1,27 @@
+{
+  "model": "gemini-3-pro-image-preview",
+  "location": "global",
+  "updatedAt": "2026-04-30T18:22:26.800Z",
+  "states": {
+    "CO": {
+      "olympic": {
+        "url": "/assets/card-panels/co-olympic.png",
+        "model": "gemini-3-pro-image-preview",
+        "mimeType": "image/png",
+        "generatedAt": "2026-04-30T18:23:56.927Z",
+        "promptVersion": "common-ground-card-panel-v1",
+        "promptSummary": "Colorado olympic Endurance / Pace Control + Team / Spatial Awareness",
+        "notes": "**Analyzing the Request**\n\nI'm focused on the \"Common Ground\" theme and the Colorado setting. I'm visualizing a landscape illustration for a sports card. The aspect ratio is 16:9, and it will feature Team USA and Google Cloud elements, centered around the Olympic theme for the hackathon.\n\n\n **Refining the Concept**\n\nI'm now prioritizing the visual style, aiming for a \"premium analyst-dashboard\" aesthetic. I've focused on a clean, modern approach with a low-poly or paper-cut feel, staying away from photorealism. The color palette is shifting toward cool blues, navy, white, and pale cyan, to reflect the Colorado setting and the Olympic theme. Compositionally, I'm leaning towards a strong central silhouette with ample negative space.\n\n\n **Reviewing Image Compliance**\n\nI'm checking that the generated image aligns with the user's needs. The prompt's aesthetic, which is a 'Stitch' vector illustration, has been correctly interpreted, as has the cool mountain palette. I've noted the composition emphasizes the faceless skier in the desired sporting context and location, while ensuring the negative space is present. The illustration also seems to meet all necessary compliance parameters.\n\n\n **Confirming User Needs**\n\nI'm verifying that the image adheres to the user's instructions. The 'Stitch' vector style and mountain palette are appropriately reflected. I've observed the composition effectively highlights the faceless skier, fitting the specified sport and locale. Furthermore, the necessary negative space is present. Overall, I find it in keeping with the compliance parameters."
+      },
+      "paralympic": {
+        "url": "/assets/card-panels/co-paralympic.png",
+        "model": "gemini-3-pro-image-preview",
+        "mimeType": "image/png",
+        "generatedAt": "2026-04-30T18:25:43.142Z",
+        "promptVersion": "common-ground-card-panel-v1",
+        "promptSummary": "Colorado paralympic Endurance / Pace Control + Aquatic / Water Environment",
+        "notes": "**Designing a Sports Panel**\n\nI'm focused on the illustration's structure now. I'm exploring how to depict the athlete dynamically, using vector and low-poly techniques within a 16:9 frame. The goal is to integrate the athlete into a composition using a warm color scheme. I'm prioritizing the overall aesthetic and impact of the panel.\n\n\n **Conceptualizing the Athlete's Role**\n\nI'm now determining the athlete's exact pose and environment. Considering a stylized Colorado landscape, I'm working to blend the athlete into the scene using geometric forms. The focus remains on \"Rhythm and Pace Control\" within the aquatic context. I'm aiming for dynamic movement while maintaining a clean, open composition for the UI.\n\n\n **Considering Specific Requirements**\n\nI'm evaluating the generated panel against the user's detailed criteria. The focus is on verifying compliance; the low-poly style, warm colors, and 16:9 aspect ratio were all factors. The athlete's representation is also key."
+      }
+    }
+  }
+}

@@ -1,0 +1,3515 @@
+{
+  "meta": {
+    "appName": "Common Ground",
+    "datasetLabel": "Official TeamUSA.com Paris 2024 public roster aggregate by hometown state and sport family.",
+    "updatedAt": "2026-04-29",
+    "sourceProgramRecordTotals": {
+      "olympic": 595,
+      "paralympic": 225
+    },
+    "stateCodedRecordTotals": {
+      "olympic": 593,
+      "paralympic": 220,
+      "total": 813
+    },
+    "aggregationPolicy": "The build script strips athlete names, profile URLs, images, biographies, medals, finish placements, and other individual-level fields before writing frontend data. State cards display signal buckets instead of exact state counts.",
+    "bucketPolicy": "Combined state bucket: insufficient data = 0 sourced roster rows, low = 1-4, medium = 5-19, high = 20+. Program panel details require at least 3 sourced roster rows; lower-volume panels stay generalized.",
+    "coverageNote": "Only TeamUSA.com roster rows with a U.S. state abbreviation in the public hometown state field are used for state cards. Non-state or blank state values are excluded from card output.",
+    "excludedStateCodes": [
+      "VI"
+    ],
+    "blankStateProgramBuckets": [
+      "olympic",
+      "paralympic"
+    ],
+    "excludedRowsByProgram": {
+      "olympic": {
+        "VI": 1,
+        "(blank)": 1
+      },
+      "paralympic": {
+        "(blank)": 5
+      }
+    },
+    "sourceRefs": [
+      {
+        "label": "TeamUSA.com Paris 2024 Olympic roster",
+        "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+        "sourceType": "teamusa",
+        "retrievedAt": "2026-04-29"
+      },
+      {
+        "label": "TeamUSA.com Paris 2024 Paralympic roster",
+        "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+        "sourceType": "teamusa",
+        "retrievedAt": "2026-04-29"
+      },
+      {
+        "label": "NOAA public climate context",
+        "url": "https://www.noaa.gov/climate",
+        "sourceType": "noaa",
+        "retrievedAt": "2026-04-29"
+      },
+      {
+        "label": "us-atlas TopoJSON derived from U.S. Census cartographic state boundaries",
+        "url": "https://github.com/topojson/us-atlas",
+        "sourceType": "geography",
+        "retrievedAt": "2026-04-29"
+      }
+    ]
+  },
+  "states": [
+    {
+      "stateCode": "AL",
+      "stateName": "Alabama",
+      "geographySnapshot": "Gulf Coast, river valleys, humid subtropical climate, mixed urban and rural sport access",
+      "climateSignal": "Humid subtropical climate with Gulf Coast and inland river context",
+      "terrainSignals": [
+        "Gulf Coast",
+        "river valleys",
+        "humid climate"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 3,
+        "paralympic": 2,
+        "total": 5
+      },
+      "hometownPresenceBucket": "medium",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "Aquatic / Water Environment + Endurance / Pace Control",
+        "aggregateSignal": "low",
+        "geographyConnection": "Gulf Coast, river valleys, humid subtropical climate, mixed urban and rural sport access could help fans frame the state's Olympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Soccer, Swimming, and Track and Field; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "Low-volume public roster signal",
+        "aggregateSignal": "low",
+        "geographyConnection": "The Paralympic roster signal for Alabama is too small to summarize by sport family without over-specificity.",
+        "geminiNote": "Common Ground keeps this panel generalized so fan discovery stays aggregate and privacy-aware.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Rhythm and Pace Control",
+        "description": "Steady timing, controlled effort, and repeatable rhythm across different sport environments.",
+        "challengeType": "cadence_keeper"
+      },
+      "minimumAggregationPassed": true,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "AK",
+      "stateName": "Alaska",
+      "geographySnapshot": "Arctic and subarctic terrain, long winters, mountain ranges, coastal access",
+      "climateSignal": "Cold-climate context with mountain, coastal, and winter-environment signals",
+      "terrainSignals": [
+        "cold climate",
+        "mountains",
+        "coastal access"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 2,
+        "paralympic": 0,
+        "total": 2
+      },
+      "hometownPresenceBucket": "low",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "Low-volume public roster signal",
+        "aggregateSignal": "low",
+        "geographyConnection": "The Olympic roster signal for Alaska is too small to summarize by sport family without over-specificity.",
+        "geminiNote": "Common Ground keeps this panel generalized so fan discovery stays aggregate and privacy-aware.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "No sourced public roster signal",
+        "aggregateSignal": "insufficient_data",
+        "geographyConnection": "Alaska has no public Paralympic hometown-state roster signal in this TeamUSA.com Paris 2024 dataset.",
+        "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Signal Discovery",
+        "description": "Careful attention to changing map signals and source context in a low-stakes fan challenge.",
+        "challengeType": "reaction_grid"
+      },
+      "minimumAggregationPassed": false,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "AZ",
+      "stateName": "Arizona",
+      "geographySnapshot": "Desert basins, high plateau, mountain ranges, dry heat, year-round outdoor access",
+      "climateSignal": "Desert and high-plateau climate context with heat-adaptation and outdoor-access signals",
+      "terrainSignals": [
+        "desert",
+        "high plateau",
+        "dry heat"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 10,
+        "paralympic": 5,
+        "total": 15
+      },
+      "hometownPresenceBucket": "medium",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "Endurance / Pace Control + Balance / Technical Control",
+        "aggregateSignal": "medium",
+        "geographyConnection": "Desert basins, high plateau, mountain ranges, dry heat, year-round outdoor access could help fans frame the state's Olympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Cycling, Skateboarding, and Track and Field; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "Team / Spatial Awareness + Endurance / Pace Control",
+        "aggregateSignal": "medium",
+        "geographyConnection": "Desert basins, high plateau, mountain ranges, dry heat, year-round outdoor access could help fans frame the state's Paralympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Sitting Volleyball, Para Archery, and Paratriathlon; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Rhythm and Pace Control",
+        "description": "Steady timing, controlled effort, and repeatable rhythm across different sport environments.",
+        "challengeType": "cadence_keeper"
+      },
+      "minimumAggregationPassed": true,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "AR",
+      "stateName": "Arkansas",
+      "geographySnapshot": "Ozark and Ouachita terrain, river valleys, humid climate, mixed outdoor access",
+      "climateSignal": "Humid inland climate with hill, forest, and river-valley context",
+      "terrainSignals": [
+        "hill terrain",
+        "river valleys",
+        "forest access"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 0,
+        "paralympic": 4,
+        "total": 4
+      },
+      "hometownPresenceBucket": "low",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "No sourced public roster signal",
+        "aggregateSignal": "insufficient_data",
+        "geographyConnection": "Arkansas has no public Olympic hometown-state roster signal in this TeamUSA.com Paris 2024 dataset.",
+        "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "Aquatic / Water Environment + Endurance / Pace Control",
+        "aggregateSignal": "low",
+        "geographyConnection": "Ozark and Ouachita terrain, river valleys, humid climate, mixed outdoor access could help fans frame the state's Paralympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Para Swimming, Para Track and Field, and Paracanoe; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Rhythm and Pace Control",
+        "description": "Steady timing, controlled effort, and repeatable rhythm across different sport environments.",
+        "challengeType": "cadence_keeper"
+      },
+      "minimumAggregationPassed": true,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "CA",
+      "stateName": "California",
+      "geographySnapshot": "Pacific coast, mountains, desert, large urban regions, year-round outdoor access",
+      "climateSignal": "Mixed coastal and inland climates with broad multi-sport context",
+      "terrainSignals": [
+        "coast",
+        "mountains",
+        "desert",
+        "urban access"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 125,
+        "paralympic": 27,
+        "total": 152
+      },
+      "hometownPresenceBucket": "high",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "Aquatic / Water Environment + Team / Spatial Awareness",
+        "aggregateSignal": "high",
+        "geographyConnection": "Pacific coast, mountains, desert, large urban regions, year-round outdoor access could help fans frame the state's Olympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Water Polo, Track and Field, and Skateboarding; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "Endurance / Pace Control + Team / Spatial Awareness",
+        "aggregateSignal": "high",
+        "geographyConnection": "Pacific coast, mountains, desert, large urban regions, year-round outdoor access could help fans frame the state's Paralympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Para Track and Field, Para-Cycling, and Para Shooting; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Rhythm and Pace Control",
+        "description": "Steady timing, controlled effort, and repeatable rhythm across different sport environments.",
+        "challengeType": "cadence_keeper"
+      },
+      "minimumAggregationPassed": true,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "CO",
+      "stateName": "Colorado",
+      "geographySnapshot": "High elevation, mountain terrain, seasonal snow, outdoor access",
+      "climateSignal": "Mountain climate with elevation, endurance, and winter-environment context",
+      "terrainSignals": [
+        "higher elevation",
+        "mountain terrain",
+        "seasonal snow"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 20,
+        "paralympic": 9,
+        "total": 29
+      },
+      "hometownPresenceBucket": "high",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "Endurance / Pace Control + Team / Spatial Awareness",
+        "aggregateSignal": "high",
+        "geographyConnection": "High elevation, mountain terrain, seasonal snow, outdoor access could help fans frame the state's Olympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Track and Field, Cycling, and Soccer; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "Endurance / Pace Control + Aquatic / Water Environment",
+        "aggregateSignal": "medium",
+        "geographyConnection": "High elevation, mountain terrain, seasonal snow, outdoor access could help fans frame the state's Paralympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Paratriathlon, Para Swimming, and Para Track and Field; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Rhythm and Pace Control",
+        "description": "Steady timing, controlled effort, and repeatable rhythm across different sport environments.",
+        "challengeType": "cadence_keeper"
+      },
+      "minimumAggregationPassed": true,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "CT",
+      "stateName": "Connecticut",
+      "geographySnapshot": "Northeast coast, river valleys, dense town networks, seasonal climate",
+      "climateSignal": "Four-season coastal and river-valley context with compact access patterns",
+      "terrainSignals": [
+        "coast",
+        "river valleys",
+        "four-season climate"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 8,
+        "paralympic": 4,
+        "total": 12
+      },
+      "hometownPresenceBucket": "medium",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "Endurance / Pace Control + Team / Spatial Awareness",
+        "aggregateSignal": "medium",
+        "geographyConnection": "Northeast coast, river valleys, dense town networks, seasonal climate could help fans frame the state's Olympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Rowing, Field Hockey, and Modern Pentathlon; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "Aquatic / Water Environment + Endurance / Pace Control",
+        "aggregateSignal": "low",
+        "geographyConnection": "Northeast coast, river valleys, dense town networks, seasonal climate could help fans frame the state's Paralympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Para Swimming, Para-Rowing, and Sitting Volleyball; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Rhythm and Pace Control",
+        "description": "Steady timing, controlled effort, and repeatable rhythm across different sport environments.",
+        "challengeType": "cadence_keeper"
+      },
+      "minimumAggregationPassed": true,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "DE",
+      "stateName": "Delaware",
+      "geographySnapshot": "Atlantic coastal plain, bays, low elevation, humid seasonal climate",
+      "climateSignal": "Coastal plain climate context with bay and shoreline access signals",
+      "terrainSignals": [
+        "coastal plain",
+        "bays",
+        "low elevation"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 2,
+        "paralympic": 0,
+        "total": 2
+      },
+      "hometownPresenceBucket": "low",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "Low-volume public roster signal",
+        "aggregateSignal": "low",
+        "geographyConnection": "The Olympic roster signal for Delaware is too small to summarize by sport family without over-specificity.",
+        "geminiNote": "Common Ground keeps this panel generalized so fan discovery stays aggregate and privacy-aware.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "No sourced public roster signal",
+        "aggregateSignal": "insufficient_data",
+        "geographyConnection": "Delaware has no public Paralympic hometown-state roster signal in this TeamUSA.com Paris 2024 dataset.",
+        "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Signal Discovery",
+        "description": "Careful attention to changing map signals and source context in a low-stakes fan challenge.",
+        "challengeType": "reaction_grid"
+      },
+      "minimumAggregationPassed": false,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "FL",
+      "stateName": "Florida",
+      "geographySnapshot": "Peninsula coastline, humid subtropical climate, flat terrain, year-round water access",
+      "climateSignal": "Warm coastal climate with aquatic, sprint, and year-round outdoor context",
+      "terrainSignals": [
+        "coastline",
+        "humid heat",
+        "flat terrain"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 44,
+        "paralympic": 8,
+        "total": 52
+      },
+      "hometownPresenceBucket": "high",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "Aquatic / Water Environment + Endurance / Pace Control",
+        "aggregateSignal": "high",
+        "geographyConnection": "Peninsula coastline, humid subtropical climate, flat terrain, year-round water access could help fans frame the state's Olympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Track and Field, Sailing, and Equestrian; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "Aquatic / Water Environment + Endurance / Pace Control",
+        "aggregateSignal": "medium",
+        "geographyConnection": "Peninsula coastline, humid subtropical climate, flat terrain, year-round water access could help fans frame the state's Paralympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Para Swimming, Goalball, and Para Archery; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Rhythm and Pace Control",
+        "description": "Steady timing, controlled effort, and repeatable rhythm across different sport environments.",
+        "challengeType": "cadence_keeper"
+      },
+      "minimumAggregationPassed": true,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "GA",
+      "stateName": "Georgia",
+      "geographySnapshot": "Coastal plain, Piedmont, Appalachian foothills, humid subtropical climate",
+      "climateSignal": "Humid climate with inland, foothill, and coastal context",
+      "terrainSignals": [
+        "Piedmont",
+        "foothills",
+        "humid climate"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 23,
+        "paralympic": 6,
+        "total": 29
+      },
+      "hometownPresenceBucket": "high",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "Endurance / Pace Control + Precision / Focus",
+        "aggregateSignal": "high",
+        "geographyConnection": "Coastal plain, Piedmont, Appalachian foothills, humid subtropical climate could help fans frame the state's Olympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Track and Field, Shooting, and Soccer; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "Aquatic / Water Environment + Endurance / Pace Control",
+        "aggregateSignal": "medium",
+        "geographyConnection": "Coastal plain, Piedmont, Appalachian foothills, humid subtropical climate could help fans frame the state's Paralympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Para Swimming, Para Track and Field, and Goalball; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Rhythm and Pace Control",
+        "description": "Steady timing, controlled effort, and repeatable rhythm across different sport environments.",
+        "challengeType": "cadence_keeper"
+      },
+      "minimumAggregationPassed": true,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "HI",
+      "stateName": "Hawaii",
+      "geographySnapshot": "Pacific islands, volcanic terrain, ocean exposure, tropical climate",
+      "climateSignal": "Tropical ocean climate with coastal and water-environment context",
+      "terrainSignals": [
+        "islands",
+        "ocean access",
+        "volcanic terrain"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 5,
+        "paralympic": 1,
+        "total": 6
+      },
+      "hometownPresenceBucket": "medium",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "Team / Spatial Awareness + Aquatic / Water Environment",
+        "aggregateSignal": "medium",
+        "geographyConnection": "Pacific islands, volcanic terrain, ocean exposure, tropical climate could help fans frame the state's Olympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Volleyball and Surfing; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "Low-volume public roster signal",
+        "aggregateSignal": "low",
+        "geographyConnection": "The Paralympic roster signal for Hawaii is too small to summarize by sport family without over-specificity.",
+        "geminiNote": "Common Ground keeps this panel generalized so fan discovery stays aggregate and privacy-aware.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Rhythm and Pace Control",
+        "description": "Steady timing, controlled effort, and repeatable rhythm across different sport environments.",
+        "challengeType": "cadence_keeper"
+      },
+      "minimumAggregationPassed": true,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "ID",
+      "stateName": "Idaho",
+      "geographySnapshot": "Mountain ranges, high desert, rivers, snow-season access, inland outdoor terrain",
+      "climateSignal": "Mountain and high-desert context with river and winter-season signals",
+      "terrainSignals": [
+        "mountains",
+        "high desert",
+        "river corridors"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 2,
+        "paralympic": 2,
+        "total": 4
+      },
+      "hometownPresenceBucket": "low",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "Low-volume public roster signal",
+        "aggregateSignal": "low",
+        "geographyConnection": "The Olympic roster signal for Idaho is too small to summarize by sport family without over-specificity.",
+        "geminiNote": "Common Ground keeps this panel generalized so fan discovery stays aggregate and privacy-aware.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "Low-volume public roster signal",
+        "aggregateSignal": "low",
+        "geographyConnection": "The Paralympic roster signal for Idaho is too small to summarize by sport family without over-specificity.",
+        "geminiNote": "Common Ground keeps this panel generalized so fan discovery stays aggregate and privacy-aware.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Signal Discovery",
+        "description": "Careful attention to changing map signals and source context in a low-stakes fan challenge.",
+        "challengeType": "reaction_grid"
+      },
+      "minimumAggregationPassed": true,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "IL",
+      "stateName": "Illinois",
+      "geographySnapshot": "Great Lakes access, prairie, large urban region, continental climate",
+      "climateSignal": "Midwest continental climate with urban, lakefront, and plains context",
+      "terrainSignals": [
+        "Great Lakes",
+        "prairie",
+        "urban access"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 28,
+        "paralympic": 12,
+        "total": 40
+      },
+      "hometownPresenceBucket": "high",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "Team / Spatial Awareness + Endurance / Pace Control",
+        "aggregateSignal": "high",
+        "geographyConnection": "Great Lakes access, prairie, large urban region, continental climate could help fans frame the state's Olympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Track and Field, Volleyball, and Soccer; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "Endurance / Pace Control + Team / Spatial Awareness",
+        "aggregateSignal": "high",
+        "geographyConnection": "Great Lakes access, prairie, large urban region, continental climate could help fans frame the state's Paralympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Para Track and Field, Wheelchair Rugby, and Para Swimming; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Rhythm and Pace Control",
+        "description": "Steady timing, controlled effort, and repeatable rhythm across different sport environments.",
+        "challengeType": "cadence_keeper"
+      },
+      "minimumAggregationPassed": true,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "IN",
+      "stateName": "Indiana",
+      "geographySnapshot": "Midwest plains, river corridors, humid continental climate, broad town networks",
+      "climateSignal": "Continental climate with plains and river-valley context",
+      "terrainSignals": [
+        "plains",
+        "river corridors",
+        "seasonal climate"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 19,
+        "paralympic": 8,
+        "total": 27
+      },
+      "hometownPresenceBucket": "high",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "Aquatic / Water Environment + Endurance / Pace Control",
+        "aggregateSignal": "medium",
+        "geographyConnection": "Midwest plains, river corridors, humid continental climate, broad town networks could help fans frame the state's Olympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Swimming, Wrestling, and Cycling; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "Aquatic / Water Environment + Team / Spatial Awareness",
+        "aggregateSignal": "medium",
+        "geographyConnection": "Midwest plains, river corridors, humid continental climate, broad town networks could help fans frame the state's Paralympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Para Swimming, Goalball, and Para Track and Field; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Rhythm and Pace Control",
+        "description": "Steady timing, controlled effort, and repeatable rhythm across different sport environments.",
+        "challengeType": "cadence_keeper"
+      },
+      "minimumAggregationPassed": true,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "IA",
+      "stateName": "Iowa",
+      "geographySnapshot": "Rolling plains, river borders, agricultural landscape, humid continental climate",
+      "climateSignal": "Continental climate with open-plains and river-border context",
+      "terrainSignals": [
+        "rolling plains",
+        "river borders",
+        "seasonal climate"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 2,
+        "paralympic": 5,
+        "total": 7
+      },
+      "hometownPresenceBucket": "medium",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "Low-volume public roster signal",
+        "aggregateSignal": "low",
+        "geographyConnection": "The Olympic roster signal for Iowa is too small to summarize by sport family without over-specificity.",
+        "geminiNote": "Common Ground keeps this panel generalized so fan discovery stays aggregate and privacy-aware.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "Endurance / Pace Control + Team / Spatial Awareness",
+        "aggregateSignal": "medium",
+        "geographyConnection": "Rolling plains, river borders, agricultural landscape, humid continental climate could help fans frame the state's Paralympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Para Track and Field and Wheelchair Basketball; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Rhythm and Pace Control",
+        "description": "Steady timing, controlled effort, and repeatable rhythm across different sport environments.",
+        "challengeType": "cadence_keeper"
+      },
+      "minimumAggregationPassed": true,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "KS",
+      "stateName": "Kansas",
+      "geographySnapshot": "Great Plains, open terrain, wind exposure, continental climate",
+      "climateSignal": "Plains climate context with open terrain and wind-exposure signals",
+      "terrainSignals": [
+        "Great Plains",
+        "open terrain",
+        "wind exposure"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 1,
+        "paralympic": 4,
+        "total": 5
+      },
+      "hometownPresenceBucket": "medium",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "Low-volume public roster signal",
+        "aggregateSignal": "low",
+        "geographyConnection": "The Olympic roster signal for Kansas is too small to summarize by sport family without over-specificity.",
+        "geminiNote": "Common Ground keeps this panel generalized so fan discovery stays aggregate and privacy-aware.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "Precision / Focus + Aquatic / Water Environment",
+        "aggregateSignal": "low",
+        "geographyConnection": "Great Plains, open terrain, wind exposure, continental climate could help fans frame the state's Paralympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Para Archery, Para Swimming, and Wheelchair Rugby; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Rhythm and Pace Control",
+        "description": "Steady timing, controlled effort, and repeatable rhythm across different sport environments.",
+        "challengeType": "cadence_keeper"
+      },
+      "minimumAggregationPassed": true,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "KY",
+      "stateName": "Kentucky",
+      "geographySnapshot": "Appalachian foothills, Bluegrass region, river corridors, humid climate",
+      "climateSignal": "Humid inland climate with foothill, rolling-terrain, and river context",
+      "terrainSignals": [
+        "foothills",
+        "rolling terrain",
+        "river corridors"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 3,
+        "paralympic": 1,
+        "total": 4
+      },
+      "hometownPresenceBucket": "low",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "Aquatic / Water Environment + Endurance / Pace Control",
+        "aggregateSignal": "low",
+        "geographyConnection": "Appalachian foothills, Bluegrass region, river corridors, humid climate could help fans frame the state's Olympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Fencing, Swimming, and Track and Field; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "Low-volume public roster signal",
+        "aggregateSignal": "low",
+        "geographyConnection": "The Paralympic roster signal for Kentucky is too small to summarize by sport family without over-specificity.",
+        "geminiNote": "Common Ground keeps this panel generalized so fan discovery stays aggregate and privacy-aware.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Rhythm and Pace Control",
+        "description": "Steady timing, controlled effort, and repeatable rhythm across different sport environments.",
+        "challengeType": "cadence_keeper"
+      },
+      "minimumAggregationPassed": true,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "LA",
+      "stateName": "Louisiana",
+      "geographySnapshot": "Gulf Coast, Mississippi Delta, wetlands, humid subtropical climate",
+      "climateSignal": "Warm coastal and delta climate with wetland and river-system context",
+      "terrainSignals": [
+        "Gulf Coast",
+        "delta",
+        "wetlands"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 4,
+        "paralympic": 0,
+        "total": 4
+      },
+      "hometownPresenceBucket": "low",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "Endurance / Pace Control + Team / Spatial Awareness",
+        "aggregateSignal": "low",
+        "geographyConnection": "Gulf Coast, Mississippi Delta, wetlands, humid subtropical climate could help fans frame the state's Olympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Track and Field, Beach Volleyball, and Gymnastics; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "No sourced public roster signal",
+        "aggregateSignal": "insufficient_data",
+        "geographyConnection": "Louisiana has no public Paralympic hometown-state roster signal in this TeamUSA.com Paris 2024 dataset.",
+        "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Rhythm and Pace Control",
+        "description": "Steady timing, controlled effort, and repeatable rhythm across different sport environments.",
+        "challengeType": "cadence_keeper"
+      },
+      "minimumAggregationPassed": true,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "ME",
+      "stateName": "Maine",
+      "geographySnapshot": "North Atlantic coast, forests, colder winters, lakes, mountain terrain",
+      "climateSignal": "Northern coastal climate with forest, lake, and winter-environment context",
+      "terrainSignals": [
+        "Atlantic coast",
+        "forests",
+        "cold winters"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 0,
+        "paralympic": 1,
+        "total": 1
+      },
+      "hometownPresenceBucket": "low",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "No sourced public roster signal",
+        "aggregateSignal": "insufficient_data",
+        "geographyConnection": "Maine has no public Olympic hometown-state roster signal in this TeamUSA.com Paris 2024 dataset.",
+        "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "Low-volume public roster signal",
+        "aggregateSignal": "low",
+        "geographyConnection": "The Paralympic roster signal for Maine is too small to summarize by sport family without over-specificity.",
+        "geminiNote": "Common Ground keeps this panel generalized so fan discovery stays aggregate and privacy-aware.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Signal Discovery",
+        "description": "Careful attention to changing map signals and source context in a low-stakes fan challenge.",
+        "challengeType": "reaction_grid"
+      },
+      "minimumAggregationPassed": false,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "MD",
+      "stateName": "Maryland",
+      "geographySnapshot": "Chesapeake Bay, coastal plain, Piedmont, dense urban corridors",
+      "climateSignal": "Mid-Atlantic climate with bay, coastal-plain, and urban-corridor context",
+      "terrainSignals": [
+        "Chesapeake Bay",
+        "coastal plain",
+        "urban corridor"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 16,
+        "paralympic": 8,
+        "total": 24
+      },
+      "hometownPresenceBucket": "high",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "Aquatic / Water Environment + Endurance / Pace Control",
+        "aggregateSignal": "medium",
+        "geographyConnection": "Chesapeake Bay, coastal plain, Piedmont, dense urban corridors could help fans frame the state's Olympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Swimming, Track and Field, and Wrestling; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "Aquatic / Water Environment + Endurance / Pace Control",
+        "aggregateSignal": "medium",
+        "geographyConnection": "Chesapeake Bay, coastal plain, Piedmont, dense urban corridors could help fans frame the state's Paralympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Para Swimming, Para Track and Field, and Wheelchair Basketball; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Rhythm and Pace Control",
+        "description": "Steady timing, controlled effort, and repeatable rhythm across different sport environments.",
+        "challengeType": "cadence_keeper"
+      },
+      "minimumAggregationPassed": true,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "MA",
+      "stateName": "Massachusetts",
+      "geographySnapshot": "Atlantic coast, dense urban region, hills, four-season climate",
+      "climateSignal": "Northeast coastal climate with urban, academic, and seasonal context",
+      "terrainSignals": [
+        "Atlantic coast",
+        "urban access",
+        "four-season climate"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 16,
+        "paralympic": 6,
+        "total": 22
+      },
+      "hometownPresenceBucket": "high",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "Endurance / Pace Control + Team / Spatial Awareness",
+        "aggregateSignal": "medium",
+        "geographyConnection": "Atlantic coast, dense urban region, hills, four-season climate could help fans frame the state's Olympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Rowing, Gymnastics, and Rugby; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "Endurance / Pace Control + Aquatic / Water Environment",
+        "aggregateSignal": "medium",
+        "geographyConnection": "Atlantic coast, dense urban region, hills, four-season climate could help fans frame the state's Paralympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Para-Rowing, Para Swimming, and Para Track and Field; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Rhythm and Pace Control",
+        "description": "Steady timing, controlled effort, and repeatable rhythm across different sport environments.",
+        "challengeType": "cadence_keeper"
+      },
+      "minimumAggregationPassed": true,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "MI",
+      "stateName": "Michigan",
+      "geographySnapshot": "Great Lakes shoreline, inland lakes, cold winters, peninsula geography",
+      "climateSignal": "Great Lakes climate with water access and winter-season context",
+      "terrainSignals": [
+        "Great Lakes",
+        "inland lakes",
+        "cold winters"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 13,
+        "paralympic": 6,
+        "total": 19
+      },
+      "hometownPresenceBucket": "medium",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "Endurance / Pace Control + Team / Spatial Awareness",
+        "aggregateSignal": "medium",
+        "geographyConnection": "Great Lakes shoreline, inland lakes, cold winters, peninsula geography could help fans frame the state's Olympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Track and Field, Rugby, and Basketball; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "Endurance / Pace Control + Power / Contact Control",
+        "aggregateSignal": "medium",
+        "geographyConnection": "Great Lakes shoreline, inland lakes, cold winters, peninsula geography could help fans frame the state's Paralympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Para Badminton, Para Powerlifting, and Para Taekwondo; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Rhythm and Pace Control",
+        "description": "Steady timing, controlled effort, and repeatable rhythm across different sport environments.",
+        "challengeType": "cadence_keeper"
+      },
+      "minimumAggregationPassed": true,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "MN",
+      "stateName": "Minnesota",
+      "geographySnapshot": "Upper Midwest lakes, cold winters, forests and plains, ice and snow season",
+      "climateSignal": "Cold continental climate with lake, snow, and ice-environment context",
+      "terrainSignals": [
+        "lakes",
+        "cold winters",
+        "snow season"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 8,
+        "paralympic": 11,
+        "total": 19
+      },
+      "hometownPresenceBucket": "medium",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "Endurance / Pace Control + Aquatic / Water Environment",
+        "aggregateSignal": "medium",
+        "geographyConnection": "Upper Midwest lakes, cold winters, forests and plains, ice and snow season could help fans frame the state's Olympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Track and Field, Cycling, and Gymnastics; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "Team / Spatial Awareness + Aquatic / Water Environment",
+        "aggregateSignal": "high",
+        "geographyConnection": "Upper Midwest lakes, cold winters, forests and plains, ice and snow season could help fans frame the state's Paralympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Para Swimming, Wheelchair Basketball, and Para Nordic Skiing; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Rhythm and Pace Control",
+        "description": "Steady timing, controlled effort, and repeatable rhythm across different sport environments.",
+        "challengeType": "cadence_keeper"
+      },
+      "minimumAggregationPassed": true,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "MS",
+      "stateName": "Mississippi",
+      "geographySnapshot": "River plain, Gulf-influenced humid climate, lowland terrain",
+      "climateSignal": "Humid lowland climate with river and coastal-influence context",
+      "terrainSignals": [
+        "river plain",
+        "humid climate",
+        "lowlands"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 2,
+        "paralympic": 0,
+        "total": 2
+      },
+      "hometownPresenceBucket": "low",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "Low-volume public roster signal",
+        "aggregateSignal": "low",
+        "geographyConnection": "The Olympic roster signal for Mississippi is too small to summarize by sport family without over-specificity.",
+        "geminiNote": "Common Ground keeps this panel generalized so fan discovery stays aggregate and privacy-aware.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "No sourced public roster signal",
+        "aggregateSignal": "insufficient_data",
+        "geographyConnection": "Mississippi has no public Paralympic hometown-state roster signal in this TeamUSA.com Paris 2024 dataset.",
+        "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Signal Discovery",
+        "description": "Careful attention to changing map signals and source context in a low-stakes fan challenge.",
+        "challengeType": "reaction_grid"
+      },
+      "minimumAggregationPassed": false,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "MO",
+      "stateName": "Missouri",
+      "geographySnapshot": "Ozark terrain, river corridors, plains transition, humid continental climate",
+      "climateSignal": "Inland climate with river, hill, and plains-transition context",
+      "terrainSignals": [
+        "Ozarks",
+        "river corridors",
+        "plains transition"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 10,
+        "paralympic": 3,
+        "total": 13
+      },
+      "hometownPresenceBucket": "medium",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "Endurance / Pace Control + Team / Spatial Awareness",
+        "aggregateSignal": "medium",
+        "geographyConnection": "Ozark terrain, river corridors, plains transition, humid continental climate could help fans frame the state's Olympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Track and Field, Basketball, and Diving; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "Endurance / Pace Control + Aquatic / Water Environment",
+        "aggregateSignal": "low",
+        "geographyConnection": "Ozark terrain, river corridors, plains transition, humid continental climate could help fans frame the state's Paralympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Para Swimming, Para-Cycling, and Paratriathlon; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Rhythm and Pace Control",
+        "description": "Steady timing, controlled effort, and repeatable rhythm across different sport environments.",
+        "challengeType": "cadence_keeper"
+      },
+      "minimumAggregationPassed": true,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "MT",
+      "stateName": "Montana",
+      "geographySnapshot": "Rocky Mountains, high plains, cold winters, large outdoor landscapes",
+      "climateSignal": "Mountain and high-plains climate with winter and endurance-environment context",
+      "terrainSignals": [
+        "Rocky Mountains",
+        "high plains",
+        "cold winters"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 3,
+        "paralympic": 0,
+        "total": 3
+      },
+      "hometownPresenceBucket": "low",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "Precision / Focus + Aquatic / Water Environment",
+        "aggregateSignal": "low",
+        "geographyConnection": "Rocky Mountains, high plains, cold winters, large outdoor landscapes could help fans frame the state's Olympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Archery, Shooting, and Swimming; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "No sourced public roster signal",
+        "aggregateSignal": "insufficient_data",
+        "geographyConnection": "Montana has no public Paralympic hometown-state roster signal in this TeamUSA.com Paris 2024 dataset.",
+        "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Rhythm and Pace Control",
+        "description": "Steady timing, controlled effort, and repeatable rhythm across different sport environments.",
+        "challengeType": "cadence_keeper"
+      },
+      "minimumAggregationPassed": true,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "NE",
+      "stateName": "Nebraska",
+      "geographySnapshot": "Great Plains, river valleys, wind exposure, continental climate",
+      "climateSignal": "Plains climate context with river-valley and open-terrain signals",
+      "terrainSignals": [
+        "Great Plains",
+        "river valleys",
+        "open terrain"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 4,
+        "paralympic": 3,
+        "total": 7
+      },
+      "hometownPresenceBucket": "medium",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "Team / Spatial Awareness + Endurance / Pace Control",
+        "aggregateSignal": "low",
+        "geographyConnection": "Great Plains, river valleys, wind exposure, continental climate could help fans frame the state's Olympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Basketball, Soccer, and Track and Field; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "Endurance / Pace Control + Team / Spatial Awareness",
+        "aggregateSignal": "low",
+        "geographyConnection": "Great Plains, river valleys, wind exposure, continental climate could help fans frame the state's Paralympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Para Track and Field and Wheelchair Basketball; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Rhythm and Pace Control",
+        "description": "Steady timing, controlled effort, and repeatable rhythm across different sport environments.",
+        "challengeType": "cadence_keeper"
+      },
+      "minimumAggregationPassed": true,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "NV",
+      "stateName": "Nevada",
+      "geographySnapshot": "Great Basin desert, mountain ranges, dry climate, high-elevation valleys",
+      "climateSignal": "Arid high-desert climate with elevation and outdoor-access context",
+      "terrainSignals": [
+        "Great Basin",
+        "mountains",
+        "dry climate"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 9,
+        "paralympic": 0,
+        "total": 9
+      },
+      "hometownPresenceBucket": "medium",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "Aquatic / Water Environment + Endurance / Pace Control",
+        "aggregateSignal": "medium",
+        "geographyConnection": "Great Basin desert, mountain ranges, dry climate, high-elevation valleys could help fans frame the state's Olympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Swimming, Badminton, and Cycling; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "No sourced public roster signal",
+        "aggregateSignal": "insufficient_data",
+        "geographyConnection": "Nevada has no public Paralympic hometown-state roster signal in this TeamUSA.com Paris 2024 dataset.",
+        "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Rhythm and Pace Control",
+        "description": "Steady timing, controlled effort, and repeatable rhythm across different sport environments.",
+        "challengeType": "cadence_keeper"
+      },
+      "minimumAggregationPassed": true,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "NH",
+      "stateName": "New Hampshire",
+      "geographySnapshot": "White Mountains, forests, lakes, cold winters, compact coast",
+      "climateSignal": "Northern four-season climate with mountain, lake, and winter context",
+      "terrainSignals": [
+        "mountains",
+        "lakes",
+        "cold winters"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 2,
+        "paralympic": 2,
+        "total": 4
+      },
+      "hometownPresenceBucket": "low",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "Low-volume public roster signal",
+        "aggregateSignal": "low",
+        "geographyConnection": "The Olympic roster signal for New Hampshire is too small to summarize by sport family without over-specificity.",
+        "geminiNote": "Common Ground keeps this panel generalized so fan discovery stays aggregate and privacy-aware.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "Low-volume public roster signal",
+        "aggregateSignal": "low",
+        "geographyConnection": "The Paralympic roster signal for New Hampshire is too small to summarize by sport family without over-specificity.",
+        "geminiNote": "Common Ground keeps this panel generalized so fan discovery stays aggregate and privacy-aware.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Signal Discovery",
+        "description": "Careful attention to changing map signals and source context in a low-stakes fan challenge.",
+        "challengeType": "reaction_grid"
+      },
+      "minimumAggregationPassed": true,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "NJ",
+      "stateName": "New Jersey",
+      "geographySnapshot": "Atlantic coast, dense urban corridors, coastal plain, seasonal climate",
+      "climateSignal": "Mid-Atlantic coastal and urban-corridor climate context",
+      "terrainSignals": [
+        "Atlantic coast",
+        "urban corridor",
+        "coastal plain"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 22,
+        "paralympic": 2,
+        "total": 24
+      },
+      "hometownPresenceBucket": "high",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "Endurance / Pace Control + Precision / Focus",
+        "aggregateSignal": "high",
+        "geographyConnection": "Atlantic coast, dense urban corridors, coastal plain, seasonal climate could help fans frame the state's Olympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Track and Field, Fencing, and Soccer; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "Low-volume public roster signal",
+        "aggregateSignal": "low",
+        "geographyConnection": "The Paralympic roster signal for New Jersey is too small to summarize by sport family without over-specificity.",
+        "geminiNote": "Common Ground keeps this panel generalized so fan discovery stays aggregate and privacy-aware.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Rhythm and Pace Control",
+        "description": "Steady timing, controlled effort, and repeatable rhythm across different sport environments.",
+        "challengeType": "cadence_keeper"
+      },
+      "minimumAggregationPassed": true,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "NM",
+      "stateName": "New Mexico",
+      "geographySnapshot": "High desert, mountain ranges, dry climate, higher-elevation communities",
+      "climateSignal": "Arid high-elevation climate with mountain and desert context",
+      "terrainSignals": [
+        "high desert",
+        "mountains",
+        "dry climate"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 2,
+        "paralympic": 0,
+        "total": 2
+      },
+      "hometownPresenceBucket": "low",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "Low-volume public roster signal",
+        "aggregateSignal": "low",
+        "geographyConnection": "The Olympic roster signal for New Mexico is too small to summarize by sport family without over-specificity.",
+        "geminiNote": "Common Ground keeps this panel generalized so fan discovery stays aggregate and privacy-aware.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "No sourced public roster signal",
+        "aggregateSignal": "insufficient_data",
+        "geographyConnection": "New Mexico has no public Paralympic hometown-state roster signal in this TeamUSA.com Paris 2024 dataset.",
+        "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Signal Discovery",
+        "description": "Careful attention to changing map signals and source context in a low-stakes fan challenge.",
+        "challengeType": "reaction_grid"
+      },
+      "minimumAggregationPassed": false,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "NY",
+      "stateName": "New York",
+      "geographySnapshot": "Atlantic coast, Great Lakes, Adirondacks, large urban infrastructure, four-season climate",
+      "climateSignal": "Four-season climate with urban, coastal, lake, and mountain context",
+      "terrainSignals": [
+        "urban infrastructure",
+        "coast",
+        "mountains"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 23,
+        "paralympic": 8,
+        "total": 31
+      },
+      "hometownPresenceBucket": "high",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "Endurance / Pace Control + Team / Spatial Awareness",
+        "aggregateSignal": "high",
+        "geographyConnection": "Atlantic coast, Great Lakes, Adirondacks, large urban infrastructure, four-season climate could help fans frame the state's Olympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Soccer, Track and Field, and Rowing; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "Endurance / Pace Control + Precision / Focus",
+        "aggregateSignal": "medium",
+        "geographyConnection": "Atlantic coast, Great Lakes, Adirondacks, large urban infrastructure, four-season climate could help fans frame the state's Paralympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Para Track and Field, Para Swimming, and Para Table Tennis; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Rhythm and Pace Control",
+        "description": "Steady timing, controlled effort, and repeatable rhythm across different sport environments.",
+        "challengeType": "cadence_keeper"
+      },
+      "minimumAggregationPassed": true,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "NC",
+      "stateName": "North Carolina",
+      "geographySnapshot": "Atlantic coast, Piedmont, Blue Ridge mountains, humid climate",
+      "climateSignal": "Humid climate with coast-to-mountain geography and mixed sport-access context",
+      "terrainSignals": [
+        "coast",
+        "Piedmont",
+        "Blue Ridge"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 10,
+        "paralympic": 9,
+        "total": 19
+      },
+      "hometownPresenceBucket": "medium",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "Endurance / Pace Control + Team / Spatial Awareness",
+        "aggregateSignal": "medium",
+        "geographyConnection": "Atlantic coast, Piedmont, Blue Ridge mountains, humid climate could help fans frame the state's Olympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Track and Field, Rugby, and 3x3 Basketball; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "Aquatic / Water Environment + Endurance / Pace Control",
+        "aggregateSignal": "medium",
+        "geographyConnection": "Atlantic coast, Piedmont, Blue Ridge mountains, humid climate could help fans frame the state's Paralympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Para Swimming, Sitting Volleyball, and Para Judo; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Rhythm and Pace Control",
+        "description": "Steady timing, controlled effort, and repeatable rhythm across different sport environments.",
+        "challengeType": "cadence_keeper"
+      },
+      "minimumAggregationPassed": true,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "ND",
+      "stateName": "North Dakota",
+      "geographySnapshot": "Northern plains, cold winters, wind exposure, river valleys",
+      "climateSignal": "Cold plains climate with open-terrain and winter-environment context",
+      "terrainSignals": [
+        "northern plains",
+        "cold winters",
+        "wind exposure"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 0,
+        "paralympic": 0,
+        "total": 0
+      },
+      "hometownPresenceBucket": "insufficient_data",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "No sourced public roster signal",
+        "aggregateSignal": "insufficient_data",
+        "geographyConnection": "North Dakota has no public Olympic hometown-state roster signal in this TeamUSA.com Paris 2024 dataset.",
+        "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "No sourced public roster signal",
+        "aggregateSignal": "insufficient_data",
+        "geographyConnection": "North Dakota has no public Paralympic hometown-state roster signal in this TeamUSA.com Paris 2024 dataset.",
+        "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Signal Discovery",
+        "description": "Careful attention to changing map signals and source context in a low-stakes fan challenge.",
+        "challengeType": "reaction_grid"
+      },
+      "minimumAggregationPassed": false,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "OH",
+      "stateName": "Ohio",
+      "geographySnapshot": "Great Lakes shoreline, river valleys, large metro regions, humid continental climate",
+      "climateSignal": "Great Lakes and river-valley climate context with broad urban access",
+      "terrainSignals": [
+        "Great Lakes",
+        "river valleys",
+        "metro regions"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 14,
+        "paralympic": 6,
+        "total": 20
+      },
+      "hometownPresenceBucket": "high",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "Endurance / Pace Control + Team / Spatial Awareness",
+        "aggregateSignal": "medium",
+        "geographyConnection": "Great Lakes shoreline, river valleys, large metro regions, humid continental climate could help fans frame the state's Olympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Track and Field, Basketball, and Rowing; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "Endurance / Pace Control + Precision / Focus",
+        "aggregateSignal": "medium",
+        "geographyConnection": "Great Lakes shoreline, river valleys, large metro regions, humid continental climate could help fans frame the state's Paralympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Para Track and Field, Paratriathlon, and Paracanoe; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Rhythm and Pace Control",
+        "description": "Steady timing, controlled effort, and repeatable rhythm across different sport environments.",
+        "challengeType": "cadence_keeper"
+      },
+      "minimumAggregationPassed": true,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "OK",
+      "stateName": "Oklahoma",
+      "geographySnapshot": "Southern plains, heat, wind exposure, rolling terrain, mixed urban access",
+      "climateSignal": "Southern plains climate with heat, wind, and open-terrain context",
+      "terrainSignals": [
+        "southern plains",
+        "heat",
+        "wind exposure"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 1,
+        "paralympic": 4,
+        "total": 5
+      },
+      "hometownPresenceBucket": "medium",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "Low-volume public roster signal",
+        "aggregateSignal": "low",
+        "geographyConnection": "The Olympic roster signal for Oklahoma is too small to summarize by sport family without over-specificity.",
+        "geminiNote": "Common Ground keeps this panel generalized so fan discovery stays aggregate and privacy-aware.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "Endurance / Pace Control + Team / Spatial Awareness",
+        "aggregateSignal": "low",
+        "geographyConnection": "Southern plains, heat, wind exposure, rolling terrain, mixed urban access could help fans frame the state's Paralympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Para Track and Field and Sitting Volleyball; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Rhythm and Pace Control",
+        "description": "Steady timing, controlled effort, and repeatable rhythm across different sport environments.",
+        "challengeType": "cadence_keeper"
+      },
+      "minimumAggregationPassed": true,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "OR",
+      "stateName": "Oregon",
+      "geographySnapshot": "Pacific coast, Cascade mountains, high desert, rivers, wet and dry climate zones",
+      "climateSignal": "Pacific Northwest climate with coast, mountain, and high-desert context",
+      "terrainSignals": [
+        "coast",
+        "Cascade mountains",
+        "high desert"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 6,
+        "paralympic": 3,
+        "total": 9
+      },
+      "hometownPresenceBucket": "medium",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "Endurance / Pace Control + Team / Spatial Awareness",
+        "aggregateSignal": "medium",
+        "geographyConnection": "Pacific coast, Cascade mountains, high desert, rivers, wet and dry climate zones could help fans frame the state's Olympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Track and Field, 3x3 Basketball, and Fencing; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "Endurance / Pace Control + Precision / Focus",
+        "aggregateSignal": "low",
+        "geographyConnection": "Pacific coast, Cascade mountains, high desert, rivers, wet and dry climate zones could help fans frame the state's Paralympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Para-Cycling, Wheelchair Basketball, and Wheelchair Tennis; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Rhythm and Pace Control",
+        "description": "Steady timing, controlled effort, and repeatable rhythm across different sport environments.",
+        "challengeType": "cadence_keeper"
+      },
+      "minimumAggregationPassed": true,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "PA",
+      "stateName": "Pennsylvania",
+      "geographySnapshot": "Appalachian ridges, river valleys, dense metro corridors, four-season climate",
+      "climateSignal": "Mid-Atlantic climate with ridges, rivers, and urban-corridor context",
+      "terrainSignals": [
+        "Appalachian ridges",
+        "river valleys",
+        "urban corridors"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 27,
+        "paralympic": 11,
+        "total": 38
+      },
+      "hometownPresenceBucket": "high",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "Team / Spatial Awareness + Endurance / Pace Control",
+        "aggregateSignal": "high",
+        "geographyConnection": "Appalachian ridges, river valleys, dense metro corridors, four-season climate could help fans frame the state's Olympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Field Hockey, Rowing, and Swimming; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "Endurance / Pace Control + Aquatic / Water Environment",
+        "aggregateSignal": "high",
+        "geographyConnection": "Appalachian ridges, river valleys, dense metro corridors, four-season climate could help fans frame the state's Paralympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Para-Cycling, Para Swimming, and Paratriathlon; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Rhythm and Pace Control",
+        "description": "Steady timing, controlled effort, and repeatable rhythm across different sport environments.",
+        "challengeType": "cadence_keeper"
+      },
+      "minimumAggregationPassed": true,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "RI",
+      "stateName": "Rhode Island",
+      "geographySnapshot": "Atlantic shoreline, bays, dense coastal towns, four-season climate",
+      "climateSignal": "Compact coastal climate with bay and shoreline access context",
+      "terrainSignals": [
+        "Atlantic shoreline",
+        "bays",
+        "coastal towns"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 2,
+        "paralympic": 0,
+        "total": 2
+      },
+      "hometownPresenceBucket": "low",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "Low-volume public roster signal",
+        "aggregateSignal": "low",
+        "geographyConnection": "The Olympic roster signal for Rhode Island is too small to summarize by sport family without over-specificity.",
+        "geminiNote": "Common Ground keeps this panel generalized so fan discovery stays aggregate and privacy-aware.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "No sourced public roster signal",
+        "aggregateSignal": "insufficient_data",
+        "geographyConnection": "Rhode Island has no public Paralympic hometown-state roster signal in this TeamUSA.com Paris 2024 dataset.",
+        "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Signal Discovery",
+        "description": "Careful attention to changing map signals and source context in a low-stakes fan challenge.",
+        "challengeType": "reaction_grid"
+      },
+      "minimumAggregationPassed": false,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "SC",
+      "stateName": "South Carolina",
+      "geographySnapshot": "Atlantic coast, coastal plain, Piedmont, humid subtropical climate",
+      "climateSignal": "Warm coastal and inland climate with shoreline and Piedmont context",
+      "terrainSignals": [
+        "Atlantic coast",
+        "coastal plain",
+        "Piedmont"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 5,
+        "paralympic": 1,
+        "total": 6
+      },
+      "hometownPresenceBucket": "medium",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "Endurance / Pace Control + Precision / Focus",
+        "aggregateSignal": "medium",
+        "geographyConnection": "Atlantic coast, coastal plain, Piedmont, humid subtropical climate could help fans frame the state's Olympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Track and Field, Basketball, and Tennis; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "Low-volume public roster signal",
+        "aggregateSignal": "low",
+        "geographyConnection": "The Paralympic roster signal for South Carolina is too small to summarize by sport family without over-specificity.",
+        "geminiNote": "Common Ground keeps this panel generalized so fan discovery stays aggregate and privacy-aware.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Rhythm and Pace Control",
+        "description": "Steady timing, controlled effort, and repeatable rhythm across different sport environments.",
+        "challengeType": "cadence_keeper"
+      },
+      "minimumAggregationPassed": true,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "SD",
+      "stateName": "South Dakota",
+      "geographySnapshot": "Northern plains, Badlands, Black Hills, cold winters, open terrain",
+      "climateSignal": "Plains climate with hill, open-terrain, and winter-environment context",
+      "terrainSignals": [
+        "northern plains",
+        "Black Hills",
+        "cold winters"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 1,
+        "paralympic": 1,
+        "total": 2
+      },
+      "hometownPresenceBucket": "low",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "Low-volume public roster signal",
+        "aggregateSignal": "low",
+        "geographyConnection": "The Olympic roster signal for South Dakota is too small to summarize by sport family without over-specificity.",
+        "geminiNote": "Common Ground keeps this panel generalized so fan discovery stays aggregate and privacy-aware.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "Low-volume public roster signal",
+        "aggregateSignal": "low",
+        "geographyConnection": "The Paralympic roster signal for South Dakota is too small to summarize by sport family without over-specificity.",
+        "geminiNote": "Common Ground keeps this panel generalized so fan discovery stays aggregate and privacy-aware.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Signal Discovery",
+        "description": "Careful attention to changing map signals and source context in a low-stakes fan challenge.",
+        "challengeType": "reaction_grid"
+      },
+      "minimumAggregationPassed": false,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "TN",
+      "stateName": "Tennessee",
+      "geographySnapshot": "Appalachian mountains, river valleys, humid climate, large music-city metro corridor",
+      "climateSignal": "Humid inland climate with mountain, valley, and urban-access context",
+      "terrainSignals": [
+        "Appalachians",
+        "river valleys",
+        "urban access"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 7,
+        "paralympic": 1,
+        "total": 8
+      },
+      "hometownPresenceBucket": "medium",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "Aquatic / Water Environment + Endurance / Pace Control",
+        "aggregateSignal": "medium",
+        "geographyConnection": "Appalachian mountains, river valleys, humid climate, large music-city metro corridor could help fans frame the state's Olympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Swimming, Weightlifting, and 3x3 Basketball; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "Low-volume public roster signal",
+        "aggregateSignal": "low",
+        "geographyConnection": "The Paralympic roster signal for Tennessee is too small to summarize by sport family without over-specificity.",
+        "geminiNote": "Common Ground keeps this panel generalized so fan discovery stays aggregate and privacy-aware.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Rhythm and Pace Control",
+        "description": "Steady timing, controlled effort, and repeatable rhythm across different sport environments.",
+        "challengeType": "cadence_keeper"
+      },
+      "minimumAggregationPassed": true,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "TX",
+      "stateName": "Texas",
+      "geographySnapshot": "Gulf Coast, plains, hill country, desert edge, major metro regions, heat",
+      "climateSignal": "Large-state climate mix with heat, coastal, plains, and urban-infrastructure context",
+      "terrainSignals": [
+        "Gulf Coast",
+        "plains",
+        "heat",
+        "metro regions"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 39,
+        "paralympic": 10,
+        "total": 49
+      },
+      "hometownPresenceBucket": "high",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "Endurance / Pace Control + Team / Spatial Awareness",
+        "aggregateSignal": "high",
+        "geographyConnection": "Gulf Coast, plains, hill country, desert edge, major metro regions, heat could help fans frame the state's Olympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Track and Field, Shooting, and Boxing; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "Precision / Focus + Endurance / Pace Control",
+        "aggregateSignal": "high",
+        "geographyConnection": "Gulf Coast, plains, hill country, desert edge, major metro regions, heat could help fans frame the state's Paralympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Para Track and Field, Para Archery, and Para Shooting; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Rhythm and Pace Control",
+        "description": "Steady timing, controlled effort, and repeatable rhythm across different sport environments.",
+        "challengeType": "cadence_keeper"
+      },
+      "minimumAggregationPassed": true,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "UT",
+      "stateName": "Utah",
+      "geographySnapshot": "High elevation, Wasatch mountains, desert basins, winter access, outdoor terrain",
+      "climateSignal": "High-elevation and desert-mountain climate with winter and endurance context",
+      "terrainSignals": [
+        "higher elevation",
+        "mountains",
+        "desert basins"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 7,
+        "paralympic": 4,
+        "total": 11
+      },
+      "hometownPresenceBucket": "medium",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "Endurance / Pace Control + Team / Spatial Awareness",
+        "aggregateSignal": "medium",
+        "geographyConnection": "High elevation, Wasatch mountains, desert basins, winter access, outdoor terrain could help fans frame the state's Olympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Track and Field, Rugby, and Soccer; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "Endurance / Pace Control + Precision / Focus",
+        "aggregateSignal": "low",
+        "geographyConnection": "High elevation, Wasatch mountains, desert basins, winter access, outdoor terrain could help fans frame the state's Paralympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Para Track and Field, Wheelchair Basketball, and Wheelchair Fencing; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Rhythm and Pace Control",
+        "description": "Steady timing, controlled effort, and repeatable rhythm across different sport environments.",
+        "challengeType": "cadence_keeper"
+      },
+      "minimumAggregationPassed": true,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "VT",
+      "stateName": "Vermont",
+      "geographySnapshot": "Green Mountains, forests, cold winters, lakes and river valleys",
+      "climateSignal": "Northern mountain climate with winter, forest, and valley context",
+      "terrainSignals": [
+        "Green Mountains",
+        "forests",
+        "cold winters"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 3,
+        "paralympic": 0,
+        "total": 3
+      },
+      "hometownPresenceBucket": "low",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "Endurance / Pace Control + Team / Spatial Awareness",
+        "aggregateSignal": "low",
+        "geographyConnection": "Green Mountains, forests, cold winters, lakes and river valleys could help fans frame the state's Olympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Rowing, Rugby, and Track and Field; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "No sourced public roster signal",
+        "aggregateSignal": "insufficient_data",
+        "geographyConnection": "Vermont has no public Paralympic hometown-state roster signal in this TeamUSA.com Paris 2024 dataset.",
+        "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Rhythm and Pace Control",
+        "description": "Steady timing, controlled effort, and repeatable rhythm across different sport environments.",
+        "challengeType": "cadence_keeper"
+      },
+      "minimumAggregationPassed": true,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "VA",
+      "stateName": "Virginia",
+      "geographySnapshot": "Atlantic coast, Piedmont, Blue Ridge, river corridors, dense metro access",
+      "climateSignal": "Mid-Atlantic climate with coast-to-mountain and urban-corridor context",
+      "terrainSignals": [
+        "coast",
+        "Piedmont",
+        "Blue Ridge"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 15,
+        "paralympic": 2,
+        "total": 17
+      },
+      "hometownPresenceBucket": "medium",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "Endurance / Pace Control + Aquatic / Water Environment",
+        "aggregateSignal": "medium",
+        "geographyConnection": "Atlantic coast, Piedmont, Blue Ridge, river corridors, dense metro access could help fans frame the state's Olympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Soccer, Swimming, and Rowing; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "Low-volume public roster signal",
+        "aggregateSignal": "low",
+        "geographyConnection": "The Paralympic roster signal for Virginia is too small to summarize by sport family without over-specificity.",
+        "geminiNote": "Common Ground keeps this panel generalized so fan discovery stays aggregate and privacy-aware.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Rhythm and Pace Control",
+        "description": "Steady timing, controlled effort, and repeatable rhythm across different sport environments.",
+        "challengeType": "cadence_keeper"
+      },
+      "minimumAggregationPassed": true,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "WA",
+      "stateName": "Washington",
+      "geographySnapshot": "Pacific coast, Cascade mountains, Puget Sound, wet west and dry east climate zones",
+      "climateSignal": "Pacific Northwest climate with coastal, mountain, and endurance-environment context",
+      "terrainSignals": [
+        "coast",
+        "Cascade mountains",
+        "Puget Sound"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 13,
+        "paralympic": 12,
+        "total": 25
+      },
+      "hometownPresenceBucket": "high",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "Endurance / Pace Control + Aquatic / Water Environment",
+        "aggregateSignal": "medium",
+        "geographyConnection": "Pacific coast, Cascade mountains, Puget Sound, wet west and dry east climate zones could help fans frame the state's Olympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Canoe/Kayak, Rowing, and Track and Field; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "Endurance / Pace Control + Precision / Focus",
+        "aggregateSignal": "high",
+        "geographyConnection": "Pacific coast, Cascade mountains, Puget Sound, wet west and dry east climate zones could help fans frame the state's Paralympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Para Track and Field, Para-Cycling, and Para Shooting; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Rhythm and Pace Control",
+        "description": "Steady timing, controlled effort, and repeatable rhythm across different sport environments.",
+        "challengeType": "cadence_keeper"
+      },
+      "minimumAggregationPassed": true,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "WV",
+      "stateName": "West Virginia",
+      "geographySnapshot": "Appalachian mountains, river valleys, forests, humid continental climate",
+      "climateSignal": "Mountain and river-valley climate with outdoor terrain context",
+      "terrainSignals": [
+        "Appalachians",
+        "river valleys",
+        "forests"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 0,
+        "paralympic": 2,
+        "total": 2
+      },
+      "hometownPresenceBucket": "low",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "No sourced public roster signal",
+        "aggregateSignal": "insufficient_data",
+        "geographyConnection": "West Virginia has no public Olympic hometown-state roster signal in this TeamUSA.com Paris 2024 dataset.",
+        "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "Low-volume public roster signal",
+        "aggregateSignal": "low",
+        "geographyConnection": "The Paralympic roster signal for West Virginia is too small to summarize by sport family without over-specificity.",
+        "geminiNote": "Common Ground keeps this panel generalized so fan discovery stays aggregate and privacy-aware.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Signal Discovery",
+        "description": "Careful attention to changing map signals and source context in a low-stakes fan challenge.",
+        "challengeType": "reaction_grid"
+      },
+      "minimumAggregationPassed": false,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "WI",
+      "stateName": "Wisconsin",
+      "geographySnapshot": "Great Lakes, inland lakes, cold winters, forests and plains",
+      "climateSignal": "Upper Midwest climate with lake, snow, and plains-forest context",
+      "terrainSignals": [
+        "Great Lakes",
+        "inland lakes",
+        "cold winters"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 12,
+        "paralympic": 6,
+        "total": 18
+      },
+      "hometownPresenceBucket": "medium",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "Endurance / Pace Control + Power / Contact Control",
+        "aggregateSignal": "medium",
+        "geographyConnection": "Great Lakes, inland lakes, cold winters, forests and plains could help fans frame the state's Olympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Rowing, Track and Field, and Basketball; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "Team / Spatial Awareness",
+        "aggregateSignal": "medium",
+        "geographyConnection": "Great Lakes, inland lakes, cold winters, forests and plains could help fans frame the state's Paralympic sport-family presence without implying geography causes outcomes.",
+        "geminiNote": "Public roster tags in this panel include Wheelchair Basketball; the state context may suggest a fan discovery lens, not a performance claim.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Rhythm and Pace Control",
+        "description": "Steady timing, controlled effort, and repeatable rhythm across different sport environments.",
+        "challengeType": "cadence_keeper"
+      },
+      "minimumAggregationPassed": true,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    },
+    {
+      "stateCode": "WY",
+      "stateName": "Wyoming",
+      "geographySnapshot": "Rocky Mountains, high plains, cold winters, high elevation, open terrain",
+      "climateSignal": "High-elevation plains and mountain climate with winter and endurance context",
+      "terrainSignals": [
+        "higher elevation",
+        "mountains",
+        "open terrain"
+      ],
+      "hometownRosterCounts": {
+        "olympic": 0,
+        "paralympic": 0,
+        "total": 0
+      },
+      "hometownPresenceBucket": "insufficient_data",
+      "olympicPanel": {
+        "program": "olympic",
+        "label": "Olympic Sport Family",
+        "sportFamily": "No sourced public roster signal",
+        "aggregateSignal": "insufficient_data",
+        "geographyConnection": "Wyoming has no public Olympic hometown-state roster signal in this TeamUSA.com Paris 2024 dataset.",
+        "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Olympic roster",
+            "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "paralympicPanel": {
+        "program": "paralympic",
+        "label": "Paralympic Sport Family",
+        "sportFamily": "No sourced public roster signal",
+        "aggregateSignal": "insufficient_data",
+        "geographyConnection": "Wyoming has no public Paralympic hometown-state roster signal in this TeamUSA.com Paris 2024 dataset.",
+        "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
+        "sourceRefs": [
+          {
+            "label": "TeamUSA.com Paris 2024 Paralympic roster",
+            "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+            "sourceType": "teamusa",
+            "retrievedAt": "2026-04-29"
+          }
+        ]
+      },
+      "sharedTrait": {
+        "name": "Signal Discovery",
+        "description": "Careful attention to changing map signals and source context in a low-stakes fan challenge.",
+        "challengeType": "reaction_grid"
+      },
+      "minimumAggregationPassed": false,
+      "sourceRefs": [
+        {
+          "label": "TeamUSA.com Paris 2024 Olympic roster",
+          "url": "https://www.teamusa.com/paris-2024/olympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        },
+        {
+          "label": "TeamUSA.com Paris 2024 Paralympic roster",
+          "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
+          "sourceType": "teamusa",
+          "retrievedAt": "2026-04-29"
+        }
+      ]
+    }
+  ]
+}

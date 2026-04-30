@@ -1,0 +1,30 @@
+{
+  "name": "common-ground",
+  "version": "0.2.0",
+  "private": true,
+  "description": "Common Ground: geography-powered Team USA fan discovery map with aggregate state cards.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 5173",
+    "api": "node server.js",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1 --port 5174",
+    "start": "node server.js",
+    "ingest:teamusa": "node scripts/ingest-teamusa-paris2024.mjs",
+    "generate:card-art": "node scripts/generate-card-art.mjs",
+    "generate:card-panels": "node scripts/generate-vertex-card-panels.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "^5.0.4",
+    "d3": "^7.9.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "topojson-client": "^3.1.0",
+    "us-atlas": "^3.0.1",
+    "vite": "^7.1.12"
+  }
+}
