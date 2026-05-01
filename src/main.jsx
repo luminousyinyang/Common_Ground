@@ -71,6 +71,51 @@ const ACTIVE_VISUAL_THEME = {
   type: "scoreboard"
 };
 
+const CARD_OPEN_PRESETS = [
+  { id: "snap-deal", label: "Snap Deal" },
+  { id: "pack-rip", label: "Pack Rip" },
+  { id: "vault-flip", label: "Vault Flip" },
+  { id: "table-drop", label: "Table Drop" },
+  { id: "spotlight-bloom", label: "Spotlight" },
+  { id: "slide-pick", label: "Slide Pick" },
+  { id: "binder-lift", label: "Binder Lift" },
+  { id: "case-pop", label: "Case Pop" },
+  { id: "shuffle-fan", label: "Shuffle Fan" },
+  { id: "still", label: "Still" }
+];
+
+const CARD_INTERACTION_PRESETS = [
+  { id: "static-hold", label: "Static Hold" },
+  { id: "tilt-inspect", label: "Tilt Inspect" },
+  { id: "hover-float", label: "Hover Float" },
+  { id: "foil-sweep", label: "Foil Sweep" },
+  { id: "edge-glow", label: "Edge Glow" },
+  { id: "press-lift", label: "Press Lift" },
+  { id: "slow-drift", label: "Slow Drift" },
+  { id: "case-shine", label: "Case Shine" },
+  { id: "score-pulse", label: "Score Pulse" },
+  { id: "magnetic-snap", label: "Magnetic Snap" }
+];
+
+const CARD_LAYOUT_PRESETS = [
+  { id: "atlas-frame", label: "Atlas Frame" },
+  { id: "floating-card", label: "Floating Card" },
+  { id: "poster-stage", label: "Poster Stage" },
+  { id: "gallery-plinth", label: "Gallery Plinth" },
+  { id: "slab-case", label: "Slab Case" },
+  { id: "passport", label: "Passport" },
+  { id: "wide-back", label: "Wide Back" },
+  { id: "tabletop", label: "Tabletop" },
+  { id: "ticket", label: "Ticket" },
+  { id: "pinboard", label: "Pinboard" }
+];
+
+const ACTIVE_CARD_EXPERIENCE = {
+  openAnimation: CARD_OPEN_PRESETS.find((preset) => preset.id === "spotlight-bloom") || CARD_OPEN_PRESETS[0],
+  interaction: CARD_INTERACTION_PRESETS.find((preset) => preset.id === "press-lift") || CARD_INTERACTION_PRESETS[0],
+  cardLayout: CARD_LAYOUT_PRESETS.find((preset) => preset.id === "tabletop") || CARD_LAYOUT_PRESETS[0]
+};
+
 const CARD_ART = {
   aquatic: "/assets/card-art/aquatic.png",
   "control-pressure": "/assets/card-art/control-pressure.png",
@@ -191,6 +236,53 @@ function getPanelArtUrl(card, program, manifest) {
 function AppIcon({ name }) {
   return <span className={`nav-glyph nav-glyph-${name}`} aria-hidden="true" />;
 }
+
+/*
+Card lab toggle logic, parked while the selected card experience is locked to
+Spotlight / Press Lift / Tabletop. Uncomment this block plus the App state
+snippet near App() if we want live controls back.
+
+function readPresetIndex(storageKey, presets) {
+  try {
+    const saved = window.localStorage.getItem(storageKey);
+    const index = presets.findIndex((preset) => preset.id === saved);
+    return index >= 0 ? index : 0;
+  } catch {
+    return 0;
+  }
+}
+
+function CardLabToggle({ label, value, index, total, onNext }) {
+  return (
+    <button className="card-lab-toggle" type="button" onClick={onNext} aria-label={`Switch ${label.toLowerCase()}. Current ${label.toLowerCase()} is ${value.label}`}>
+      <span>{label}</span>
+      <strong>{value.label}</strong>
+      <em>{index + 1}/{total}</em>
+    </button>
+  );
+}
+
+function CardLabControls({
+  openAnimation,
+  openAnimationIndex,
+  onNextOpenAnimation,
+  interaction,
+  interactionIndex,
+  onNextInteraction,
+  layout,
+  layoutIndex,
+  onNextLayout,
+  compact = false
+}) {
+  return (
+    <div className={`card-lab-controls ${compact ? "is-compact" : ""}`} aria-label="Card animation and layout controls">
+      <CardLabToggle label="Open" value={openAnimation} index={openAnimationIndex} total={CARD_OPEN_PRESETS.length} onNext={onNextOpenAnimation} />
+      <CardLabToggle label="Feel" value={interaction} index={interactionIndex} total={CARD_INTERACTION_PRESETS.length} onNext={onNextInteraction} />
+      <CardLabToggle label="Layout" value={layout} index={layoutIndex} total={CARD_LAYOUT_PRESETS.length} onNext={onNextLayout} />
+    </div>
+  );
+}
+*/
 
 function SignalLegend() {
   return (
@@ -771,8 +863,18 @@ function UnifiedStateCard({ card, sourceRefs, briefing, briefingLoading, onRefre
   );
 }
 
-function CardModal({ card, sourceRefs, briefing, briefingLoading, onRefreshBriefing, onOpenChallenge, onClose, panelManifest }) {
+function CardModal({
+  card,
+  sourceRefs,
+  briefing,
+  briefingLoading,
+  onRefreshBriefing,
+  onOpenChallenge,
+  onClose,
+  panelManifest
+}) {
   const [isBackExpanded, setIsBackExpanded] = useState(false);
+  const { openAnimation, interaction, cardLayout } = ACTIVE_CARD_EXPERIENCE;
 
   useEffect(() => {
     function onKey(event) {
@@ -789,13 +891,9 @@ function CardModal({ card, sourceRefs, briefing, briefingLoading, onRefreshBrief
   return (
     <div className="card-modal-backdrop" role="dialog" aria-modal="true" aria-label={`${card.stateName} sports card`}>
       <button className="modal-scrim" type="button" aria-label="Close state card" onClick={onClose} />
-      <div className={`card-modal-panel ${isBackExpanded ? "is-back-expanded" : ""}`}>
-        <div className="modal-topline">
-          <div>
-            <p className="eyebrow">Discovered state card</p>
-            <h2>{card.stateName}</h2>
-          </div>
-          <button className="modal-close-button" type="button" onClick={onClose} aria-label="Close state card">x</button>
+      <div className={`card-modal-panel card-open-${openAnimation.id} card-interaction-${interaction.id} card-layout-${cardLayout.id} ${isBackExpanded ? "is-back-expanded" : ""}`}>
+        <div className="modal-close-row">
+          <button className="modal-close-button" type="button" onClick={onClose} aria-label="Close state card" />
         </div>
         <UnifiedStateCard
           card={card}
@@ -1233,6 +1331,16 @@ function App() {
   const [discoveredCodes, setDiscoveredCodes] = useState(() => new Set(["CO"]));
   const [panelManifest, setPanelManifest] = useState(EMPTY_CARD_PANEL_MANIFEST);
 
+  /*
+  Card lab state, parked while the selected experience is locked:
+  const [openAnimationIndex, setOpenAnimationIndex] = useState(() => readPresetIndex("common-ground-card-open-animation", CARD_OPEN_PRESETS));
+  const [interactionIndex, setInteractionIndex] = useState(() => readPresetIndex("common-ground-card-interaction", CARD_INTERACTION_PRESETS));
+  const [cardLayoutIndex, setCardLayoutIndex] = useState(() => readPresetIndex("common-ground-card-layout", CARD_LAYOUT_PRESETS));
+  const openAnimation = CARD_OPEN_PRESETS[openAnimationIndex] || CARD_OPEN_PRESETS[0];
+  const interaction = CARD_INTERACTION_PRESETS[interactionIndex] || CARD_INTERACTION_PRESETS[0];
+  const cardLayout = CARD_LAYOUT_PRESETS[cardLayoutIndex] || CARD_LAYOUT_PRESETS[0];
+  */
+
   useEffect(() => {
     try {
       const saved = JSON.parse(window.localStorage.getItem("common-ground-discovered") || "[]");
@@ -1255,6 +1363,33 @@ function App() {
     document.documentElement.dataset.surface = ACTIVE_VISUAL_THEME.surface;
     document.documentElement.dataset.type = ACTIVE_VISUAL_THEME.type;
   }, []);
+
+  /*
+  Card lab persistence, parked with the toggle UI:
+  useEffect(() => {
+    try {
+      window.localStorage.setItem("common-ground-card-open-animation", openAnimation.id);
+    } catch {
+      // Card open animation persistence is optional.
+    }
+  }, [openAnimation.id]);
+
+  useEffect(() => {
+    try {
+      window.localStorage.setItem("common-ground-card-interaction", interaction.id);
+    } catch {
+      // Card interaction persistence is optional.
+    }
+  }, [interaction.id]);
+
+  useEffect(() => {
+    try {
+      window.localStorage.setItem("common-ground-card-layout", cardLayout.id);
+    } catch {
+      // Card layout persistence is optional.
+    }
+  }, [cardLayout.id]);
+  */
 
   useEffect(() => {
     Promise.all([

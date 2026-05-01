@@ -622,6 +622,86 @@ h4 {
   box-shadow: inset 3px 0 0 var(--ink);
 }
 
+.card-lab-controls {
+  display: grid;
+  gap: 8px;
+  margin-top: auto;
+  padding: 10px 0 0;
+  border-top: 1px solid var(--line);
+}
+
+.card-lab-toggle {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 2px 8px;
+  align-items: center;
+  min-height: 42px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 8px 10px;
+  color: var(--ink);
+  background: color-mix(in srgb, var(--surface) 72%, transparent);
+  text-align: left;
+  box-shadow: 0 8px 18px color-mix(in srgb, #000000 10%, transparent);
+}
+
+.card-lab-toggle:hover,
+.card-lab-toggle:focus-visible {
+  border-color: var(--line-strong);
+  background: color-mix(in srgb, var(--surface-soft) 72%, transparent);
+}
+
+.card-lab-toggle span {
+  color: var(--muted);
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.card-lab-toggle strong {
+  grid-column: 1;
+  font-family: var(--display-font);
+  font-size: 0.94rem;
+  line-height: 0.95;
+}
+
+.card-lab-toggle em {
+  grid-row: 1 / span 2;
+  grid-column: 2;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.card-lab-controls.is-compact {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  border-top: 0;
+}
+
+.card-lab-controls.is-compact .card-lab-toggle {
+  min-height: 34px;
+  min-width: 96px;
+  padding: 6px 9px;
+  border-radius: 999px;
+  box-shadow: none;
+}
+
+.card-lab-controls.is-compact .card-lab-toggle span,
+.card-lab-controls.is-compact .card-lab-toggle em {
+  font-size: 0.58rem;
+}
+
+.card-lab-controls.is-compact .card-lab-toggle strong {
+  font-size: 0.76rem;
+}
+
 .nav-glyph {
   position: relative;
   width: 18px;
@@ -1607,7 +1687,7 @@ select {
   position: relative;
   z-index: 1;
   display: grid;
-  gap: 12px;
+  gap: 10px;
   width: min(460px, calc(100vw - 32px));
   max-height: calc(100vh - 56px);
   max-height: calc(100svh - 56px);
@@ -1626,8 +1706,397 @@ select {
   width: min(1040px, calc(100vw - 40px));
 }
 
+.card-modal-panel.card-open-snap-deal {
+  animation: cardSnapDeal 300ms cubic-bezier(0.2, 0.85, 0.2, 1) both;
+}
+
+.card-modal-panel.card-open-pack-rip {
+  animation: cardPackRip 460ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.card-modal-panel.card-open-vault-flip {
+  animation: cardVaultFlip 520ms cubic-bezier(0.18, 0.9, 0.18, 1) both;
+}
+
+.card-modal-panel.card-open-table-drop {
+  animation: cardTableDrop 430ms cubic-bezier(0.2, 0.85, 0.25, 1.14) both;
+}
+
+.card-modal-panel.card-open-spotlight-bloom {
+  animation: cardSpotlightBloom 540ms ease both;
+}
+
+.card-modal-panel.card-open-slide-pick {
+  animation: cardSlidePick 420ms cubic-bezier(0.18, 0.88, 0.3, 1) both;
+}
+
+.card-modal-panel.card-open-binder-lift {
+  animation: cardBinderLift 460ms cubic-bezier(0.16, 0.9, 0.22, 1) both;
+}
+
+.card-modal-panel.card-open-case-pop {
+  animation: cardCasePop 380ms cubic-bezier(0.17, 0.92, 0.2, 1.16) both;
+}
+
+.card-modal-panel.card-open-shuffle-fan {
+  animation: cardShuffleFan 520ms cubic-bezier(0.2, 0.82, 0.22, 1) both;
+}
+
+.card-modal-panel.card-open-still {
+  animation: none;
+}
+
+.card-modal-panel.card-interaction-tilt-inspect .sports-card,
+.card-modal-panel.card-interaction-press-lift .sports-card,
+.card-modal-panel.card-interaction-magnetic-snap .sports-card {
+  transition: transform 180ms ease, filter 180ms ease;
+}
+
+.card-modal-panel.card-interaction-tilt-inspect .sports-card:not(.is-flipped):hover {
+  transform: perspective(900px) rotateX(1.8deg) rotateY(-2.8deg) translateY(-2px);
+}
+
+.card-modal-panel.card-interaction-press-lift .sports-card:not(.is-flipped):hover {
+  transform: translateY(-4px) scale(1.006);
+}
+
+.card-modal-panel.card-interaction-press-lift .sports-card:not(.is-flipped):active {
+  transform: translateY(-1px) scale(0.998);
+}
+
+.card-modal-panel.card-interaction-magnetic-snap .sports-card:not(.is-flipped):hover {
+  transform: perspective(950px) rotateY(3.2deg) translateY(-2px);
+  filter: saturate(1.05);
+}
+
+.card-modal-panel.card-interaction-hover-float .sports-card {
+  animation: cardIdleFloat 3.2s ease-in-out infinite;
+}
+
+.card-modal-panel.card-interaction-slow-drift .sports-card {
+  animation: cardSlowDrift 5.8s ease-in-out infinite;
+}
+
+.card-modal-panel.card-interaction-foil-sweep .sports-card-front::after,
+.card-modal-panel.card-interaction-case-shine .sports-card-face::after {
+  position: absolute;
+  inset: -30%;
+  z-index: 4;
+  pointer-events: none;
+  content: "";
+  background: linear-gradient(115deg, transparent 36%, rgba(255, 255, 255, 0.34) 46%, transparent 56%);
+  mix-blend-mode: screen;
+  animation: foilSweep 2.6s ease-in-out infinite;
+}
+
+.card-modal-panel.card-interaction-edge-glow .sports-card-face {
+  box-shadow:
+    var(--shadow),
+    0 0 0 1px color-mix(in srgb, var(--ink) 18%, transparent),
+    0 0 34px color-mix(in srgb, var(--olympic-tint) 24%, transparent);
+}
+
+.card-modal-panel.card-interaction-score-pulse .sports-card-face {
+  animation: cardScorePulse 2.4s ease-in-out infinite;
+}
+
+.card-modal-panel.card-open-pack-rip .sports-card-face {
+  box-shadow: var(--shadow), 0 0 0 1px color-mix(in srgb, var(--ink) 18%, transparent);
+}
+
+.card-modal-panel.card-open-spotlight-bloom {
+  box-shadow:
+    0 30px 90px color-mix(in srgb, #000000 34%, transparent),
+    0 0 80px color-mix(in srgb, var(--olympic-tint) 20%, transparent);
+}
+
+.card-modal-panel.card-layout-floating-card {
+  width: min(468px, calc(100vw - 32px));
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+  padding: 6px 6px 10px;
+}
+
+.card-modal-panel.card-layout-floating-card.is-back-expanded {
+  width: min(980px, calc(100vw - 40px));
+}
+
+.card-modal-panel.card-layout-floating-card .modal-topline {
+  padding: 0 4px;
+  text-shadow: 0 2px 18px color-mix(in srgb, #000000 28%, transparent);
+}
+
+.card-modal-panel.card-layout-floating-card .sports-card-face,
+.card-modal-panel.card-layout-floating-card .card-back-scroll {
+  box-shadow: 0 40px 120px color-mix(in srgb, #000000 42%, transparent);
+}
+
+.card-modal-panel.card-layout-floating-card .card-action-row .ghost-button,
+.card-modal-panel.card-layout-floating-card .card-action-row .primary-button {
+  border-radius: 999px;
+  box-shadow: 0 16px 34px color-mix(in srgb, #000000 28%, transparent);
+}
+
+.card-modal-panel.card-layout-poster-stage {
+  width: min(560px, calc(100vw - 34px));
+  border-radius: 30px;
+}
+
+.card-modal-panel.card-layout-poster-stage .sports-card {
+  height: clamp(560px, calc(100dvh - 238px), 740px);
+}
+
+.card-modal-panel.card-layout-gallery-plinth {
+  width: min(620px, calc(100vw - 34px));
+  padding: 18px 18px 20px;
+  background:
+    radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--olympic-tint) 20%, transparent), transparent 22rem),
+    linear-gradient(180deg, color-mix(in srgb, var(--surface) 90%, transparent), color-mix(in srgb, var(--paper) 82%, transparent));
+}
+
+.card-modal-panel.card-layout-gallery-plinth .sports-card-shell {
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: color-mix(in srgb, var(--surface) 36%, transparent);
+}
+
+.card-modal-panel.card-layout-slab-case {
+  width: min(500px, calc(100vw - 34px));
+  border-radius: 32px;
+  border-width: 2px;
+}
+
+.card-modal-panel.card-layout-slab-case .sports-card-face,
+.card-modal-panel.card-layout-slab-case .card-back-scroll {
+  border-radius: 28px;
+  border-width: 2px;
+}
+
+.card-modal-panel.card-layout-passport {
+  width: min(390px, calc(100vw - 34px));
+}
+
+.card-modal-panel.card-layout-passport .modal-topline h2 {
+  font-size: 1.7rem;
+}
+
+.card-modal-panel.card-layout-passport .sports-card {
+  height: clamp(500px, calc(100dvh - 236px), 620px);
+}
+
+.card-modal-panel.card-layout-wide-back {
+  width: min(520px, calc(100vw - 34px));
+}
+
+.card-modal-panel.card-layout-wide-back.is-back-expanded {
+  width: min(1180px, calc(100vw - 40px));
+}
+
+.card-modal-panel.card-layout-wide-back.is-back-expanded .card-back-scroll {
+  max-height: calc(100vh - 220px);
+  max-height: calc(100svh - 220px);
+}
+
+.card-modal-panel.card-layout-tabletop {
+  rotate: -0.4deg;
+}
+
+.card-modal-panel.card-layout-tabletop .sports-card-face {
+  box-shadow:
+    0 34px 80px color-mix(in srgb, #000000 34%, transparent),
+    -10px 10px 0 color-mix(in srgb, var(--surface-soft) 18%, transparent);
+}
+
+.card-modal-panel.card-layout-ticket {
+  border-radius: 12px;
+}
+
+.card-modal-panel.card-layout-ticket .sports-card-face,
+.card-modal-panel.card-layout-ticket .card-back-scroll,
+.card-modal-panel.card-layout-ticket .ghost-button,
+.card-modal-panel.card-layout-ticket .primary-button {
+  border-radius: 8px;
+}
+
+.card-modal-panel.card-layout-ticket .modal-topline {
+  border-bottom: 1px dashed var(--line-strong);
+  padding-bottom: 8px;
+}
+
+.card-modal-panel.card-layout-pinboard {
+  width: min(600px, calc(100vw - 34px));
+  border-style: dashed;
+}
+
+.card-modal-panel.card-layout-pinboard .sports-card-shell {
+  padding: 10px;
+  border: 1px dashed var(--line-strong);
+  border-radius: 20px;
+}
+
+@keyframes cardSnapDeal {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes cardPackRip {
+  0% {
+    opacity: 0;
+    transform: translateY(34px) scale(0.88) rotate(-1.8deg);
+    filter: blur(8px);
+  }
+  68% {
+    opacity: 1;
+    transform: translateY(-4px) scale(1.015) rotate(0.35deg);
+    filter: blur(0);
+  }
+  100% {
+    transform: translateY(0) scale(1) rotate(0);
+  }
+}
+
+@keyframes cardVaultFlip {
+  from {
+    opacity: 0;
+    transform: perspective(900px) rotateY(-18deg) translateY(16px) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: perspective(900px) rotateY(0) translateY(0) scale(1);
+  }
+}
+
+@keyframes cardTableDrop {
+  from {
+    opacity: 0;
+    transform: translateY(-38px) rotate(1.4deg) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotate(0) scale(1);
+  }
+}
+
+@keyframes cardSpotlightBloom {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+    filter: brightness(1.4) blur(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+    filter: brightness(1) blur(0);
+  }
+}
+
+@keyframes cardSlidePick {
+  from {
+    opacity: 0;
+    transform: translateX(54px) rotate(2deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) rotate(0);
+  }
+}
+
+@keyframes cardBinderLift {
+  from {
+    opacity: 0;
+    transform: perspective(900px) rotateX(12deg) translateY(26px) scale(0.94);
+    filter: brightness(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: perspective(900px) rotateX(0) translateY(0) scale(1);
+    filter: brightness(1);
+  }
+}
+
+@keyframes cardCasePop {
+  0% {
+    opacity: 0;
+    transform: scale(0.84);
+  }
+  72% {
+    opacity: 1;
+    transform: scale(1.022);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes cardShuffleFan {
+  0% {
+    opacity: 0;
+    transform: translateX(-42px) rotate(-4deg) scale(0.95);
+  }
+  52% {
+    opacity: 1;
+    transform: translateX(8px) rotate(1.2deg) scale(1.01);
+  }
+  100% {
+    transform: translateX(0) rotate(0) scale(1);
+  }
+}
+
+@keyframes cardIdleFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes cardSlowDrift {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) rotate(0);
+  }
+  50% {
+    transform: translate3d(0, -4px, 0) rotate(-0.25deg);
+  }
+}
+
+@keyframes cardScorePulse {
+  0%, 100% {
+    box-shadow: var(--shadow);
+  }
+  50% {
+    box-shadow:
+      var(--shadow),
+      0 0 0 2px color-mix(in srgb, var(--ink-contrast) 10%, transparent),
+      0 0 28px color-mix(in srgb, var(--ink-contrast) 12%, transparent);
+  }
+}
+
+@keyframes foilSweep {
+  0%, 38% {
+    transform: translateX(-45%) rotate(0.001deg);
+    opacity: 0;
+  }
+  48% {
+    opacity: 0.85;
+  }
+  66%, 100% {
+    transform: translateX(45%) rotate(0.001deg);
+    opacity: 0;
+  }
+}
+
 .modal-topline {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
@@ -1647,7 +2116,23 @@ select {
   opacity: 0.86;
 }
 
+.modal-toolbar {
+  display: flex;
+  flex: 1 1 250px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.modal-close-row {
+  display: flex;
+  justify-content: flex-end;
+  min-height: 38px;
+}
+
 .modal-close-button {
+  position: relative;
   display: grid;
   place-items: center;
   width: 38px;
@@ -1656,9 +2141,26 @@ select {
   border-radius: 999px;
   color: var(--navy);
   background: var(--glass);
-  font-size: 1.1rem;
-  font-weight: 850;
+  font-size: 0;
   box-shadow: 0 12px 26px color-mix(in srgb, var(--ink) 16%, transparent);
+}
+
+.modal-close-button::before,
+.modal-close-button::after {
+  position: absolute;
+  width: 13px;
+  height: 3px;
+  border-radius: 999px;
+  background: currentColor;
+  content: "";
+}
+
+.modal-close-button::before {
+  transform: rotate(45deg);
+}
+
+.modal-close-button::after {
+  transform: rotate(-45deg);
 }
 
 .modal-close-button:hover,
@@ -1674,14 +2176,14 @@ select {
 }
 
 .card-modal-panel .sports-card {
-  height: clamp(480px, calc(100dvh - 244px), 660px);
+  height: clamp(440px, calc(100dvh - 258px), 620px);
   transition: height 260ms ease;
 }
 
 .card-modal-panel.is-back-expanded .sports-card {
   height: auto;
-  max-height: calc(100vh - 236px);
-  max-height: calc(100svh - 236px);
+  max-height: calc(100vh - 258px);
+  max-height: calc(100svh - 258px);
   overflow: hidden;
 }
 
@@ -1714,8 +2216,8 @@ select {
   grid-template-columns: 1fr;
   align-content: start;
   min-height: 0;
-  max-height: calc(100vh - 246px);
-  max-height: calc(100svh - 246px);
+  max-height: calc(100vh - 268px);
+  max-height: calc(100svh - 268px);
   overflow: auto;
   padding: 14px 14px 18px;
   border: 1px solid var(--line-strong);
@@ -2276,6 +2778,12 @@ select {
     flex-wrap: wrap;
   }
 
+  .sidebar > .card-lab-controls {
+    flex: 1 1 100%;
+    grid-template-columns: repeat(2, minmax(140px, 1fr));
+    margin-top: 0;
+   }
+
 }
 
 @media (max-width: 720px) {
@@ -2330,15 +2838,27 @@ select {
     padding: 10px 10px 12px;
   }
 
+  .modal-toolbar {
+    justify-content: stretch;
+  }
+
+  .card-lab-controls.is-compact {
+    flex: 1 1 100%;
+  }
+
+  .card-lab-controls.is-compact .card-lab-toggle {
+    flex: 1 1 130px;
+  }
+
   .card-modal-panel.is-back-expanded .sports-card {
     height: auto;
-    max-height: calc(100vh - 186px);
-    max-height: calc(100svh - 186px);
+    max-height: calc(100vh - 244px);
+    max-height: calc(100svh - 244px);
   }
 
   .card-modal-panel.is-back-expanded .card-back-scroll {
-    max-height: calc(100vh - 196px);
-    max-height: calc(100svh - 196px);
+    max-height: calc(100vh - 254px);
+    max-height: calc(100svh - 254px);
     padding: 10px 10px 16px;
   }
 
