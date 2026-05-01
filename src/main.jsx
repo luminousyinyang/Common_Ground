@@ -78,6 +78,22 @@ const THEME_PRESETS = [
   { id: "aurora-atlas", label: "Aurora Atlas" }
 ];
 
+const SURFACE_PRESETS = [
+  { id: "paper", label: "Paper" },
+  { id: "arena", label: "Arena" },
+  { id: "track", label: "Track" },
+  { id: "ice", label: "Ice" },
+  { id: "blacktop", label: "Blacktop" }
+];
+
+const TYPE_PRESETS = [
+  { id: "editorial", label: "Editorial" },
+  { id: "stadium", label: "Stadium" },
+  { id: "varsity", label: "Varsity" },
+  { id: "tech", label: "Tech" },
+  { id: "scoreboard", label: "Scoreboard" }
+];
+
 const CARD_ART = {
   aquatic: "/assets/card-art/aquatic.png",
   "control-pressure": "/assets/card-art/control-pressure.png",
@@ -198,13 +214,23 @@ function AppIcon({ name }) {
   return <span className={`nav-glyph nav-glyph-${name}`} aria-hidden="true" />;
 }
 
-function ThemeSwitcher({ theme, index, total, onNext }) {
+function ThemeSwitcher({ label, value, index, total, onNext }) {
   return (
-    <button className="theme-switcher" type="button" onClick={onNext} aria-label={`Switch color theme. Current theme is ${theme.label}`}>
-      <span>Theme</span>
-      <strong>{theme.label}</strong>
+    <button className="theme-switcher" type="button" onClick={onNext} aria-label={`Switch ${label.toLowerCase()}. Current ${label.toLowerCase()} is ${value.label}`}>
+      <span>{label}</span>
+      <strong>{value.label}</strong>
       <em>{index + 1}/{total}</em>
     </button>
+  );
+}
+
+function ThemeLab({ theme, themeIndex, onNextTheme, surface, surfaceIndex, onNextSurface, typeStyle, typeIndex, onNextType }) {
+  return (
+    <div className="theme-lab" aria-label="Theme testing controls">
+      <ThemeSwitcher label="Color" value={theme} index={themeIndex} total={THEME_PRESETS.length} onNext={onNextTheme} />
+      <ThemeSwitcher label="Surface" value={surface} index={surfaceIndex} total={SURFACE_PRESETS.length} onNext={onNextSurface} />
+      <ThemeSwitcher label="Type" value={typeStyle} index={typeIndex} total={TYPE_PRESETS.length} onNext={onNextType} />
+    </div>
   );
 }
 
@@ -1197,7 +1223,7 @@ function MethodologyView({ refs, meta, states }) {
   );
 }
 
-function AppShell({ view, setView, children, theme, themeIndex, onNextTheme }) {
+function AppShell({ view, setView, children, theme, themeIndex, onNextTheme, surface, surfaceIndex, onNextSurface, typeStyle, typeIndex, onNextType }) {
   const navItems = [
     ["explorer", "map"],
     ["collection", "cards"],
@@ -1230,7 +1256,17 @@ function AppShell({ view, setView, children, theme, themeIndex, onNextTheme }) {
       <div className="workspace">
         <main>{children}</main>
       </div>
-      <ThemeSwitcher theme={theme} index={themeIndex} total={THEME_PRESETS.length} onNext={onNextTheme} />
+      <ThemeLab
+        theme={theme}
+        themeIndex={themeIndex}
+        onNextTheme={onNextTheme}
+        surface={surface}
+        surfaceIndex={surfaceIndex}
+        onNextSurface={onNextSurface}
+        typeStyle={typeStyle}
+        typeIndex={typeIndex}
+        onNextType={onNextType}
+      />
     </div>
   );
 }
@@ -1256,8 +1292,28 @@ function App() {
       return 0;
     }
   });
+  const [surfaceIndex, setSurfaceIndex] = useState(() => {
+    try {
+      const saved = window.localStorage.getItem("common-ground-surface");
+      const index = SURFACE_PRESETS.findIndex((surface) => surface.id === saved);
+      return index >= 0 ? index : 0;
+    } catch {
+      return 0;
+    }
+  });
+  const [typeIndex, setTypeIndex] = useState(() => {
+    try {
+      const saved = window.localStorage.getItem("common-ground-type");
+      const index = TYPE_PRESETS.findIndex((typeStyle) => typeStyle.id === saved);
+      return index >= 0 ? index : 0;
+    } catch {
+      return 0;
+    }
+  });
 
   const activeTheme = THEME_PRESETS[themeIndex] || THEME_PRESETS[0];
+  const activeSurface = SURFACE_PRESETS[surfaceIndex] || SURFACE_PRESETS[0];
+  const activeType = TYPE_PRESETS[typeIndex] || TYPE_PRESETS[0];
 
   useEffect(() => {
     try {
@@ -1284,6 +1340,24 @@ function App() {
       // Theme persistence is optional.
     }
   }, [activeTheme.id]);
+
+  useEffect(() => {
+    document.documentElement.dataset.surface = activeSurface.id;
+    try {
+      window.localStorage.setItem("common-ground-surface", activeSurface.id);
+    } catch {
+      // Surface persistence is optional.
+    }
+  }, [activeSurface.id]);
+
+  useEffect(() => {
+    document.documentElement.dataset.type = activeType.id;
+    try {
+      window.localStorage.setItem("common-ground-type", activeType.id);
+    } catch {
+      // Type persistence is optional.
+    }
+  }, [activeType.id]);
 
   useEffect(() => {
     Promise.all([
@@ -1389,6 +1463,12 @@ function App() {
       theme={activeTheme}
       themeIndex={themeIndex}
       onNextTheme={() => setThemeIndex((index) => (index + 1) % THEME_PRESETS.length)}
+      surface={activeSurface}
+      surfaceIndex={surfaceIndex}
+      onNextSurface={() => setSurfaceIndex((index) => (index + 1) % SURFACE_PRESETS.length)}
+      typeStyle={activeType}
+      typeIndex={typeIndex}
+      onNextType={() => setTypeIndex((index) => (index + 1) % TYPE_PRESETS.length)}
     >
       {view === "explorer" && (
         <section className="map-explorer-shell">
