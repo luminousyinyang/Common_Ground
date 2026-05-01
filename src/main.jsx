@@ -566,18 +566,6 @@ function StateControls({ states, selectedCode, onSelect }) {
           ))}
         </select>
       </label>
-      <div className="state-list" aria-label="Accessible state list">
-        {states.map((card) => (
-          <button
-            key={card.stateCode}
-            className={`state-button ${card.stateCode === selectedCode ? "is-active" : ""}`}
-            type="button"
-            onClick={() => onSelect(card.stateCode)}
-          >
-            {card.stateName}
-          </button>
-        ))}
-      </div>
     </div>
   );
 }
@@ -1181,7 +1169,7 @@ function MethodologyView({ refs, meta, states }) {
   );
 }
 
-function AppShell({ view, setView, selectedCard, discoveredCount, children }) {
+function AppShell({ view, setView, children }) {
   const navItems = [
     ["explorer", "map"],
     ["collection", "cards"],
@@ -1193,7 +1181,6 @@ function AppShell({ view, setView, selectedCard, discoveredCount, children }) {
     <div className="app-frame">
       <aside className="sidebar">
         <div className="brand-block">
-          <p className="eyebrow">Team USA x Google Cloud</p>
           <h1>Common Ground</h1>
           <p>Geography-powered fan discovery</p>
         </div>
@@ -1210,24 +1197,9 @@ function AppShell({ view, setView, selectedCard, discoveredCount, children }) {
             </button>
           ))}
         </nav>
-        <div className="sidebar-card">
-          <span className="state-pill">{selectedCard.stateName}</span>
-          <strong>{selectedCard.sharedTrait.name}</strong>
-          <p>{discoveredCount} guest cards discovered</p>
-        </div>
       </aside>
 
       <div className="workspace">
-        <header className="topbar">
-          <div>
-            <p className="eyebrow">Challenge 2: The Hometown Success Engine</p>
-            <strong>{VIEW_LABELS[view]}</strong>
-          </div>
-          <div className="topbar-meta">
-            <span>Gemini-ready</span>
-            <span>Aggregate only</span>
-          </div>
-        </header>
         <main>{children}</main>
       </div>
     </div>
@@ -1365,8 +1337,6 @@ function App() {
         setIsCardModalOpen(false);
         setView(nextView);
       }}
-      selectedCard={selectedCard}
-      discoveredCount={discoveredCodes.size}
     >
       {view === "explorer" && (
         <section className="map-explorer-shell">

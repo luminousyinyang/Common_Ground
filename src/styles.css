@@ -62,7 +62,7 @@ h4 {
 
 .app-frame {
   display: grid;
-  grid-template-columns: 264px minmax(0, 1fr);
+  grid-template-columns: clamp(214px, 17vw, 264px) minmax(0, 1fr);
   min-height: 100vh;
 }
 
@@ -197,56 +197,11 @@ h4 {
   border-radius: 0;
 }
 
-.sidebar-card {
-  display: grid;
-  gap: 8px;
-  margin-top: auto;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 10px;
-  padding: 14px;
-  color: #dbe7f7;
-  background: rgba(255, 255, 255, 0.08);
-}
-
-.sidebar-card strong {
-  color: #ffffff;
-  line-height: 1.25;
-}
-
-.sidebar-card p {
-  margin: 0;
-  color: #b8c4d8;
-  font-size: 0.9rem;
-}
-
 .workspace {
   min-width: 0;
 }
 
-.topbar {
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 18px;
-  min-height: 72px;
-  border-bottom: 1px solid var(--line);
-  padding: 14px clamp(18px, 3vw, 34px);
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(12px);
-}
-
-.topbar strong {
-  display: block;
-  font-family: Lexend, Inter, sans-serif;
-  font-size: 1.25rem;
-}
-
-.topbar-meta,
 .legend,
-.state-list,
 .chip-row,
 .source-list,
 .metric-row,
@@ -257,7 +212,6 @@ h4 {
   gap: 8px;
 }
 
-.topbar-meta span,
 .state-pill,
 .chip,
 .source-chip,
@@ -333,7 +287,7 @@ main {
   display: grid;
   justify-items: end;
   gap: 10px;
-  min-width: min(380px, 100%);
+  min-width: min(260px, 100%);
 }
 
 .select-label {
@@ -590,13 +544,6 @@ select {
 
 .signal-dot.insufficient_data {
   background: #cbd5e1;
-}
-
-.state-list {
-  justify-content: flex-end;
-  max-height: 92px;
-  overflow: auto;
-  padding-right: 4px;
 }
 
 .state-button,
@@ -1634,43 +1581,6 @@ select {
 }
 
 @media (max-width: 1180px) {
-  .app-frame {
-    grid-template-columns: 1fr;
-  }
-
-  .sidebar {
-    position: static;
-    height: auto;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-    padding: 16px;
-  }
-
-  .brand-block {
-    min-width: 230px;
-    border-bottom: 0;
-    padding-bottom: 0;
-  }
-
-  .brand-block h1 {
-    font-size: 1.55rem;
-  }
-
-  .side-nav {
-    display: flex;
-    flex: 1;
-    flex-wrap: wrap;
-  }
-
-  .sidebar-card {
-    margin-top: 0;
-  }
-
-  .topbar {
-    position: static;
-  }
-
   .map-explorer-shell,
   .challenge-grid,
   .method-grid {
@@ -1707,9 +1617,70 @@ select {
   }
 }
 
+@media (max-width: 920px) {
+  .app-frame {
+    grid-template-columns: 204px minmax(0, 1fr);
+  }
+
+  .sidebar {
+    gap: 16px;
+    padding: 18px 12px;
+  }
+
+  .brand-block h1 {
+    font-size: 1.45rem;
+  }
+
+  .brand-block p:last-child {
+    font-size: 0.84rem;
+  }
+
+  .side-nav-button {
+    grid-template-columns: 20px minmax(0, 1fr);
+    gap: 8px;
+    padding-inline: 10px;
+    font-size: 0.9rem;
+  }
+
+  main {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 640px) {
+  .app-frame {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: static;
+    height: auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 16px;
+  }
+
+  .brand-block {
+    min-width: 230px;
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .brand-block h1 {
+    font-size: 1.55rem;
+  }
+
+  .side-nav {
+    display: flex;
+    flex: 1;
+    flex-wrap: wrap;
+  }
+
+}
+
 @media (max-width: 720px) {
   .sidebar,
-  .topbar,
   .section-heading,
   .challenge-header,
   .collection-header,
@@ -1732,11 +1703,6 @@ select {
 
   .state-controls {
     justify-items: stretch;
-  }
-
-  .state-list {
-    max-height: 150px;
-    justify-content: flex-start;
   }
 
   .panel,
