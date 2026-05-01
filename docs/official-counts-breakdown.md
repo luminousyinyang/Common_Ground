@@ -1,8 +1,8 @@
 # Official Counts Breakdown
 
-Counts are sourced TeamUSA.com Paris 2024 public roster rows with U.S. hometown-state fields. They are not a complete historical Team USA athlete census.
+Counts are sourced TeamUSA.com Paris 2024 public roster rows with U.S. hometown-state or supported U.S. territory fields. They are not a complete historical Team USA athlete census.
 
-| State | Olympic | Paralympic | Total | Signal |
+| Geography | Olympic | Paralympic | Total | Signal |
 | --- | ---: | ---: | ---: | --- |
 | Alabama | 3 | 2 | 5 | medium |
 | Alaska | 2 | 0 | 2 | low |
@@ -47,6 +47,7 @@ Counts are sourced TeamUSA.com Paris 2024 public roster rows with U.S. hometown-
 | South Dakota | 1 | 1 | 2 | low |
 | Tennessee | 7 | 1 | 8 | medium |
 | Texas | 39 | 10 | 49 | high |
+| U.S. Virgin Islands | 1 | 0 | 1 | low |
 | Utah | 7 | 4 | 11 | medium |
 | Vermont | 3 | 0 | 3 | low |
 | Virginia | 15 | 2 | 17 | medium |

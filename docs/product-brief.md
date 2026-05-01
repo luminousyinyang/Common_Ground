@@ -1,12 +1,12 @@
 # Common Ground Product Brief
 
-Common Ground is a geography-powered fan discovery app for Challenge 2: The Hometown Success Engine. Fans select a U.S. state on an interactive map and receive one unified state card where Olympic and Paralympic sport-family signals share the same frame, source treatment, and visual priority.
+Common Ground is a geography-powered fan discovery app for Challenge 2: The Hometown Success Engine. Fans select a U.S. state or supported U.S. territory on an interactive map and receive one unified card where Olympic and Paralympic sport-family signals share the same frame, source treatment, and visual priority.
 
 ## Primary Flow
 
 1. Open the Map Explorer.
-2. Hover states to preview Olympic, Paralympic, and total public hometown-state roster row counts.
-3. Click a state to discover its unified state card.
+2. Hover states or supported territory insets to preview Olympic, Paralympic, and total public hometown roster row counts.
+3. Click a geography to discover its unified card.
 4. Flip the card between generated abstract art and aggregate sourced data.
 5. Read the Gemini state briefing.
 6. Try the State Sync fan challenge.

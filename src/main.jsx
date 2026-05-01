@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { geoContains, geoPath } from "d3-geo";
+import { geoContains, geoMercator, geoPath } from "d3-geo";
 import { feature, mesh } from "topojson-client";
 import "./styles.css";
 
@@ -55,7 +55,8 @@ const FIPS_TO_CODE = {
   "53": "WA",
   "54": "WV",
   "55": "WI",
-  "56": "WY"
+  "56": "WY",
+  "78": "VI"
 };
 
 const VIEW_LABELS = {
@@ -376,6 +377,20 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
     if (!mapTopology) return "";
     return path(mesh(mapTopology, mapTopology.objects.states, (a, b) => a !== b));
   }, [mapTopology, path]);
+  const projectedFeatureCodes = useMemo(() => new Set(features.map((item) => item.properties.stateCode).filter(Boolean)), [features]);
+  const territoryFeatures = useMemo(
+    () => geoFeatures.filter((item) => {
+      const code = item.properties.stateCode;
+      return code && !projectedFeatureCodes.has(code) && cardsByCode.has(code);
+    }),
+    [cardsByCode, geoFeatures, projectedFeatureCodes]
+  );
+  const territoryPath = useMemo(() => {
+    if (!territoryFeatures.length) return null;
+    const collection = { type: "FeatureCollection", features: territoryFeatures };
+    const projection = geoMercator().fitExtent([[30, 6], [142, 50]], collection);
+    return geoPath(projection);
+  }, [territoryFeatures]);
   const selectedFeature = features.find((item) => item.properties.stateCode === selectedCode);
   const selectedCard = cardsByCode.get(selectedCode);
   const selectedCentroid = selectedFeature ? path.centroid(selectedFeature) : null;
@@ -490,7 +505,7 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
         } else if (matchedCode) {
           setHint(`Your browser location matched ${matchedFeature.properties.name}, but no state card is loaded for it yet.`);
         } else {
-          setHint("Could not match the browser location to a U.S. state boundary.");
+          setHint("Could not match the browser location to a supported U.S. geography boundary.");
         }
         setIsLocating(false);
       },
@@ -516,7 +531,7 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
       setHint(formatMapHint(card));
       if (event) setHoverTip({ card, position: getPointerPosition(event) });
     } else {
-      setHint(`${item.properties.name}: real map boundary shown. No U.S. state card is loaded for this geography.`);
+      setHint(`${item.properties.name}: real map boundary shown. No card is loaded for this geography.`);
       setHoverTip(null);
     }
   }
@@ -607,7 +622,7 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
           className={`state-map ${isDragging ? "is-dragging" : ""}`}
           viewBox="0 0 975 610"
           role="img"
-          aria-label="U.S. map with selectable state cards"
+          aria-label="U.S. map with selectable state and territory cards"
           onWheel={handleWheel}
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
@@ -669,6 +684,54 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
               </text>
             )}
           </g>
+          {territoryPath && territoryFeatures.length > 0 && (
+            <g className="territory-inset-layer" transform="translate(846 510)">
+              {territoryFeatures.map((item, index) => {
+                const code = item.properties.stateCode;
+                const card = cardsByCode.get(code);
+                const counts = getRosterCounts(card);
+                const signal = card?.hometownPresenceBucket || "insufficient_data";
+                const className = [
+                  "territory-inset",
+                  signal,
+                  code === selectedCode ? "is-selected" : ""
+                ].filter(Boolean).join(" ");
+
+                return (
+                  <g
+                    key={code}
+                    className={className}
+                    data-state-code={code}
+                    transform={`translate(${index * 150} 0)`}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`${card.stateName}, Olympic ${counts.olympic}, Paralympic ${counts.paralympic}, total ${counts.total}`}
+                    onMouseEnter={(event) => describeFeature(item, event)}
+                    onMouseMove={(event) => describeFeature(item, event)}
+                    onFocus={() => describeFeature(item)}
+                    onMouseLeave={() => {
+                      setHoverTip(null);
+                      if (selectedCard) setHint(formatMapHint(selectedCard));
+                    }}
+                    onBlur={() => selectedCard && setHint(formatMapHint(selectedCard))}
+                    onClick={() => onSelect(card.stateCode)}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        onSelect(card.stateCode);
+                      }
+                    }}
+                  >
+                    <rect className="territory-inset-hit" x="34" y="8" width="104" height="40" rx="6" />
+                    <path className="territory-inset-shape" d={territoryPath(item)} />
+                    {code === selectedCode && (
+                      <text className="territory-inset-code" x="15" y="34">{code}</text>
+                    )}
+                  </g>
+                );
+              })}
+            </g>
+          )}
         </svg>
         <RosterTooltip card={hoverTip?.card} position={hoverTip?.position} />
         <div className="map-hint">{hint}</div>
@@ -1175,7 +1238,7 @@ function CollectionView({ states, discoveredCodes, onSelect, panelManifest }) {
       {previewStates.length > 0 && (
         <>
           <div className="section-divider" />
-          <p className="eyebrow muted-eyebrow">More sourced state cards</p>
+          <p className="eyebrow muted-eyebrow">More sourced geography cards</p>
           <div className="card-grid compact-grid">
             {previewStates.map((card) => (
               <MiniStateCard key={card.stateCode} card={card} discovered={false} onSelect={onSelect} panelManifest={panelManifest} />
@@ -1233,7 +1296,7 @@ function MethodologyView({ refs, meta, states }) {
           <h3>Data Policy</h3>
           <ul>
             <li>The aggregate dataset is derived from public TeamUSA.com Paris 2024 source records: Olympic {meta.sourceProgramRecordTotals?.olympic}, Paralympic {meta.sourceProgramRecordTotals?.paralympic}.</li>
-            <li>Records with U.S. hometown-state fields after excluding blank or non-state values: Olympic {meta.stateCodedRecordTotals?.olympic}, Paralympic {meta.stateCodedRecordTotals?.paralympic}.</li>
+            <li>Records with U.S. hometown geography fields after excluding blank or unsupported values: Olympic {meta.stateCodedRecordTotals?.olympic}, Paralympic {meta.stateCodedRecordTotals?.paralympic}.</li>
             <li>No athlete names, images, finish times, individual cards, rankings, or protected marks are included.</li>
             <li>{meta.bucketPolicy}</li>
           </ul>
@@ -1270,7 +1333,7 @@ function MethodologyView({ refs, meta, states }) {
       </section>
       <section className="source-panel">
         <h3>Official Counts Breakdown</h3>
-        <p>Counts reflect sourced TeamUSA.com Paris 2024 public roster records with U.S. hometown-state fields, not a complete historical athlete census.</p>
+        <p>Counts reflect sourced TeamUSA.com Paris 2024 public roster records with supported U.S. hometown geography fields, not a complete historical athlete census.</p>
         <CountsTable states={states} />
       </section>
       <section className="source-panel">

@@ -1,19 +1,19 @@
 # Data Methodology
 
-The MVP dataset is generated from public TeamUSA.com Paris 2024 roster source rows and stored as aggregate state-level JSON in `public/data/state-cards.json`.
+The MVP dataset is generated from public TeamUSA.com Paris 2024 roster source rows and stored as aggregate state/territory-level JSON in `public/data/state-cards.json`.
 
 ## Source Inputs
 
 - TeamUSA.com Paris 2024 Olympic roster
 - TeamUSA.com Paris 2024 Paralympic roster
 - NOAA public climate context labels
-- `us-atlas` TopoJSON derived from U.S. Census cartographic state boundaries
+- `us-atlas` TopoJSON derived from U.S. Census cartographic state and territory boundaries
 
 ## Ingestion Policy
 
 The ingest script lives at `scripts/ingest-teamusa-paris2024.mjs`.
 
-It filters public roster records to U.S. hometown-state abbreviations, aggregates by state and sport family, and strips individual-level fields before writing frontend data.
+It filters public roster records to U.S. hometown-state or supported U.S. territory abbreviations, aggregates by geography and sport family, and strips individual-level fields before writing frontend data.
 
 Excluded from frontend output:
 
@@ -26,7 +26,7 @@ Excluded from frontend output:
 
 ## Count Meaning
 
-"Official counts" in this prototype means sourced TeamUSA.com Paris 2024 public roster rows with a U.S. hometown-state field. It is not a complete historical Team USA athlete census and should not be described that way.
+"Official counts" in this prototype means sourced TeamUSA.com Paris 2024 public roster rows with a U.S. hometown-state or supported U.S. territory field. It is not a complete historical Team USA athlete census and should not be described that way.
 
 State cards display signal buckets for the main card experience:
 

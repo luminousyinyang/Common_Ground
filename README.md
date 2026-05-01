@@ -1,6 +1,6 @@
 # Common Ground
 
-Common Ground is a geography-powered fan discovery app for Challenge 2: The Hometown Success Engine. It lets fans select a U.S. state, inspect one unified Olympic and Paralympic state card, read a Gemini-generated state briefing, and try a short fan challenge tied to the card's shared trait.
+Common Ground is a geography-powered fan discovery app for Challenge 2: The Hometown Success Engine. It lets fans select a U.S. state or supported U.S. territory, inspect one unified Olympic and Paralympic card, read a Gemini-generated briefing, and try a short fan challenge tied to the card's shared trait.
 
 This repository is licensed under Apache License 2.0.
 
@@ -59,9 +59,9 @@ If no key is present, the server returns compliance-safe fallback copy.
 ## What Is Implemented
 
 - React/Vite app promoted to the main repo root.
-- Actual U.S. state boundary map from `us-atlas` TopoJSON rendered with D3 and `topojson-client`.
-- 50 state cards generated from public TeamUSA.com Paris 2024 Olympic and Paralympic roster source rows.
-- Hover tooltip showing Olympic, Paralympic, and total public hometown-state roster row counts before clicking.
+- Actual U.S. state boundary map from `us-atlas` TopoJSON rendered with D3 and `topojson-client`, with a territory inset for supported U.S. territories.
+- 51 geography cards generated from public TeamUSA.com Paris 2024 Olympic and Paralympic roster source rows, currently 50 states plus U.S. Virgin Islands.
+- Hover tooltip showing Olympic, Paralympic, and total public hometown geography roster row counts before clicking.
 - Map controls for wheel/trackpad zoom, drag panning, reset, and browser-local state matching.
 - Unified sports-card view with abstract generated bitmap art on the front and aggregate sourced data on the back.
 - Guest "My Sport Cards" collection of discovered states, with no forced login.
@@ -83,14 +83,14 @@ Generated frontend data lives at `public/data/state-cards.json`.
 The ingest pipeline:
 
 - Uses public TeamUSA.com Paris 2024 roster source rows.
-- Filters to records with U.S. hometown-state abbreviations.
-- Aggregates by state and sport family.
+- Filters to records with U.S. hometown-state or supported U.S. territory abbreviations.
+- Aggregates by geography and sport family.
 - Strips athlete names, images, profile URLs, biographies, medals, rankings, finish times, and individual-level fields.
 - Converts exact state counts into low, medium, high, or insufficient-data buckets for the main card panels.
 
-"Official counts" in this prototype means sourced TeamUSA.com Paris 2024 public roster rows with U.S. hometown-state fields. It is not a complete historical Team USA athlete census.
+"Official counts" in this prototype means sourced TeamUSA.com Paris 2024 public roster rows with supported U.S. hometown geography fields. It is not a complete historical Team USA athlete census.
 
-See `docs/official-counts-breakdown.md` for the full state table.
+See `docs/official-counts-breakdown.md` for the full state and supported territory table.
 
 ## Generated Card Art
 
@@ -146,7 +146,7 @@ Set `GEMINI_API_KEY` or `GOOGLE_API_KEY` through Secret Manager or Cloud Run env
 - `src/main.jsx` - React app, map, unified card, collection, challenge, and methodology views.
 - `src/styles.css` - Common Ground visual system.
 - `server.js` - Cloud Run static server and Gemini API routes.
-- `public/data/state-cards.json` - aggregate state-level dataset.
+- `public/data/state-cards.json` - aggregate state/territory-level dataset.
 - `public/data/us-states-*.json` - state boundary TopoJSON.
 - `public/assets/card-art/` - generated abstract card-art PNGs.
 - `public/assets/card-panels/` - optional Vertex AI Gemini Olympic/Paralympic front-card image panels.

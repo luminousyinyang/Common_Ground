@@ -993,6 +993,73 @@ select {
   text-anchor: middle;
 }
 
+.territory-inset-layer {
+  pointer-events: none;
+}
+
+.territory-inset {
+  cursor: pointer;
+  outline: none;
+  pointer-events: auto;
+}
+
+.territory-inset-hit {
+  fill: transparent;
+  stroke: none;
+  pointer-events: all;
+}
+
+.territory-inset-code {
+  fill: var(--ink);
+  font-family: var(--display-font);
+  font-weight: 900;
+  paint-order: stroke;
+  pointer-events: none;
+  stroke: var(--paper-2);
+  stroke-linejoin: round;
+  stroke-width: 5;
+  text-anchor: middle;
+}
+
+.territory-inset-code {
+  font-size: 24px;
+}
+
+.territory-inset-shape {
+  fill: var(--map-low);
+  filter: drop-shadow(0 8px 18px color-mix(in srgb, #000000 16%, transparent));
+  pointer-events: none;
+  stroke: var(--glass-line);
+  stroke-linejoin: round;
+  stroke-width: 1.2;
+  transition: fill 160ms ease, opacity 160ms ease, stroke 160ms ease;
+  vector-effect: non-scaling-stroke;
+}
+
+.territory-inset.medium .territory-inset-shape {
+  fill: var(--map-medium);
+}
+
+.territory-inset.high .territory-inset-shape {
+  fill: var(--map-high);
+}
+
+.territory-inset.insufficient_data .territory-inset-shape {
+  fill: var(--map-limited);
+}
+
+.territory-inset.is-selected .territory-inset-shape,
+.territory-inset:hover .territory-inset-shape,
+.territory-inset:focus-visible .territory-inset-shape {
+  opacity: 1;
+  stroke: var(--map-selected);
+  stroke-width: 2.2;
+}
+
+.territory-inset.is-selected .territory-inset-shape {
+  fill: var(--map-selected);
+}
+
 .map-controls {
   position: absolute;
   top: 12px;

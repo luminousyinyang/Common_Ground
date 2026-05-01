@@ -61,6 +61,7 @@ const STATE_CONTEXT = {
   TX: ["Texas", "Gulf Coast, plains, hill country, desert edge, major metro regions, heat", "Large-state climate mix with heat, coastal, plains, and urban-infrastructure context", ["Gulf Coast", "plains", "heat", "metro regions"]],
   UT: ["Utah", "High elevation, Wasatch mountains, desert basins, winter access, outdoor terrain", "High-elevation and desert-mountain climate with winter and endurance context", ["higher elevation", "mountains", "desert basins"]],
   VT: ["Vermont", "Green Mountains, forests, cold winters, lakes and river valleys", "Northern mountain climate with winter, forest, and valley context", ["Green Mountains", "forests", "cold winters"]],
+  VI: ["U.S. Virgin Islands", "Caribbean islands, coastal waters, tropical climate, ocean access", "Tropical island climate with coastal and water-environment context", ["Caribbean islands", "ocean access", "tropical climate"]],
   VA: ["Virginia", "Atlantic coast, Piedmont, Blue Ridge, river corridors, dense metro access", "Mid-Atlantic climate with coast-to-mountain and urban-corridor context", ["coast", "Piedmont", "Blue Ridge"]],
   WA: ["Washington", "Pacific coast, Cascade mountains, Puget Sound, wet west and dry east climate zones", "Pacific Northwest climate with coastal, mountain, and endurance-environment context", ["coast", "Cascade mountains", "Puget Sound"]],
   WV: ["West Virginia", "Appalachian mountains, river valleys, forests, humid continental climate", "Mountain and river-valley climate with outdoor terrain context", ["Appalachians", "river valleys", "forests"]],
@@ -141,7 +142,7 @@ async function main() {
   assertSafeFrontendDataset(dataset);
   await mkdir(path.dirname(outputPath), { recursive: true });
   await writeFile(outputPath, `${JSON.stringify(dataset, null, 2)}\n`, "utf8");
-  console.log(`Wrote ${dataset.states.length} state cards to ${outputPath}`);
+  console.log(`Wrote ${dataset.states.length} geography cards to ${outputPath}`);
 }
 
 function parseArgs(argv) {
@@ -255,7 +256,7 @@ function buildDataset({ aggregate, retrievedAt, olympicTotal, paralympicTotal, e
       retrievedAt
     },
     {
-      label: "us-atlas TopoJSON derived from U.S. Census cartographic state boundaries",
+      label: "us-atlas TopoJSON derived from U.S. Census cartographic state and territory boundaries",
       url: SOURCE_URLS.usAtlas,
       sourceType: "geography",
       retrievedAt
@@ -325,7 +326,7 @@ function buildDataset({ aggregate, retrievedAt, olympicTotal, paralympicTotal, e
       stateCodedRecordTotals,
       aggregationPolicy: "The build script strips athlete names, profile URLs, images, biographies, medals, finish placements, and other individual-level fields before writing frontend data. State cards display signal buckets instead of exact state counts.",
       bucketPolicy: "Combined state bucket: insufficient data = 0 sourced roster rows, low = 1-4, medium = 5-19, high = 20+. Program panel details require at least 3 sourced roster rows; lower-volume panels stay generalized.",
-      coverageNote: "Only TeamUSA.com roster rows with a U.S. state abbreviation in the public hometown state field are used for state cards. Non-state or blank state values are excluded from card output.",
+      coverageNote: "Only TeamUSA.com roster rows with a U.S. state or supported U.S. territory abbreviation in the public hometown state field are used for cards. Unsupported or blank geography values are excluded from card output.",
       excludedStateCodes,
       blankStateProgramBuckets,
       excludedRowsByProgram,
@@ -347,7 +348,7 @@ function buildPanel({ stateName, program, label, aggregate, geographySnapshot, s
       label,
       sportFamily: "No sourced public roster signal",
       aggregateSignal: "insufficient_data",
-      geographyConnection: `${stateName} has no public ${programName} hometown-state roster signal in this TeamUSA.com Paris 2024 dataset.`,
+      geographyConnection: `${stateName} has no public ${programName} hometown geography roster signal in this TeamUSA.com Paris 2024 dataset.`,
       geminiNote: "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
       sourceRefs: [sourceRef]
     };
