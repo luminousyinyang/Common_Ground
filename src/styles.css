@@ -1590,7 +1590,7 @@ select {
   z-index: 100;
   display: grid;
   place-items: center;
-  padding: 24px 24px 86px;
+  padding: 20px;
   background: color-mix(in srgb, var(--ink) 42%, transparent);
   backdrop-filter: blur(16px) saturate(0.82);
 }
@@ -1609,11 +1609,12 @@ select {
   display: grid;
   gap: 12px;
   width: min(460px, calc(100vw - 32px));
-  max-height: calc(100vh - 104px);
+  max-height: calc(100vh - 56px);
+  max-height: calc(100svh - 56px);
   overflow: auto;
   border: 1px solid var(--glass-line);
   border-radius: 22px;
-  padding: 14px;
+  padding: 14px 14px 16px;
   background:
     radial-gradient(circle at 12% 0%, var(--paper-accent-a), transparent 22rem),
     linear-gradient(180deg, var(--glass-strong), var(--glass-soft));
@@ -1668,16 +1669,19 @@ select {
 
 .card-modal-panel .sports-card-shell {
   min-width: 0;
+  min-height: 0;
+  padding-bottom: 2px;
 }
 
 .card-modal-panel .sports-card {
-  height: clamp(500px, calc(100vh - 218px), 700px);
+  height: clamp(480px, calc(100dvh - 244px), 660px);
   transition: height 260ms ease;
 }
 
 .card-modal-panel.is-back-expanded .sports-card {
   height: auto;
-  max-height: calc(100vh - 166px);
+  max-height: calc(100vh - 236px);
+  max-height: calc(100svh - 236px);
   overflow: hidden;
 }
 
@@ -1710,9 +1714,10 @@ select {
   grid-template-columns: 1fr;
   align-content: start;
   min-height: 0;
-  max-height: calc(100vh - 170px);
+  max-height: calc(100vh - 246px);
+  max-height: calc(100svh - 246px);
   overflow: auto;
-  padding: 14px;
+  padding: 14px 14px 18px;
   border: 1px solid var(--line-strong);
   border-radius: 18px;
   background:
@@ -1795,6 +1800,11 @@ select {
 .card-modal-panel .card-action-row {
   justify-content: stretch;
   gap: 10px;
+  margin-bottom: 2px;
+}
+
+.card-modal-panel.is-back-expanded .card-action-row {
+  margin-bottom: 2px;
 }
 
 .card-modal-panel .card-action-row .ghost-button,
@@ -2161,57 +2171,6 @@ select {
   background: color-mix(in srgb, var(--olympic-tint) 26%, transparent);
 }
 
-.theme-lab {
-  position: fixed;
-  right: 18px;
-  bottom: calc(16px + env(safe-area-inset-bottom));
-  z-index: 150;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 8px;
-  max-width: min(760px, calc(100vw - 36px));
-}
-
-.theme-switcher {
-  display: grid;
-  grid-template-columns: auto auto auto;
-  align-items: center;
-  gap: 8px;
-  min-height: 42px;
-  border: 1px solid var(--line-strong);
-  border-radius: 999px;
-  padding: 7px 12px;
-  color: var(--ink);
-  background:
-    linear-gradient(180deg, var(--glass-strong), var(--glass-soft));
-  box-shadow: 0 14px 36px color-mix(in srgb, var(--ink) 18%, transparent);
-  backdrop-filter: blur(14px);
-}
-
-.theme-switcher:hover,
-.theme-switcher:focus-visible {
-  border-color: color-mix(in srgb, var(--ink) 58%, transparent);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ink) 12%, transparent), 0 14px 36px color-mix(in srgb, var(--ink) 18%, transparent);
-}
-
-.theme-switcher span,
-.theme-switcher em {
-  color: var(--muted);
-  font-size: 0.72rem;
-  font-style: normal;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-.theme-switcher strong {
-  color: var(--ink);
-  font-family: var(--display-font);
-  font-size: 1.05rem;
-  line-height: 0.95;
-}
-
 .load-state {
   display: grid;
   place-items: center;
@@ -2360,23 +2319,27 @@ select {
   }
 
   .card-modal-backdrop {
-    padding: 12px 12px 92px;
+    padding: 14px;
   }
 
   .card-modal-panel,
   .card-modal-panel.is-back-expanded {
     width: min(460px, calc(100vw - 24px));
-    padding: 10px;
+    max-height: calc(100vh - 36px);
+    max-height: calc(100svh - 36px);
+    padding: 10px 10px 12px;
   }
 
   .card-modal-panel.is-back-expanded .sports-card {
     height: auto;
-    max-height: calc(100vh - 136px);
+    max-height: calc(100vh - 186px);
+    max-height: calc(100svh - 186px);
   }
 
   .card-modal-panel.is-back-expanded .card-back-scroll {
-    max-height: calc(100vh - 142px);
-    padding: 10px;
+    max-height: calc(100vh - 196px);
+    max-height: calc(100svh - 196px);
+    padding: 10px 10px 16px;
   }
 
   .sports-card-face {
@@ -2396,16 +2359,6 @@ select {
     grid-template-columns: repeat(4, minmax(44px, 1fr));
   }
 
-  .theme-lab {
-    left: 12px;
-    right: 12px;
-    justify-content: center;
-  }
-
-  .theme-switcher {
-    flex: 1 1 160px;
-    justify-content: center;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {

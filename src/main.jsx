@@ -65,34 +65,11 @@ const VIEW_LABELS = {
   methodology: "Methodology"
 };
 
-const THEME_PRESETS = [
-  { id: "alpine-press", label: "Alpine Press" },
-  { id: "copper-canyon", label: "Copper Canyon" },
-  { id: "evergreen-archive", label: "Evergreen Archive" },
-  { id: "glacier-slate", label: "Glacier Slate" },
-  { id: "desert-indigo", label: "Desert Indigo" },
-  { id: "lakehouse", label: "Lakehouse" },
-  { id: "field-guide", label: "Field Guide" },
-  { id: "midnight-sand", label: "Midnight Sand" },
-  { id: "sequoia", label: "Sequoia" },
-  { id: "aurora-atlas", label: "Aurora Atlas" }
-];
-
-const SURFACE_PRESETS = [
-  { id: "paper", label: "Paper" },
-  { id: "arena", label: "Arena" },
-  { id: "track", label: "Track" },
-  { id: "ice", label: "Ice" },
-  { id: "blacktop", label: "Blacktop" }
-];
-
-const TYPE_PRESETS = [
-  { id: "editorial", label: "Editorial" },
-  { id: "stadium", label: "Stadium" },
-  { id: "varsity", label: "Varsity" },
-  { id: "tech", label: "Tech" },
-  { id: "scoreboard", label: "Scoreboard" }
-];
+const ACTIVE_VISUAL_THEME = {
+  color: "midnight-sand",
+  surface: "blacktop",
+  type: "scoreboard"
+};
 
 const CARD_ART = {
   aquatic: "/assets/card-art/aquatic.png",
@@ -181,7 +158,8 @@ function getRosterCounts(card) {
 }
 
 function formatMapHint(card) {
-  return `${card.stateName}: Olympic signal ${titleBucket(card.olympicPanel.aggregateSignal)}. Paralympic signal ${titleBucket(card.paralympicPanel.aggregateSignal)}. Overall state signal ${titleBucket(card.hometownPresenceBucket)}.`;
+  const counts = getRosterCounts(card);
+  return `${card.stateName}: ${counts.olympic} Olympic, ${counts.paralympic} Paralympic, ${counts.total} total public roster records.`;
 }
 
 function getCardTheme(card) {
@@ -214,26 +192,6 @@ function AppIcon({ name }) {
   return <span className={`nav-glyph nav-glyph-${name}`} aria-hidden="true" />;
 }
 
-function ThemeSwitcher({ label, value, index, total, onNext }) {
-  return (
-    <button className="theme-switcher" type="button" onClick={onNext} aria-label={`Switch ${label.toLowerCase()}. Current ${label.toLowerCase()} is ${value.label}`}>
-      <span>{label}</span>
-      <strong>{value.label}</strong>
-      <em>{index + 1}/{total}</em>
-    </button>
-  );
-}
-
-function ThemeLab({ theme, themeIndex, onNextTheme, surface, surfaceIndex, onNextSurface, typeStyle, typeIndex, onNextType }) {
-  return (
-    <div className="theme-lab" aria-label="Theme testing controls">
-      <ThemeSwitcher label="Color" value={theme} index={themeIndex} total={THEME_PRESETS.length} onNext={onNextTheme} />
-      <ThemeSwitcher label="Surface" value={surface} index={surfaceIndex} total={SURFACE_PRESETS.length} onNext={onNextSurface} />
-      <ThemeSwitcher label="Type" value={typeStyle} index={typeIndex} total={TYPE_PRESETS.length} onNext={onNextType} />
-    </div>
-  );
-}
-
 function SignalLegend() {
   return (
     <div className="legend" aria-label="Participation signal legend">
@@ -247,6 +205,7 @@ function SignalLegend() {
 
 function RosterTooltip({ card, position }) {
   if (!card || !position) return null;
+  const counts = getRosterCounts(card);
 
   return (
     <div
@@ -255,8 +214,9 @@ function RosterTooltip({ card, position }) {
       aria-hidden="true"
     >
       <strong>{card.stateName}</strong>
-      <span>Olympic: {signalText(card.olympicPanel.aggregateSignal)}</span>
-      <span>Paralympic: {signalText(card.paralympicPanel.aggregateSignal)}</span>
+      <span>Olympic: {counts.olympic}</span>
+      <span>Paralympic: {counts.paralympic}</span>
+      <span>Total: {counts.total}</span>
       <span>{card.sharedTrait.name}</span>
     </div>
   );
@@ -1223,7 +1183,7 @@ function MethodologyView({ refs, meta, states }) {
   );
 }
 
-function AppShell({ view, setView, children, theme, themeIndex, onNextTheme, surface, surfaceIndex, onNextSurface, typeStyle, typeIndex, onNextType }) {
+function AppShell({ view, setView, children }) {
   const navItems = [
     ["explorer", "map"],
     ["collection", "cards"],
@@ -1256,17 +1216,6 @@ function AppShell({ view, setView, children, theme, themeIndex, onNextTheme, sur
       <div className="workspace">
         <main>{children}</main>
       </div>
-      <ThemeLab
-        theme={theme}
-        themeIndex={themeIndex}
-        onNextTheme={onNextTheme}
-        surface={surface}
-        surfaceIndex={surfaceIndex}
-        onNextSurface={onNextSurface}
-        typeStyle={typeStyle}
-        typeIndex={typeIndex}
-        onNextType={onNextType}
-      />
     </div>
   );
 }
@@ -1283,37 +1232,6 @@ function App() {
   const [isCardModalOpen, setIsCardModalOpen] = useState(false);
   const [discoveredCodes, setDiscoveredCodes] = useState(() => new Set(["CO"]));
   const [panelManifest, setPanelManifest] = useState(EMPTY_CARD_PANEL_MANIFEST);
-  const [themeIndex, setThemeIndex] = useState(() => {
-    try {
-      const saved = window.localStorage.getItem("common-ground-theme");
-      const index = THEME_PRESETS.findIndex((theme) => theme.id === saved);
-      return index >= 0 ? index : 0;
-    } catch {
-      return 0;
-    }
-  });
-  const [surfaceIndex, setSurfaceIndex] = useState(() => {
-    try {
-      const saved = window.localStorage.getItem("common-ground-surface");
-      const index = SURFACE_PRESETS.findIndex((surface) => surface.id === saved);
-      return index >= 0 ? index : 0;
-    } catch {
-      return 0;
-    }
-  });
-  const [typeIndex, setTypeIndex] = useState(() => {
-    try {
-      const saved = window.localStorage.getItem("common-ground-type");
-      const index = TYPE_PRESETS.findIndex((typeStyle) => typeStyle.id === saved);
-      return index >= 0 ? index : 0;
-    } catch {
-      return 0;
-    }
-  });
-
-  const activeTheme = THEME_PRESETS[themeIndex] || THEME_PRESETS[0];
-  const activeSurface = SURFACE_PRESETS[surfaceIndex] || SURFACE_PRESETS[0];
-  const activeType = TYPE_PRESETS[typeIndex] || TYPE_PRESETS[0];
 
   useEffect(() => {
     try {
@@ -1333,31 +1251,10 @@ function App() {
   }, [discoveredCodes]);
 
   useEffect(() => {
-    document.documentElement.dataset.theme = activeTheme.id;
-    try {
-      window.localStorage.setItem("common-ground-theme", activeTheme.id);
-    } catch {
-      // Theme persistence is optional.
-    }
-  }, [activeTheme.id]);
-
-  useEffect(() => {
-    document.documentElement.dataset.surface = activeSurface.id;
-    try {
-      window.localStorage.setItem("common-ground-surface", activeSurface.id);
-    } catch {
-      // Surface persistence is optional.
-    }
-  }, [activeSurface.id]);
-
-  useEffect(() => {
-    document.documentElement.dataset.type = activeType.id;
-    try {
-      window.localStorage.setItem("common-ground-type", activeType.id);
-    } catch {
-      // Type persistence is optional.
-    }
-  }, [activeType.id]);
+    document.documentElement.dataset.theme = ACTIVE_VISUAL_THEME.color;
+    document.documentElement.dataset.surface = ACTIVE_VISUAL_THEME.surface;
+    document.documentElement.dataset.type = ACTIVE_VISUAL_THEME.type;
+  }, []);
 
   useEffect(() => {
     Promise.all([
@@ -1460,15 +1357,6 @@ function App() {
         setIsCardModalOpen(false);
         setView(nextView);
       }}
-      theme={activeTheme}
-      themeIndex={themeIndex}
-      onNextTheme={() => setThemeIndex((index) => (index + 1) % THEME_PRESETS.length)}
-      surface={activeSurface}
-      surfaceIndex={surfaceIndex}
-      onNextSurface={() => setSurfaceIndex((index) => (index + 1) % SURFACE_PRESETS.length)}
-      typeStyle={activeType}
-      typeIndex={typeIndex}
-      onNextType={() => setTypeIndex((index) => (index + 1) % TYPE_PRESETS.length)}
     >
       {view === "explorer" && (
         <section className="map-explorer-shell">
