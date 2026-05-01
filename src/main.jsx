@@ -74,10 +74,31 @@ const CARD_ART = {
   "winter-endurance": "/assets/card-art/winter-endurance.png"
 };
 
+const CARD_THEME_LABELS = {
+  aquatic: "Water rhythm card",
+  "control-pressure": "Control pressure card",
+  neutral: "Open signal card",
+  "rhythm-pace": "Rhythm pace card",
+  "spatial-timing": "Spatial timing card",
+  "winter-endurance": "Alpine endurance card"
+};
+
 const EMPTY_CARD_PANEL_MANIFEST = { states: {} };
 
+const SIGNAL_LABELS = {
+  high: "High",
+  medium: "Medium",
+  low: "Low",
+  insufficient_data: "Limited"
+};
+
 function titleBucket(bucket) {
-  return String(bucket || "insufficient_data").replaceAll("_", " ");
+  const normalized = String(bucket || "insufficient_data");
+  return SIGNAL_LABELS[normalized] || normalized.replaceAll("_", " ");
+}
+
+function signalText(bucket) {
+  return `${titleBucket(bucket)} signal`;
 }
 
 async function getJson(url, options) {
@@ -91,7 +112,7 @@ function fallbackBriefing(card, reason = "The Gemini backend is not available fr
     source: "react-fallback",
     model: "safe-fallback",
     briefing: {
-      summary: `Public Team USA roster data may suggest that ${card.stateName} is useful for exploring ${card.sharedTrait.name.toLowerCase()} across Olympic and Paralympic sport families. The geography notes could help fans understand the state context without implying performance outcomes.`,
+      summary: `Public Team USA and geography data may suggest that ${card.stateName} is useful for exploring ${card.sharedTrait.name.toLowerCase()} across Olympic and Paralympic sport families. The geography notes could help fans understand the state context without implying performance outcomes.`,
       olympicNarrative: `${card.olympicPanel.sportFamily} appears in the Olympic panel as an aggregate sport-family signal. ${card.olympicPanel.geographyConnection}`,
       paralympicNarrative: `${card.paralympicPanel.sportFamily} appears in the Paralympic panel as an aggregate sport-family signal. ${card.paralympicPanel.geographyConnection}`,
       sharedTraitExplanation: `${card.sharedTrait.name} connects the two panels through ${card.sharedTrait.description.toLowerCase()}`,
@@ -131,8 +152,7 @@ function getRosterCounts(card) {
 }
 
 function formatMapHint(card) {
-  const counts = getRosterCounts(card);
-  return `${card.stateName}: Olympic ${counts.olympic}, Paralympic ${counts.paralympic}, total ${counts.total} public hometown-state roster rows. Signal: ${titleBucket(card.hometownPresenceBucket)}.`;
+  return `${card.stateName}: Olympic signal ${titleBucket(card.olympicPanel.aggregateSignal)}. Paralympic signal ${titleBucket(card.paralympicPanel.aggregateSignal)}. Overall state signal ${titleBucket(card.hometownPresenceBucket)}.`;
 }
 
 function getCardTheme(card) {
@@ -144,6 +164,10 @@ function getCardTheme(card) {
   if (/precision|team|spatial|focus/i.test(text)) return "spatial-timing";
   if (/balance|power|pressure|contact|mixed|control/i.test(text)) return "control-pressure";
   return "rhythm-pace";
+}
+
+function getCardThemeLabel(card) {
+  return CARD_THEME_LABELS[getCardTheme(card)] || CARD_THEME_LABELS.neutral;
 }
 
 function shortProgramName(program) {
@@ -167,14 +191,13 @@ function SignalLegend() {
       <span><i className="signal-dot high" />High</span>
       <span><i className="signal-dot medium" />Medium</span>
       <span><i className="signal-dot low" />Low</span>
-      <span><i className="signal-dot insufficient_data" />Insufficient data</span>
+      <span><i className="signal-dot insufficient_data" />Limited</span>
     </div>
   );
 }
 
 function RosterTooltip({ card, position }) {
   if (!card || !position) return null;
-  const counts = getRosterCounts(card);
 
   return (
     <div
@@ -183,9 +206,9 @@ function RosterTooltip({ card, position }) {
       aria-hidden="true"
     >
       <strong>{card.stateName}</strong>
-      <span>Olympic {counts.olympic}</span>
-      <span>Paralympic {counts.paralympic}</span>
-      <span>Total {counts.total}</span>
+      <span>Olympic: {signalText(card.olympicPanel.aggregateSignal)}</span>
+      <span>Paralympic: {signalText(card.paralympicPanel.aggregateSignal)}</span>
+      <span>{card.sharedTrait.name}</span>
     </div>
   );
 }
@@ -346,7 +369,7 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
 
   function locateCurrentState() {
     if (!navigator.geolocation) {
-      setHint("Browser location is not available here. You can still select a state from the list.");
+      setHint("Browser location is not available here. You can still choose a state from the picker.");
       return;
     }
 
@@ -364,7 +387,7 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
           centerOnCode(matchedCode, 2.6);
           setHint(`${formatMapHint(matchedCard)} Located from browser coordinates.`);
         } else if (matchedCode) {
-          setHint(`Your browser location matched ${matchedFeature.properties.name}, but no 50-state card is loaded for it.`);
+          setHint(`Your browser location matched ${matchedFeature.properties.name}, but no state card is loaded for it yet.`);
         } else {
           setHint("Could not match the browser location to a U.S. state boundary.");
         }
@@ -483,7 +506,7 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
           className={`state-map ${isDragging ? "is-dragging" : ""}`}
           viewBox="0 0 975 610"
           role="img"
-          aria-label="Actual U.S. state boundary map with selectable sourced aggregate states"
+          aria-label="U.S. map with selectable state cards"
           onWheel={handleWheel}
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
@@ -512,7 +535,7 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
                     data-state-code={code}
                     role={card ? "button" : "img"}
                     tabIndex={card ? 0 : -1}
-                    aria-label={card ? `${card.stateName}, Olympic ${getRosterCounts(card).olympic}, Paralympic ${getRosterCounts(card).paralympic}, total ${getRosterCounts(card).total} public hometown-state roster rows` : `${item.properties.name}, no state card loaded`}
+                    aria-label={card ? `${card.stateName}, Olympic ${signalText(card.olympicPanel.aggregateSignal)}, Paralympic ${signalText(card.paralympicPanel.aggregateSignal)}, overall ${signalText(card.hometownPresenceBucket)}` : `${item.properties.name}, no state card loaded`}
                     onMouseEnter={(event) => describeFeature(item, event)}
                     onMouseMove={(event) => describeFeature(item, event)}
                     onFocus={() => describeFeature(item)}
@@ -545,7 +568,6 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
               </text>
             )}
           </g>
-          <text className="map-small-label" x="487" y="590">Actual U.S. state boundaries from us-atlas TopoJSON</text>
         </svg>
         <RosterTooltip card={hoverTip?.card} position={hoverTip?.position} />
         <div className="map-hint">{hint}</div>
@@ -571,8 +593,6 @@ function StateControls({ states, selectedCode, onSelect }) {
 }
 
 function StateSummary({ card }) {
-  const counts = getRosterCounts(card);
-
   return (
     <section className="state-summary">
       <div>
@@ -581,9 +601,9 @@ function StateSummary({ card }) {
       </div>
       <p>{card.geographySnapshot}</p>
       <div className="metric-row">
-        <span className="metric">Hometown presence <strong>{titleBucket(card.hometownPresenceBucket)}</strong></span>
-        <span className="metric">Olympic rows <strong>{counts.olympic}</strong></span>
-        <span className="metric">Paralympic rows <strong>{counts.paralympic}</strong></span>
+        <span className="metric">State signal <strong>{titleBucket(card.hometownPresenceBucket)}</strong></span>
+        <span className="metric">Olympic signal <strong>{titleBucket(card.olympicPanel.aggregateSignal)}</strong></span>
+        <span className="metric">Paralympic signal <strong>{titleBucket(card.paralympicPanel.aggregateSignal)}</strong></span>
       </div>
       <div className="chip-row">
         {card.terrainSignals.map((item) => <span className="chip" key={item}>{item}</span>)}
@@ -648,7 +668,6 @@ function CommonGroundSeal() {
 function CardArt({ card, compact = false, panelManifest = EMPTY_CARD_PANEL_MANIFEST }) {
   const theme = getCardTheme(card);
   const fallback = CARD_ART[theme] || CARD_ART.neutral;
-  const counts = getRosterCounts(card);
   const olympicSrc = getPanelArtUrl(card, "olympic", panelManifest);
   const paralympicSrc = getPanelArtUrl(card, "paralympic", panelManifest);
 
@@ -671,8 +690,8 @@ function CardArt({ card, compact = false, panelManifest = EMPTY_CARD_PANEL_MANIF
       </div>
       <div className="art-state-lockup">
         <strong>{card.stateName}</strong>
-        <span>{compact ? card.sharedTrait.name : "State Sync Challenge"}</span>
-        {!compact && <em>{counts.olympic} Olympic · {counts.paralympic} Paralympic public roster rows</em>}
+        <span>{compact ? getCardThemeLabel(card) : "State Sync Challenge"}</span>
+        {!compact && <em>Olympic signal: {titleBucket(card.olympicPanel.aggregateSignal)} · Paralympic signal: {titleBucket(card.paralympicPanel.aggregateSignal)}</em>}
       </div>
     </div>
   );
@@ -680,7 +699,6 @@ function CardArt({ card, compact = false, panelManifest = EMPTY_CARD_PANEL_MANIF
 
 function UnifiedStateCard({ card, sourceRefs, briefing, briefingLoading, onRefreshBriefing, onOpenChallenge, onFlipChange, panelManifest }) {
   const [flipped, setFlipped] = useState(false);
-  const counts = getRosterCounts(card);
 
   useEffect(() => {
     setFlipped(false);
@@ -709,9 +727,9 @@ function UnifiedStateCard({ card, sourceRefs, briefing, briefingLoading, onRefre
               <h3>{card.stateName}</h3>
               <p>{card.geographySnapshot}</p>
               <div className="metric-row compact-metrics">
-                <span className="metric">Signal <strong>{titleBucket(card.hometownPresenceBucket)}</strong></span>
-                <span className="metric">Olympic rows <strong>{counts.olympic}</strong></span>
-                <span className="metric">Paralympic rows <strong>{counts.paralympic}</strong></span>
+                <span className="metric">State signal <strong>{titleBucket(card.hometownPresenceBucket)}</strong></span>
+                <span className="metric">Olympic signal <strong>{titleBucket(card.olympicPanel.aggregateSignal)}</strong></span>
+                <span className="metric">Paralympic signal <strong>{titleBucket(card.paralympicPanel.aggregateSignal)}</strong></span>
               </div>
             </div>
             <div className="program-panel-grid">
@@ -798,7 +816,6 @@ function BriefingPanel({ payload, loading, onRefresh, compact = false }) {
     );
   }
 
-  const warnings = payload.complianceWarnings || payload.briefing.complianceWarnings || [];
   return (
     <section className={`briefing-panel ${compact ? "is-compact" : ""}`}>
       <div className="panel-heading-row">
@@ -811,11 +828,6 @@ function BriefingPanel({ payload, loading, onRefresh, compact = false }) {
         <p><strong>Paralympic panel:</strong> {payload.briefing.paralympicNarrative}</p>
       </div>
       <p><strong>Shared trait:</strong> {payload.briefing.sharedTraitExplanation}</p>
-      <div className="briefing-meta">
-        <span>Source: {payload.source}</span>
-        <span>Model: {payload.model}</span>
-        <span>Warnings: {warnings.length}</span>
-      </div>
     </section>
   );
 }
@@ -994,7 +1006,7 @@ function ChallengeView({ card, briefing, onReturn, panelManifest }) {
           <p className="state-pill">{card.stateName} - {card.sharedTrait.challengeType.replaceAll("_", " ")}</p>
           <h3>{card.sharedTrait.name}</h3>
           <p>{briefing?.briefing?.gameIntro || `Try a short fan challenge inspired by ${card.sharedTrait.name.toLowerCase()}.`}</p>
-          <p className="safe-note">This is a personal fan-game result only. It is for appreciation, not measurement or comparison.</p>
+          <p className="safe-note">Personal fan result only. This is for appreciation, not measurement or comparison.</p>
           <button className="primary-button wide" type="button" onClick={start}>Start Challenge</button>
         </section>
         <section className="game-surface">
@@ -1005,12 +1017,6 @@ function ChallengeView({ card, briefing, onReturn, panelManifest }) {
             <div className="game-result">
               <p><strong>Personal result:</strong> {result.summary}</p>
               <p>{reflection ? reflection.reflection : "Generating safe game reflection..."}</p>
-              {reflection && (
-                <div className="briefing-meta">
-                  <span>Model: {reflection.model}</span>
-                  <span>Warnings: {(reflection.warnings || []).length}</span>
-                </div>
-              )}
             </div>
           )}
         </section>
@@ -1020,20 +1026,19 @@ function ChallengeView({ card, briefing, onReturn, panelManifest }) {
 }
 
 function MiniStateCard({ card, discovered, onSelect, panelManifest }) {
-  const counts = getRosterCounts(card);
   return (
     <button className="mini-card" type="button" onClick={() => onSelect(card.stateCode)} aria-label={`Open ${card.stateName} card`}>
       <CardArt card={card} compact panelManifest={panelManifest} />
       <div className="mini-card-body">
         <div>
-          <strong>{card.stateName}</strong>
-          <span>{card.sharedTrait.name}</span>
+          <strong>{card.sharedTrait.name}</strong>
+          <span>{getCardThemeLabel(card)}</span>
         </div>
         <span className={`discover-pill ${discovered ? "is-discovered" : ""}`}>{discovered ? "Discovered" : "Preview"}</span>
       </div>
-      <div className="mini-card-counts">
-        <span>Olympic {counts.olympic}</span>
-        <span>Paralympic {counts.paralympic}</span>
+      <div className="mini-card-signals">
+        <span className="signal-mini olympic">Olympic: {titleBucket(card.olympicPanel.aggregateSignal)}</span>
+        <span className="signal-mini paralympic">Paralympic: {titleBucket(card.paralympicPanel.aggregateSignal)}</span>
       </div>
     </button>
   );
@@ -1120,8 +1125,8 @@ function MethodologyView({ refs, meta, states }) {
         <section>
           <h3>Data Policy</h3>
           <ul>
-            <li>Frontend data is generated from public TeamUSA.com Paris 2024 roster source rows: Olympic {meta.sourceProgramRecordTotals?.olympic}, Paralympic {meta.sourceProgramRecordTotals?.paralympic}.</li>
-            <li>State-coded rows after excluding blank or non-state hometown fields: Olympic {meta.stateCodedRecordTotals?.olympic}, Paralympic {meta.stateCodedRecordTotals?.paralympic}.</li>
+            <li>The aggregate dataset is derived from public TeamUSA.com Paris 2024 source records: Olympic {meta.sourceProgramRecordTotals?.olympic}, Paralympic {meta.sourceProgramRecordTotals?.paralympic}.</li>
+            <li>Records with U.S. hometown-state fields after excluding blank or non-state values: Olympic {meta.stateCodedRecordTotals?.olympic}, Paralympic {meta.stateCodedRecordTotals?.paralympic}.</li>
             <li>No athlete names, images, finish times, individual cards, rankings, or protected marks are included.</li>
             <li>{meta.bucketPolicy}</li>
           </ul>
@@ -1154,11 +1159,11 @@ function MethodologyView({ refs, meta, states }) {
       <section className="source-panel">
         <h3>Coverage Notes</h3>
         <p>{meta.coverageNote}</p>
-        <p>Excluded rows: Olympic {formatExcludedRows(meta.excludedRowsByProgram?.olympic)}; Paralympic {formatExcludedRows(meta.excludedRowsByProgram?.paralympic)}.</p>
+        <p>Excluded source records: Olympic {formatExcludedRows(meta.excludedRowsByProgram?.olympic)}; Paralympic {formatExcludedRows(meta.excludedRowsByProgram?.paralympic)}.</p>
       </section>
       <section className="source-panel">
         <h3>Official Counts Breakdown</h3>
-        <p>Counts are sourced TeamUSA.com Paris 2024 public roster rows with U.S. hometown-state fields, not a complete historical athlete census.</p>
+        <p>Counts reflect sourced TeamUSA.com Paris 2024 public roster records with U.S. hometown-state fields, not a complete historical athlete census.</p>
         <CountsTable states={states} />
       </section>
       <section className="source-panel">
@@ -1344,11 +1349,11 @@ function App() {
             <div className="section-heading">
               <div>
                 <p className="eyebrow">Geography-powered fan discovery</p>
-                <h2 id="mapTitle">State Signal Map</h2>
+                <h2 id="mapTitle">State Atlas</h2>
               </div>
               <StateControls states={dataset.states} selectedCode={selectedCode} onSelect={selectState} />
             </div>
-            <p className="safe-note">Explore aggregate state signals generated from public TeamUSA.com Paris 2024 roster data. Patterns are for fan discovery and do not imply performance outcomes.</p>
+            <p className="safe-note">Explore aggregate state signals from public Team USA and geography data. Patterns may suggest fan-discovery context and do not imply performance outcomes.</p>
             <StateMap mapTopology={mapTopology} features={features} geoFeatures={geoFeatures} cardsByCode={cardsByCode} selectedCode={selectedCode} onSelect={selectState} />
           </section>
         </section>
