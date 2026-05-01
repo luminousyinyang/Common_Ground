@@ -65,6 +65,19 @@ const VIEW_LABELS = {
   methodology: "Methodology"
 };
 
+const THEME_PRESETS = [
+  { id: "alpine-press", label: "Alpine Press" },
+  { id: "copper-canyon", label: "Copper Canyon" },
+  { id: "evergreen-archive", label: "Evergreen Archive" },
+  { id: "glacier-slate", label: "Glacier Slate" },
+  { id: "desert-indigo", label: "Desert Indigo" },
+  { id: "lakehouse", label: "Lakehouse" },
+  { id: "field-guide", label: "Field Guide" },
+  { id: "midnight-sand", label: "Midnight Sand" },
+  { id: "sequoia", label: "Sequoia" },
+  { id: "aurora-atlas", label: "Aurora Atlas" }
+];
+
 const CARD_ART = {
   aquatic: "/assets/card-art/aquatic.png",
   "control-pressure": "/assets/card-art/control-pressure.png",
@@ -183,6 +196,16 @@ function getPanelArtUrl(card, program, manifest) {
 
 function AppIcon({ name }) {
   return <span className={`nav-glyph nav-glyph-${name}`} aria-hidden="true" />;
+}
+
+function ThemeSwitcher({ theme, index, total, onNext }) {
+  return (
+    <button className="theme-switcher" type="button" onClick={onNext} aria-label={`Switch color theme. Current theme is ${theme.label}`}>
+      <span>Theme</span>
+      <strong>{theme.label}</strong>
+      <em>{index + 1}/{total}</em>
+    </button>
+  );
 }
 
 function SignalLegend() {
@@ -1174,7 +1197,7 @@ function MethodologyView({ refs, meta, states }) {
   );
 }
 
-function AppShell({ view, setView, children }) {
+function AppShell({ view, setView, children, theme, themeIndex, onNextTheme }) {
   const navItems = [
     ["explorer", "map"],
     ["collection", "cards"],
@@ -1207,6 +1230,7 @@ function AppShell({ view, setView, children }) {
       <div className="workspace">
         <main>{children}</main>
       </div>
+      <ThemeSwitcher theme={theme} index={themeIndex} total={THEME_PRESETS.length} onNext={onNextTheme} />
     </div>
   );
 }
@@ -1223,6 +1247,17 @@ function App() {
   const [isCardModalOpen, setIsCardModalOpen] = useState(false);
   const [discoveredCodes, setDiscoveredCodes] = useState(() => new Set(["CO"]));
   const [panelManifest, setPanelManifest] = useState(EMPTY_CARD_PANEL_MANIFEST);
+  const [themeIndex, setThemeIndex] = useState(() => {
+    try {
+      const saved = window.localStorage.getItem("common-ground-theme");
+      const index = THEME_PRESETS.findIndex((theme) => theme.id === saved);
+      return index >= 0 ? index : 0;
+    } catch {
+      return 0;
+    }
+  });
+
+  const activeTheme = THEME_PRESETS[themeIndex] || THEME_PRESETS[0];
 
   useEffect(() => {
     try {
@@ -1240,6 +1275,15 @@ function App() {
       // Local storage is optional for the guest collection.
     }
   }, [discoveredCodes]);
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = activeTheme.id;
+    try {
+      window.localStorage.setItem("common-ground-theme", activeTheme.id);
+    } catch {
+      // Theme persistence is optional.
+    }
+  }, [activeTheme.id]);
 
   useEffect(() => {
     Promise.all([
@@ -1342,6 +1386,9 @@ function App() {
         setIsCardModalOpen(false);
         setView(nextView);
       }}
+      theme={activeTheme}
+      themeIndex={themeIndex}
+      onNextTheme={() => setThemeIndex((index) => (index + 1) % THEME_PRESETS.length)}
     >
       {view === "explorer" && (
         <section className="map-explorer-shell">
