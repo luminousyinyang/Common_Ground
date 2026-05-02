@@ -126,6 +126,8 @@ const CARD_ART = {
   "winter-endurance": "/assets/card-art/winter-endurance.png"
 };
 
+const FRAMED_CARD_PANEL_PROMPT_VERSIONS = new Set(["common-ground-card-panel-v2"]);
+
 const CARD_THEME_LABELS = {
   aquatic: "Water rhythm card",
   "control-pressure": "Control pressure card",
@@ -229,7 +231,7 @@ function shortProgramName(program) {
 
 function getPanelArtUrl(card, program, manifest) {
   const panel = manifest?.states?.[card.stateCode]?.[program];
-  if (panel?.url) return panel.url;
+  if (panel?.url && !FRAMED_CARD_PANEL_PROMPT_VERSIONS.has(panel.promptVersion)) return panel.url;
   const theme = getCardTheme(card);
   return CARD_ART[theme] || CARD_ART.neutral;
 }

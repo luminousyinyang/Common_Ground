@@ -19,7 +19,7 @@ const args = parseArgs(process.argv.slice(2));
 const project = process.env.GOOGLE_CLOUD_PROJECT;
 const location = process.env.GOOGLE_CLOUD_LOCATION || "global";
 const model = process.env.CARD_IMAGE_MODEL || "gemini-3-pro-image-preview";
-const PROMPT_VERSION = "common-ground-card-panel-v2";
+const PROMPT_VERSION = "common-ground-card-panel-v2-full-bleed";
 
 const STATE_PALETTE_STORIES = {
   AZ: {
@@ -272,9 +272,9 @@ function buildPrompt(card, program) {
     ? "an adaptive sport-family scene with abstract equipment cues when relevant"
     : "an Olympic sport-family scene with abstract sport movement cues when relevant";
 
-  return `Create one rectangular sports-card illustration panel for Common Ground, a compliant Team USA x Google Cloud Hackathon prototype.
+  return `Create one full-bleed 16:9 sports-card illustration artwork for Common Ground, a compliant Team USA x Google Cloud Hackathon prototype.
 
-Panel role: ${program === "paralympic" ? "Paralympic" : "Olympic"} image panel for the front of a state discovery card.
+Artwork role: ${program === "paralympic" ? "Paralympic" : "Olympic"} image artwork for one half of the front of a state discovery card.
 State: ${card.stateName}
 Sport family: ${panel.sportFamily}
 Shared trait: ${card.sharedTrait.name} — ${card.sharedTrait.description}
@@ -284,18 +284,21 @@ Visual direction:
 - Match a premium collectible atlas sports-card style: clean, polished, modern, lightly dimensional, vector/low-poly illustration.
 - Use ${programPhrase}; the figure must be faceless, generic, and non-identifiable.
 - Use the state geography as the environment inspiration, not as a performance claim.
+- Full-bleed artwork only: the illustration must fill the entire image canvas edge to edge.
+- Do not draw an inner card, picture frame, rounded rectangle, border, mat, white margin, inset panel, drop shadow, UI container, poster frame, or card-within-a-card.
+- Do not reserve a visible boxed label area. Leave open negative space through composition only, not by drawing a panel or blank rectangle.
 - Palette theme: ${paletteStory.name}.
 - Program palette: ${palette}.
 - Environmental color mood: ${paletteStory.atmosphere}.
 - The Olympic and Paralympic panels are siblings on the same card; keep them visually related through the palette theme while giving this panel its own emphasis.
 - Do not default to Olympic-as-blue and Paralympic-as-orange. Let the state palette drive the colors, and avoid a political campaign or national-flag color composition.
-- Composition: 16:9 landscape panel, strong central action silhouette, generous clean negative space in the upper-left for an overlaid UI label.
+- Composition: 16:9 landscape artwork, strong central action silhouette, generous clean negative space in the upper-left for an overlaid app label, but no visible label box.
 - Style should feel like the supplied Stitch reference: crisp geometric shapes, soft gradients, paper-cut mountain/wave/terrain planes, subtle depth, no photo realism.
 
 Compliance constraints:
 - No real athlete likeness, no recognizable face, no athlete names, no jersey numbers, no official uniforms.
 - No Olympic rings, Paralympic Agitos, torches, medals, podiums, flags, Team USA logos, LA28 logos, NGB logos, sponsor logos, or brand marks.
-- No embedded text or letters inside the image; the app will overlay labels separately.
+- No embedded text, letters, labels, UI chrome, borders, or icons inside the image; the app will overlay labels separately.
 - Do not imply geography creates, produces, guarantees, predicts, or proves athletic results.
 - No finish times, scores, rankings, medal imagery, or comparison imagery.
 
