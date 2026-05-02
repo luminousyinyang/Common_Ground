@@ -1,7 +1,7 @@
 {
   "model": "gemini-3-pro-image-preview",
   "location": "global",
-  "updatedAt": "2026-05-02T15:56:03.843Z",
+  "updatedAt": "2026-05-02T17:46:20.346Z",
   "states": {
     "CO": {
       "olympic": {
@@ -42,7 +42,7 @@
           "Skateboarding"
         ],
         "paletteTheme": "Pacific Heat",
-        "promptHash": "9cd35015f7d4a3be5e2732a38d3da9a31c799ee2011ce3194207786bdeb0d8be",
+        "promptHash": "2693b851a0f035eab9ad2ced4c4160cd7ce33dfed9f519d40cde9649c6d4a46e",
         "notes": "**Conceptualizing a Sports Card**\n\nI'm thinking about the water polo player, and how to represent them. The style will be low-poly, almost like a paper cutout. The overall vibe needs to be modern and premium for this Team USA and Google Cloud hackathon.\n\n\n **Imagining the Scene**\n\nI'm focusing on the low-poly style and the California theme. I'm visualizing the composition now. I've decided to prioritize the water polo player and blend in the other sports through abstract forms. The color palette is ready to go, and I'm concentrating on the contrast.\n\n\n **Crafting the Visual**\n\nI'm now detailing the prompt. I'm prioritizing the water polo player in action first, then will add abstract elements representing Track & Field and skateboarding. I'm carefully constructing the scene with geometric planes, the color palette, and the \"Pacific Heat\" theme, all to emphasize the central subject. I must ensure the final image is clean.\n\n\n **Reviewing the Details**\n\nI'm verifying that the image adheres to the user's explicit instructions. I'm taking a close look at the aspect ratio, color palette, and art style to confirm their correct implementation. The goal is to ensure all elements are present and aligned as requested.\n\n\n **Evaluating the Composition**\n\nI've examined the image to confirm that all listed details have been incorporated. It's important to ascertain the user's instructions were followed precisely, from the chosen aspect ratio and color scheme, to the art style. The prompt's key elements are now in place.",
         "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v3-top-sport-cue%2Fca%2Fca-olympic.png?alt=media&token=9d0d683b-eeaa-4798-a252-0acacd83d6c5",
         "storageBucket": "common-ground-tests.firebasestorage.app",
@@ -52,19 +52,19 @@
         "firebaseCollection": "cardPanels",
         "cardBackCopy": {
           "featuredCue": "Water Polo",
-          "featuredCueExplanation": "This sport highlights California's high aggregate presence in Olympic aquatic and spatial awareness events.",
+          "featuredCueExplanation": "Water polo highlights the intense physical rhythm, spatial awareness, and precise pacing required to navigate a dynamic aquatic environment.",
           "relatedTags": [
             "Track and Field",
             "Skateboarding"
           ],
-          "relatedTagsSentence": "Fans exploring the state's athletic landscape may also discover strong connections to Track and Field and Skateboarding.",
-          "stateLens": "California's Pacific coast, large urban regions, and year-round outdoor access could help fans understand the backdrop often associated with these aquatic and team-based sports.",
+          "featuredSportContext": "This aquatic team sport emphasizes steady timing, controlled effort, and repeatable rhythm while coordinating movement across the water.",
+          "stateLens": "California's Pacific coast, large urban regions, and year-round outdoor access could show how regional geography may offer context for the aquatic environments where this sport takes place.",
           "complianceWarnings": []
         },
         "cardBackCopySource": "gemini",
-        "cardBackCopyVersion": "common-ground-card-back-v1-gemini",
+        "cardBackCopyVersion": "common-ground-card-back-v4-sport-readable",
         "cardBackCopyModel": "gemini-3.1-pro-preview",
-        "cardBackCopyPromptHash": "c2007a2b78256d4c1a173439521d5d9e2ee2ff583f3b65262a5a85513d38e63c"
+        "cardBackCopyPromptHash": "21fa67604835e5b7735fbe5a377821366bebb81261246c92a47724aca5b45879"
       },
       "paralympic": {
         "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v3-top-sport-cue%2Fca%2Fca-paralympic.png?alt=media&token=b5586043-1be9-484a-8884-5b36e5444e38",
@@ -82,7 +82,7 @@
           "Para Shooting"
         ],
         "paletteTheme": "Pacific Heat",
-        "promptHash": "ed1b59a27c85cf8b863ca7228da38be1ac0b2ad1f949811cff61fc57c36b0849",
+        "promptHash": "784756e8a81fe07d4556268031c52b67b4d82e205776de3930058c693ebba1bd",
         "notes": "",
         "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v3-top-sport-cue%2Fca%2Fca-paralympic.png?alt=media&token=b5586043-1be9-484a-8884-5b36e5444e38",
         "storageBucket": "common-ground-tests.firebasestorage.app",
@@ -92,19 +92,19 @@
         "firebaseCollection": "cardPanels",
         "cardBackCopy": {
           "featuredCue": "Para Track and Field",
-          "featuredCueExplanation": "This cue reflects California's high aggregate participation signal within the Paralympic program for endurance and pace-control sports.",
+          "featuredCueExplanation": "Para Track and Field highlights the importance of steady timing and controlled effort across varied competitive environments.",
           "relatedTags": [
             "Para-Cycling",
             "Para Shooting"
           ],
-          "relatedTagsSentence": "Fans exploring the state's athletic landscape might also discover strong connections to Para-Cycling and Para Shooting.",
-          "stateLens": "California's diverse mix of Pacific coastlines, mountains, deserts, and year-round outdoor access could help fans understand the state's strong presence in these Paralympic sport families.",
+          "featuredSportContext": "This endurance discipline emphasizes repeatable rhythm and precise pacing on the track or in the field.",
+          "stateLens": "The year-round outdoor access and diverse terrain of California, spanning from the Pacific coast to large urban regions, could show how regional geography may offer context for the rigorous pacing and endurance demands of this sport.",
           "complianceWarnings": []
         },
         "cardBackCopySource": "gemini",
-        "cardBackCopyVersion": "common-ground-card-back-v1-gemini",
+        "cardBackCopyVersion": "common-ground-card-back-v4-sport-readable",
         "cardBackCopyModel": "gemini-3.1-pro-preview",
-        "cardBackCopyPromptHash": "d4e576a595a2ee84fa2e1ffd7cf82154e50b43ad08f92efa976e9ca0a0747979"
+        "cardBackCopyPromptHash": "78b60792bdff29e13e1c5edc6a6a3d46dfdfcd43310be57a6e03ffb849a4227a"
       }
     },
     "WA": {

@@ -91,12 +91,23 @@ function normalizeJsonText(text) {
     .trim();
 }
 
+function joinReadableList(items = []) {
+  const values = items.filter(Boolean);
+  if (values.length <= 1) return values[0] || "";
+  if (values.length === 2) return `${values[0]} and ${values[1]}`;
+  return `${values.slice(0, -1).join(", ")}, and ${values.at(-1)}`;
+}
+
 function safeFallbackBriefing(card, reason = "No live Gemini response was available.") {
+  const olympicMix = joinReadableList(card.olympicPanel.topSportTags || []);
+  const paralympicMix = joinReadableList(card.paralympicPanel.topSportTags || []);
+  const olympicCue = card.olympicPanel.primarySportTag || card.olympicPanel.topSportTags?.[0] || card.olympicPanel.sportFamily;
+  const paralympicCue = card.paralympicPanel.primarySportTag || card.paralympicPanel.topSportTags?.[0] || card.paralympicPanel.sportFamily;
   return {
-    summary: `Public aggregate data may suggest that ${card.stateName} is useful for exploring ${card.sharedTrait.name.toLowerCase()} across Olympic and Paralympic sport families. The geography notes could help fans understand the state context without implying performance outcomes.`,
-    olympicNarrative: `${card.olympicPanel.sportFamily} appears in the Olympic panel as an aggregate sport-family signal. ${card.olympicPanel.geographyConnection}`,
-    paralympicNarrative: `${card.paralympicPanel.sportFamily} appears in the Paralympic panel as an aggregate sport-family signal. ${card.paralympicPanel.geographyConnection}`,
-    sharedTraitExplanation: `${card.sharedTrait.name} connects the two panels through ${card.sharedTrait.description.toLowerCase()}`,
+    summary: `Public Team USA and geography data may suggest that ${card.stateName} has a wider sport mix worth exploring across Olympic and Paralympic programs. The geography notes could help fans understand the state context without implying performance outcomes.`,
+    olympicNarrative: olympicMix ? `Olympic sport tags in this state view include ${olympicMix}, which could help fans see the broader program mix beyond the featured card sport.` : card.olympicPanel.geographyConnection,
+    paralympicNarrative: paralympicMix ? `Paralympic sport tags in this state view include ${paralympicMix}, giving the card a wider program view beyond the featured card sport.` : card.paralympicPanel.geographyConnection,
+    sharedTraitExplanation: `${card.sharedTrait.name} links the featured Olympic cue, ${olympicCue}, with the featured Paralympic cue, ${paralympicCue}, through ${card.sharedTrait.description.toLowerCase()}`,
     gameIntro: `Try a short fan challenge that reflects ${card.sharedTrait.name.toLowerCase()} as a personal game interaction only.`,
     complianceWarnings: [reason, "Fallback copy used because live Gemini generation is unavailable or did not pass validation."]
   };
@@ -131,12 +142,26 @@ function complianceCheckBriefing(briefing) {
     /\bassessment\b/i,
     /\bmedal(s|ist|ists)?\b/i,
     /\bfinish time\b/i,
+    /\bsignals?\b/i,
+    /\baggregate presence\b/i,
+    /\broster data\b/i,
+    /\bprominent feature\b/i,
+    /\bbackdrop\b/i,
+    /\bframes?\b/i,
+    /\bframing\b/i,
+    /\bcould help fans discover\b/i,
     /\brows?\b/i,
     /\bpipeline\b/i,
+    /\bparticipation signal\b/i,
+    /\bathletic landscape\b/i,
     /\bfallback\b/i,
     /\btemplate\b/i,
     /\bcard image cue\b/i,
     /\braw data\b/i,
+    /\bstrong(?:er|est)?\b/i,
+    /\bdominant\b/i,
+    /\bbest\b/i,
+    /\bproves?\b/i,
     /\bOlympian'?s baseline\b/i,
     /\bParalympian'?s baseline\b/i,
     /\b\d+(\.\d+)?\s?(seconds?|minutes?|points?|percent|%)\b/i
@@ -176,16 +201,18 @@ Do not mention finish times or specific scoring results.
 Do not imply geography causes success.
 Do not claim that terrain, climate, or training access guarantees outcomes.
 Use conditional language: "may suggest", "could help fans understand", "appears associated with", "could help fans discover".
-Give Olympic and Paralympic sport panels equal depth, equal respect, and equal analytical specificity.
-If olympicPanel.cardBackCopy or paralympicPanel.cardBackCopy are present, use that Gemini card-back copy as the source for the corresponding panel narrative.
-Do not expose internal implementation terms such as "row", "pipeline", "fallback", "template", "card image cue", or "raw data".
+The collectible card panels already explain the two featured sports. The state briefing should zoom out and describe the broader state sport mix using all provided topSportTags for Olympic and Paralympic programs.
+Give Olympic and Paralympic sport mixes equal depth, equal respect, and equal analytical specificity.
+If olympicPanel.cardBackCopy or paralympicPanel.cardBackCopy are present, use that Gemini card-back copy as supporting context, but do not simply repeat it.
+Do not expose internal implementation terms such as "row", "pipeline", "fallback", "template", "card image cue", "raw data", "signal", "participation signal", "aggregate presence", or "athletic landscape".
+Avoid overstatement words such as "strong", "dominant", "best", or "proves".
 Output concise, fan-facing copy.
 
 Return valid JSON with these fields:
-- summary
-- olympicNarrative
-- paralympicNarrative
-- sharedTraitExplanation
+- summary: 1-2 sentences about the whole state view across both programs.
+- olympicNarrative: 1-2 sentences about the broader Olympic sport-tag mix, not only the featured sport.
+- paralympicNarrative: 1-2 sentences about the broader Paralympic sport-tag mix, not only the featured sport.
+- sharedTraitExplanation: 1 sentence explaining how the shared trait connects the featured Olympic and Paralympic sports.
 - gameIntro
 - complianceWarnings
 

@@ -138,6 +138,7 @@ const CARD_THEME_LABELS = {
 };
 
 const EMPTY_CARD_PANEL_MANIFEST = { states: {} };
+const CURRENT_CARD_BACK_COPY_VERSION = "common-ground-card-back-v4-sport-readable";
 
 const SIGNAL_LABELS = {
   high: "High",
@@ -151,10 +152,6 @@ function titleBucket(bucket) {
   return SIGNAL_LABELS[normalized] || normalized.replaceAll("_", " ");
 }
 
-function signalText(bucket) {
-  return `${titleBucket(bucket)} signal`;
-}
-
 async function getJson(url, options) {
   const response = await fetch(url, options);
   if (!response.ok) throw new Error(`Request failed: ${response.status}`);
@@ -162,14 +159,16 @@ async function getJson(url, options) {
 }
 
 function fallbackBriefing(card, reason = "The Gemini backend is not available from this dev server.") {
+  const olympicMix = joinReadableList(card.olympicPanel.topSportTags || []);
+  const paralympicMix = joinReadableList(card.paralympicPanel.topSportTags || []);
   return {
     source: "react-fallback",
     model: "safe-fallback",
     briefing: {
-      summary: `Public Team USA and geography data may suggest that ${card.stateName} is useful for exploring ${card.sharedTrait.name.toLowerCase()} across Olympic and Paralympic sport families. The geography notes could help fans understand the state context without implying performance outcomes.`,
-      olympicNarrative: `${card.olympicPanel.sportFamily} appears in the Olympic panel as an aggregate sport-family signal. ${card.olympicPanel.geographyConnection}`,
-      paralympicNarrative: `${card.paralympicPanel.sportFamily} appears in the Paralympic panel as an aggregate sport-family signal. ${card.paralympicPanel.geographyConnection}`,
-      sharedTraitExplanation: `${card.sharedTrait.name} connects the two panels through ${card.sharedTrait.description.toLowerCase()}`,
+      summary: `Public Team USA and geography data may suggest that ${card.stateName} has a wider sport mix worth exploring across Olympic and Paralympic programs. The geography notes could help fans understand the state context without implying performance outcomes.`,
+      olympicNarrative: olympicMix ? `Olympic sport tags in this state view include ${olympicMix}, which could help fans see the broader program mix beyond the featured card sport.` : `${card.olympicPanel.geographyConnection}`,
+      paralympicNarrative: paralympicMix ? `Paralympic sport tags in this state view include ${paralympicMix}, giving the card a wider program view beyond the featured card sport.` : `${card.paralympicPanel.geographyConnection}`,
+      sharedTraitExplanation: `${card.sharedTrait.name} links the featured Olympic cue, ${getPanelVisualCue(card.olympicPanel)}, with the featured Paralympic cue, ${getPanelVisualCue(card.paralympicPanel)}, through ${card.sharedTrait.description.toLowerCase()}`,
       gameIntro: `Try a short fan challenge that reflects ${card.sharedTrait.name.toLowerCase()} as a personal interaction only.`,
       complianceWarnings: [reason]
     },
@@ -240,27 +239,61 @@ function getPanelVisualCue(panel) {
   return panel?.primarySportTag || panel?.topSportTags?.[0] || "Generalized sport-family cue";
 }
 
+function panelProgramLabel(panel) {
+  return panel?.primarySportTag
+    ? `${shortProgramName(panel.program)} featured sport`
+    : `${shortProgramName(panel.program)} sport-family`;
+}
+
 function getPanelTopSportText(panel) {
-  if (panel?.topSportTags?.length) return joinReadableList(panel.topSportTags);
-  if (panel?.aggregateSignal === "insufficient_data") return "No sourced public sport signal in this dataset.";
-  return "Generalized because the sourced signal is low-volume.";
+  if (panel?.aggregateSignal === "insufficient_data") return "No sourced public sport tag is available in this dataset.";
+  return "Generalized because the sourced sport-tag count is limited.";
+}
+
+function panelThemePhrase(panel) {
+  const family = String(panel?.sportFamily || "").toLowerCase();
+  if (/aquatic|water/.test(family) && /team|spatial/.test(family)) return "aquatic team-sport";
+  if (/aquatic|water/.test(family)) return "water-sport";
+  if (/endurance|pace/.test(family) && /team|spatial/.test(family)) return "pace-and-spatial sport";
+  if (/endurance|pace/.test(family)) return "pace-control sport";
+  if (/precision|focus/.test(family)) return "precision-sport";
+  if (/team|spatial/.test(family)) return "team-and-space sport";
+  if (/balance|technical/.test(family)) return "technical-control sport";
+  if (/power|contact/.test(family)) return "power-and-control sport";
+  return "sport-family";
+}
+
+function readableGeographyLens(panel, visualCue) {
+  const raw = String(panel?.geographyConnection || "").trim();
+  const geography = raw
+    .replace(/\s+could help fans frame the state's .*? sport-family presence without implying geography causes outcomes\.$/i, "")
+    .trim();
+  if (geography && geography !== raw) {
+    return `${geography} could show how regional geography may offer useful context for ${visualCue}'s ${panelThemePhrase(panel)} qualities.`;
+  }
+  return raw || getPanelTopSportText(panel);
 }
 
 function getPanelBackCopy(panel) {
   const visualCue = getPanelVisualCue(panel);
   const programName = shortProgramName(panel.program);
-  const relatedTags = panel.topSportTags?.slice(1) || [];
-  const relatedTagsSentence = relatedTags.length
-    ? `${joinReadableList(relatedTags)} ${relatedTags.length === 1 ? "also appears" : "also appear"} in this aggregate ${programName} signal.`
-    : getPanelTopSportText(panel);
+  const themePhrase = panelThemePhrase(panel);
 
   return panel.cardBackCopy || {
     featuredCue: visualCue,
-    featuredCueExplanation: `${programName} panel uses ${visualCue} as its visual cue because it is the strongest available aggregate sport signal for this state/program.`,
-    relatedTags,
-    relatedTagsSentence,
-    stateLens: panel.geographyConnection
+    featuredCueExplanation: `${visualCue} gives this ${programName} card a clear ${themePhrase} cue for fans to read.`,
+    featuredSportContext: panel.sportFamily
+      ? `The card connects this sport to ${panel.sportFamily.toLowerCase()} through timing, space, and controlled movement.`
+      : getPanelTopSportText(panel),
+    stateLens: readableGeographyLens(panel, visualCue)
   };
+}
+
+function getPanelBackCopyForDisplay(panel) {
+  if (panel?.cardBackCopyVersion === CURRENT_CARD_BACK_COPY_VERSION && panel?.cardBackCopy) {
+    return panel.cardBackCopy;
+  }
+  return getPanelBackCopy(panel);
 }
 
 function getPanelArtUrl(card, program, manifest) {
@@ -276,14 +309,15 @@ function mergeGeneratedPanelData(card, manifest) {
 
   function mergePanel(program, panel) {
     const generated = statePanels[program] || {};
+    const hasCurrentCardCopy = generated.cardBackCopyVersion === CURRENT_CARD_BACK_COPY_VERSION && generated.cardBackCopy;
     return {
       ...panel,
       primarySportTag: generated.primarySportTag ?? panel.primarySportTag,
       topSportTags: generated.topSportTags ?? panel.topSportTags,
-      cardBackCopy: generated.cardBackCopy ?? panel.cardBackCopy,
-      cardBackCopySource: generated.cardBackCopySource ?? panel.cardBackCopySource,
-      cardBackCopyModel: generated.cardBackCopyModel ?? panel.cardBackCopyModel,
-      cardBackCopyVersion: generated.cardBackCopyVersion ?? panel.cardBackCopyVersion
+      cardBackCopy: hasCurrentCardCopy ? generated.cardBackCopy : panel.cardBackCopy,
+      cardBackCopySource: hasCurrentCardCopy ? generated.cardBackCopySource : panel.cardBackCopySource,
+      cardBackCopyModel: hasCurrentCardCopy ? generated.cardBackCopyModel : panel.cardBackCopyModel,
+      cardBackCopyVersion: hasCurrentCardCopy ? generated.cardBackCopyVersion : panel.cardBackCopyVersion
     };
   }
 
@@ -422,7 +456,7 @@ class AppErrorBoundary extends React.Component {
 }
 
 function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCode, onSelect }) {
-  const [hint, setHint] = useState("Hover or focus a state to preview its participation signal.");
+  const [hint, setHint] = useState("Hover or focus a state to preview Olympic, Paralympic, and total counts.");
   const [hoverTip, setHoverTip] = useState(null);
   const [viewport, setViewport] = useState({ scale: 1, x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
@@ -695,6 +729,7 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
               {features.map((item) => {
                 const code = item.properties.stateCode;
                 const card = cardsByCode.get(code);
+                const counts = getRosterCounts(card);
                 const signal = card?.hometownPresenceBucket || "insufficient_data";
                 const className = [
                   "state-path",
@@ -711,7 +746,7 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
                     data-state-code={code}
                     role={card ? "button" : "img"}
                     tabIndex={card ? 0 : -1}
-                    aria-label={card ? `${card.stateName}, Olympic ${signalText(card.olympicPanel.aggregateSignal)}, Paralympic ${signalText(card.paralympicPanel.aggregateSignal)}, overall ${signalText(card.hometownPresenceBucket)}` : `${item.properties.name}, no state card loaded`}
+                    aria-label={card ? `${card.stateName}, Olympic count ${counts.olympic}, Paralympic count ${counts.paralympic}, total ${counts.total}` : `${item.properties.name}, no state card loaded`}
                     onMouseEnter={(event) => describeFeature(item, event)}
                     onMouseMove={(event) => describeFeature(item, event)}
                     onFocus={() => describeFeature(item)}
@@ -817,6 +852,7 @@ function StateControls({ states, selectedCode, onSelect }) {
 }
 
 function StateSummary({ card }) {
+  const counts = getRosterCounts(card);
   return (
     <section className="state-summary">
       <div>
@@ -825,9 +861,9 @@ function StateSummary({ card }) {
       </div>
       <p>{card.geographySnapshot}</p>
       <div className="metric-row">
-        <span className="metric">State signal <strong>{titleBucket(card.hometownPresenceBucket)}</strong></span>
-        <span className="metric">Olympic signal <strong>{titleBucket(card.olympicPanel.aggregateSignal)}</strong></span>
-        <span className="metric">Paralympic signal <strong>{titleBucket(card.paralympicPanel.aggregateSignal)}</strong></span>
+        <span className="metric">State total <strong>{counts.total}</strong></span>
+        <span className="metric">Olympic count <strong>{counts.olympic}</strong></span>
+        <span className="metric">Paralympic count <strong>{counts.paralympic}</strong></span>
       </div>
       <div className="chip-row">
         {card.terrainSignals.map((item) => <span className="chip" key={item}>{item}</span>)}
@@ -837,22 +873,21 @@ function StateSummary({ card }) {
 }
 
 function SportPanel({ panel }) {
-  const copy = getPanelBackCopy(panel);
+  const copy = getPanelBackCopyForDisplay(panel);
   const visualCue = copy.featuredCue || getPanelVisualCue(panel);
 
   return (
     <section className="panel">
       <div className="panel-label">
-        <span className={`program-tag ${panel.program}`}>{panel.label}</span>
-        <span className="signal-tag">{titleBucket(panel.aggregateSignal)} signal</span>
+        <span className={`program-tag ${panel.program}`}>{panelProgramLabel(panel)}</span>
       </div>
       <div className="panel-body">
         <h4>{visualCue}</h4>
         <p>{copy.featuredCueExplanation}</p>
-        <p>{copy.relatedTagsSentence}</p>
+        <p>{copy.featuredSportContext || copy.relatedTagsSentence}</p>
         <p>{copy.stateLens}</p>
         <div className="panel-family-line">
-          <span>Sport-family signal</span>
+          <span>Sport-family theme</span>
           <strong>{panel.sportFamily}</strong>
         </div>
       </div>
@@ -902,6 +937,7 @@ function CardArt({ card, compact = false, panelManifest = EMPTY_CARD_PANEL_MANIF
   const fallback = CARD_ART[theme] || CARD_ART.neutral;
   const olympicSrc = getPanelArtUrl(card, "olympic", panelManifest);
   const paralympicSrc = getPanelArtUrl(card, "paralympic", panelManifest);
+  const counts = getRosterCounts(card);
 
   return (
     <div className={`card-art card-art-${theme} ${compact ? "is-compact" : ""}`}>
@@ -923,7 +959,7 @@ function CardArt({ card, compact = false, panelManifest = EMPTY_CARD_PANEL_MANIF
       <div className="art-state-lockup">
         <strong>{card.stateName}</strong>
         <span>{compact ? getCardThemeLabel(card) : "State Sync Challenge"}</span>
-        {!compact && <em>Olympic signal: {titleBucket(card.olympicPanel.aggregateSignal)} · Paralympic signal: {titleBucket(card.paralympicPanel.aggregateSignal)}</em>}
+        {!compact && <em>Olympic count: {counts.olympic} · Paralympic count: {counts.paralympic}</em>}
       </div>
     </div>
   );
@@ -931,6 +967,9 @@ function CardArt({ card, compact = false, panelManifest = EMPTY_CARD_PANEL_MANIF
 
 function UnifiedStateCard({ card, sourceRefs, briefing, briefingLoading, onRefreshBriefing, onOpenChallenge, onFlipChange, panelManifest }) {
   const [flipped, setFlipped] = useState(false);
+  const counts = getRosterCounts(card);
+  const olympicCue = getPanelVisualCue(card.olympicPanel);
+  const paralympicCue = getPanelVisualCue(card.paralympicPanel);
 
   useEffect(() => {
     setFlipped(false);
@@ -959,9 +998,9 @@ function UnifiedStateCard({ card, sourceRefs, briefing, briefingLoading, onRefre
               <h3>{card.stateName}</h3>
               <p>{card.geographySnapshot}</p>
               <div className="metric-row compact-metrics">
-                <span className="metric">State signal <strong>{titleBucket(card.hometownPresenceBucket)}</strong></span>
-                <span className="metric">Olympic signal <strong>{titleBucket(card.olympicPanel.aggregateSignal)}</strong></span>
-                <span className="metric">Paralympic signal <strong>{titleBucket(card.paralympicPanel.aggregateSignal)}</strong></span>
+                <span className="metric">State total <strong>{counts.total}</strong></span>
+                <span className="metric">Olympic count <strong>{counts.olympic}</strong></span>
+                <span className="metric">Paralympic count <strong>{counts.paralympic}</strong></span>
               </div>
             </div>
             <div className="program-panel-grid">
@@ -970,10 +1009,10 @@ function UnifiedStateCard({ card, sourceRefs, briefing, briefingLoading, onRefre
             </div>
             <section className="trait-band">
               <div className="trait-badge">
-                <span>Shared trait</span>
+                <span>Shared trait across both featured sports</span>
                 <strong>{card.sharedTrait.name}</strong>
               </div>
-              <p>{card.sharedTrait.description}</p>
+              <p>This trait connects Olympic <strong>{olympicCue}</strong> and Paralympic <strong>{paralympicCue}</strong>: {card.sharedTrait.description}</p>
             </section>
             <BriefingPanel payload={briefing} loading={briefingLoading} onRefresh={onRefreshBriefing} compact />
             <div className="card-footer">
@@ -1062,8 +1101,8 @@ function BriefingPanel({ payload, loading, onRefresh, compact = false }) {
       </div>
       <p>{payload.briefing.summary}</p>
       <div className="briefing-split">
-        <p><strong>Olympic panel:</strong> {payload.briefing.olympicNarrative}</p>
-        <p><strong>Paralympic panel:</strong> {payload.briefing.paralympicNarrative}</p>
+        <p><strong>Olympic mix:</strong> {payload.briefing.olympicNarrative}</p>
+        <p><strong>Paralympic mix:</strong> {payload.briefing.paralympicNarrative}</p>
       </div>
       <p><strong>Shared trait:</strong> {payload.briefing.sharedTraitExplanation}</p>
     </section>

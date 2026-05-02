@@ -27,7 +27,7 @@ const imageRetryDelayMs = positiveInteger(process.env.CARD_IMAGE_RETRY_DELAY_MS,
 const imageRequestTimeoutMs = positiveInteger(process.env.CARD_IMAGE_REQUEST_TIMEOUT_MS, 900000);
 const textRequestTimeoutMs = positiveInteger(process.env.CARD_COPY_REQUEST_TIMEOUT_MS, 120000);
 const PROMPT_VERSION = "common-ground-card-panel-v3-top-sport-cue";
-const CARD_BACK_COPY_VERSION = "common-ground-card-back-v1-gemini";
+const CARD_BACK_COPY_VERSION = "common-ground-card-back-v4-sport-readable";
 
 let firebaseClientsPromise;
 
@@ -394,7 +394,7 @@ Visual direction:
 - Match a premium collectible atlas sports-card style: clean, polished, modern, lightly dimensional, vector/low-poly illustration.
 - Use ${programPhrase}, led by the primary visual sport cue when one is available; the figure must be faceless, generic, and non-identifiable.
 - If a primary sport cue is available, show abstract equipment, setting, motion, or silhouette language for that sport cue without portraying a real athlete.
-- If the sport cue is generalized because the source signal is low-volume or missing, use broad sport-family motion cues only.
+- If the sport cue is generalized because the source sport-tag count is limited or missing, use broad sport-family motion cues only.
 - Use the state geography as the environment inspiration, not as a performance claim.
 - Full-bleed artwork only: the illustration must fill the entire image canvas edge to edge.
 - Do not draw an inner card, picture frame, rounded rectangle, border, mat, white margin, inset panel, drop shadow, UI container, poster frame, or card-within-a-card.
@@ -404,7 +404,7 @@ Visual direction:
 - Environmental color mood: ${paletteStory.atmosphere}.
 - The Olympic and Paralympic panels are siblings on the same card; keep them visually related through the palette theme while giving this panel its own emphasis.
 - Do not default to Olympic-as-blue and Paralympic-as-orange. Let the state palette drive the colors, and avoid a political campaign or national-flag color composition.
-- Composition: 16:9 landscape artwork, strong central action silhouette, generous clean negative space in the upper-left for an overlaid app label, but no visible label box.
+- Composition: 16:9 landscape artwork, clear central action silhouette, generous clean negative space in the upper-left for an overlaid app label, but no visible label box.
 - Style should feel like the supplied Stitch reference: crisp geometric shapes, soft gradients, paper-cut mountain/wave/terrain planes, subtle depth, no photo realism.
 
 Compliance constraints:
@@ -418,7 +418,7 @@ Return only the image.`;
 }
 
 function imageSubjectForPanel(panel) {
-  return panel.primarySportTag || panel.topSportTags?.[0] || panel.sportFamily || "general sport-family signal";
+  return panel.primarySportTag || panel.topSportTags?.[0] || panel.sportFamily || "general sport-family theme";
 }
 
 function topSportContextForPanel(panel) {
@@ -459,14 +459,34 @@ async function getOrGenerateCardBackCopy({ token, card, program, existingPanel, 
   }
 
   console.log(`Generating ${card.stateName} ${program} card-back copy with ${cardCopyModel}...`);
-  const rawCopy = await generateGeminiJsonWithRetry({
-    token,
-    prompt: copyPrompt,
-    modelName: cardCopyModel,
-    label: `${card.stateName} ${program} card-back copy`,
-    timeoutMs: textRequestTimeoutMs
-  });
-  return validateCardBackCopy({ card, program, rawCopy });
+  let validationPrompt = copyPrompt;
+  let lastError;
+
+  for (let attempt = 1; attempt <= imageMaxAttempts; attempt += 1) {
+    const rawCopy = await generateGeminiJsonWithRetry({
+      token,
+      prompt: validationPrompt,
+      modelName: cardCopyModel,
+      label: `${card.stateName} ${program} card-back copy`,
+      timeoutMs: textRequestTimeoutMs
+    });
+
+    try {
+      return validateCardBackCopy({ card, program, rawCopy });
+    } catch (error) {
+      lastError = error;
+      if (attempt >= imageMaxAttempts) throw error;
+      console.warn(`${card.stateName} ${program} card-back copy failed validation on attempt ${attempt}/${imageMaxAttempts}: ${error.message}`);
+      validationPrompt = `${copyPrompt}
+
+Previous JSON failed local validation:
+${error.message}
+
+Rewrite the JSON from scratch, keeping the same fields and avoiding every unsafe phrase listed above.`;
+    }
+  }
+
+  throw lastError;
 }
 
 function buildCardBackCopyPrompt(card, program) {
@@ -484,7 +504,7 @@ function buildCardBackCopyPrompt(card, program) {
       sportFamily: panel.sportFamily,
       aggregateSignal: panel.aggregateSignal,
       primarySportTag: panel.primarySportTag || null,
-      topSportTags: panel.topSportTags || [],
+      otherTopSportTagsForStateBriefingOnly: (panel.topSportTags || []).slice(1),
       geographyConnection: panel.geographyConnection,
       sourceLabels: (panel.sourceRefs || []).map((source) => source.label)
     }
@@ -494,16 +514,21 @@ function buildCardBackCopyPrompt(card, program) {
 
 Use only the provided aggregate public Team USA and geography data.
 Do not mention individual athlete names, athlete profiles, photos, biographies, teams, rankings, medals, finish times, scoring results, or exact counts.
+Do not use the word "athlete" or "athletes" in final copy; write about the featured sport, movement, equipment, setting, rhythm, spacing, or fan discovery instead.
 Do not say geography causes, creates, produces, predicts, or guarantees athletic results.
 Use conditional fan-discovery language such as "may suggest", "could help fans understand", "appears associated with", or "could help fans discover".
 Keep the copy useful for a sports fan, not a data engineer.
-Do not use internal words like "row", "pipeline", "raw data", "card image cue", "template", or "fallback".
+Do not use internal words like "row", "pipeline", "raw data", "card image cue", "template", "fallback", "signal", "participation signal", "aggregate presence", or "athletic landscape".
+Do not write "high signal", "medium signal", "low signal", or "high aggregate presence" in final copy. Use the bucket only to decide whether the copy should be specific or generalized.
+Avoid backend-sounding or vague phrases like "roster data", "roster", "representation", "prominent feature", "athletic connections", "frequently associated", "ties to", "backdrop", "frame", or "could help fans discover".
+Do not overstate the cue with words like "strong", "dominant", "best", or "proves".
+This panel is only about the featured sport. Do not mention other sports from otherTopSportTagsForStateBriefingOnly; those belong in the Gemini State Briefing.
 
 Return valid JSON only with these fields:
 - featuredCue: short display label. If primarySportTag is present, use it exactly. If not, use a concise generalized cue.
-- featuredCueExplanation: 1 sentence explaining why this cue is shown, based only on the aggregate state/program signal.
-- relatedTagsSentence: 1 sentence naming related top sport tags if provided, or explaining why the panel stays generalized.
-- stateLens: 1 sentence connecting the geography context and sport-family signal with conditional language and no causation claim.
+- featuredCueExplanation: 1 sentence about what the featured sport helps the card communicate to fans: movement, environment, teamwork, rhythm, pace, spacing, or control. Do not explain the data-selection method and do not use "is featured because".
+- featuredSportContext: 1 sentence about the featured sport's sport-family theme, movement qualities, environment, or fan-discovery lens. Do not name other sports.
+- stateLens: 1 sentence connecting geography context and the featured sport with conditional language and no causation claim. Prefer "could show how regional geography may offer context..." over "backdrop", "frame", or "discover".
 - complianceWarnings: array of strings, empty if safe.
 
 Panel data:
@@ -561,7 +586,7 @@ async function generateGeminiJson({ token, prompt, modelName, timeoutMs }) {
 
 function validateCardBackCopy({ card, program, rawCopy }) {
   const panel = programPanel(card, program);
-  const requiredFields = ["featuredCue", "featuredCueExplanation", "relatedTagsSentence", "stateLens"];
+  const requiredFields = ["featuredCue", "featuredCueExplanation", "featuredSportContext", "stateLens"];
   const missingFields = requiredFields.filter((field) => !String(rawCopy?.[field] || "").trim());
   if (missingFields.length) {
     throw new Error(`Gemini card-back copy is missing required fields: ${missingFields.join(", ")}`);
@@ -572,7 +597,7 @@ function validateCardBackCopy({ card, program, rawCopy }) {
     featuredCue: expectedCue || String(rawCopy.featuredCue).trim(),
     featuredCueExplanation: String(rawCopy.featuredCueExplanation).trim(),
     relatedTags: panel.topSportTags?.slice(1) || [],
-    relatedTagsSentence: String(rawCopy.relatedTagsSentence).trim(),
+    featuredSportContext: String(rawCopy.featuredSportContext).trim(),
     stateLens: String(rawCopy.stateLens).trim(),
     complianceWarnings: Array.isArray(rawCopy.complianceWarnings)
       ? rawCopy.complianceWarnings.map((warning) => String(warning || "").trim()).filter(Boolean)
@@ -589,7 +614,7 @@ function complianceCheckCardBackCopy(copy) {
   const text = [
     copy.featuredCue,
     copy.featuredCueExplanation,
-    copy.relatedTagsSentence,
+    copy.featuredSportContext,
     copy.stateLens
   ].filter(Boolean).join(" ");
   const bannedPatterns = [
@@ -603,15 +628,44 @@ function complianceCheckCardBackCopy(copy) {
     /\bfinish times?\b/i,
     /\bscore(s|d|ing)? result\b/i,
     /\bathletes?\b/i,
+    /\bsignals?\b/i,
+    /\baggregate presence\b/i,
+    /\broster data\b/i,
+    /\broster\b/i,
+    /\brepresentation\b/i,
+    /\bprominent feature\b/i,
+    /\bbackdrop\b/i,
+    /\bframes?\b/i,
+    /\bframing\b/i,
+    /\bcould help fans discover\b/i,
+    /\bis featured because\b/i,
+    /\bfrequently associated\b/i,
+    /\bties to\b/i,
     /\brows?\b/i,
     /\bpipeline\b/i,
     /\btemplate\b/i,
     /\bfallback\b/i,
+    /\braw data\b/i,
     /\bcard image cue\b/i,
+    /\bparticipation signal\b/i,
+    /\bathletic landscape\b/i,
+    /\bstrong(?:er|est)?\b/i,
+    /\bdominant\b/i,
+    /\bbest\b/i,
+    /\bproves?\b/i,
     /\b\d+(\.\d+)?\s?(seconds?|minutes?|points?|percent|%)\b/i
   ];
   const warnings = bannedPatterns.filter((pattern) => pattern.test(text)).map((pattern) => `Unsafe phrase pattern: ${pattern}`);
+  for (const tag of copy.relatedTags || []) {
+    if (tag && new RegExp(`\\b${escapeRegExp(tag)}\\b`, "i").test(text)) {
+      warnings.push(`Featured panel mentioned non-featured sport tag: ${tag}`);
+    }
+  }
   return warnings.concat((copy.complianceWarnings || []).filter(Boolean));
+}
+
+function escapeRegExp(value) {
+  return String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 function normalizeJsonText(text) {
