@@ -967,60 +967,135 @@ function CardArt({ card, compact = false, panelManifest = EMPTY_CARD_PANEL_MANIF
 
 function UnifiedStateCard({ card, sourceRefs, briefing, briefingLoading, onRefreshBriefing, onOpenChallenge, onFlipChange, panelManifest }) {
   const [flipped, setFlipped] = useState(false);
+  const [displayBack, setDisplayBack] = useState(false);
+  const [flipPhase, setFlipPhase] = useState(null); // null | "out" | "in"
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
+  const [isHovered, setIsHovered] = useState(false);
+  const tiltRef = useRef(null);
+  const flipTimers = useRef([]);
   const counts = getRosterCounts(card);
   const olympicCue = getPanelVisualCue(card.olympicPanel);
   const paralympicCue = getPanelVisualCue(card.paralympicPanel);
 
   useEffect(() => {
+    flipTimers.current.forEach(clearTimeout);
+    flipTimers.current = [];
     setFlipped(false);
+    setDisplayBack(false);
+    setFlipPhase(null);
+    setTilt({ x: 0, y: 0 });
     onFlipChange?.(false);
   }, [card.stateCode]);
 
   function toggleFlip() {
-    setFlipped((value) => {
-      const next = !value;
+    if (flipPhase !== null) return;
+    setFlipPhase("out");
+    setTilt({ x: 0, y: 0 });
+
+    const t1 = setTimeout(() => {
+      const next = !flipped;
+      setFlipped(next);
+      setDisplayBack(next);
+      setFlipPhase("in");
       onFlipChange?.(next);
-      return next;
-    });
+    }, 220);
+
+    const t2 = setTimeout(() => {
+      setFlipPhase(null);
+    }, 440);
+
+    flipTimers.current = [t1, t2];
   }
+
+  function handleMouseMove(e) {
+    if (displayBack || flipPhase !== null) return;
+    const el = tiltRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const dx = (e.clientX - rect.left) / rect.width;
+    const dy = (e.clientY - rect.top) / rect.height;
+    setTilt({ x: (0.5 - dy) * 18, y: (dx - 0.5) * 26 });
+    setMousePos({ x: dx * 100, y: dy * 100 });
+  }
+
+  function handleMouseLeave() {
+    setTilt({ x: 0, y: 0 });
+    setIsHovered(false);
+  }
+
+  const frontClass = [
+    "sports-card-face sports-card-front",
+    displayBack ? "face-hidden" : "",
+    !displayBack && flipPhase === "out" ? "flip-out" : "",
+    !displayBack && flipPhase === "in" ? "flip-in" : "",
+  ].filter(Boolean).join(" ");
+
+  const backClass = [
+    "sports-card-face sports-card-back",
+    !displayBack ? "face-hidden" : "",
+    displayBack && flipPhase === "in" ? "flip-in" : "",
+    displayBack && flipPhase === "out" ? "flip-out" : "",
+  ].filter(Boolean).join(" ");
 
   return (
     <section className="sports-card-shell">
-      <div className={`sports-card ${flipped ? "is-flipped" : ""}`}>
-        <article className="sports-card-face sports-card-front" aria-label={`${card.stateName} state card front`}>
-          <CardArt card={card} panelManifest={panelManifest} />
-        </article>
+      <div className="card-3d-viewport">
+        <div
+          ref={tiltRef}
+          className="card-tilt-layer"
+          style={{ transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)` }}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+          onMouseEnter={() => setIsHovered(true)}
+        >
+          <div
+            className={`sports-card ${isHovered && !displayBack ? "is-hovered" : ""}`}
+            style={{ "--holo-x": `${mousePos.x}%`, "--holo-y": `${mousePos.y}%` }}
+          >
+            <article
+              className={frontClass}
+              aria-label={`${card.stateName} state card front — click to flip`}
+              role="button"
+              tabIndex={displayBack ? -1 : 0}
+              onClick={toggleFlip}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggleFlip(); } }}
+            >
+              <CardArt card={card} panelManifest={panelManifest} />
+            </article>
 
-        <article className="sports-card-face sports-card-back" aria-label={`${card.stateName} state card data`}>
-          <div className="card-back-scroll">
-            <div className="card-header">
-              <p className="eyebrow">Shared geography view</p>
-              <h3>{card.stateName}</h3>
-              <p>{card.geographySnapshot}</p>
-              <div className="metric-row compact-metrics">
-                <span className="metric">State total <strong>{counts.total}</strong></span>
-                <span className="metric">Olympic count <strong>{counts.olympic}</strong></span>
-                <span className="metric">Paralympic count <strong>{counts.paralympic}</strong></span>
+            <article className={backClass} aria-label={`${card.stateName} state card data`}>
+              <div className="card-back-scroll">
+                <div className="card-header">
+                  <p className="eyebrow">Shared geography view</p>
+                  <h3>{card.stateName}</h3>
+                  <p>{card.geographySnapshot}</p>
+                  <div className="metric-row compact-metrics">
+                    <span className="metric">State total <strong>{counts.total}</strong></span>
+                    <span className="metric">Olympic count <strong>{counts.olympic}</strong></span>
+                    <span className="metric">Paralympic count <strong>{counts.paralympic}</strong></span>
+                  </div>
+                </div>
+                <div className="program-panel-grid">
+                  <SportPanel panel={card.olympicPanel} />
+                  <SportPanel panel={card.paralympicPanel} />
+                </div>
+                <section className="trait-band">
+                  <div className="trait-badge">
+                    <span>Shared trait across both featured sports</span>
+                    <strong>{card.sharedTrait.name}</strong>
+                  </div>
+                  <p>This trait connects Olympic <strong>{olympicCue}</strong> and Paralympic <strong>{paralympicCue}</strong>: {card.sharedTrait.description}</p>
+                </section>
+                <BriefingPanel payload={briefing} loading={briefingLoading} onRefresh={onRefreshBriefing} compact />
+                <div className="card-footer">
+                  <SourceList refs={sourceRefs} />
+                  <button className="primary-button" type="button" onClick={onOpenChallenge}>Try the State Sync Challenge</button>
+                </div>
               </div>
-            </div>
-            <div className="program-panel-grid">
-              <SportPanel panel={card.olympicPanel} />
-              <SportPanel panel={card.paralympicPanel} />
-            </div>
-            <section className="trait-band">
-              <div className="trait-badge">
-                <span>Shared trait across both featured sports</span>
-                <strong>{card.sharedTrait.name}</strong>
-              </div>
-              <p>This trait connects Olympic <strong>{olympicCue}</strong> and Paralympic <strong>{paralympicCue}</strong>: {card.sharedTrait.description}</p>
-            </section>
-            <BriefingPanel payload={briefing} loading={briefingLoading} onRefresh={onRefreshBriefing} compact />
-            <div className="card-footer">
-              <SourceList refs={sourceRefs} />
-              <button className="primary-button" type="button" onClick={onOpenChallenge}>Try the State Sync Challenge</button>
-            </div>
+            </article>
           </div>
-        </article>
+        </div>
       </div>
 
       <div className="card-action-row">

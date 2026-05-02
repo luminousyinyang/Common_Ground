@@ -1298,15 +1298,22 @@ select {
   border-radius: 18px;
   background: var(--paper-2);
   box-shadow: var(--shadow);
-  opacity: 1;
-  pointer-events: auto;
-  transition: opacity 220ms ease;
+}
+
+.sports-card-face.face-hidden {
+  display: none;
 }
 
 .sports-card-front {
   min-height: 0;
   color: var(--ink);
   background: var(--paper-2);
+  cursor: pointer;
+}
+
+.sports-card-front:focus-visible {
+  outline: 2px solid var(--olympic-tint, #4a90d9);
+  outline-offset: -3px;
 }
 
 .sports-card-back {
@@ -1314,8 +1321,6 @@ select {
   background:
     radial-gradient(circle at 12% 8%, var(--paper-accent-a), transparent 20rem),
     linear-gradient(180deg, var(--paper-2), var(--paper));
-  opacity: 0;
-  pointer-events: none;
 }
 
 .sports-card-back::before {
@@ -1336,14 +1341,66 @@ select {
   z-index: 1;
 }
 
-.sports-card.is-flipped .sports-card-front {
-  opacity: 0;
-  pointer-events: none;
+/* Flip animation — two-phase rotateY avoids preserve-3d (backdrop-filter breaks it) */
+@keyframes cardFaceOut {
+  from { transform: perspective(1100px) rotateY(0deg); }
+  to   { transform: perspective(1100px) rotateY(90deg); }
 }
 
-.sports-card.is-flipped .sports-card-back {
-  opacity: 1;
-  pointer-events: auto;
+@keyframes cardFaceIn {
+  from { transform: perspective(1100px) rotateY(-90deg); }
+  to   { transform: perspective(1100px) rotateY(0deg); }
+}
+
+.sports-card-face.flip-out {
+  animation: cardFaceOut 220ms ease-in forwards;
+}
+
+.sports-card-face.flip-in {
+  animation: cardFaceIn 220ms ease-out forwards;
+}
+
+/* Tilt viewport */
+.card-3d-viewport {
+  perspective: 1100px;
+}
+
+.card-tilt-layer {
+  will-change: transform;
+}
+
+/* Iridescent holographic sheen */
+.sports-card-front::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 10;
+  background:
+    radial-gradient(
+      circle at var(--holo-x, 50%) var(--holo-y, 50%),
+      rgba(255, 255, 255, 0.55) 0%,
+      rgba(200, 160, 255, 0.25) 25%,
+      transparent 60%
+    ),
+    linear-gradient(
+      calc(var(--holo-x, 50%) * 3.6deg + var(--holo-y, 50%) * 1.8deg + 60deg),
+      hsl(280deg 100% 72%) 0%,
+      hsl(220deg 100% 68%) 18%,
+      hsl(160deg 100% 62%) 34%,
+      hsl(80deg  100% 62%) 50%,
+      hsl(30deg  100% 65%) 66%,
+      hsl(0deg   100% 68%) 82%,
+      hsl(280deg 100% 72%) 100%
+    );
+  mix-blend-mode: color-dodge;
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+
+.sports-card.is-hovered .sports-card-front::after {
+  opacity: 0.65;
 }
 
 .card-art {
@@ -1818,7 +1875,7 @@ select {
   width: min(460px, calc(100vw - 32px));
   max-height: calc(100vh - 56px);
   max-height: calc(100svh - 56px);
-  overflow: auto;
+  overflow: visible;
   border: 1px solid var(--glass-line);
   border-radius: 22px;
   padding: 14px 14px 16px;
@@ -1876,16 +1933,13 @@ select {
 .card-modal-panel.card-interaction-tilt-inspect .sports-card,
 .card-modal-panel.card-interaction-press-lift .sports-card,
 .card-modal-panel.card-interaction-magnetic-snap .sports-card {
-  transition: transform 180ms ease, filter 180ms ease;
+  transition: filter 180ms ease;
 }
 
 .card-modal-panel.card-interaction-tilt-inspect .sports-card:not(.is-flipped):hover {
   transform: perspective(900px) rotateX(1.8deg) rotateY(-2.8deg) translateY(-2px);
 }
 
-.card-modal-panel.card-interaction-press-lift .sports-card:not(.is-flipped):hover {
-  transform: translateY(-4px) scale(1.006);
-}
 
 .card-modal-panel.card-interaction-press-lift .sports-card:not(.is-flipped):active {
   transform: translateY(-1px) scale(0.998);
@@ -3021,12 +3075,8 @@ select {
     animation: none !important;
   }
 
-  .sports-card,
-  .sports-card.is-flipped {
-    transform: none;
-  }
-
-  .sports-card-face {
-    transition: none !important;
+  .sports-card-face.flip-out,
+  .sports-card-face.flip-in {
+    animation: none;
   }
 }
