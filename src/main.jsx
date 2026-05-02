@@ -1055,6 +1055,7 @@ function UnifiedStateCard({ card, sourceRefs, briefing, briefingLoading, onRefre
   const tiltRef = useRef(null);
   const flipTimers = useRef([]);
   const cardStory = getCardStory(card);
+  const counts = getRosterCounts(card);
   const olympicCue = getPanelVisualCue(card.olympicPanel);
   const paralympicCue = getPanelVisualCue(card.paralympicPanel);
 
