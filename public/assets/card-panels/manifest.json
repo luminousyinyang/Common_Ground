@@ -1,7 +1,7 @@
 {
   "model": "gemini-3-pro-image-preview",
   "location": "global",
-  "updatedAt": "2026-05-02T17:46:20.346Z",
+  "updatedAt": "2026-05-02T20:01:10.004Z",
   "states": {
     "CO": {
       "olympic": {
@@ -12,7 +12,7 @@
         "promptVersion": "common-ground-card-panel-v2-full-bleed",
         "promptSummary": "Colorado olympic Endurance / Pace Control + Team / Spatial Awareness",
         "paletteTheme": "Alpine Signal",
-        "notes": "**Considering Requirements**\n\nI am now focused on the parameters. I must create a full-bleed 16:9 illustration for a sports card. The parameters stipulate a premium, vector/low-poly, paper-cut style.\n\n\n **Outlining the Composition**\n\nI am now focusing on the composition of the illustration. The athlete should be centered as a silhouette, and I need to consider negative space in the upper-left, along with the mountainous background and rhythmic motion lines.\n\n\n **Reviewing Image Compliance**\n\nI'm currently evaluating the generated image against the user's specific request. The palette matches, and I am noting how well the image seems to capture the intended atmosphere. I am paying close attention to the representation of the skier, and how it embodies the concept of endurance, which is key here.\n\n\n **Verifying Prompt Fidelity**\n\nI'm now assessing the generated image based on the user's detailed request. The color scheme aligns with the prompt. Also, I'm analyzing the skier's depiction for how well it reflects the endurance aspect. I am also checking whether the image adheres to the specified format."
+        "notes": ""
       },
       "paralympic": {
         "url": "/assets/card-panels/co-paralympic.png",
@@ -22,7 +22,7 @@
         "promptVersion": "common-ground-card-panel-v2-full-bleed",
         "promptSummary": "Colorado paralympic Endurance / Pace Control + Aquatic / Water Environment",
         "paletteTheme": "Alpine Signal",
-        "notes": "**Examining Illustration Needs**\n\nI'm focused on the technical requirements now. The request specifies a 16:9 aspect ratio and full-bleed design. It's for a Paralympic sports card, intended for the front of a Colorado \"discovery card.\" The style needs to be modern.\n\n\n **Conceptualizing the Athlete's Pose**\n\nI'm working on the central figure now. Considering a swimmer in action to meet the aquatic and adaptive requirements. The pose needs to convey rhythm and control, so I'm focusing on dynamic motion and clean lines.\n\n\n **Planning the Visual Components**\n\nI'm now prioritizing the visual breakdown. I'm taking the initial instructions and developing the central athlete and surroundings. The athlete is a faceless swimmer, a prosthetic user, emphasizing action. The backdrop will be abstract Colorado mountains with a specific palette, and a low-poly style.\n\n\n **Reviewing the Results**\n\nI'm now cross-referencing the model's output with the detailed specifications provided. My focus is on ensuring all requirements are met; I am looking at the format, style, subject matter, and thematic elements to confirm that the generated illustration aligns with all instructions.\n\n\n **Evaluating the Compliance**\n\nMy task now is to ensure adherence to the user's detailed specifications. I see the model has produced the image in the correct style and format as requested. The subject matter and geographic context are also correct. I am pleased to see all the instructions have been followed."
+        "notes": ""
       }
     },
     "CA": {
@@ -42,8 +42,8 @@
           "Skateboarding"
         ],
         "paletteTheme": "Pacific Heat",
-        "promptHash": "2693b851a0f035eab9ad2ced4c4160cd7ce33dfed9f519d40cde9649c6d4a46e",
-        "notes": "**Conceptualizing a Sports Card**\n\nI'm thinking about the water polo player, and how to represent them. The style will be low-poly, almost like a paper cutout. The overall vibe needs to be modern and premium for this Team USA and Google Cloud hackathon.\n\n\n **Imagining the Scene**\n\nI'm focusing on the low-poly style and the California theme. I'm visualizing the composition now. I've decided to prioritize the water polo player and blend in the other sports through abstract forms. The color palette is ready to go, and I'm concentrating on the contrast.\n\n\n **Crafting the Visual**\n\nI'm now detailing the prompt. I'm prioritizing the water polo player in action first, then will add abstract elements representing Track & Field and skateboarding. I'm carefully constructing the scene with geometric planes, the color palette, and the \"Pacific Heat\" theme, all to emphasize the central subject. I must ensure the final image is clean.\n\n\n **Reviewing the Details**\n\nI'm verifying that the image adheres to the user's explicit instructions. I'm taking a close look at the aspect ratio, color palette, and art style to confirm their correct implementation. The goal is to ensure all elements are present and aligned as requested.\n\n\n **Evaluating the Composition**\n\nI've examined the image to confirm that all listed details have been incorporated. It's important to ascertain the user's instructions were followed precisely, from the chosen aspect ratio and color scheme, to the art style. The prompt's key elements are now in place.",
+        "promptHash": "8b20528cfeb978408f5960dd2dacf28239c0c4317155f324e2cf351befb1ebe1",
+        "notes": "",
         "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v3-top-sport-cue%2Fca%2Fca-olympic.png?alt=media&token=9d0d683b-eeaa-4798-a252-0acacd83d6c5",
         "storageBucket": "common-ground-tests.firebasestorage.app",
         "firebaseProjectId": "common-ground-tests",
@@ -52,59 +52,62 @@
         "firebaseCollection": "cardPanels",
         "cardBackCopy": {
           "featuredCue": "Water Polo",
-          "featuredCueExplanation": "Water polo highlights the intense physical rhythm, spatial awareness, and precise pacing required to navigate a dynamic aquatic environment.",
+          "watchLens": "Notice the constant shifting of spacing and timing above the surface. Watch how quick passes and coordinated movement keep the rhythm steady even as the water conditions change.",
           "relatedTags": [
             "Track and Field",
             "Skateboarding"
           ],
-          "featuredSportContext": "This aquatic team sport emphasizes steady timing, controlled effort, and repeatable rhythm while coordinating movement across the water.",
-          "stateLens": "California's Pacific coast, large urban regions, and year-round outdoor access could show how regional geography may offer context for the aquatic environments where this sport takes place.",
+          "stateConnection": "California's extensive Pacific coast and year-round outdoor access could show how aquatic environments become integrated into daily movement and recreation.",
+          "fanTakeaway": "This view invites fans to read the precise cadence and spatial awareness involved in mastering a fluid, unpredictable setting.",
+          "sportFamilyTheme": "Aquatic environment · Spatial coordination · Controlled cadence",
           "complianceWarnings": []
         },
         "cardBackCopySource": "gemini",
-        "cardBackCopyVersion": "common-ground-card-back-v4-sport-readable",
+        "cardBackCopyVersion": "common-ground-card-back-v6-fan-takeaway",
         "cardBackCopyModel": "gemini-3.1-pro-preview",
-        "cardBackCopyPromptHash": "21fa67604835e5b7735fbe5a377821366bebb81261246c92a47724aca5b45879"
+        "cardBackCopyPromptHash": "b978dc91ab008b959fb56aa34a77b64dd42d09d5fb956cc14d1c0f3022936733"
       },
       "paralympic": {
-        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v3-top-sport-cue%2Fca%2Fca-paralympic.png?alt=media&token=b5586043-1be9-484a-8884-5b36e5444e38",
+        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v3-top-sport-cue%2Fca%2Fca-paralympic.png?alt=media&token=f1a37cb9-e066-41d5-8a8b-7653ba9b1118",
         "localUrl": null,
         "model": "gemini-3-pro-image-preview",
         "location": "global",
         "mimeType": "image/png",
-        "generatedAt": "2026-05-02T15:28:00.715Z",
+        "generatedAt": "2026-05-02T18:34:09.656Z",
         "promptVersion": "common-ground-card-panel-v3-top-sport-cue",
-        "promptSummary": "California paralympic Para Track and Field",
-        "primarySportTag": "Para Track and Field",
+        "promptSummary": "California paralympic Paratriathlon",
+        "primarySportTag": "Paratriathlon",
         "topSportTags": [
           "Para Track and Field",
           "Para-Cycling",
           "Para Shooting"
         ],
+        "cardBackCopy": {
+          "featuredCue": "Paratriathlon",
+          "watchLens": "Watch the complex transitions between open water swimming, cycling, and running. The constant shift in equipment and terrain requires precise pacing and physical adaptability to maintain speed.",
+          "relatedTags": [
+            "Para Track and Field",
+            "Para-Cycling",
+            "Para Shooting"
+          ],
+          "stateConnection": "California's expansive Pacific coastline and year-round outdoor access could show how varied natural environments align with the rigorous demands of multi-stage endurance events.",
+          "fanTakeaway": "Following the continuous shift from water to land highlights the precise cadence required to keep momentum when physical conditions constantly change.",
+          "sportFamilyTheme": "Multi-stage endurance · Environmental transitions · Pace control",
+          "complianceWarnings": []
+        },
+        "cardBackCopySource": "gemini",
+        "cardBackCopyVersion": "common-ground-card-back-v6-fan-takeaway",
+        "cardBackCopyModel": "gemini-3.1-pro-preview",
+        "cardBackCopyPromptHash": "8e05f3710d3f0160257713725aafab26418c36aa480ff2ba5451c709c3010848",
         "paletteTheme": "Pacific Heat",
-        "promptHash": "784756e8a81fe07d4556268031c52b67b4d82e205776de3930058c693ebba1bd",
+        "promptHash": "4623f8f78fd5f8fcc96437fdb6b6d188cb1b7f68a8fd9e6bb59603c77e17be95",
         "notes": "",
-        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v3-top-sport-cue%2Fca%2Fca-paralympic.png?alt=media&token=b5586043-1be9-484a-8884-5b36e5444e38",
+        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v3-top-sport-cue%2Fca%2Fca-paralympic.png?alt=media&token=f1a37cb9-e066-41d5-8a8b-7653ba9b1118",
         "storageBucket": "common-ground-tests.firebasestorage.app",
         "firebaseProjectId": "common-ground-tests",
         "storagePath": "card-panels/common-ground-card-panel-v3-top-sport-cue/ca/ca-paralympic.png",
         "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v3-top-sport-cue/ca/ca-paralympic.png",
-        "firebaseCollection": "cardPanels",
-        "cardBackCopy": {
-          "featuredCue": "Para Track and Field",
-          "featuredCueExplanation": "Para Track and Field highlights the importance of steady timing and controlled effort across varied competitive environments.",
-          "relatedTags": [
-            "Para-Cycling",
-            "Para Shooting"
-          ],
-          "featuredSportContext": "This endurance discipline emphasizes repeatable rhythm and precise pacing on the track or in the field.",
-          "stateLens": "The year-round outdoor access and diverse terrain of California, spanning from the Pacific coast to large urban regions, could show how regional geography may offer context for the rigorous pacing and endurance demands of this sport.",
-          "complianceWarnings": []
-        },
-        "cardBackCopySource": "gemini",
-        "cardBackCopyVersion": "common-ground-card-back-v4-sport-readable",
-        "cardBackCopyModel": "gemini-3.1-pro-preview",
-        "cardBackCopyPromptHash": "78b60792bdff29e13e1c5edc6a6a3d46dfdfcd43310be57a6e03ffb849a4227a"
+        "firebaseCollection": "cardPanels"
       }
     },
     "WA": {
@@ -116,7 +119,7 @@
         "promptVersion": "common-ground-card-panel-v2-full-bleed",
         "promptSummary": "Washington olympic Endurance / Pace Control + Aquatic / Water Environment",
         "paletteTheme": "Cascade Rain",
-        "notes": "**Conceptualizing a Sports Card**\n\nI'm thinking about the design of a sports card illustration. It'll be 16:9, full-bleed, with a low-poly/vector art style, ideal for a prototype. I'm aiming for a modern, clean aesthetic.\n\n\n **Designing the Composition**\n\nI'm now focusing on the composition of the sports card art. The goal is to place the athlete centrally, with significant negative space. I'm also planning layered, paper-cut planes to represent the Pacific coast and Cascade mountains.\n\n\n **Outlining the Details**\n\nI'm solidifying the details. It's a full-bleed 16:9 illustration for a \"Common Ground\" prototype. The subject is a faceless, generic Olympic triathlete swimming. The focus is on action, rhythm, and a specific palette. I'm using a Cascade Rain theme with paper-cut planes for the environment and an eye toward negative space.\n\n\n **Reviewing the Illustration**\n\nI'm currently reviewing the rendered graphic against the user's detailed criteria. The prompt called for a low-poly, vector style, centered on action, and I'm assessing how those elements have been addressed. The use of the specified color palette is also under evaluation.\n\n\n **Evaluating the Palette's Application**\n\nI'm focused on the color palette now, checking how the elements are used. The prompt's specific colors, including the 'Cascade Rain' theme, need careful review. I am confirming that the intended mood and atmosphere are accurately conveyed and that all negative constraints are met."
+        "notes": ""
       },
       "paralympic": {
         "url": "/assets/card-panels/wa-paralympic.png",
@@ -126,7 +129,7 @@
         "promptVersion": "common-ground-card-panel-v2-full-bleed",
         "promptSummary": "Washington paralympic Endurance / Pace Control + Precision / Focus",
         "paletteTheme": "Cascade Rain",
-        "notes": "**Designing the Layout**\n\nI am currently focusing on the initial layout and composition. The goal is a full-bleed 16:9 illustration for a sports card. Considering a vector/low-poly style, I am aiming for a modern feel with subtle depth, taking inspiration from paper-cut art.\n\n\n **Planning the Details**\n\nI am now focusing on the specific details, including the athlete's representation and the overall environment. The Paralympian is now faceless, and elements of both a handcycle and wheelchair racer are in the design. I am also working on the Cascade Rain color palette.\n\n\n **Considering the Request's Nuances**\n\nI'm focused on the athlete and the requested palette. I'm considering how best to integrate the \"Rhythm and Pace Control\" theme within the Washington landscape. I'm working to make sure the details align.\n\n\n **Evaluating the Visual Elements**\n\nI'm presently evaluating the visual coherence of the athlete's representation. I am checking the integration of the abstract gears to capture the essence of rhythm and pace control. I am paying particular attention to the negative space and overall composition."
+        "notes": ""
       }
     }
   },

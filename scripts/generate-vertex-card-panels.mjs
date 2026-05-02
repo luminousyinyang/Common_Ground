@@ -27,7 +27,7 @@ const imageRetryDelayMs = positiveInteger(process.env.CARD_IMAGE_RETRY_DELAY_MS,
 const imageRequestTimeoutMs = positiveInteger(process.env.CARD_IMAGE_REQUEST_TIMEOUT_MS, 900000);
 const textRequestTimeoutMs = positiveInteger(process.env.CARD_COPY_REQUEST_TIMEOUT_MS, 120000);
 const PROMPT_VERSION = "common-ground-card-panel-v3-top-sport-cue";
-const CARD_BACK_COPY_VERSION = "common-ground-card-back-v4-sport-readable";
+const CARD_BACK_COPY_VERSION = "common-ground-card-back-v6-fan-takeaway";
 
 let firebaseClientsPromise;
 
@@ -215,16 +215,20 @@ for (const card of selectedCards) {
       copyPrompt
     });
     const panelMetadata = currentPanelMetadata({ card, program, prompt, copyPrompt, cardBackCopy });
-    const alreadyGenerated = args.firebase
+    const currentPrimarySport = panelMetadata.primarySportTag || null;
+    const existingPrimarySport = existingPanel?.primarySportTag || null;
+    const imageStillMatchesFeaturedSport = currentPrimarySport === existingPrimarySport;
+    const alreadyGenerated = imageStillMatchesFeaturedSport && (args.firebase
       ? existingPanel?.storagePath && existingPanel.promptVersion === PROMPT_VERSION
-      : existingPanel?.url === localUrl && existingPanel.promptVersion === PROMPT_VERSION;
+      : existingPanel?.url === localUrl && existingPanel.promptVersion === PROMPT_VERSION);
     if (!args.force && alreadyGenerated) {
       const syncedPanel = {
         ...existingPanel,
         ...panelMetadata,
         localUrl: existingPanel.localUrl ?? (args.noLocal ? null : localUrl),
         mimeType: existingPanel.mimeType || "image/png",
-        url: existingPanel.url || localUrl
+        url: existingPanel.url || localUrl,
+        notes: ""
       };
       manifest.states[card.stateCode][program] = syncedPanel;
       await writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
@@ -422,8 +426,15 @@ function imageSubjectForPanel(panel) {
 }
 
 function topSportContextForPanel(panel) {
+  const broaderTags = (panel.topSportTags || []).filter((tag) => tag !== panel.primarySportTag);
+  if (panel.primarySportTag && broaderTags.length) {
+    return `Lead with ${panel.primarySportTag}. Broader aggregate public sport tags for this state/program include ${joinList(broaderTags)}; use them only as secondary context and do not display counts.`;
+  }
+  if (panel.primarySportTag) {
+    return `Lead with ${panel.primarySportTag}. This is the sourced featured sport tag for this state/program and should guide the illustration without displaying counts.`;
+  }
   if (panel.topSportTags?.length) {
-    return `${joinList(panel.topSportTags)}. These are aggregate public roster sport tags for this state/program and should guide the illustration without displaying counts.`;
+    return `${joinList(panel.topSportTags)}. These are aggregate public sport tags for this state/program and should guide the illustration without displaying counts.`;
   }
   return "No top sport tag is exposed for this panel because the public roster signal is low-volume or unavailable; keep the artwork generalized.";
 }
@@ -492,6 +503,8 @@ Rewrite the JSON from scratch, keeping the same fields and avoiding every unsafe
 function buildCardBackCopyPrompt(card, program) {
   const panel = programPanel(card, program);
   const programName = program === "paralympic" ? "Paralympic" : "Olympic";
+  const storyFeatured = program === "paralympic" ? card.cardStory?.paralympicFeatured : card.cardStory?.olympicFeatured;
+  const otherTopSportTags = (panel.topSportTags || []).filter((tag) => tag !== panel.primarySportTag);
   const payload = {
     stateName: card.stateName,
     program: programName,
@@ -499,12 +512,19 @@ function buildCardBackCopyPrompt(card, program) {
     climateSignal: card.climateSignal,
     terrainSignals: card.terrainSignals,
     sharedTrait: card.sharedTrait,
+    cardStory: {
+      themeName: card.cardStory?.themeName,
+      geographySignal: card.cardStory?.geographySignal,
+      sharedTrait: card.cardStory?.sharedTrait,
+      fanChallengeName: card.cardStory?.fanChallengeName,
+      featuredSportForThisProgram: storyFeatured || null
+    },
     panel: {
       label: panel.label,
       sportFamily: panel.sportFamily,
       aggregateSignal: panel.aggregateSignal,
       primarySportTag: panel.primarySportTag || null,
-      otherTopSportTagsForStateBriefingOnly: (panel.topSportTags || []).slice(1),
+      otherTopSportTagsForStateBriefingOnly: otherTopSportTags,
       geographyConnection: panel.geographyConnection,
       sourceLabels: (panel.sourceRefs || []).map((source) => source.label)
     }
@@ -516,19 +536,24 @@ Use only the provided aggregate public Team USA and geography data.
 Do not mention individual athlete names, athlete profiles, photos, biographies, teams, rankings, medals, finish times, scoring results, or exact counts.
 Do not use the word "athlete" or "athletes" in final copy; write about the featured sport, movement, equipment, setting, rhythm, spacing, or fan discovery instead.
 Do not say geography causes, creates, produces, predicts, or guarantees athletic results.
-Use conditional fan-discovery language such as "may suggest", "could help fans understand", "appears associated with", or "could help fans discover".
+Use conditional fan-discovery language such as "may suggest", "could help fans understand", "appears associated with", or "could show how".
 Keep the copy useful for a sports fan, not a data engineer.
-Do not use internal words like "row", "pipeline", "raw data", "card image cue", "template", "fallback", "signal", "participation signal", "aggregate presence", or "athletic landscape".
+Do not use internal words like "row", "pipeline", "raw data", "card image cue", "featured cue", "card lens", "sport tag", "sport tags", "template", "fallback", "signal", "participation signal", "aggregate presence", or "athletic landscape".
 Do not write "high signal", "medium signal", "low signal", or "high aggregate presence" in final copy. Use the bucket only to decide whether the copy should be specific or generalized.
 Avoid backend-sounding or vague phrases like "roster data", "roster", "representation", "prominent feature", "athletic connections", "frequently associated", "ties to", "backdrop", "frame", or "could help fans discover".
 Do not overstate the cue with words like "strong", "dominant", "best", or "proves".
+Avoid physical-demand wording such as "demands", "requires", "essential", "rigorous", "stamina", "maintain speed", or "intense physical pressure". Prefer fan-observation wording such as "look for", "notice", "watch how", "shows", "invites fans to read", and "could help fans understand".
 This panel is only about the featured sport. Do not mention other sports from otherTopSportTagsForStateBriefingOnly; those belong in the Gemini State Briefing.
+Make every field answer: "why would a fan care?"
+Avoid repeating the same abstract trait language across fields. Each field must add a different kind of value.
+Do not use section-title language like "Why this sport", "Movement read", "State context", "Fan Takeaway", or "Watch Lens" inside the values.
 
 Return valid JSON only with these fields:
 - featuredCue: short display label. If primarySportTag is present, use it exactly. If not, use a concise generalized cue.
-- featuredCueExplanation: 1 sentence about what the featured sport helps the card communicate to fans: movement, environment, teamwork, rhythm, pace, spacing, or control. Do not explain the data-selection method and do not use "is featured because".
-- featuredSportContext: 1 sentence about the featured sport's sport-family theme, movement qualities, environment, or fan-discovery lens. Do not name other sports.
-- stateLens: 1 sentence connecting geography context and the featured sport with conditional language and no causation claim. Prefer "could show how regional geography may offer context..." over "backdrop", "frame", or "discover".
+- watchLens: 1-2 short sentences telling a fan what is interesting to watch in this featured sport. Be concrete about action, rhythm, space, transition, environment, pressure, equipment, or decision-making.
+- stateConnection: 1 sentence connecting state geography/culture context to this featured sport with conditional language and no causation claim. Prefer "could help fans understand..." or "could show how..." Do not say "popular" or "practiced" unless the provided data directly supports it.
+- fanTakeaway: 1 sentence explaining how this panel helps a fan understand the card theme or shared trait, without repeating watchLens.
+- sportFamilyTheme: concise display phrase using 2-4 theme terms separated by " · ". Example style: "Aquatic environment · Team spacing · Repeat rhythm".
 - complianceWarnings: array of strings, empty if safe.
 
 Panel data:
@@ -574,7 +599,7 @@ async function generateGeminiJson({ token, prompt, modelName, timeoutMs }) {
   if (response.statusCode < 200 || response.statusCode >= 300) {
     const error = new Error(`Vertex Gemini JSON request failed: ${response.statusCode} ${response.bodyText}`);
     error.status = response.statusCode;
-    error.retryable = [408, 409, 425, 429, 500, 502, 503, 504].includes(response.statusCode);
+    error.retryable = [408, 409, 425, 429, 499, 500, 502, 503, 504].includes(response.statusCode);
     throw error;
   }
 
@@ -586,7 +611,7 @@ async function generateGeminiJson({ token, prompt, modelName, timeoutMs }) {
 
 function validateCardBackCopy({ card, program, rawCopy }) {
   const panel = programPanel(card, program);
-  const requiredFields = ["featuredCue", "featuredCueExplanation", "featuredSportContext", "stateLens"];
+  const requiredFields = ["featuredCue", "watchLens", "stateConnection", "fanTakeaway", "sportFamilyTheme"];
   const missingFields = requiredFields.filter((field) => !String(rawCopy?.[field] || "").trim());
   if (missingFields.length) {
     throw new Error(`Gemini card-back copy is missing required fields: ${missingFields.join(", ")}`);
@@ -595,10 +620,11 @@ function validateCardBackCopy({ card, program, rawCopy }) {
   const expectedCue = panel.primarySportTag || null;
   const copy = {
     featuredCue: expectedCue || String(rawCopy.featuredCue).trim(),
-    featuredCueExplanation: String(rawCopy.featuredCueExplanation).trim(),
-    relatedTags: panel.topSportTags?.slice(1) || [],
-    featuredSportContext: String(rawCopy.featuredSportContext).trim(),
-    stateLens: String(rawCopy.stateLens).trim(),
+    watchLens: String(rawCopy.watchLens).trim(),
+    relatedTags: (panel.topSportTags || []).filter((tag) => tag !== expectedCue),
+    stateConnection: String(rawCopy.stateConnection).trim(),
+    fanTakeaway: String(rawCopy.fanTakeaway).trim(),
+    sportFamilyTheme: String(rawCopy.sportFamilyTheme).trim(),
     complianceWarnings: Array.isArray(rawCopy.complianceWarnings)
       ? rawCopy.complianceWarnings.map((warning) => String(warning || "").trim()).filter(Boolean)
       : []
@@ -613,9 +639,10 @@ function validateCardBackCopy({ card, program, rawCopy }) {
 function complianceCheckCardBackCopy(copy) {
   const text = [
     copy.featuredCue,
-    copy.featuredCueExplanation,
-    copy.featuredSportContext,
-    copy.stateLens
+    copy.watchLens,
+    copy.stateConnection,
+    copy.fanTakeaway,
+    copy.sportFamilyTheme
   ].filter(Boolean).join(" ");
   const bannedPatterns = [
     /\bguarantee(s|d)?\b/i,
@@ -629,6 +656,11 @@ function complianceCheckCardBackCopy(copy) {
     /\bscore(s|d|ing)? result\b/i,
     /\bathletes?\b/i,
     /\bsignals?\b/i,
+    /\bsport tags?\b/i,
+    /\bfeatured cue\b/i,
+    /\bcard lens\b/i,
+    /\bwhy this sport\b/i,
+    /\bmovement read\b/i,
     /\baggregate presence\b/i,
     /\broster data\b/i,
     /\broster\b/i,
@@ -653,6 +685,13 @@ function complianceCheckCardBackCopy(copy) {
     /\bdominant\b/i,
     /\bbest\b/i,
     /\bproves?\b/i,
+    /\bdemands?\b/i,
+    /\brequires?\b/i,
+    /\bessential\b/i,
+    /\brigorous\b/i,
+    /\bstamina\b/i,
+    /\bmaintain speed\b/i,
+    /\bintense physical pressure\b/i,
     /\b\d+(\.\d+)?\s?(seconds?|minutes?|points?|percent|%)\b/i
   ];
   const warnings = bannedPatterns.filter((pattern) => pattern.test(text)).map((pattern) => `Unsafe phrase pattern: ${pattern}`);
@@ -741,7 +780,7 @@ async function generateGeminiImage({ token, prompt }) {
   if (response.statusCode < 200 || response.statusCode >= 300) {
     const error = new Error(`Vertex Gemini image request failed: ${response.statusCode} ${response.bodyText}`);
     error.status = response.statusCode;
-    error.retryable = [408, 409, 425, 429, 500, 502, 503, 504].includes(response.statusCode);
+    error.retryable = [408, 409, 425, 429, 499, 500, 502, 503, 504].includes(response.statusCode);
     throw error;
   }
 

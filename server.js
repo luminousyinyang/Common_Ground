@@ -105,9 +105,9 @@ function safeFallbackBriefing(card, reason = "No live Gemini response was availa
   const paralympicCue = card.paralympicPanel.primarySportTag || card.paralympicPanel.topSportTags?.[0] || card.paralympicPanel.sportFamily;
   return {
     summary: `Public Team USA and geography data may suggest that ${card.stateName} has a wider sport mix worth exploring across Olympic and Paralympic programs. The geography notes could help fans understand the state context without implying performance outcomes.`,
-    olympicNarrative: olympicMix ? `Olympic sport tags in this state view include ${olympicMix}, which could help fans see the broader program mix beyond the featured card sport.` : card.olympicPanel.geographyConnection,
-    paralympicNarrative: paralympicMix ? `Paralympic sport tags in this state view include ${paralympicMix}, giving the card a wider program view beyond the featured card sport.` : card.paralympicPanel.geographyConnection,
-    sharedTraitExplanation: `${card.sharedTrait.name} links the featured Olympic cue, ${olympicCue}, with the featured Paralympic cue, ${paralympicCue}, through ${card.sharedTrait.description.toLowerCase()}`,
+    olympicNarrative: olympicMix ? `The Olympic side includes ${olympicMix}, giving fans a broader view of the state's water, pace, team, and movement-control stories.` : card.olympicPanel.geographyConnection,
+    paralympicNarrative: paralympicMix ? `The Paralympic side includes ${paralympicMix}, which could help fans understand how endurance, control, and adaptive movement themes appear in the state view.` : card.paralympicPanel.geographyConnection,
+    sharedTraitExplanation: `${card.sharedTrait.name} connects Olympic ${olympicCue} with Paralympic ${paralympicCue}: ${card.sharedTrait.description}`,
     gameIntro: `Try a short fan challenge that reflects ${card.sharedTrait.name.toLowerCase()} as a personal game interaction only.`,
     complianceWarnings: [reason, "Fallback copy used because live Gemini generation is unavailable or did not pass validation."]
   };
@@ -143,6 +143,9 @@ function complianceCheckBriefing(briefing) {
     /\bmedal(s|ist|ists)?\b/i,
     /\bfinish time\b/i,
     /\bsignals?\b/i,
+    /\bsport tags?\b/i,
+    /\bfeatured cue\b/i,
+    /\bcard lens\b/i,
     /\baggregate presence\b/i,
     /\broster data\b/i,
     /\bprominent feature\b/i,
@@ -198,15 +201,16 @@ Use only the provided aggregate data and geography notes.
 Do not mention individual athlete names.
 Do not use athlete likeness.
 Do not mention finish times or specific scoring results.
+Do not mention exact counts in the fan-facing briefing.
 Do not imply geography causes success.
 Do not claim that terrain, climate, or training access guarantees outcomes.
-Use conditional language: "may suggest", "could help fans understand", "appears associated with", "could help fans discover".
-The collectible card panels already explain the two featured sports. The state briefing should zoom out and describe the broader state sport mix using all provided topSportTags for Olympic and Paralympic programs.
+Use conditional language: "may suggest", "could help fans understand", "appears associated with", "could show how".
+The collectible card panels already explain the two featured sports. The state briefing should zoom out and describe the broader state sport mix using all provided topSportTags for Olympic and Paralympic programs, but do not use the phrase "sport tags" in the output.
 Give Olympic and Paralympic sport mixes equal depth, equal respect, and equal analytical specificity.
 If olympicPanel.cardBackCopy or paralympicPanel.cardBackCopy are present, use that Gemini card-back copy as supporting context, but do not simply repeat it.
-Do not expose internal implementation terms such as "row", "pipeline", "fallback", "template", "card image cue", "raw data", "signal", "participation signal", "aggregate presence", or "athletic landscape".
+Do not expose internal implementation terms such as "row", "pipeline", "fallback", "template", "card image cue", "featured cue", "card lens", "sport tag", "sport tags", "raw data", "signal", "participation signal", "aggregate presence", or "athletic landscape".
 Avoid overstatement words such as "strong", "dominant", "best", or "proves".
-Output concise, fan-facing copy.
+Output concise, fan-facing copy. Add new insight about the whole state; do not restate the sport-panel copy.
 
 Return valid JSON with these fields:
 - summary: 1-2 sentences about the whole state view across both programs.
@@ -217,7 +221,31 @@ Return valid JSON with these fields:
 - complianceWarnings
 
 State data:
-${JSON.stringify(card, null, 2)}`;
+${JSON.stringify({
+  stateCode: card.stateCode,
+  stateName: card.stateName,
+  geographySnapshot: card.geographySnapshot,
+  climateSignal: card.climateSignal,
+  terrainSignals: card.terrainSignals,
+  hometownPresenceBucket: card.hometownPresenceBucket,
+  cardStory: card.cardStory,
+  sharedTrait: card.sharedTrait,
+  olympicPanel: {
+    sportFamily: card.olympicPanel?.sportFamily,
+    primarySportTag: card.olympicPanel?.primarySportTag,
+    topSportTags: card.olympicPanel?.topSportTags,
+    sportTagCandidates: card.olympicPanel?.sportTagCandidates,
+    cardBackCopy: card.olympicPanel?.cardBackCopy
+  },
+  paralympicPanel: {
+    sportFamily: card.paralympicPanel?.sportFamily,
+    primarySportTag: card.paralympicPanel?.primarySportTag,
+    topSportTags: card.paralympicPanel?.topSportTags,
+    sportTagCandidates: card.paralympicPanel?.sportTagCandidates,
+    cardBackCopy: card.paralympicPanel?.cardBackCopy
+  },
+  sourceLabels: (card.sourceRefs || []).map((source) => source.label)
+}, null, 2)}`;
 }
 
 function buildGamePrompt(card, result) {

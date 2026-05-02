@@ -138,7 +138,7 @@ const CARD_THEME_LABELS = {
 };
 
 const EMPTY_CARD_PANEL_MANIFEST = { states: {} };
-const CURRENT_CARD_BACK_COPY_VERSION = "common-ground-card-back-v4-sport-readable";
+const CURRENT_CARD_BACK_COPY_VERSION = "common-ground-card-back-v6-fan-takeaway";
 
 const SIGNAL_LABELS = {
   high: "High",
@@ -166,8 +166,8 @@ function fallbackBriefing(card, reason = "The Gemini backend is not available fr
     model: "safe-fallback",
     briefing: {
       summary: `Public Team USA and geography data may suggest that ${card.stateName} has a wider sport mix worth exploring across Olympic and Paralympic programs. The geography notes could help fans understand the state context without implying performance outcomes.`,
-      olympicNarrative: olympicMix ? `Olympic sport tags in this state view include ${olympicMix}, which could help fans see the broader program mix beyond the featured card sport.` : `${card.olympicPanel.geographyConnection}`,
-      paralympicNarrative: paralympicMix ? `Paralympic sport tags in this state view include ${paralympicMix}, giving the card a wider program view beyond the featured card sport.` : `${card.paralympicPanel.geographyConnection}`,
+      olympicNarrative: olympicMix ? `The Olympic side includes ${olympicMix}, giving fans a broader view of the state's water, pace, team, and movement-control stories.` : `${card.olympicPanel.geographyConnection}`,
+      paralympicNarrative: paralympicMix ? `The Paralympic side includes ${paralympicMix}, which could help fans understand how endurance, control, and adaptive movement themes appear in the state view.` : `${card.paralympicPanel.geographyConnection}`,
       sharedTraitExplanation: `${card.sharedTrait.name} links the featured Olympic cue, ${getPanelVisualCue(card.olympicPanel)}, with the featured Paralympic cue, ${getPanelVisualCue(card.paralympicPanel)}, through ${card.sharedTrait.description.toLowerCase()}`,
       gameIntro: `Try a short fan challenge that reflects ${card.sharedTrait.name.toLowerCase()} as a personal interaction only.`,
       complianceWarnings: [reason]
@@ -207,6 +207,33 @@ function getRosterCounts(card) {
 function formatMapHint(card) {
   const counts = getRosterCounts(card);
   return `${card.stateName}: ${counts.olympic} Olympic, ${counts.paralympic} Paralympic, ${counts.total} total public roster records.`;
+}
+
+function getCardStory(card) {
+  return card?.cardStory || {
+    themeName: card?.sharedTrait?.name || getCardThemeLabel(card),
+    geographySignal: card?.terrainSignals || [],
+    olympicFeatured: {
+      sportTag: card?.olympicPanel?.primarySportTag || getPanelVisualCue(card?.olympicPanel),
+      sportFamily: card?.olympicPanel?.sportFamily
+    },
+    paralympicFeatured: {
+      sportTag: card?.paralympicPanel?.primarySportTag || getPanelVisualCue(card?.paralympicPanel),
+      sportFamily: card?.paralympicPanel?.sportFamily
+    },
+    sharedTrait: card?.sharedTrait,
+    fanChallengeName: `${card?.sharedTrait?.name || "State Sync"} Challenge`
+  };
+}
+
+function getGeographySignals(card) {
+  const storySignals = getCardStory(card).geographySignal || [];
+  const signals = storySignals.length ? storySignals : card.terrainSignals || [];
+  return signals.filter(Boolean).slice(0, 5);
+}
+
+function getCardThemeName(card) {
+  return getCardStory(card).themeName || card.sharedTrait?.name || getCardThemeLabel(card);
 }
 
 function getCardTheme(card) {
@@ -274,18 +301,57 @@ function readableGeographyLens(panel, visualCue) {
   return raw || getPanelTopSportText(panel);
 }
 
+function watchLensForSport(visualCue, panel) {
+  const sport = String(visualCue || "").toLowerCase();
+  const family = String(panel?.sportFamily || "").toLowerCase();
+  if (/water polo/.test(sport)) {
+    return "Look for fast decisions in crowded water: passing lanes, defensive resets, and how teams create space without stable footing.";
+  }
+  if (/triathlon/.test(sport)) {
+    return "Watch the pacing across stages and transitions, where control has to carry from water to road to run.";
+  }
+  if (/swimming/.test(sport)) {
+    return "Notice tempo, lane awareness, and how a steady stroke rhythm turns water movement into repeatable control.";
+  }
+  if (/track|cycling|rowing|canoe|marathon|race walk/.test(sport) || /endurance|pace/.test(family)) {
+    return "Watch how pace changes over time: starts, surges, recovery moments, and steady control under pressure.";
+  }
+  if (/shooting|archery|fencing|golf|tennis|table tennis|badminton/.test(sport) || /precision|focus/.test(family)) {
+    return "Look for quiet control: setup, timing, focus, and clean decisions in short windows.";
+  }
+  if (/basketball|soccer|volleyball|rugby|goalball|hockey|handball|baseball|softball/.test(sport) || /team|spatial/.test(family)) {
+    return "Watch spacing and rhythm: how movement opens lanes, resets pressure, and turns timing into team shape.";
+  }
+  if (/skateboarding|gymnastics|climbing|surfing|equestrian|breaking/.test(sport) || /balance|technical/.test(family)) {
+    return "Notice balance, line choice, and how small timing changes shape the whole movement sequence.";
+  }
+  return `Watch how ${visualCue} turns movement, timing, and decisions into a readable sport story for fans.`;
+}
+
+function fanTakeawayForSport(visualCue, panel, sharedTraitName = "") {
+  const sport = String(visualCue || "").toLowerCase();
+  if (/water polo/.test(sport)) {
+    return "This panel is about rhythm under pressure: players are constantly reading space, coordinating, and moving through resistance.";
+  }
+  if (/triathlon/.test(sport)) {
+    return "This panel extends the waterline idea into endurance: pacing, transitions, and control across changing environments.";
+  }
+  if (/swimming|surfing|sailing|rowing|canoe/.test(sport)) {
+    return "This panel keeps the card close to water movement: rhythm, balance, and control while conditions shift.";
+  }
+  return `${visualCue} helps fans read ${sharedTraitName || panel?.sportFamily || "the shared trait"} through a specific sport instead of an abstract data label.`;
+}
+
 function getPanelBackCopy(panel) {
   const visualCue = getPanelVisualCue(panel);
-  const programName = shortProgramName(panel.program);
   const themePhrase = panelThemePhrase(panel);
 
   return panel.cardBackCopy || {
     featuredCue: visualCue,
-    featuredCueExplanation: `${visualCue} gives this ${programName} card a clear ${themePhrase} cue for fans to read.`,
-    featuredSportContext: panel.sportFamily
-      ? `The card connects this sport to ${panel.sportFamily.toLowerCase()} through timing, space, and controlled movement.`
-      : getPanelTopSportText(panel),
-    stateLens: readableGeographyLens(panel, visualCue)
+    watchLens: watchLensForSport(visualCue, panel),
+    stateConnection: readableGeographyLens(panel, visualCue),
+    fanTakeaway: fanTakeawayForSport(visualCue, panel),
+    sportFamilyTheme: panel.sportFamily || themePhrase
   };
 }
 
@@ -293,7 +359,16 @@ function getPanelBackCopyForDisplay(panel) {
   if (panel?.cardBackCopyVersion === CURRENT_CARD_BACK_COPY_VERSION && panel?.cardBackCopy) {
     return panel.cardBackCopy;
   }
-  return getPanelBackCopy(panel);
+  const fallback = getPanelBackCopy(panel);
+  const legacy = panel?.cardBackCopy || {};
+  return {
+    ...fallback,
+    featuredCue: legacy.featuredCue || fallback.featuredCue,
+    watchLens: legacy.watchLens || legacy.featuredCueExplanation || fallback.watchLens,
+    stateConnection: legacy.stateConnection || legacy.stateLens || fallback.stateConnection,
+    fanTakeaway: legacy.fanTakeaway || legacy.featuredSportContext || fallback.fanTakeaway,
+    sportFamilyTheme: legacy.sportFamilyTheme || fallback.sportFamilyTheme
+  };
 }
 
 function getPanelArtUrl(card, program, manifest) {
@@ -312,8 +387,6 @@ function mergeGeneratedPanelData(card, manifest) {
     const hasCurrentCardCopy = generated.cardBackCopyVersion === CURRENT_CARD_BACK_COPY_VERSION && generated.cardBackCopy;
     return {
       ...panel,
-      primarySportTag: generated.primarySportTag ?? panel.primarySportTag,
-      topSportTags: generated.topSportTags ?? panel.topSportTags,
       cardBackCopy: hasCurrentCardCopy ? generated.cardBackCopy : panel.cardBackCopy,
       cardBackCopySource: hasCurrentCardCopy ? generated.cardBackCopySource : panel.cardBackCopySource,
       cardBackCopyModel: hasCurrentCardCopy ? generated.cardBackCopyModel : panel.cardBackCopyModel,
@@ -852,7 +925,7 @@ function StateControls({ states, selectedCode, onSelect }) {
 }
 
 function StateSummary({ card }) {
-  const counts = getRosterCounts(card);
+  const geographySignals = getGeographySignals(card);
   return (
     <section className="state-summary">
       <div>
@@ -861,12 +934,12 @@ function StateSummary({ card }) {
       </div>
       <p>{card.geographySnapshot}</p>
       <div className="metric-row">
-        <span className="metric">State total <strong>{counts.total}</strong></span>
-        <span className="metric">Olympic count <strong>{counts.olympic}</strong></span>
-        <span className="metric">Paralympic count <strong>{counts.paralympic}</strong></span>
+        <span className="metric">Card theme <strong>{getCardThemeName(card)}</strong></span>
+        <span className="metric">Olympic <strong>{titleBucket(card.olympicPanel.aggregateSignal)}</strong></span>
+        <span className="metric">Paralympic <strong>{titleBucket(card.paralympicPanel.aggregateSignal)}</strong></span>
       </div>
       <div className="chip-row">
-        {card.terrainSignals.map((item) => <span className="chip" key={item}>{item}</span>)}
+        {geographySignals.map((item) => <span className="chip" key={item}>{item}</span>)}
       </div>
     </section>
   );
@@ -875,6 +948,12 @@ function StateSummary({ card }) {
 function SportPanel({ panel }) {
   const copy = getPanelBackCopyForDisplay(panel);
   const visualCue = copy.featuredCue || getPanelVisualCue(panel);
+  const rows = [
+    ["Watch Lens", copy.watchLens],
+    ["State Connection", copy.stateConnection],
+    ["Fan Takeaway", copy.fanTakeaway],
+    ["Sport-Family Theme", copy.sportFamilyTheme || panel.sportFamily]
+  ].filter(([, value]) => String(value || "").trim());
 
   return (
     <section className="panel">
@@ -883,12 +962,13 @@ function SportPanel({ panel }) {
       </div>
       <div className="panel-body">
         <h4>{visualCue}</h4>
-        <p>{copy.featuredCueExplanation}</p>
-        <p>{copy.featuredSportContext || copy.relatedTagsSentence}</p>
-        <p>{copy.stateLens}</p>
-        <div className="panel-family-line">
-          <span>Sport-family theme</span>
-          <strong>{panel.sportFamily}</strong>
+        <div className="panel-stat-list">
+          {rows.map(([label, value]) => (
+            <div className="panel-stat" key={label}>
+              <span>{label}</span>
+              <strong>{value}</strong>
+            </div>
+          ))}
         </div>
       </div>
     </section>
@@ -937,7 +1017,7 @@ function CardArt({ card, compact = false, panelManifest = EMPTY_CARD_PANEL_MANIF
   const fallback = CARD_ART[theme] || CARD_ART.neutral;
   const olympicSrc = getPanelArtUrl(card, "olympic", panelManifest);
   const paralympicSrc = getPanelArtUrl(card, "paralympic", panelManifest);
-  const counts = getRosterCounts(card);
+  const themeName = getCardThemeName(card);
 
   return (
     <div className={`card-art card-art-${theme} ${compact ? "is-compact" : ""}`}>
@@ -958,8 +1038,8 @@ function CardArt({ card, compact = false, panelManifest = EMPTY_CARD_PANEL_MANIF
       </div>
       <div className="art-state-lockup">
         <strong>{card.stateName}</strong>
-        <span>{compact ? getCardThemeLabel(card) : "State Sync Challenge"}</span>
-        {!compact && <em>Olympic count: {counts.olympic} · Paralympic count: {counts.paralympic}</em>}
+        <span>{compact ? themeName : "State Sync Challenge"}</span>
+        {!compact && <em>{themeName} · {card.sharedTrait.name}</em>}
       </div>
     </div>
   );
@@ -974,7 +1054,7 @@ function UnifiedStateCard({ card, sourceRefs, briefing, briefingLoading, onRefre
   const [isHovered, setIsHovered] = useState(false);
   const tiltRef = useRef(null);
   const flipTimers = useRef([]);
-  const counts = getRosterCounts(card);
+  const cardStory = getCardStory(card);
   const olympicCue = getPanelVisualCue(card.olympicPanel);
   const paralympicCue = getPanelVisualCue(card.paralympicPanel);
 
