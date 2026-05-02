@@ -101,6 +101,8 @@ const TRAITS = [
   }
 ];
 
+const SPORT_CANDIDATE_LIMIT = 8;
+
 const args = parseArgs(process.argv.slice(2));
 const retrievedAt = args.retrievedAt || new Date().toISOString().slice(0, 10);
 const outputPath = path.resolve(appRoot, args.output || "public/data/state-cards.json");
@@ -266,7 +268,7 @@ function buildDataset({ aggregate, retrievedAt, olympicTotal, paralympicTotal, e
   const states = Object.entries(STATE_CONTEXT).map(([stateCode, context]) => {
     const [stateName, geographySnapshot, climateSignal, terrainSignals] = context;
     const stateAggregate = aggregate[stateCode];
-    const olympicPanel = buildPanel({
+    const baseOlympicPanel = buildPanel({
       stateName,
       stateCode,
       program: "olympic",
@@ -275,7 +277,7 @@ function buildDataset({ aggregate, retrievedAt, olympicTotal, paralympicTotal, e
       geographySnapshot,
       sourceRef: sourceRefs[0]
     });
-    const paralympicPanel = buildPanel({
+    const baseParalympicPanel = buildPanel({
       stateName,
       stateCode,
       program: "paralympic",
@@ -285,6 +287,16 @@ function buildDataset({ aggregate, retrievedAt, olympicTotal, paralympicTotal, e
       sourceRef: sourceRefs[1]
     });
     const totalRecords = stateAggregate.olympic.records + stateAggregate.paralympic.records;
+    const cardStory = buildCardStory({
+      stateName,
+      geographySnapshot,
+      climateSignal,
+      terrainSignals,
+      olympicPanel: baseOlympicPanel,
+      paralympicPanel: baseParalympicPanel
+    });
+    const olympicPanel = applyFeaturedSport(baseOlympicPanel, cardStory.olympicFeatured);
+    const paralympicPanel = applyFeaturedSport(baseParalympicPanel, cardStory.paralympicFeatured);
 
     return {
       stateCode,
@@ -300,7 +312,8 @@ function buildDataset({ aggregate, retrievedAt, olympicTotal, paralympicTotal, e
       hometownPresenceBucket: combinedBucket(totalRecords),
       olympicPanel,
       paralympicPanel,
-      sharedTrait: chooseSharedTrait(olympicPanel, paralympicPanel),
+      sharedTrait: cardStory.sharedTrait,
+      cardStory,
       minimumAggregationPassed: totalRecords >= 3,
       sourceRefs: sourceRefs.slice(0, 2)
     };
@@ -338,7 +351,8 @@ function buildDataset({ aggregate, retrievedAt, olympicTotal, paralympicTotal, e
 
 function buildPanel({ stateName, program, label, aggregate, geographySnapshot, sourceRef }) {
   const signal = panelBucket(aggregate.records, program);
-  const topSports = topKeys(aggregate.sports, 3);
+  const sportTagCandidates = sportCandidates(aggregate.sports, program);
+  const topSports = sportTagCandidates.slice(0, 3).map((candidate) => candidate.sportTag);
   const topFamilies = topKeys(aggregate.families, 2);
   const programName = program === "olympic" ? "Olympic" : "Paralympic";
 
@@ -350,6 +364,7 @@ function buildPanel({ stateName, program, label, aggregate, geographySnapshot, s
       aggregateSignal: "insufficient_data",
       primarySportTag: null,
       topSportTags: [],
+      sportTagCandidates: [],
       geographyConnection: `${stateName} has no public ${programName} hometown geography roster signal in this TeamUSA.com Paris 2024 dataset.`,
       geminiNote: "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
       sourceRefs: [sourceRef]
@@ -364,6 +379,7 @@ function buildPanel({ stateName, program, label, aggregate, geographySnapshot, s
       aggregateSignal: signal,
       primarySportTag: null,
       topSportTags: [],
+      sportTagCandidates: [],
       geographyConnection: `The ${programName} roster signal for ${stateName} is too small to summarize by sport family without over-specificity.`,
       geminiNote: "Common Ground keeps this panel generalized so fan discovery stays aggregate and privacy-aware.",
       sourceRefs: [sourceRef]
@@ -379,10 +395,272 @@ function buildPanel({ stateName, program, label, aggregate, geographySnapshot, s
     aggregateSignal: signal,
     primarySportTag: topSports[0] || null,
     topSportTags: topSports,
+    sportTagCandidates,
     geographyConnection: `${geographySnapshot} could help fans frame the state's ${programName} sport-family presence without implying geography causes outcomes.`,
     geminiNote: `Public roster tags in this panel include ${sportLabel}; the state context may suggest a fan discovery lens, not a performance claim.`,
     sourceRefs: [sourceRef]
   };
+}
+
+function sportCandidates(map, program) {
+  return [...map.entries()]
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+    .slice(0, SPORT_CANDIDATE_LIMIT)
+    .map(([sportTag, count], index) => {
+      const sportFamily = sportFamilyFor(sportTag);
+      return {
+        sportTag,
+        rank: index + 1,
+        bucket: sportTagBucket(count, program),
+        sportFamily,
+        themeTags: themeTagsForSport(sportTag, sportFamily)
+      };
+    });
+}
+
+function sportTagBucket(count, program) {
+  if (count <= 0) return "insufficient_data";
+  if (program === "paralympic") {
+    if (count >= 5) return "high";
+    if (count >= 3) return "medium";
+    return "low";
+  }
+  if (count >= 8) return "high";
+  if (count >= 3) return "medium";
+  return "low";
+}
+
+function themeTagsForSport(title, family = sportFamilyFor(title)) {
+  const text = `${title} ${family}`.toLowerCase();
+  const tags = new Set();
+  if (/aquatic|water|swimming|water polo|surfing|sailing|rowing|canoe|triathlon|paratriathlon/.test(text)) {
+    tags.add("water");
+    tags.add("rhythm");
+  }
+  if (/coast|surfing|sailing|water polo/.test(text)) tags.add("coastal");
+  if (/track|triathlon|cycling|rowing|canoe|marathon|race walk|endurance/.test(text)) {
+    tags.add("endurance");
+    tags.add("pace");
+    tags.add("rhythm");
+    tags.add("outdoor");
+  }
+  if (/team|basketball|soccer|volleyball|rugby|field hockey|handball|baseball|softball|goalball|water polo/.test(text)) {
+    tags.add("team");
+    tags.add("spatial");
+  }
+  if (/precision|shooting|archery|fencing|table tennis|tennis|badminton|golf/.test(text)) {
+    tags.add("precision");
+    tags.add("focus");
+    tags.add("control");
+  }
+  if (/balance|gymnastics|skateboarding|sport climbing|breaking|equestrian|surfing/.test(text)) {
+    tags.add("balance");
+    tags.add("technical");
+    tags.add("control");
+  }
+  if (/power|boxing|wrestling|judo|taekwondo|powerlifting|weightlifting/.test(text)) {
+    tags.add("power");
+    tags.add("control");
+  }
+  if (/winter|skiing|biathlon|snow|ice/.test(text)) {
+    tags.add("winter");
+    tags.add("equipment");
+    tags.add("endurance");
+  }
+  if (/wheelchair|para/.test(text)) tags.add("adaptive");
+  if (!tags.size) tags.add("mixed");
+  return [...tags].sort();
+}
+
+function buildCardStory({ stateName, geographySnapshot, climateSignal, terrainSignals, olympicPanel, paralympicPanel }) {
+  const geographyTags = geographyTagsForState(geographySnapshot, climateSignal, terrainSignals);
+  const pair = chooseFeaturedPair(olympicPanel.sportTagCandidates, paralympicPanel.sportTagCandidates, geographyTags);
+  const olympicFeatured = serializeFeaturedCandidate(pair.olympic, "olympic");
+  const paralympicFeatured = serializeFeaturedCandidate(pair.paralympic, "paralympic");
+  const sharedTrait = chooseSharedTraitForFeatured(olympicFeatured, paralympicFeatured, olympicPanel, paralympicPanel);
+  const themeName = cardThemeName({ stateName, geographyTags, olympicFeatured, paralympicFeatured, sharedTrait });
+
+  return {
+    themeName,
+    geographySignal: geographySignalLabels(geographySnapshot),
+    olympicFeatured,
+    paralympicFeatured,
+    sharedTrait,
+    fanChallengeName: fanChallengeName(themeName, sharedTrait),
+    pairingPolicy: "sourced_coherent",
+    pairingScore: Number(pair.score.toFixed(2))
+  };
+}
+
+function chooseFeaturedPair(olympicCandidates = [], paralympicCandidates = [], geographyTags = []) {
+  const fallback = {
+    olympic: olympicCandidates[0] || null,
+    paralympic: paralympicCandidates[0] || null,
+    score: 0
+  };
+  if (!olympicCandidates.length || !paralympicCandidates.length) return fallback;
+
+  const scored = [];
+  for (const olympic of olympicCandidates) {
+    for (const paralympic of paralympicCandidates) {
+      scored.push({
+        olympic,
+        paralympic,
+        score: pairScore(olympic, paralympic, geographyTags)
+      });
+    }
+  }
+
+  const topPairScore = pairScore(olympicCandidates[0], paralympicCandidates[0], geographyTags);
+  const best = scored.sort((a, b) =>
+    b.score - a.score ||
+    a.olympic.rank + a.paralympic.rank - (b.olympic.rank + b.paralympic.rank) ||
+    a.olympic.sportTag.localeCompare(b.olympic.sportTag) ||
+    a.paralympic.sportTag.localeCompare(b.paralympic.sportTag)
+  )[0];
+
+  return best.score >= topPairScore + 0.5 ? best : { ...fallback, score: topPairScore };
+}
+
+function pairScore(olympic, paralympic, geographyTags = []) {
+  if (!olympic || !paralympic) return 0;
+  const olympicTags = new Set(olympic.themeTags || []);
+  const paralympicTags = new Set(paralympic.themeTags || []);
+  const geography = new Set(geographyTags);
+  const shared = [...olympicTags].filter((tag) => paralympicTags.has(tag));
+  const geoFit = [...new Set([...olympicTags, ...paralympicTags])].filter((tag) => geography.has(tag));
+  const rankScore = (SPORT_CANDIDATE_LIMIT + 1 - olympic.rank) + (SPORT_CANDIDATE_LIMIT + 1 - paralympic.rank);
+  const coastalBonus = geography.has("coastal") && (olympicTags.has("water") || paralympicTags.has("water")) ? 6 : 0;
+  const winterBonus = geography.has("winter") && (olympicTags.has("winter") || paralympicTags.has("winter")) ? 6 : 0;
+  const mountainBonus = geography.has("mountain") && (olympicTags.has("endurance") || paralympicTags.has("endurance")) ? 3 : 0;
+  return shared.length * 6 + geoFit.length * 5 + rankScore * 1.3 + coastalBonus + winterBonus + mountainBonus;
+}
+
+function geographyTagsForState(geographySnapshot, climateSignal, terrainSignals = []) {
+  const text = `${geographySnapshot} ${climateSignal} ${terrainSignals.join(" ")}`.toLowerCase();
+  const tags = new Set(["outdoor"]);
+  if (/coast|ocean|island|gulf|bay|sound|peninsula|shore|water|lake|river/.test(text)) {
+    tags.add("water");
+    tags.add("coastal");
+  }
+  if (/mountain|elevation|alpine|ridge|foothill/.test(text)) {
+    tags.add("mountain");
+    tags.add("endurance");
+  }
+  if (/snow|winter|cold|ice/.test(text)) tags.add("winter");
+  if (/desert|dry|heat|arid/.test(text)) {
+    tags.add("heat");
+    tags.add("endurance");
+  }
+  if (/urban|metro|city|infrastructure|dense/.test(text)) {
+    tags.add("urban");
+    tags.add("team");
+    tags.add("spatial");
+  }
+  if (/plains|wind|open terrain|prairie/.test(text)) {
+    tags.add("pace");
+    tags.add("endurance");
+  }
+  return [...tags].sort();
+}
+
+function serializeFeaturedCandidate(candidate, program) {
+  if (!candidate) {
+    return {
+      program,
+      sportTag: null,
+      sportFamily: "Generalized sport-family",
+      rank: null,
+      bucket: "insufficient_data",
+      themeTags: []
+    };
+  }
+  return {
+    program,
+    sportTag: candidate.sportTag,
+    sportFamily: candidate.sportFamily,
+    rank: candidate.rank,
+    bucket: candidate.bucket,
+    themeTags: candidate.themeTags
+  };
+}
+
+function applyFeaturedSport(panel, featured) {
+  if (!featured?.sportTag) return panel;
+  return {
+    ...panel,
+    primarySportTag: featured.sportTag,
+    sportFamily: featured.sportFamily,
+    featuredSportRank: featured.rank,
+    featuredSportBucket: featured.bucket
+  };
+}
+
+function chooseSharedTraitForFeatured(olympicFeatured, paralympicFeatured, olympicPanel, paralympicPanel) {
+  const tags = new Set([...(olympicFeatured?.themeTags || []), ...(paralympicFeatured?.themeTags || [])]);
+  if (tags.has("water") && (tags.has("pace") || tags.has("rhythm") || tags.has("balance"))) {
+    return {
+      name: "Waterline Control",
+      description: "Timing, spacing, and controlled rhythm when movement conditions keep changing.",
+      challengeType: "cadence_keeper"
+    };
+  }
+  if (tags.has("winter") || tags.has("mountain")) {
+    return {
+      name: "Elevation Pace",
+      description: "Steady pacing and controlled decisions across terrain, weather, and equipment demands.",
+      challengeType: "cadence_keeper"
+    };
+  }
+  if (tags.has("precision") || tags.has("focus")) {
+    return {
+      name: "Focus Timing",
+      description: "Clean recognition, controlled timing, and repeatable focus under changing conditions.",
+      challengeType: "reaction_grid"
+    };
+  }
+  if (tags.has("team") || tags.has("spatial")) {
+    return {
+      name: "Spatial Timing",
+      description: "Fast recognition, clean timing, and attention to changing space across sport families.",
+      challengeType: "reaction_grid"
+    };
+  }
+  return chooseSharedTrait(olympicPanel, paralympicPanel);
+}
+
+function cardThemeName({ geographyTags, olympicFeatured, paralympicFeatured, sharedTrait }) {
+  const tags = new Set([...(olympicFeatured?.themeTags || []), ...(paralympicFeatured?.themeTags || [])]);
+  if (geographyTags.includes("coastal") && tags.has("water")) return "Coastal Rhythm";
+  if (geographyTags.includes("winter")) return "Cold Pace";
+  if (geographyTags.includes("mountain")) return "Elevation Pace";
+  if (geographyTags.includes("heat")) return "Heat Control";
+  if (geographyTags.includes("urban") && tags.has("team")) return "City Timing";
+  if (tags.has("precision")) return "Focus Lines";
+  return sharedTrait?.name || "State Sync";
+}
+
+function geographySignalLabels(geographySnapshot) {
+  return geographySnapshot
+    .split(",")
+    .map((item) => titleCase(item.trim()))
+    .filter(Boolean)
+    .slice(0, 5);
+}
+
+function fanChallengeName(themeName, sharedTrait) {
+  if (/coastal|water/i.test(themeName)) return "Waterline Timing Challenge";
+  if (/elevation|cold|pace/i.test(themeName)) return "Pace Control Challenge";
+  if (/focus/i.test(themeName)) return "Focus Timing Challenge";
+  if (/city|spatial/i.test(themeName) || /spatial/i.test(sharedTrait?.name || "")) return "Spatial Timing Challenge";
+  return `${sharedTrait?.name || "State Sync"} Challenge`;
+}
+
+function titleCase(value) {
+  return String(value || "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .replace(/\b[a-z]/g, (char) => char.toUpperCase());
 }
 
 function topKeys(map, limit) {
