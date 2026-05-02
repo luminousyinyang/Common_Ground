@@ -1,7 +1,8 @@
 import { execFile } from "node:child_process";
-import { createSign } from "node:crypto";
+import { createHash, createSign, randomUUID } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
+import https from "node:https";
 import path from "node:path";
 import { promisify } from "node:util";
 import { fileURLToPath } from "node:url";
@@ -19,7 +20,16 @@ const args = parseArgs(process.argv.slice(2));
 const project = process.env.GOOGLE_CLOUD_PROJECT;
 const location = process.env.GOOGLE_CLOUD_LOCATION || "global";
 const model = process.env.CARD_IMAGE_MODEL || "gemini-3-pro-image-preview";
-const PROMPT_VERSION = "common-ground-card-panel-v2-full-bleed";
+const cardCopyModel = process.env.CARD_COPY_MODEL || process.env.GEMINI_MODEL || "gemini-3.1-pro-preview";
+const vertexAuthMode = normalizeVertexAuthMode(process.env.VERTEX_AUTH_MODE || "auto");
+const imageMaxAttempts = positiveInteger(process.env.CARD_IMAGE_MAX_ATTEMPTS, 3);
+const imageRetryDelayMs = positiveInteger(process.env.CARD_IMAGE_RETRY_DELAY_MS, 5000);
+const imageRequestTimeoutMs = positiveInteger(process.env.CARD_IMAGE_REQUEST_TIMEOUT_MS, 900000);
+const textRequestTimeoutMs = positiveInteger(process.env.CARD_COPY_REQUEST_TIMEOUT_MS, 120000);
+const PROMPT_VERSION = "common-ground-card-panel-v3-top-sport-cue";
+const CARD_BACK_COPY_VERSION = "common-ground-card-back-v1-gemini";
+
+let firebaseClientsPromise;
 
 const STATE_PALETTE_STORIES = {
   AZ: {
@@ -153,6 +163,8 @@ if (!project) {
   throw new Error("GOOGLE_CLOUD_PROJECT is required. Add it to .env or export it before running this script.");
 }
 
+warnIfCredentialProjectDiffers();
+
 const dataset = JSON.parse(await readFile(dataPath, "utf8"));
 const selectedCards = selectCards(dataset.states, args);
 
@@ -160,12 +172,17 @@ if (selectedCards.length === 0) {
   throw new Error("No matching states found. Use --states CO,WA or --all.");
 }
 
+if (args.noLocal && !args.firebase) {
+  throw new Error("--no-local requires --firebase so generated images still have a storage target.");
+}
+
 await mkdir(outputDir, { recursive: true });
 
 if (args.dryRun) {
   for (const card of selectedCards) {
     for (const program of ["olympic", "paralympic"]) {
-      console.log(`\n--- ${card.stateName} ${program} prompt ---\n${buildPrompt(card, program)}\n`);
+      console.log(`\n--- ${card.stateName} ${program} image prompt ---\n${buildPrompt(card, program)}\n`);
+      console.log(`\n--- ${card.stateName} ${program} Gemini card-back copy prompt ---\n${buildCardBackCopyPrompt(card, program)}\n`);
     }
   }
   process.exit(0);
@@ -174,6 +191,7 @@ if (args.dryRun) {
 const token = await getAccessToken();
 const manifest = await loadManifest();
 manifest.model = model;
+manifest.cardCopyModel = cardCopyModel;
 manifest.location = location;
 manifest.updatedAt = new Date().toISOString();
 manifest.states ||= {};
@@ -184,31 +202,75 @@ for (const card of selectedCards) {
   for (const program of ["olympic", "paralympic"]) {
     const filename = `${card.stateCode.toLowerCase()}-${program}.png`;
     const outPath = path.join(outputDir, filename);
-    const url = `/assets/card-panels/${filename}`;
+    const localUrl = `/assets/card-panels/${filename}`;
     const prompt = buildPrompt(card, program);
 
     const existingPanel = manifest.states[card.stateCode][program];
-    if (!args.force && existingPanel?.url === url && existingPanel.promptVersion === PROMPT_VERSION) {
-      console.log(`Skipping ${card.stateCode} ${program}; manifest already points to ${url} with ${PROMPT_VERSION}. Use --force to regenerate.`);
+    const copyPrompt = buildCardBackCopyPrompt(card, program);
+    const cardBackCopy = await getOrGenerateCardBackCopy({
+      token,
+      card,
+      program,
+      existingPanel,
+      copyPrompt
+    });
+    const panelMetadata = currentPanelMetadata({ card, program, prompt, copyPrompt, cardBackCopy });
+    const alreadyGenerated = args.firebase
+      ? existingPanel?.storagePath && existingPanel.promptVersion === PROMPT_VERSION
+      : existingPanel?.url === localUrl && existingPanel.promptVersion === PROMPT_VERSION;
+    if (!args.force && alreadyGenerated) {
+      const syncedPanel = {
+        ...existingPanel,
+        ...panelMetadata,
+        localUrl: existingPanel.localUrl ?? (args.noLocal ? null : localUrl),
+        mimeType: existingPanel.mimeType || "image/png",
+        url: existingPanel.url || localUrl
+      };
+      manifest.states[card.stateCode][program] = syncedPanel;
+      await writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
+      if (args.firebase) {
+        await writePanelMetadataToFirebase({ card, program, prompt, panelRecord: syncedPanel });
+      }
+      console.log(`Skipping ${card.stateCode} ${program}; manifest already has ${PROMPT_VERSION}. Use --force to regenerate.`);
       continue;
     }
 
     console.log(`Generating ${card.stateName} ${program} panel with ${model}...`);
-    const { imageBuffer, mimeType, textParts } = await generateGeminiImage({ token, prompt });
-    await writeFile(outPath, imageBuffer);
+    const { imageBuffer, mimeType } = await generateGeminiImageWithRetry({
+      token,
+      prompt,
+      label: `${card.stateName} ${program}`
+    });
 
-    manifest.states[card.stateCode][program] = {
-      url,
+    if (!args.noLocal) {
+      await writeFile(outPath, imageBuffer);
+      console.log(`Wrote ${localUrl}`);
+    }
+
+    const basePanelRecord = {
+      url: localUrl,
+      localUrl: args.noLocal ? null : localUrl,
       model,
+      location,
       mimeType,
       generatedAt: new Date().toISOString(),
-      promptVersion: PROMPT_VERSION,
-      promptSummary: `${card.stateName} ${program} ${programPanel(card, program).sportFamily}`,
-      paletteTheme: paletteStoryForCard(card).name,
-      notes: textParts.join(" ").trim()
+      ...panelMetadata,
+      notes: ""
     };
+
+    const panelRecord = args.firebase
+      ? await savePanelToFirebase({
+        card,
+        program,
+        imageBuffer,
+        mimeType,
+        prompt,
+        panelRecord: basePanelRecord
+      })
+      : basePanelRecord;
+
+    manifest.states[card.stateCode][program] = panelRecord;
     await writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
-    console.log(`Wrote ${url}`);
   }
 }
 
@@ -218,7 +280,9 @@ function parseArgs(argv) {
   const parsed = {
     all: false,
     dryRun: false,
+    firebase: false,
     force: false,
+    noLocal: false,
     states: ["CO"]
   };
 
@@ -226,7 +290,9 @@ function parseArgs(argv) {
     const arg = argv[index];
     if (arg === "--all") parsed.all = true;
     else if (arg === "--dry-run") parsed.dryRun = true;
+    else if (arg === "--firebase") parsed.firebase = true;
     else if (arg === "--force") parsed.force = true;
+    else if (arg === "--no-local") parsed.noLocal = true;
     else if (arg === "--states") parsed.states = String(argv[index += 1] || "").split(",");
     else if (arg.startsWith("--states=")) parsed.states = arg.slice("--states=".length).split(",");
     else throw new Error(`Unknown argument: ${arg}`);
@@ -240,6 +306,46 @@ function selectCards(states, parsedArgs) {
   if (parsedArgs.all) return states;
   const wanted = new Set(parsedArgs.states);
   return states.filter((state) => wanted.has(state.stateCode));
+}
+
+function warnIfCredentialProjectDiffers() {
+  const credentials = readGoogleApplicationCredentials();
+  if (!credentials) return;
+
+  try {
+    if (credentials.project_id && credentials.project_id !== project) {
+      const authNote = vertexAuthMode === "service_account"
+        ? "VERTEX_AUTH_MODE=service_account is set, so this service account must have Vertex access on the Vertex project."
+        : "Vertex image calls will use your local gcloud login by default; this service account is still used for Firebase Admin.";
+      console.warn([
+        "",
+        "WARNING: GOOGLE_APPLICATION_CREDENTIALS belongs to a different Google Cloud project.",
+        `  Credentials project: ${credentials.project_id}`,
+        `  Vertex project:      ${project}`,
+        `  Service account:     ${credentials.client_email || "(unknown)"}`,
+        "",
+        authNote,
+        "To force Vertex to use this JSON key, set VERTEX_AUTH_MODE=service_account and grant the service account Vertex permission on the Vertex project.",
+        credentials.client_email
+          ? `  gcloud projects add-iam-policy-binding ${project} --member="serviceAccount:${credentials.client_email}" --role="roles/aiplatform.user"`
+          : "",
+        ""
+      ].filter(Boolean).join("\n"));
+    }
+  } catch {
+    // Credential parsing is only for a helpful warning; auth will report hard failures later.
+  }
+}
+
+function readGoogleApplicationCredentials() {
+  const credentialsPath = process.env.GOOGLE_APPLICATION_CREDENTIALS;
+  if (!credentialsPath) return null;
+
+  try {
+    return JSON.parse(readFileSync(credentialsPath, "utf8"));
+  } catch {
+    return null;
+  }
 }
 
 function programPanel(card, program) {
@@ -266,6 +372,8 @@ function paletteStoryForCard(card) {
 
 function buildPrompt(card, program) {
   const panel = programPanel(card, program);
+  const imageSubject = imageSubjectForPanel(panel);
+  const topSportContext = topSportContextForPanel(panel);
   const paletteStory = paletteStoryForCard(card);
   const palette = paletteStory[program] || paletteStory.olympic;
   const programPhrase = program === "paralympic"
@@ -277,12 +385,16 @@ function buildPrompt(card, program) {
 Artwork role: ${program === "paralympic" ? "Paralympic" : "Olympic"} image artwork for one half of the front of a state discovery card.
 State: ${card.stateName}
 Sport family: ${panel.sportFamily}
+Primary visual sport cue: ${imageSubject}
+Aggregate sport-tag context: ${topSportContext}
 Shared trait: ${card.sharedTrait.name} — ${card.sharedTrait.description}
 Geography context: ${card.geographySnapshot}
 
 Visual direction:
 - Match a premium collectible atlas sports-card style: clean, polished, modern, lightly dimensional, vector/low-poly illustration.
-- Use ${programPhrase}; the figure must be faceless, generic, and non-identifiable.
+- Use ${programPhrase}, led by the primary visual sport cue when one is available; the figure must be faceless, generic, and non-identifiable.
+- If a primary sport cue is available, show abstract equipment, setting, motion, or silhouette language for that sport cue without portraying a real athlete.
+- If the sport cue is generalized because the source signal is low-volume or missing, use broad sport-family motion cues only.
 - Use the state geography as the environment inspiration, not as a performance claim.
 - Full-bleed artwork only: the illustration must fill the entire image canvas edge to edge.
 - Do not draw an inner card, picture frame, rounded rectangle, border, mat, white margin, inset panel, drop shadow, UI container, poster frame, or card-within-a-card.
@@ -305,42 +417,281 @@ Compliance constraints:
 Return only the image.`;
 }
 
-async function generateGeminiImage({ token, prompt }) {
-  const endpoint = vertexEndpoint();
-  const response = await fetch(endpoint, {
-    method: "POST",
+function imageSubjectForPanel(panel) {
+  return panel.primarySportTag || panel.topSportTags?.[0] || panel.sportFamily || "general sport-family signal";
+}
+
+function topSportContextForPanel(panel) {
+  if (panel.topSportTags?.length) {
+    return `${joinList(panel.topSportTags)}. These are aggregate public roster sport tags for this state/program and should guide the illustration without displaying counts.`;
+  }
+  return "No top sport tag is exposed for this panel because the public roster signal is low-volume or unavailable; keep the artwork generalized.";
+}
+
+function currentPanelMetadata({ card, program, prompt, copyPrompt, cardBackCopy }) {
+  const panel = programPanel(card, program);
+  return {
+    promptVersion: PROMPT_VERSION,
+    promptSummary: `${card.stateName} ${program} ${imageSubjectForPanel(panel)}`,
+    primarySportTag: panel.primarySportTag || null,
+    topSportTags: panel.topSportTags || [],
+    cardBackCopy,
+    cardBackCopySource: "gemini",
+    cardBackCopyVersion: CARD_BACK_COPY_VERSION,
+    cardBackCopyModel: cardCopyModel,
+    cardBackCopyPromptHash: hashText(copyPrompt),
+    paletteTheme: paletteStoryForCard(card).name,
+    promptHash: hashText(prompt)
+  };
+}
+
+async function getOrGenerateCardBackCopy({ token, card, program, existingPanel, copyPrompt }) {
+  const copyPromptHash = hashText(copyPrompt);
+  if (
+    !args.force &&
+    existingPanel?.cardBackCopySource === "gemini" &&
+    existingPanel?.cardBackCopyVersion === CARD_BACK_COPY_VERSION &&
+    existingPanel?.cardBackCopyModel === cardCopyModel &&
+    existingPanel?.cardBackCopyPromptHash === copyPromptHash &&
+    existingPanel?.cardBackCopy
+  ) {
+    return existingPanel.cardBackCopy;
+  }
+
+  console.log(`Generating ${card.stateName} ${program} card-back copy with ${cardCopyModel}...`);
+  const rawCopy = await generateGeminiJsonWithRetry({
+    token,
+    prompt: copyPrompt,
+    modelName: cardCopyModel,
+    label: `${card.stateName} ${program} card-back copy`,
+    timeoutMs: textRequestTimeoutMs
+  });
+  return validateCardBackCopy({ card, program, rawCopy });
+}
+
+function buildCardBackCopyPrompt(card, program) {
+  const panel = programPanel(card, program);
+  const programName = program === "paralympic" ? "Paralympic" : "Olympic";
+  const payload = {
+    stateName: card.stateName,
+    program: programName,
+    geographySnapshot: card.geographySnapshot,
+    climateSignal: card.climateSignal,
+    terrainSignals: card.terrainSignals,
+    sharedTrait: card.sharedTrait,
+    panel: {
+      label: panel.label,
+      sportFamily: panel.sportFamily,
+      aggregateSignal: panel.aggregateSignal,
+      primarySportTag: panel.primarySportTag || null,
+      topSportTags: panel.topSportTags || [],
+      geographyConnection: panel.geographyConnection,
+      sourceLabels: (panel.sourceRefs || []).map((source) => source.label)
+    }
+  };
+
+  return `You are Gemini writing the back of one collectible Common Ground state card panel.
+
+Use only the provided aggregate public Team USA and geography data.
+Do not mention individual athlete names, athlete profiles, photos, biographies, teams, rankings, medals, finish times, scoring results, or exact counts.
+Do not say geography causes, creates, produces, predicts, or guarantees athletic results.
+Use conditional fan-discovery language such as "may suggest", "could help fans understand", "appears associated with", or "could help fans discover".
+Keep the copy useful for a sports fan, not a data engineer.
+Do not use internal words like "row", "pipeline", "raw data", "card image cue", "template", or "fallback".
+
+Return valid JSON only with these fields:
+- featuredCue: short display label. If primarySportTag is present, use it exactly. If not, use a concise generalized cue.
+- featuredCueExplanation: 1 sentence explaining why this cue is shown, based only on the aggregate state/program signal.
+- relatedTagsSentence: 1 sentence naming related top sport tags if provided, or explaining why the panel stays generalized.
+- stateLens: 1 sentence connecting the geography context and sport-family signal with conditional language and no causation claim.
+- complianceWarnings: array of strings, empty if safe.
+
+Panel data:
+${JSON.stringify(payload, null, 2)}`;
+}
+
+async function generateGeminiJsonWithRetry({ token, prompt, modelName, label, timeoutMs }) {
+  let lastError;
+
+  for (let attempt = 1; attempt <= imageMaxAttempts; attempt += 1) {
+    try {
+      return await generateGeminiJson({ token, prompt, modelName, timeoutMs });
+    } catch (error) {
+      lastError = error;
+      const retryable = isRetryableVertexImageError(error);
+      if (!retryable || attempt >= imageMaxAttempts) throw error;
+      const delayMs = imageRetryDelayMs * attempt;
+      console.warn(`${label} request failed on attempt ${attempt}/${imageMaxAttempts}: ${error.message}`);
+      console.warn(`Retrying in ${Math.round(delayMs / 1000)}s...`);
+      await sleep(delayMs);
+    }
+  }
+
+  throw lastError;
+}
+
+async function generateGeminiJson({ token, prompt, modelName, timeoutMs }) {
+  const response = await postVertexJson(vertexEndpointForModel(modelName), {
     headers: {
       "Authorization": `Bearer ${token}`,
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({
-      contents: {
-        role: "USER",
-        parts: [{ text: prompt }]
-      },
+    body: {
+      contents: [{ role: "USER", parts: [{ text: prompt }] }],
       generationConfig: {
-        responseModalities: ["TEXT", "IMAGE"],
-        temperature: 0.75,
-        imageConfig: {
-          aspectRatio: "16:9"
-        }
-      },
-      safetySettings: [
-        {
-          category: "HARM_CATEGORY_DANGEROUS_CONTENT",
-          threshold: "BLOCK_MEDIUM_AND_ABOVE",
-          method: "PROBABILITY"
-        }
-      ]
-    })
+        responseMimeType: "application/json",
+        temperature: 0.35
+      }
+    },
+    timeoutMs
   });
 
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`Vertex Gemini image request failed: ${response.status} ${errorText}`);
+  if (response.statusCode < 200 || response.statusCode >= 300) {
+    const error = new Error(`Vertex Gemini JSON request failed: ${response.statusCode} ${response.bodyText}`);
+    error.status = response.statusCode;
+    error.retryable = [408, 409, 425, 429, 500, 502, 503, 504].includes(response.statusCode);
+    throw error;
   }
 
-  const payload = await response.json();
+  const payload = JSON.parse(response.bodyText);
+  const text = payload.candidates?.[0]?.content?.parts?.map((part) => part.text || "").join("\n") || "";
+  if (!text.trim()) throw new Error("Gemini JSON response did not include text.");
+  return JSON.parse(normalizeJsonText(text));
+}
+
+function validateCardBackCopy({ card, program, rawCopy }) {
+  const panel = programPanel(card, program);
+  const requiredFields = ["featuredCue", "featuredCueExplanation", "relatedTagsSentence", "stateLens"];
+  const missingFields = requiredFields.filter((field) => !String(rawCopy?.[field] || "").trim());
+  if (missingFields.length) {
+    throw new Error(`Gemini card-back copy is missing required fields: ${missingFields.join(", ")}`);
+  }
+
+  const expectedCue = panel.primarySportTag || null;
+  const copy = {
+    featuredCue: expectedCue || String(rawCopy.featuredCue).trim(),
+    featuredCueExplanation: String(rawCopy.featuredCueExplanation).trim(),
+    relatedTags: panel.topSportTags?.slice(1) || [],
+    relatedTagsSentence: String(rawCopy.relatedTagsSentence).trim(),
+    stateLens: String(rawCopy.stateLens).trim(),
+    complianceWarnings: Array.isArray(rawCopy.complianceWarnings)
+      ? rawCopy.complianceWarnings.map((warning) => String(warning || "").trim()).filter(Boolean)
+      : []
+  };
+  const warnings = complianceCheckCardBackCopy(copy);
+  if (warnings.length) {
+    throw new Error(`Gemini card-back copy failed validation: ${warnings.join("; ")}`);
+  }
+  return copy;
+}
+
+function complianceCheckCardBackCopy(copy) {
+  const text = [
+    copy.featuredCue,
+    copy.featuredCueExplanation,
+    copy.relatedTagsSentence,
+    copy.stateLens
+  ].filter(Boolean).join(" ");
+  const bannedPatterns = [
+    /\bguarantee(s|d)?\b/i,
+    /\bproduce(s|d)?\b/i,
+    /\bcreates?\b/i,
+    /\bpredict(s|ed|ive)?\b/i,
+    /\btrain like\b/i,
+    /\belite\b/i,
+    /\bmedal(s|ist|ists)?\b/i,
+    /\bfinish times?\b/i,
+    /\bscore(s|d|ing)? result\b/i,
+    /\bathletes?\b/i,
+    /\brows?\b/i,
+    /\bpipeline\b/i,
+    /\btemplate\b/i,
+    /\bfallback\b/i,
+    /\bcard image cue\b/i,
+    /\b\d+(\.\d+)?\s?(seconds?|minutes?|points?|percent|%)\b/i
+  ];
+  const warnings = bannedPatterns.filter((pattern) => pattern.test(text)).map((pattern) => `Unsafe phrase pattern: ${pattern}`);
+  return warnings.concat((copy.complianceWarnings || []).filter(Boolean));
+}
+
+function normalizeJsonText(text) {
+  return text
+    .trim()
+    .replace(/^```json\s*/i, "")
+    .replace(/^```\s*/i, "")
+    .replace(/```$/i, "")
+    .trim();
+}
+
+function joinList(items) {
+  const values = items.filter(Boolean);
+  if (values.length <= 1) return values[0] || "";
+  if (values.length === 2) return `${values[0]} and ${values[1]}`;
+  return `${values.slice(0, -1).join(", ")}, and ${values.at(-1)}`;
+}
+
+async function generateGeminiImageWithRetry({ token, prompt, label }) {
+  let lastError;
+
+  for (let attempt = 1; attempt <= imageMaxAttempts; attempt += 1) {
+    try {
+      return await generateGeminiImage({ token, prompt });
+    } catch (error) {
+      lastError = error;
+      const retryable = isRetryableVertexImageError(error);
+      if (!retryable || attempt >= imageMaxAttempts) {
+        throw error;
+      }
+
+      const delayMs = imageRetryDelayMs * attempt;
+      console.warn(`${label} image request failed on attempt ${attempt}/${imageMaxAttempts}: ${error.message}`);
+      console.warn(`Retrying in ${Math.round(delayMs / 1000)}s...`);
+      await sleep(delayMs);
+    }
+  }
+
+  throw lastError;
+}
+
+async function generateGeminiImage({ token, prompt }) {
+  const endpoint = vertexEndpoint();
+  const requestBody = {
+    contents: {
+      role: "USER",
+      parts: [{ text: prompt }]
+    },
+    generationConfig: {
+      responseModalities: ["TEXT", "IMAGE"],
+      temperature: 0.75,
+      imageConfig: {
+        aspectRatio: "16:9"
+      }
+    },
+    safetySettings: [
+      {
+        category: "HARM_CATEGORY_DANGEROUS_CONTENT",
+        threshold: "BLOCK_MEDIUM_AND_ABOVE",
+        method: "PROBABILITY"
+      }
+    ]
+  };
+  const response = await postVertexJson(endpoint, {
+    headers: {
+      "Authorization": `Bearer ${token}`,
+      "Content-Type": "application/json"
+    },
+    body: requestBody,
+    timeoutMs: imageRequestTimeoutMs
+  });
+
+  if (response.statusCode < 200 || response.statusCode >= 300) {
+    const error = new Error(`Vertex Gemini image request failed: ${response.statusCode} ${response.bodyText}`);
+    error.status = response.statusCode;
+    error.retryable = [408, 409, 425, 429, 500, 502, 503, 504].includes(response.statusCode);
+    throw error;
+  }
+
+  const payload = JSON.parse(response.bodyText);
   const parts = payload.candidates?.flatMap((candidate) => candidate.content?.parts || []) || [];
   const imagePart = parts.find((part) => part.inlineData?.data || part.inline_data?.data);
   const textParts = parts.map((part) => part.text).filter(Boolean);
@@ -357,11 +708,73 @@ async function generateGeminiImage({ token, prompt }) {
   };
 }
 
+async function postVertexJson(endpoint, { headers, body, timeoutMs }) {
+  const url = new URL(endpoint);
+  const bodyText = JSON.stringify(body);
+
+  return new Promise((resolve, reject) => {
+    const request = https.request({
+      hostname: url.hostname,
+      method: "POST",
+      path: `${url.pathname}${url.search}`,
+      port: url.port || 443,
+      protocol: url.protocol,
+      headers: {
+        ...headers,
+        "Content-Length": Buffer.byteLength(bodyText)
+      }
+    }, (response) => {
+      response.setEncoding("utf8");
+      const chunks = [];
+      response.on("data", (chunk) => chunks.push(chunk));
+      response.on("end", () => {
+        resolve({
+          bodyText: chunks.join(""),
+          headers: response.headers,
+          statusCode: response.statusCode || 0
+        });
+      });
+    });
+
+    request.setTimeout(timeoutMs, () => {
+      request.destroy(new Error(`Vertex Gemini image request timed out after ${Math.round(timeoutMs / 1000)}s while waiting for a response.`));
+    });
+    request.on("error", reject);
+    request.write(bodyText);
+    request.end();
+  });
+}
+
+function isRetryableVertexImageError(error) {
+  if (error?.retryable) return true;
+
+  const message = String(error?.message || "");
+  const causeCode = String(error?.cause?.code || "");
+  return [
+    "fetch failed",
+    "Headers Timeout",
+    "UND_ERR_HEADERS_TIMEOUT",
+    "UND_ERR_BODY_TIMEOUT",
+    "ETIMEDOUT",
+    "ECONNRESET",
+    "ECONNREFUSED",
+    "EAI_AGAIN"
+  ].some((token) => message.includes(token) || causeCode.includes(token));
+}
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 function vertexEndpoint() {
+  return vertexEndpointForModel(model);
+}
+
+function vertexEndpointForModel(modelName) {
   const host = location === "global"
     ? "https://aiplatform.googleapis.com"
     : `https://${location}-aiplatform.googleapis.com`;
-  return `${host}/v1/projects/${encodeURIComponent(project)}/locations/${encodeURIComponent(location)}/publishers/google/models/${encodeURIComponent(model)}:generateContent`;
+  return `${host}/v1/projects/${encodeURIComponent(project)}/locations/${encodeURIComponent(location)}/publishers/google/models/${encodeURIComponent(modelName)}:generateContent`;
 }
 
 async function loadManifest() {
@@ -377,27 +790,215 @@ async function loadManifest() {
   }
 }
 
+async function getFirebaseClients() {
+  if (firebaseClientsPromise) return firebaseClientsPromise;
+
+  firebaseClientsPromise = (async () => {
+    const storageBucket = process.env.FIREBASE_STORAGE_BUCKET;
+    if (!storageBucket) {
+      throw new Error("FIREBASE_STORAGE_BUCKET is required when using --firebase. Add it to .env.");
+    }
+
+    const { applicationDefault, getApps, initializeApp } = await import("firebase-admin/app");
+    const { FieldValue, getFirestore } = await import("firebase-admin/firestore");
+    const { getStorage } = await import("firebase-admin/storage");
+    const credentials = readGoogleApplicationCredentials();
+    const firebaseProjectId = process.env.FIREBASE_PROJECT_ID || credentials?.project_id || project;
+
+    const app = getApps()[0] || initializeApp({
+      credential: applicationDefault(),
+      projectId: firebaseProjectId,
+      storageBucket
+    });
+
+    return {
+      bucket: getStorage(app).bucket(storageBucket),
+      db: getFirestore(app),
+      firebaseProjectId,
+      FieldValue,
+      storageBucket
+    };
+  })();
+
+  return firebaseClientsPromise;
+}
+
+async function savePanelToFirebase({ card, program, imageBuffer, mimeType, prompt, panelRecord }) {
+  const { bucket, db, firebaseProjectId, FieldValue, storageBucket } = await getFirebaseClients();
+  const objectName = `${card.stateCode.toLowerCase()}-${program}.png`;
+  const storagePath = `card-panels/${PROMPT_VERSION}/${card.stateCode.toLowerCase()}/${objectName}`;
+  const downloadToken = randomUUID();
+  const file = bucket.file(storagePath);
+
+  await file.save(imageBuffer, {
+    resumable: false,
+    metadata: {
+      cacheControl: "public, max-age=31536000, immutable",
+      contentType: mimeType,
+      metadata: {
+        firebaseStorageDownloadTokens: downloadToken,
+        commonGroundStateCode: card.stateCode,
+        commonGroundProgram: program,
+        commonGroundPromptVersion: PROMPT_VERSION,
+        commonGroundPromptHash: hashText(prompt)
+      }
+    }
+  });
+
+  const downloadUrl = firebaseDownloadUrl(storageBucket, storagePath, downloadToken);
+  const firebaseRecord = {
+    ...panelRecord,
+    url: downloadUrl,
+    downloadUrl,
+    storageBucket,
+    firebaseProjectId,
+    storagePath,
+    gsUri: `gs://${storageBucket}/${storagePath}`,
+    firebaseCollection: "cardPanels",
+    localUrl: panelRecord.localUrl
+  };
+
+  const stateDoc = db.collection("cardPanels").doc(card.stateCode);
+  await stateDoc.set({
+    stateCode: card.stateCode,
+    stateName: card.stateName,
+    sharedTrait: card.sharedTrait,
+    hometownPresenceBucket: card.hometownPresenceBucket,
+    hometownRosterCounts: card.hometownRosterCounts,
+    model,
+    cardCopyModel,
+    location,
+    promptVersion: PROMPT_VERSION,
+    paletteTheme: panelRecord.paletteTheme,
+    updatedAt: FieldValue.serverTimestamp(),
+    panels: {
+      [program]: firebaseRecord
+    }
+  }, { merge: true });
+
+  await stateDoc.collection("panels").doc(program).set({
+    ...firebaseRecord,
+    stateCode: card.stateCode,
+    stateName: card.stateName,
+    program,
+    prompt,
+    updatedAt: FieldValue.serverTimestamp()
+  }, { merge: true });
+
+  console.log(`Uploaded ${card.stateCode} ${program} to gs://${storageBucket}/${storagePath}`);
+  console.log(`Wrote Firestore cardPanels/${card.stateCode} and cardPanels/${card.stateCode}/panels/${program}`);
+
+  return firebaseRecord;
+}
+
+async function writePanelMetadataToFirebase({ card, program, prompt, panelRecord }) {
+  const { db, FieldValue } = await getFirebaseClients();
+  const stateDoc = db.collection("cardPanels").doc(card.stateCode);
+
+  await stateDoc.set({
+    stateCode: card.stateCode,
+    stateName: card.stateName,
+    sharedTrait: card.sharedTrait,
+    hometownPresenceBucket: card.hometownPresenceBucket,
+    hometownRosterCounts: card.hometownRosterCounts,
+    model,
+    cardCopyModel,
+    location,
+    promptVersion: PROMPT_VERSION,
+    paletteTheme: panelRecord.paletteTheme,
+    updatedAt: FieldValue.serverTimestamp(),
+    panels: {
+      [program]: panelRecord
+    }
+  }, { merge: true });
+
+  await stateDoc.collection("panels").doc(program).set({
+    ...panelRecord,
+    stateCode: card.stateCode,
+    stateName: card.stateName,
+    program,
+    prompt,
+    updatedAt: FieldValue.serverTimestamp()
+  }, { merge: true });
+
+  console.log(`Synced Firestore metadata for cardPanels/${card.stateCode}/panels/${program}`);
+}
+
+function firebaseDownloadUrl(bucketName, storagePath, token) {
+  return `https://firebasestorage.googleapis.com/v0/b/${encodeURIComponent(bucketName)}/o/${encodeURIComponent(storagePath)}?alt=media&token=${encodeURIComponent(token)}`;
+}
+
+function hashText(text) {
+  return createHash("sha256").update(text).digest("hex");
+}
+
 async function getAccessToken() {
   if (process.env.VERTEX_ACCESS_TOKEN) return process.env.VERTEX_ACCESS_TOKEN;
   if (process.env.GOOGLE_OAUTH_ACCESS_TOKEN) return process.env.GOOGLE_OAUTH_ACCESS_TOKEN;
 
-  if (process.env.GOOGLE_APPLICATION_CREDENTIALS) {
-    return accessTokenFromServiceAccount(process.env.GOOGLE_APPLICATION_CREDENTIALS);
+  const credentials = readGoogleApplicationCredentials();
+  const credentialsPath = process.env.GOOGLE_APPLICATION_CREDENTIALS;
+  const credentialsProjectMatchesVertex = credentials?.project_id && credentials.project_id === project;
+
+  if (vertexAuthMode === "service_account") {
+    if (!credentialsPath) {
+      throw new Error("VERTEX_AUTH_MODE=service_account requires GOOGLE_APPLICATION_CREDENTIALS to point to a service-account JSON file.");
+    }
+    return accessTokenFromServiceAccount(credentialsPath);
   }
 
+  if (vertexAuthMode === "gcloud") {
+    return accessTokenFromGcloud();
+  }
+
+  if (credentialsPath && credentialsProjectMatchesVertex) {
+    return accessTokenFromServiceAccount(credentialsPath);
+  }
+
+  if (credentialsPath && credentials?.project_id && credentials.project_id !== project) {
+    console.log("Using gcloud auth for Vertex because GOOGLE_APPLICATION_CREDENTIALS is reserved for Firebase in a different project.");
+  }
+
+  try {
+    return await accessTokenFromGcloud();
+  } catch (gcloudError) {
+    if (credentialsPath) {
+      console.warn("gcloud auth was not available for Vertex; falling back to GOOGLE_APPLICATION_CREDENTIALS.");
+      return accessTokenFromServiceAccount(credentialsPath);
+    }
+    throw gcloudError;
+  }
+}
+
+async function accessTokenFromGcloud() {
   try {
     const { stdout } = await execFileAsync("gcloud", ["auth", "print-access-token"], { timeout: 15000 });
     const token = stdout.trim();
     if (token) return token;
-  } catch {
-    // Fall through to the explicit setup error below.
+  } catch (error) {
+    throw new Error([
+      "gcloud auth was not available for Vertex.",
+      "Run `gcloud auth login`, or set VERTEX_ACCESS_TOKEN, or set VERTEX_AUTH_MODE=service_account with GOOGLE_APPLICATION_CREDENTIALS.",
+      `Original error: ${error.message}`
+    ].join(" "));
   }
 
   throw new Error([
     "No Vertex authentication was found.",
-    "Set GOOGLE_APPLICATION_CREDENTIALS to a service-account JSON file, set VERTEX_ACCESS_TOKEN,",
-    "or install/login with gcloud so `gcloud auth print-access-token` works."
+    "Run `gcloud auth login`, set VERTEX_ACCESS_TOKEN, or set VERTEX_AUTH_MODE=service_account with GOOGLE_APPLICATION_CREDENTIALS."
   ].join(" "));
+}
+
+function normalizeVertexAuthMode(rawMode) {
+  const mode = String(rawMode || "auto").trim().toLowerCase();
+  if (["auto", "gcloud", "service_account"].includes(mode)) return mode;
+
+  throw new Error(`Invalid VERTEX_AUTH_MODE="${rawMode}". Use "auto", "gcloud", or "service_account".`);
+}
+
+function positiveInteger(rawValue, fallback) {
+  const parsed = Number.parseInt(rawValue, 10);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
 }
 
 async function accessTokenFromServiceAccount(credentialsPath) {

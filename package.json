@@ -13,7 +13,9 @@
     "start": "node server.js",
     "ingest:teamusa": "node scripts/ingest-teamusa-paris2024.mjs",
     "generate:card-art": "node scripts/generate-card-art.mjs",
-    "generate:card-panels": "node scripts/generate-vertex-card-panels.mjs"
+    "generate:card-panels": "node scripts/generate-vertex-card-panels.mjs",
+    "generate:card-panels:firebase": "node scripts/generate-vertex-card-panels.mjs --firebase --no-local",
+    "deploy:cloud-run": "bash scripts/deploy-cloud-run.sh"
   },
   "engines": {
     "node": ">=20"
@@ -21,6 +23,7 @@
   "dependencies": {
     "@vitejs/plugin-react": "^5.0.4",
     "d3": "^7.9.0",
+    "firebase-admin": "^13.8.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "topojson-client": "^3.1.0",

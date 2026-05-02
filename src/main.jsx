@@ -229,11 +229,69 @@ function shortProgramName(program) {
   return program === "paralympic" ? "Paralympic" : "Olympic";
 }
 
+function joinReadableList(items = []) {
+  const values = items.filter(Boolean);
+  if (values.length <= 1) return values[0] || "";
+  if (values.length === 2) return `${values[0]} and ${values[1]}`;
+  return `${values.slice(0, -1).join(", ")}, and ${values.at(-1)}`;
+}
+
+function getPanelVisualCue(panel) {
+  return panel?.primarySportTag || panel?.topSportTags?.[0] || "Generalized sport-family cue";
+}
+
+function getPanelTopSportText(panel) {
+  if (panel?.topSportTags?.length) return joinReadableList(panel.topSportTags);
+  if (panel?.aggregateSignal === "insufficient_data") return "No sourced public sport signal in this dataset.";
+  return "Generalized because the sourced signal is low-volume.";
+}
+
+function getPanelBackCopy(panel) {
+  const visualCue = getPanelVisualCue(panel);
+  const programName = shortProgramName(panel.program);
+  const relatedTags = panel.topSportTags?.slice(1) || [];
+  const relatedTagsSentence = relatedTags.length
+    ? `${joinReadableList(relatedTags)} ${relatedTags.length === 1 ? "also appears" : "also appear"} in this aggregate ${programName} signal.`
+    : getPanelTopSportText(panel);
+
+  return panel.cardBackCopy || {
+    featuredCue: visualCue,
+    featuredCueExplanation: `${programName} panel uses ${visualCue} as its visual cue because it is the strongest available aggregate sport signal for this state/program.`,
+    relatedTags,
+    relatedTagsSentence,
+    stateLens: panel.geographyConnection
+  };
+}
+
 function getPanelArtUrl(card, program, manifest) {
   const panel = manifest?.states?.[card.stateCode]?.[program];
   if (panel?.url && !FRAMED_CARD_PANEL_PROMPT_VERSIONS.has(panel.promptVersion)) return panel.url;
   const theme = getCardTheme(card);
   return CARD_ART[theme] || CARD_ART.neutral;
+}
+
+function mergeGeneratedPanelData(card, manifest) {
+  const statePanels = manifest?.states?.[card?.stateCode] || {};
+  if (!card || (!statePanels.olympic && !statePanels.paralympic)) return card;
+
+  function mergePanel(program, panel) {
+    const generated = statePanels[program] || {};
+    return {
+      ...panel,
+      primarySportTag: generated.primarySportTag ?? panel.primarySportTag,
+      topSportTags: generated.topSportTags ?? panel.topSportTags,
+      cardBackCopy: generated.cardBackCopy ?? panel.cardBackCopy,
+      cardBackCopySource: generated.cardBackCopySource ?? panel.cardBackCopySource,
+      cardBackCopyModel: generated.cardBackCopyModel ?? panel.cardBackCopyModel,
+      cardBackCopyVersion: generated.cardBackCopyVersion ?? panel.cardBackCopyVersion
+    };
+  }
+
+  return {
+    ...card,
+    olympicPanel: mergePanel("olympic", card.olympicPanel),
+    paralympicPanel: mergePanel("paralympic", card.paralympicPanel)
+  };
 }
 
 function AppIcon({ name }) {
@@ -779,6 +837,9 @@ function StateSummary({ card }) {
 }
 
 function SportPanel({ panel }) {
+  const copy = getPanelBackCopy(panel);
+  const visualCue = copy.featuredCue || getPanelVisualCue(panel);
+
   return (
     <section className="panel">
       <div className="panel-label">
@@ -786,9 +847,14 @@ function SportPanel({ panel }) {
         <span className="signal-tag">{titleBucket(panel.aggregateSignal)} signal</span>
       </div>
       <div className="panel-body">
-        <h4>{panel.sportFamily}</h4>
-        <p>{panel.geographyConnection}</p>
-        <p>{panel.geminiNote || "Gemini note will appear after briefing generation."}</p>
+        <h4>{visualCue}</h4>
+        <p>{copy.featuredCueExplanation}</p>
+        <p>{copy.relatedTagsSentence}</p>
+        <p>{copy.stateLens}</p>
+        <div className="panel-family-line">
+          <span>Sport-family signal</span>
+          <strong>{panel.sportFamily}</strong>
+        </div>
       </div>
     </section>
   );
@@ -844,13 +910,13 @@ function CardArt({ card, compact = false, panelManifest = EMPTY_CARD_PANEL_MANIF
           <PanelArtImage src={olympicSrc} fallback={fallback} />
           <div className="art-vignette" />
           <span className="art-panel-label">{shortProgramName(card.olympicPanel.program)}</span>
-          {!compact && <strong className="art-panel-sport">{card.olympicPanel.sportFamily}</strong>}
+          {!compact && <strong className="art-panel-sport">{getPanelVisualCue(card.olympicPanel)}</strong>}
         </div>
         <div className="card-art-panel paralympic-art-panel">
           <PanelArtImage src={paralympicSrc} fallback={fallback} />
           <div className="art-vignette" />
           <span className="art-panel-label">{shortProgramName(card.paralympicPanel.program)}</span>
-          {!compact && <strong className="art-panel-sport">{card.paralympicPanel.sportFamily}</strong>}
+          {!compact && <strong className="art-panel-sport">{getPanelVisualCue(card.paralympicPanel)}</strong>}
         </div>
         <CommonGroundSeal />
       </div>
@@ -1473,7 +1539,11 @@ function App() {
   }, []);
 
   const cardsByCode = useMemo(() => new Map((dataset?.states || []).map((card) => [card.stateCode, card])), [dataset]);
-  const selectedCard = cardsByCode.get(selectedCode) || dataset?.states?.[0];
+  const selectedBaseCard = cardsByCode.get(selectedCode) || dataset?.states?.[0];
+  const selectedCard = useMemo(
+    () => selectedBaseCard ? mergeGeneratedPanelData(selectedBaseCard, panelManifest) : selectedBaseCard,
+    [selectedBaseCard, panelManifest]
+  );
   const sourceRefs = selectedCard && dataset ? uniqueSourceRefs([...(dataset.meta.sourceRefs || []), ...(selectedCard.sourceRefs || [])]) : [];
   const features = useMemo(() => {
     if (!mapTopology) return [];
@@ -1515,7 +1585,7 @@ function App() {
 
   useEffect(() => {
     if (selectedCard) refreshBriefing(selectedCard);
-  }, [selectedCode, dataset]);
+  }, [selectedCode, dataset, panelManifest]);
 
   function markDiscovered(code) {
     setDiscoveredCodes((current) => {

@@ -1,0 +1,14 @@
+.git
+.gitignore
+.env
+.DS_Store
+ServiceAccountKey.json
+*ServiceAccount*.json
+*service-account*.json
+*firebase-adminsdk*.json
+*credentials*.json
+node_modules
+dist
+npm-debug.log
+.cache
+coverage

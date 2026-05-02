@@ -1,14 +1,24 @@
 import http from "node:http";
+import { execFile } from "node:child_process";
+import { readFileSync } from "node:fs";
 import { access, readFile } from "node:fs/promises";
 import path from "node:path";
+import { promisify } from "node:util";
 import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const execFileAsync = promisify(execFile);
+
+loadDotEnv(path.join(__dirname, ".env"));
+
 const PORT = Number(process.env.PORT || 3000);
 const HOST = process.env.HOST || "127.0.0.1";
 const PUBLIC_DIR = path.join(__dirname, "public");
 const DIST_DIR = path.join(__dirname, "dist");
 const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-3.1-pro-preview";
+const GOOGLE_CLOUD_PROJECT = process.env.GOOGLE_CLOUD_PROJECT || process.env.GCLOUD_PROJECT || "";
+const GOOGLE_CLOUD_LOCATION = process.env.GOOGLE_CLOUD_LOCATION || "global";
+const VERTEX_SCOPE = "https://www.googleapis.com/auth/cloud-platform";
 
 let cachedDataset;
 let cachedStaticRoot;
@@ -121,6 +131,12 @@ function complianceCheckBriefing(briefing) {
     /\bassessment\b/i,
     /\bmedal(s|ist|ists)?\b/i,
     /\bfinish time\b/i,
+    /\brows?\b/i,
+    /\bpipeline\b/i,
+    /\bfallback\b/i,
+    /\btemplate\b/i,
+    /\bcard image cue\b/i,
+    /\braw data\b/i,
     /\bOlympian'?s baseline\b/i,
     /\bParalympian'?s baseline\b/i,
     /\b\d+(\.\d+)?\s?(seconds?|minutes?|points?|percent|%)\b/i
@@ -161,6 +177,8 @@ Do not imply geography causes success.
 Do not claim that terrain, climate, or training access guarantees outcomes.
 Use conditional language: "may suggest", "could help fans understand", "appears associated with", "could help fans discover".
 Give Olympic and Paralympic sport panels equal depth, equal respect, and equal analytical specificity.
+If olympicPanel.cardBackCopy or paralympicPanel.cardBackCopy are present, use that Gemini card-back copy as the source for the corresponding panel narrative.
+Do not expose internal implementation terms such as "row", "pipeline", "fallback", "template", "card image cue", or "raw data".
 Output concise, fan-facing copy.
 
 Return valid JSON with these fields:
@@ -194,6 +212,8 @@ ${JSON.stringify(result, null, 2)}`;
 }
 
 async function callGemini(prompt) {
+  if (GOOGLE_CLOUD_PROJECT) return callVertexGemini(prompt);
+
   const key = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
   if (!key) return null;
 
@@ -218,6 +238,71 @@ async function callGemini(prompt) {
   const data = await response.json();
   const text = data.candidates?.[0]?.content?.parts?.map((part) => part.text || "").join("\n") || "";
   return { text, model: GEMINI_MODEL };
+}
+
+function vertexEndpoint() {
+  const host = GOOGLE_CLOUD_LOCATION === "global"
+    ? "https://aiplatform.googleapis.com"
+    : `https://${GOOGLE_CLOUD_LOCATION}-aiplatform.googleapis.com`;
+  return `${host}/v1/projects/${encodeURIComponent(GOOGLE_CLOUD_PROJECT)}/locations/${encodeURIComponent(GOOGLE_CLOUD_LOCATION)}/publishers/google/models/${encodeURIComponent(GEMINI_MODEL)}:generateContent`;
+}
+
+async function getVertexAccessToken() {
+  if (process.env.VERTEX_ACCESS_TOKEN) return process.env.VERTEX_ACCESS_TOKEN;
+  if (process.env.GOOGLE_OAUTH_ACCESS_TOKEN) return process.env.GOOGLE_OAUTH_ACCESS_TOKEN;
+
+  try {
+    const response = await fetch(
+      `http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token?scopes=${encodeURIComponent(VERTEX_SCOPE)}`,
+      {
+        headers: { "Metadata-Flavor": "Google" },
+        signal: AbortSignal.timeout(1500)
+      }
+    );
+    if (response.ok) {
+      const payload = await response.json();
+      if (payload.access_token) return payload.access_token;
+    }
+  } catch {
+    // Not running on Cloud Run/Compute metadata. Try local gcloud below.
+  }
+
+  try {
+    const { stdout } = await execFileAsync("gcloud", ["auth", "print-access-token"], { timeout: 15000 });
+    const token = stdout.trim();
+    if (token) return token;
+  } catch {
+    // Fall through to the explicit setup error below.
+  }
+
+  throw new Error("No Vertex AI auth token is available. On Cloud Run, attach a service account with roles/aiplatform.user. Locally, run `gcloud auth login` or set VERTEX_ACCESS_TOKEN.");
+}
+
+async function callVertexGemini(prompt) {
+  const token = await getVertexAccessToken();
+  const response = await fetch(vertexEndpoint(), {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${token}`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      contents: [{ role: "USER", parts: [{ text: prompt }] }],
+      generationConfig: {
+        responseMimeType: "application/json",
+        temperature: 0.35
+      }
+    })
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Vertex Gemini request failed: ${response.status} ${errorText}`);
+  }
+
+  const data = await response.json();
+  const text = data.candidates?.[0]?.content?.parts?.map((part) => part.text || "").join("\n") || "";
+  return { text, model: `${GEMINI_MODEL} via Vertex AI` };
 }
 
 async function handleApi(req, res, url) {
@@ -377,3 +462,24 @@ const server = http.createServer(async (req, res) => {
 server.listen(PORT, HOST, () => {
   console.log(`Common Ground API/static server running at http://${HOST === "0.0.0.0" ? "127.0.0.1" : HOST}:${PORT}`);
 });
+
+function loadDotEnv(envPath) {
+  let raw = "";
+  try {
+    raw = readFileSync(envPath, "utf8");
+  } catch {
+    return;
+  }
+
+  for (const line of raw.split(/\r?\n/)) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith("#") || !trimmed.includes("=")) continue;
+    const index = trimmed.indexOf("=");
+    const key = trimmed.slice(0, index).trim();
+    let value = trimmed.slice(index + 1).trim();
+    if ((value.startsWith("\"") && value.endsWith("\"")) || (value.startsWith("'") && value.endsWith("'"))) {
+      value = value.slice(1, -1);
+    }
+    if (!process.env[key]) process.env[key] = value;
+  }
+}

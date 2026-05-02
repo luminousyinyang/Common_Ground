@@ -325,7 +325,7 @@ function buildDataset({ aggregate, retrievedAt, olympicTotal, paralympicTotal, e
       },
       stateCodedRecordTotals,
       aggregationPolicy: "The build script strips athlete names, profile URLs, images, biographies, medals, finish placements, and other individual-level fields before writing frontend data. State cards display signal buckets instead of exact state counts.",
-      bucketPolicy: "Combined state bucket: insufficient data = 0 sourced roster rows, low = 1-4, medium = 5-19, high = 20+. Program panel details require at least 3 sourced roster rows; lower-volume panels stay generalized.",
+      bucketPolicy: "Combined state bucket: insufficient data = 0 sourced roster rows, low = 1-4, medium = 5-19, high = 20+. Program panel details and top sport tags require at least 3 sourced roster rows; lower-volume panels stay generalized.",
       coverageNote: "Only TeamUSA.com roster rows with a U.S. state or supported U.S. territory abbreviation in the public hometown state field are used for cards. Unsupported or blank geography values are excluded from card output.",
       excludedStateCodes,
       blankStateProgramBuckets,
@@ -348,6 +348,8 @@ function buildPanel({ stateName, program, label, aggregate, geographySnapshot, s
       label,
       sportFamily: "No sourced public roster signal",
       aggregateSignal: "insufficient_data",
+      primarySportTag: null,
+      topSportTags: [],
       geographyConnection: `${stateName} has no public ${programName} hometown geography roster signal in this TeamUSA.com Paris 2024 dataset.`,
       geminiNote: "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
       sourceRefs: [sourceRef]
@@ -360,6 +362,8 @@ function buildPanel({ stateName, program, label, aggregate, geographySnapshot, s
       label,
       sportFamily: "Low-volume public roster signal",
       aggregateSignal: signal,
+      primarySportTag: null,
+      topSportTags: [],
       geographyConnection: `The ${programName} roster signal for ${stateName} is too small to summarize by sport family without over-specificity.`,
       geminiNote: "Common Ground keeps this panel generalized so fan discovery stays aggregate and privacy-aware.",
       sourceRefs: [sourceRef]
@@ -373,6 +377,8 @@ function buildPanel({ stateName, program, label, aggregate, geographySnapshot, s
     label,
     sportFamily: familyLabel,
     aggregateSignal: signal,
+    primarySportTag: topSports[0] || null,
+    topSportTags: topSports,
     geographyConnection: `${geographySnapshot} could help fans frame the state's ${programName} sport-family presence without implying geography causes outcomes.`,
     geminiNote: `Public roster tags in this panel include ${sportLabel}; the state context may suggest a fan discovery lens, not a performance claim.`,
     sourceRefs: [sourceRef]

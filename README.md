@@ -30,7 +30,22 @@ The Vite dev server proxies `/api` calls to `http://127.0.0.1:3000`. If the API 
 
 ## Gemini Configuration
 
-The app keeps Gemini keys server-side. Configure one of:
+The app keeps Gemini calls server-side. In Cloud Run, the API uses Vertex AI through the attached Cloud Run service account, so no credentials file is needed in the container.
+
+```bash
+GOOGLE_CLOUD_PROJECT=[PROJECT-ID]
+GOOGLE_CLOUD_LOCATION=global
+GEMINI_MODEL=gemini-3.1-pro-preview
+```
+
+Local development can use `gcloud auth login`, `VERTEX_ACCESS_TOKEN`, or an API-key fallback:
+
+```bash
+gcloud auth login
+npm run api
+```
+
+API-key fallback is still supported for local testing:
 
 ```bash
 GEMINI_API_KEY=your_key npm run api
@@ -102,7 +117,7 @@ npm run generate:card-art
 
 Assets are written to `public/assets/card-art`. They are geometric, decorative, and do not contain athlete likeness, official marks, logos, rings, medals, flags, or embedded text.
 
-The sports-card front can also use Vertex AI Gemini image panels, with one Olympic panel image and one Paralympic panel image per state:
+The sports-card front can also use Vertex AI Gemini image panels, with one Olympic panel image and one Paralympic panel image per state. The same generator uses Gemini text generation to write the back-of-card Olympic and Paralympic panel copy from the aggregate top sport tags and geography context.
 
 ```bash
 npm run generate:card-panels -- --states CO
@@ -110,9 +125,50 @@ npm run generate:card-panels -- --states CO,WA --force
 npm run generate:card-panels -- --all
 ```
 
-This reads `GOOGLE_CLOUD_PROJECT` and `GOOGLE_CLOUD_LOCATION` from `.env`, defaults to `gemini-3-pro-image-preview`, and writes images plus a manifest to `public/assets/card-panels`. If live Vertex images are not present, the UI falls back to the local abstract card art.
+This reads `GOOGLE_CLOUD_PROJECT` and `GOOGLE_CLOUD_LOCATION` from `.env`, defaults to `gemini-3-pro-image-preview` for images and `gemini-3.1-pro-preview` for panel copy, and writes images plus a manifest to `public/assets/card-panels`. If live Vertex images are not present, the UI falls back to the local abstract card art.
 
 The panel generator uses state-aware palette stories, so California, Florida, Texas, Colorado, and other geographies can produce distinct collectible-card color systems instead of always defaulting to blue Olympic panels and orange Paralympic panels. It also prompts for full-bleed artwork, since the React card supplies the actual frame and labels.
+
+To store generated panels in Firebase Storage and Firestore instead of local image files, configure:
+
+```bash
+GOOGLE_CLOUD_PROJECT=project-5a3d84b2-8508-4778-995
+GOOGLE_CLOUD_LOCATION=global
+FIREBASE_PROJECT_ID=common-ground-tests
+FIREBASE_STORAGE_BUCKET=common-ground-tests.firebasestorage.app
+GOOGLE_APPLICATION_CREDENTIALS=/absolute/path/to/local-service-account.json
+```
+
+For local Firebase generation, `GOOGLE_APPLICATION_CREDENTIALS` is used by Firebase Admin for Firestore and Storage. `FIREBASE_PROJECT_ID` is optional when the JSON key belongs to the Firebase project, but it makes the split-project setup explicit. Vertex image generation uses `gcloud auth print-access-token` by default when that JSON key belongs to a different project than `GOOGLE_CLOUD_PROJECT`, so run:
+
+```bash
+gcloud auth login
+```
+
+Then run one state:
+
+```bash
+npm run generate:card-panels:firebase -- --states CA
+```
+
+Or all supported geographies:
+
+```bash
+npm run generate:card-panels:firebase -- --all
+```
+
+Use `--force` to replace existing generated panels. Firebase mode uploads each image to Storage, writes Gemini-generated panel copy and panel metadata to `cardPanels/{STATE}` and `cardPanels/{STATE}/panels/{program}` in Firestore, and updates the local manifest with Firebase download URLs.
+
+Set `VERTEX_AUTH_MODE=service_account` only if you intentionally want Vertex to use the JSON key too; in that case the service account needs `roles/aiplatform.user` on the Vertex project. `VERTEX_AUTH_MODE=gcloud` forces local gcloud auth. The default `auto` mode is usually best.
+
+Image generation can take several minutes on preview models. The generator uses a long request timeout by default; tune it with:
+
+```bash
+CARD_IMAGE_REQUEST_TIMEOUT_MS=900000
+CARD_IMAGE_MAX_ATTEMPTS=3
+CARD_IMAGE_RETRY_DELAY_MS=5000
+CARD_COPY_MODEL=gemini-3.1-pro-preview
+```
 
 ## Compliance Notes
 
@@ -129,19 +185,22 @@ Olympic and Paralympic panels are always shown together in one shared state card
 
 ## Cloud Run
 
-Build and deploy with Google Cloud:
+Deploy with the included script:
 
 ```bash
-gcloud builds submit --tag gcr.io/PROJECT_ID/common-ground
-gcloud run deploy common-ground \
-  --image gcr.io/PROJECT_ID/common-ground \
-  --platform managed \
-  --region us-central1 \
-  --allow-unauthenticated \
-  --set-env-vars GEMINI_MODEL=gemini-3.1-pro-preview
+npm run deploy:cloud-run
 ```
 
-Set `GEMINI_API_KEY` or `GOOGLE_API_KEY` through Secret Manager or Cloud Run environment configuration.
+The script reads `.env`, builds the app, enables required Google Cloud services, creates or reuses the `common-ground-vertex` service account, grants `roles/aiplatform.user`, builds the Docker image with Cloud Build, and deploys Cloud Run with:
+
+```bash
+GOOGLE_CLOUD_PROJECT=[PROJECT-ID]
+GOOGLE_CLOUD_LOCATION=global
+GEMINI_MODEL=gemini-3.1-pro-preview
+FIREBASE_STORAGE_BUCKET=[PROJECT-ID].firebasestorage.app
+```
+
+Cloud Run uses its attached service account for Vertex AI, Firestore, and Firebase Storage. Do not upload or set a service-account JSON credentials file in Cloud Run.
 
 ## File Map
 
