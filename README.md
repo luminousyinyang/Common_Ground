@@ -112,6 +112,8 @@ npm run generate:card-panels -- --all
 
 This reads `GOOGLE_CLOUD_PROJECT` and `GOOGLE_CLOUD_LOCATION` from `.env`, defaults to `gemini-3-pro-image-preview`, and writes images plus a manifest to `public/assets/card-panels`. If live Vertex images are not present, the UI falls back to the local abstract card art.
 
+The panel generator uses state-aware palette stories, so California, Florida, Texas, Colorado, and other geographies can produce distinct collectible-card color systems instead of always defaulting to blue Olympic panels and orange Paralympic panels.
+
 ## Compliance Notes
 
 The app intentionally avoids:
