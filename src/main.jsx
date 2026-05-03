@@ -471,8 +471,37 @@ function mergeGeneratedPanelData(card, manifest) {
   };
 }
 
-function AppIcon({ name }) {
-  return <span className={`nav-glyph nav-glyph-${name}`} aria-hidden="true" />;
+const ICON_PATHS = {
+  map: <><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21" /><line x1="9" y1="3" x2="9" y2="18" /><line x1="15" y1="6" x2="15" y2="21" /></>,
+  cards: <><rect x="2" y="5" width="15" height="14" rx="2" /><path d="M6 5V3a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-2" /></>,
+  game: <><circle cx="12" cy="12" r="10" /><circle cx="12" cy="12" r="4" /><line x1="21.17" y1="8" x2="12" y2="8" /><line x1="3.95" y1="6.06" x2="8" y2="14" /><line x1="10.88" y1="21.94" x2="15" y2="14" /></>,
+  method: <><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /></>,
+  locate: <><circle cx="12" cy="12" r="3" /><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" /></>,
+  reset: <><polyline points="1 4 1 10 7 10" /><path d="M3.51 15a9 9 0 1 0 .49-3" /></>,
+  moon: <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />,
+  sun: <><circle cx="12" cy="12" r="5" /><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" /></>,
+  home: <><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></>,
+  close: <><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></>,
+};
+
+function Icon({ name, size = 18, strokeWidth = 1.8, className = "" }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width={size}
+      height={size}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+      className={className}
+    >
+      {ICON_PATHS[name]}
+    </svg>
+  );
 }
 
 /*
@@ -525,10 +554,22 @@ function CardLabControls({
 function SignalLegend() {
   return (
     <div className="legend" aria-label="Participation signal legend">
-      <span><i className="signal-dot high" />High</span>
-      <span><i className="signal-dot medium" />Medium</span>
-      <span><i className="signal-dot low" />Low</span>
-      <span><i className="signal-dot insufficient_data" />Limited</span>
+      <span className="legend-item"><i className="signal-dot high" /><span>High</span></span>
+      <span className="legend-item"><i className="signal-dot medium" /><span>Medium</span></span>
+      <span className="legend-item"><i className="signal-dot low" /><span>Low</span></span>
+      <span className="legend-item"><i className="signal-dot insufficient_data" /><span>Limited</span></span>
+    </div>
+  );
+}
+
+function MapProgressBar({ discovered, total }) {
+  const pct = total > 0 ? Math.round((discovered / total) * 100) : 0;
+  return (
+    <div className="map-progress" aria-label={`${discovered} of ${total} states explored`}>
+      <div className="map-progress-track" aria-hidden="true">
+        <div className="map-progress-fill" style={{ width: `${pct}%` }} />
+      </div>
+      <span>{discovered} / {total} states explored · {pct}%</span>
     </div>
   );
 }
@@ -552,21 +593,315 @@ function RosterTooltip({ card, position }) {
   );
 }
 
-function LocateIcon() {
+
+function TopNav({ page, view, onViewChange, onNavigate, onLogin, darkMode, onToggleDarkMode }) {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuMounted, setMenuMounted] = useState(false);
+  const CLOSE_MS = 340;
+
+  function openMenu() {
+    setMenuMounted(true);
+    requestAnimationFrame(() => requestAnimationFrame(() => setMenuOpen(true)));
+  }
+
+  function closeMenu() {
+    setMenuOpen(false);
+    setTimeout(() => setMenuMounted(false), CLOSE_MS);
+  }
+
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [menuOpen]);
+
+  function go(targetPage, targetView) {
+    onNavigate(targetPage, targetView);
+    closeMenu();
+  }
+
   return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-      <circle cx="12" cy="12" r="5" />
-      <path d="M12 2v4M12 18v4M2 12h4M18 12h4" />
-    </svg>
+    <>
+      <header className={`top-nav${menuOpen ? " has-menu-open" : ""}`}>
+        <div className="top-nav-inner">
+          <button className="top-nav-brand" type="button" onClick={() => go("landing")} aria-label="Common Ground home">
+            Common Ground
+          </button>
+          <nav className="top-nav-center" aria-label="Primary navigation">
+            <button
+              className={`top-nav-tab ${page === "app" && view === "explorer" ? "is-active" : ""}`}
+              type="button"
+              onClick={() => onNavigate("app", "explorer")}
+            >
+              <Icon name="map" size={15} />
+              <span className="nav-tab-label">Map</span>
+            </button>
+            <button
+              className={`top-nav-tab ${page === "app" && view === "collection" ? "is-active" : ""}`}
+              type="button"
+              onClick={() => onNavigate("app", "collection")}
+            >
+              <Icon name="cards" size={15} />
+              <span className="nav-tab-label">Collection</span>
+            </button>
+          </nav>
+          <div className="top-nav-actions">
+            <button className="top-nav-icon-btn" type="button" onClick={onToggleDarkMode} aria-label="Toggle dark mode">
+              <Icon name={darkMode ? "sun" : "moon"} size={16} strokeWidth={1.6} />
+            </button>
+            <button className="top-nav-login-btn" type="button" onClick={onLogin}>Login</button>
+          </div>
+          <button
+            className={`hamburger-btn${menuOpen ? " is-open" : ""}`}
+            type="button"
+            onClick={menuOpen ? closeMenu : openMenu}
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-menu"
+          >
+            <span className="hamburger-bar" />
+            <span className="hamburger-bar" />
+            <span className="hamburger-bar" />
+          </button>
+        </div>
+      </header>
+
+      {menuMounted && (
+        <div
+          id="mobile-menu"
+          className={`mobile-menu-overlay${menuOpen ? " is-open" : ""}`}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Navigation menu"
+        >
+          <div className="mobile-menu-header">
+            <button className="top-nav-brand" type="button" onClick={() => go("landing")}>
+              Common Ground
+            </button>
+            <button className="mobile-menu-close" type="button" onClick={closeMenu} aria-label="Close menu">
+              <Icon name="close" size={16} strokeWidth={2} />
+            </button>
+          </div>
+
+          <nav className="mobile-menu-nav">
+            <button
+              className={`mobile-menu-link${page === "landing" ? " is-active" : ""}`}
+              type="button"
+              onClick={() => go("landing")}
+              style={{ "--i": 0 }}
+            >
+              <span className="mobile-menu-link-icon"><Icon name="home" size={26} strokeWidth={1.4} /></span>
+              Home
+            </button>
+            <button
+              className={`mobile-menu-link${page === "app" && view === "explorer" ? " is-active" : ""}`}
+              type="button"
+              onClick={() => go("app", "explorer")}
+              style={{ "--i": 1 }}
+            >
+              <span className="mobile-menu-link-icon"><Icon name="map" size={26} strokeWidth={1.4} /></span>
+              Map
+            </button>
+            <button
+              className={`mobile-menu-link${page === "app" && view === "collection" ? " is-active" : ""}`}
+              type="button"
+              onClick={() => go("app", "collection")}
+              style={{ "--i": 2 }}
+            >
+              <span className="mobile-menu-link-icon"><Icon name="cards" size={26} strokeWidth={1.4} /></span>
+              Collection
+            </button>
+          </nav>
+          <div className="mobile-menu-sep" style={{ "--i": 3 }} />
+          <div className="mobile-menu-foot">
+            <button
+              className="mobile-menu-row"
+              type="button"
+              onClick={onToggleDarkMode}
+              style={{ "--i": 4 }}
+            >
+              <span>{darkMode ? "Light mode" : "Dark mode"}</span>
+              <Icon name={darkMode ? "sun" : "moon"} size={20} strokeWidth={1.5} />
+            </button>
+            <button
+              className="primary-button mobile-menu-login"
+              type="button"
+              onClick={() => { onLogin(); closeMenu(); }}
+              style={{ "--i": 5 }}
+            >
+              Login
+            </button>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 
-function ResetIcon() {
+function LandingPage({ onNavigate, onLogin, darkMode, onToggleDarkMode }) {
   return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-      <path d="M7 7h7a5 5 0 1 1-4.2 7.7" />
-      <path d="M7 7V3M7 7h4" />
-    </svg>
+    <div className="landing-page">
+      <TopNav page="landing" view={null} onViewChange={() => {}} onNavigate={onNavigate} onLogin={onLogin} darkMode={darkMode} onToggleDarkMode={onToggleDarkMode} />
+
+      <section className="landing-hero">
+        <div className="landing-section-inner">
+          <p className="eyebrow landing-eyebrow">Olympic + Paralympic Discovery</p>
+          <h1 className="landing-hero-title">Explore Team USA's Athletic Legacy</h1>
+          <p className="landing-hero-sub">Geography-powered fan discovery for LA28</p>
+          <p className="landing-hero-body">Click any state on the interactive map to discover Olympic and Paralympic athletes with equal prominence. Collect state cards, explore shared traits, and build your fan collection across all 50 states.</p>
+          <div className="landing-cta-row">
+            <button className="primary-button" type="button" onClick={() => onNavigate("app", "explorer")}>Explore the Map</button>
+            <button className="ghost-button" type="button" onClick={() => onNavigate("app", "collection")}>View Collection</button>
+          </div>
+        </div>
+      </section>
+
+      <section className="landing-features">
+        <div className="landing-section-inner">
+          <h2 className="landing-features-heading">How it works</h2>
+          <div className="landing-features-grid">
+            <div className="landing-feature-card">
+              <div className="landing-feature-icon"><Icon name="map" size={22} strokeWidth={1.5} /></div>
+              <h3>Interactive Map</h3>
+              <p>Click any state to explore athlete counts and sport families across the US. Discovered states are highlighted as you build your collection.</p>
+            </div>
+            <div className="landing-feature-card">
+              <div className="landing-feature-icon"><Icon name="cards" size={22} strokeWidth={1.5} /></div>
+              <h3>State Cards</h3>
+              <p>Collect digital cards for each state. Each card features Olympic and Paralympic programs with equal visual weight and a holographic shine on hover.</p>
+            </div>
+            <div className="landing-feature-card">
+              <div className="landing-feature-icon"><Icon name="game" size={22} strokeWidth={1.5} /></div>
+              <h3>Fan Challenges</h3>
+              <p>Test your instincts with short skill challenges tied to the shared athletic trait connecting each state's Olympic and Paralympic sports.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="landing-cta2">
+        <div className="landing-section-inner landing-cta2-inner">
+          <h2 className="landing-cta2-title">Start Your Collection Today</h2>
+          <p className="landing-cta2-body">No account required to explore. Select states on the map to unlock cards and track your journey across all 50 states.</p>
+          <button className="primary-button" type="button" onClick={() => onNavigate("app", "explorer")}>Begin Exploring</button>
+        </div>
+      </section>
+
+      <footer className="landing-footer">
+        <div className="landing-footer-inner">
+          <div>
+            <strong className="landing-footer-brand">Common Ground</strong>
+            <p>Geography-powered fan discovery</p>
+          </div>
+          <nav className="landing-footer-nav" aria-label="Footer">
+            <button className="landing-footer-link" type="button" onClick={() => onNavigate("app", "explorer")}>Map</button>
+            <button className="landing-footer-link" type="button" onClick={() => onNavigate("app", "collection")}>Collection</button>
+            <button className="landing-footer-link" type="button" onClick={() => onNavigate("app", "methodology")}>Methodology</button>
+          </nav>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+function LoginPage({ onNavigate, onLogin, darkMode, onToggleDarkMode }) {
+  const [tab, setTab] = useState("login");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    onLogin();
+  }
+
+  return (
+    <div className="login-page">
+      <TopNav page="login" view={null} onViewChange={() => {}} onNavigate={onNavigate} onLogin={onLogin} darkMode={darkMode} onToggleDarkMode={onToggleDarkMode} />
+
+      <div className="login-layout">
+        <div className="login-left">
+          <div className="login-left-content">
+            <h2 className="login-left-title">Common Ground</h2>
+            <p className="login-left-tagline">Discover. Collect. Connect.</p>
+            <p className="login-left-body">Track your athlete discoveries and save your collection across sessions. Build your complete 50-state card set.</p>
+            <div className="login-card-visual" aria-hidden="true">
+              <div className="login-card-back" />
+              <div className="login-card-front" />
+            </div>
+          </div>
+        </div>
+
+        <div className="login-right">
+          <div className="login-form-wrap">
+            <div className="login-tabs" role="tablist">
+              <button className={`login-tab ${tab === "login" ? "is-active" : ""}`} type="button" role="tab" aria-selected={tab === "login"} onClick={() => setTab("login")}>Login</button>
+              <button className={`login-tab ${tab === "create" ? "is-active" : ""}`} type="button" role="tab" aria-selected={tab === "create"} onClick={() => setTab("create")}>Create Account</button>
+            </div>
+
+            {tab === "login" && (
+              <form className="login-form" onSubmit={handleSubmit}>
+                <div className="login-form-header">
+                  <h3>Welcome back</h3>
+                  <p>Sign in to save your collection</p>
+                </div>
+                <label className="login-field">
+                  <span>Email</span>
+                  <input className="login-input" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" autoComplete="email" />
+                </label>
+                <label className="login-field">
+                  <span>Password</span>
+                  <input className="login-input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" autoComplete="current-password" />
+                </label>
+                <button className="login-forgot" type="button">Forgot password?</button>
+                <button className="primary-button login-submit" type="submit">Log In</button>
+                <div className="login-or"><span>or</span></div>
+                <button className="ghost-button login-google" type="button">Continue with Google</button>
+                <p className="login-terms">By continuing you agree to our <button className="login-terms-link" type="button">Terms of Service</button></p>
+              </form>
+            )}
+
+            {tab === "create" && (
+              <form className="login-form" onSubmit={handleSubmit}>
+                <div className="login-form-header">
+                  <h3>Create your account</h3>
+                  <p>Start tracking your discoveries</p>
+                </div>
+                <label className="login-field">
+                  <span>Name</span>
+                  <input className="login-input" type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" autoComplete="name" />
+                </label>
+                <label className="login-field">
+                  <span>Email</span>
+                  <input className="login-input" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" autoComplete="email" />
+                </label>
+                <label className="login-field">
+                  <span>Password</span>
+                  <input className="login-input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Create a password" autoComplete="new-password" />
+                </label>
+                <button className="primary-button login-submit" type="submit">Create Account</button>
+                <div className="login-or"><span>or</span></div>
+                <button className="ghost-button login-google" type="button">Continue with Google</button>
+                <p className="login-terms">By creating an account you agree to our <button className="login-terms-link" type="button">Terms of Service</button></p>
+              </form>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <footer className="landing-footer">
+        <div className="landing-footer-inner">
+          <div>
+            <strong className="landing-footer-brand">Common Ground</strong>
+            <p>Geography-powered fan discovery</p>
+          </div>
+          <nav className="landing-footer-nav" aria-label="Footer">
+            <button className="landing-footer-link" type="button" onClick={() => onNavigate("app", "explorer")}>Map</button>
+            <button className="landing-footer-link" type="button" onClick={() => onNavigate("app", "collection")}>Collection</button>
+            <button className="landing-footer-link" type="button" onClick={() => onNavigate("app", "methodology")}>Methodology</button>
+          </nav>
+        </div>
+      </footer>
+    </div>
   );
 }
 
@@ -598,7 +933,7 @@ class AppErrorBoundary extends React.Component {
   }
 }
 
-function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCode, onSelect }) {
+function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCode, onSelect, discoveredCodes = new Set(), totalStates = 0 }) {
   const [hint, setHint] = useState("Hover or focus a state to preview Olympic, Paralympic, and total counts.");
   const [hoverTip, setHoverTip] = useState(null);
   const [viewport, setViewport] = useState({ scale: 1, x: 0, y: 0 });
@@ -847,11 +1182,11 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
         <div className="map-controls" aria-label="Map controls">
           <button className="map-control-button" type="button" onClick={zoomIn} aria-label="Zoom in" title="Zoom in">+</button>
           <button className="map-control-button" type="button" onClick={locateCurrentState} disabled={isLocating} aria-label="Use my location to zoom to my state" title="Use my location to zoom to my state">
-            <LocateIcon />
+            <Icon name="locate" size={18} strokeWidth={2} />
           </button>
-          <button className="map-control-button" type="button" onClick={zoomOut} aria-label="Zoom out" title="Zoom out">-</button>
+          <button className="map-control-button" type="button" onClick={zoomOut} aria-label="Zoom out" title="Zoom out">−</button>
           <button className="map-control-button" type="button" onClick={resetMap} aria-label="Reset map" title="Reset map">
-            <ResetIcon />
+            <Icon name="reset" size={18} strokeWidth={2} />
           </button>
         </div>
         <svg
@@ -878,7 +1213,8 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
                   "state-path",
                   card ? "has-data" : "no-data",
                   signal,
-                  code === selectedCode ? "is-selected" : ""
+                  code === selectedCode ? "is-selected" : "",
+                  discoveredCodes.has(code) ? "is-discovered" : ""
                 ].filter(Boolean).join(" ");
 
                 return (
@@ -916,6 +1252,21 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
               })}
             </g>
             {borderPath && <path className="state-borders" d={borderPath} />}
+            <g className="discovered-markers" aria-hidden="true">
+              {features.map((item) => {
+                const code = item.properties.stateCode;
+                if (!discoveredCodes.has(code)) return null;
+                const centroid = path.centroid(item);
+                if (!Number.isFinite(centroid[0]) || !Number.isFinite(centroid[1])) return null;
+                const s = 1 / viewport.scale;
+                return (
+                  <g key={`chk-${code}`} transform={`translate(${centroid[0]} ${centroid[1]}) scale(${s})`} pointerEvents="none">
+                    <circle className="check-bg" r="9" />
+                    <polyline className="check-tick" points="-3.5,0.8 -1,3.3 5,-3.8" />
+                  </g>
+                );
+              })}
+            </g>
             {selectedCentroid && viewport.scale < 2.9 && (
               <text className="selected-state-label" x={selectedCentroid[0]} y={selectedCentroid[1]}>
                 {selectedCode}
@@ -975,6 +1326,7 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
         <div className="map-hint">{hint}</div>
       </div>
       <SignalLegend />
+      <MapProgressBar discovered={discoveredCodes.size} total={totalStates} />
     </>
   );
 }
@@ -1130,59 +1482,136 @@ function CardArt({ card, compact = false, panelManifest = EMPTY_CARD_PANEL_MANIF
 
 function UnifiedStateCard({ card, sourceRefs, briefing, briefingLoading, onRefreshBriefing, onOpenChallenge, onFlipChange, panelManifest }) {
   const [flipped, setFlipped] = useState(false);
+  const [displayBack, setDisplayBack] = useState(false);
+  const [flipPhase, setFlipPhase] = useState(null); // null | "out" | "in"
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const [mousePos, setMousePos] = useState({ x: 50, y: 50, angle: 120 });
+  const [isHovered, setIsHovered] = useState(false);
+  const tiltRef = useRef(null);
+  const flipTimers = useRef([]);
   const cardStory = getCardStory(card);
+  const counts = getRosterCounts(card);
   const olympicCue = getPanelVisualCue(card.olympicPanel);
   const paralympicCue = getPanelVisualCue(card.paralympicPanel);
 
   useEffect(() => {
+    flipTimers.current.forEach(clearTimeout);
+    flipTimers.current = [];
     setFlipped(false);
+    setDisplayBack(false);
+    setFlipPhase(null);
+    setTilt({ x: 0, y: 0 });
     onFlipChange?.(false);
   }, [card.stateCode]);
 
   function toggleFlip() {
-    setFlipped((value) => {
-      const next = !value;
+    if (flipPhase !== null) return;
+    setFlipPhase("out");
+    setTilt({ x: 0, y: 0 });
+
+    const t1 = setTimeout(() => {
+      const next = !flipped;
+      setFlipped(next);
+      setDisplayBack(next);
+      setFlipPhase("in");
       onFlipChange?.(next);
-      return next;
-    });
+    }, 220);
+
+    const t2 = setTimeout(() => {
+      setFlipPhase(null);
+    }, 440);
+
+    flipTimers.current = [t1, t2];
   }
+
+  function handleMouseMove(e) {
+    if (displayBack || flipPhase !== null) return;
+    const el = tiltRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const dx = (e.clientX - rect.left) / rect.width;
+    const dy = (e.clientY - rect.top) / rect.height;
+    setTilt({ x: (0.5 - dy) * 18, y: (dx - 0.5) * 26 });
+    setMousePos({ x: dx * 100, y: dy * 100, angle: dx * 180 + dy * 90 + 60 });
+  }
+
+  function handleMouseLeave() {
+    setTilt({ x: 0, y: 0 });
+    setIsHovered(false);
+  }
+
+  const frontClass = [
+    "sports-card-face sports-card-front",
+    displayBack ? "face-hidden" : "",
+    !displayBack && flipPhase === "out" ? "flip-out" : "",
+    !displayBack && flipPhase === "in" ? "flip-in" : "",
+  ].filter(Boolean).join(" ");
+
+  const backClass = [
+    "sports-card-face sports-card-back",
+    !displayBack ? "face-hidden" : "",
+    displayBack && flipPhase === "in" ? "flip-in" : "",
+    displayBack && flipPhase === "out" ? "flip-out" : "",
+  ].filter(Boolean).join(" ");
 
   return (
     <section className="sports-card-shell">
-      <div className={`sports-card ${flipped ? "is-flipped" : ""}`}>
-        <article className="sports-card-face sports-card-front" aria-label={`${card.stateName} state card front`}>
-          <CardArt card={card} panelManifest={panelManifest} />
-        </article>
+      <div className="card-3d-viewport">
+        <div
+          ref={tiltRef}
+          className="card-tilt-layer"
+          style={{ transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)` }}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+          onMouseEnter={() => setIsHovered(true)}
+        >
+          <div
+            className={`sports-card ${isHovered && !displayBack ? "is-hovered" : ""}`}
+            style={{ "--holo-x": `${mousePos.x}%`, "--holo-y": `${mousePos.y}%`, "--holo-angle": `${mousePos.angle}deg` }}
+          >
+            <article
+              className={frontClass}
+              aria-label={`${card.stateName} state card front — click to flip`}
+              role="button"
+              tabIndex={displayBack ? -1 : 0}
+              onClick={toggleFlip}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggleFlip(); } }}
+            >
+              <CardArt card={card} panelManifest={panelManifest} />
+            </article>
 
-        <article className="sports-card-face sports-card-back" aria-label={`${card.stateName} state card data`}>
-          <div className="card-back-scroll">
-            <div className="card-header">
-              <p className="eyebrow">Shared geography view</p>
-              <h3>{card.stateName}</h3>
-              <strong className="card-theme-title">{cardStory.themeName}</strong>
-              <p>{card.geographySnapshot}</p>
-            </div>
-            <div className="program-panel-grid">
-              <SportPanel panel={card.olympicPanel} />
-              <SportPanel panel={card.paralympicPanel} />
-            </div>
-            <section className="trait-band">
-              <div className="trait-badge">
-                <span>What connects them</span>
-                <strong>{card.sharedTrait.name}</strong>
+            <article className={backClass} aria-label={`${card.stateName} state card data`}>
+              <div className="card-back-scroll">
+                <div className="card-header">
+                  <p className="eyebrow">Shared geography view</p>
+                  <h3>{card.stateName}</h3>
+                  <p>{card.geographySnapshot}</p>
+                  <div className="metric-row compact-metrics">
+                    <span className="metric">State total <strong>{counts.total}</strong></span>
+                    <span className="metric">Olympic count <strong>{counts.olympic}</strong></span>
+                    <span className="metric">Paralympic count <strong>{counts.paralympic}</strong></span>
+                  </div>
+                </div>
+                <div className="program-panel-grid">
+                  <SportPanel panel={card.olympicPanel} />
+                  <SportPanel panel={card.paralympicPanel} />
+                </div>
+                <section className="trait-band">
+                  <div className="trait-badge">
+                    <span>Shared trait across both featured sports</span>
+                    <strong>{card.sharedTrait.name}</strong>
+                  </div>
+                  <p>This trait connects Olympic <strong>{olympicCue}</strong> and Paralympic <strong>{paralympicCue}</strong>: {card.sharedTrait.description}</p>
+                </section>
+                <BriefingPanel payload={briefing} loading={briefingLoading} onRefresh={onRefreshBriefing} compact />
+                <div className="card-footer">
+                  <SourceList refs={sourceRefs} />
+                  <button className="primary-button" type="button" onClick={onOpenChallenge}>Try the State Sync Challenge</button>
+                </div>
               </div>
-              <p>This trait connects Olympic <strong>{olympicCue}</strong> and Paralympic <strong>{paralympicCue}</strong>: {card.sharedTrait.description}</p>
-            </section>
-            <BriefingPanel payload={briefing} loading={briefingLoading} onRefresh={onRefreshBriefing} compact />
-            <div className="card-footer">
-              <div>
-                <SourceList refs={sourceRefs} />
-                <p className="compliance-note">Aggregate state view only. No athlete names, likenesses, finish times, rankings, medals, or performance predictions.</p>
-              </div>
-              <button className="primary-button" type="button" onClick={onOpenChallenge}>Try the State Sync Challenge</button>
-            </div>
+            </article>
           </div>
-        </article>
+        </div>
       </div>
 
       <div className="card-action-row">
@@ -1466,7 +1895,7 @@ function ChallengeView({ card, briefing, onReturn, panelManifest }) {
 
 function MiniStateCard({ card, discovered, onSelect, panelManifest }) {
   return (
-    <button className="mini-card" type="button" onClick={() => onSelect(card.stateCode)} aria-label={`Open ${card.stateName} card`}>
+    <button className={`mini-card ${discovered ? "is-discovered" : "is-locked"}`} type="button" onClick={() => onSelect(card.stateCode)} aria-label={`Open ${card.stateName} card`}>
       <CardArt card={card} compact panelManifest={panelManifest} />
       <div className="mini-card-body">
         <div>
@@ -1485,7 +1914,8 @@ function MiniStateCard({ card, discovered, onSelect, panelManifest }) {
 
 function CollectionView({ states, discoveredCodes, onSelect, panelManifest }) {
   const discoveredStates = states.filter((card) => discoveredCodes.has(card.stateCode));
-  const previewStates = states.filter((card) => !discoveredCodes.has(card.stateCode)).slice(0, 8);
+  const previewStates = states.filter((card) => !discoveredCodes.has(card.stateCode)).slice(0, 12);
+  const remaining = states.length - discoveredStates.length;
 
   return (
     <section className="collection-view page-panel">
@@ -1495,7 +1925,12 @@ function CollectionView({ states, discoveredCodes, onSelect, panelManifest }) {
           <h2>My Sport Cards</h2>
           <p>Cards appear here after you select states on the map. Exploration stays available without login.</p>
         </div>
-        <span className="collection-count">{discoveredStates.length} discovered</span>
+        <div className="collection-progress-stack">
+          <span className="collection-count">{discoveredStates.length} / {states.length}</span>
+          <div className="collection-progress-track" aria-hidden="true">
+            <div className="collection-progress-fill" style={{ width: `${Math.round((discoveredStates.length / states.length) * 100)}%` }} />
+          </div>
+        </div>
       </div>
 
       <div className="card-grid">
@@ -1507,7 +1942,7 @@ function CollectionView({ states, discoveredCodes, onSelect, panelManifest }) {
       {previewStates.length > 0 && (
         <>
           <div className="section-divider" />
-          <p className="eyebrow muted-eyebrow">More sourced geography cards</p>
+          <p className="eyebrow muted-eyebrow">Locked — explore on the map to unlock ({remaining} remaining)</p>
           <div className="card-grid compact-grid">
             {previewStates.map((card) => (
               <MiniStateCard key={card.stateCode} card={card} discovered={false} onSelect={onSelect} panelManifest={panelManifest} />
@@ -1613,37 +2048,19 @@ function MethodologyView({ refs, meta, states }) {
   );
 }
 
-function AppShell({ view, setView, children }) {
-  const navItems = [
-    ["explorer", "map"],
-    ["collection", "cards"],
-    ["challenge", "game"],
-    ["methodology", "method"]
-  ];
-
+function AppShell({ view, setView, children, onNavigate, onLogin, darkMode, onToggleDarkMode }) {
   return (
-    <div className="app-frame">
-      <aside className="sidebar">
-        <div className="brand-block">
-          <h1>Common Ground</h1>
-          <p>Geography-powered fan discovery</p>
-        </div>
-        <nav className="side-nav" aria-label="Primary">
-          {navItems.map(([key, icon]) => (
-            <button
-              key={key}
-              className={`side-nav-button ${view === key ? "is-active" : ""}`}
-              type="button"
-              onClick={() => setView(key)}
-            >
-              <AppIcon name={icon} />
-              <span>{VIEW_LABELS[key]}</span>
-            </button>
-          ))}
-        </nav>
-      </aside>
-
-      <div className="workspace">
+    <div className="app-frame-v2">
+      <TopNav
+        page="app"
+        view={view}
+        onViewChange={(nextView) => setView(nextView)}
+        onNavigate={onNavigate}
+        onLogin={onLogin}
+        darkMode={darkMode}
+        onToggleDarkMode={onToggleDarkMode}
+      />
+      <div className="workspace-v2">
         <main>{children}</main>
       </div>
     </div>
@@ -1651,6 +2068,8 @@ function AppShell({ view, setView, children }) {
 }
 
 function App() {
+  const [page, setPage] = useState("landing");
+  const [darkMode, setDarkMode] = useState(true);
   const [dataset, setDataset] = useState(null);
   const [mapTopology, setMapTopology] = useState(null);
   const [geoTopology, setGeoTopology] = useState(null);
@@ -1692,9 +2111,9 @@ function App() {
 
   useEffect(() => {
     document.documentElement.dataset.theme = ACTIVE_VISUAL_THEME.color;
-    document.documentElement.dataset.surface = ACTIVE_VISUAL_THEME.surface;
+    document.documentElement.dataset.surface = darkMode ? "blacktop" : "";
     document.documentElement.dataset.type = ACTIVE_VISUAL_THEME.type;
-  }, []);
+  }, [darkMode]);
 
   /*
   Card lab persistence, parked with the toggle UI:
@@ -1803,6 +2222,27 @@ function App() {
     setIsCardModalOpen(openCard);
   }
 
+  function navigate(nextPage, nextView = null) {
+    setPage(nextPage);
+    if (nextView) setView(nextView);
+    setIsCardModalOpen(false);
+  }
+
+  const navProps = {
+    onNavigate: navigate,
+    onLogin: () => navigate("login"),
+    darkMode,
+    onToggleDarkMode: () => setDarkMode((d) => !d)
+  };
+
+  if (page === "landing") {
+    return <LandingPage {...navProps} />;
+  }
+
+  if (page === "login") {
+    return <LoginPage {...navProps} onLogin={() => navigate("app")} />;
+  }
+
   if (loadError) {
     return (
       <main className="load-state">
@@ -1814,10 +2254,12 @@ function App() {
 
   if (!dataset || !mapTopology || !geoTopology || !selectedCard) {
     return (
-      <main className="load-state">
-        <h1>Common Ground</h1>
-        <p>Loading map and sourced state aggregates...</p>
-      </main>
+      <div className="app-frame-v2">
+        <TopNav page="app" view={view} onViewChange={setView} {...navProps} />
+        <main className="load-state">
+          <p>Loading map and sourced state aggregates...</p>
+        </main>
+      </div>
     );
   }
 
@@ -1828,6 +2270,7 @@ function App() {
         setIsCardModalOpen(false);
         setView(nextView);
       }}
+      {...navProps}
     >
       {view === "explorer" && (
         <section className="map-explorer-shell">
@@ -1840,7 +2283,7 @@ function App() {
               <StateControls states={dataset.states} selectedCode={selectedCode} onSelect={selectState} />
             </div>
             <p className="safe-note">Explore aggregate state signals from public Team USA and geography data. Patterns may suggest fan-discovery context and do not imply performance outcomes.</p>
-            <StateMap mapTopology={mapTopology} features={features} geoFeatures={geoFeatures} cardsByCode={cardsByCode} selectedCode={selectedCode} onSelect={selectState} />
+            <StateMap mapTopology={mapTopology} features={features} geoFeatures={geoFeatures} cardsByCode={cardsByCode} selectedCode={selectedCode} onSelect={selectState} discoveredCodes={discoveredCodes} totalStates={dataset.states.length} />
           </section>
         </section>
       )}
