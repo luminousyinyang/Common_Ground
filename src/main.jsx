@@ -401,8 +401,35 @@ function mergeGeneratedPanelData(card, manifest) {
   };
 }
 
-function AppIcon({ name }) {
-  return <span className={`nav-glyph nav-glyph-${name}`} aria-hidden="true" />;
+const ICON_PATHS = {
+  map: <><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21" /><line x1="9" y1="3" x2="9" y2="18" /><line x1="15" y1="6" x2="15" y2="21" /></>,
+  cards: <><rect x="2" y="5" width="15" height="14" rx="2" /><path d="M6 5V3a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-2" /></>,
+  game: <><circle cx="12" cy="12" r="10" /><circle cx="12" cy="12" r="4" /><line x1="21.17" y1="8" x2="12" y2="8" /><line x1="3.95" y1="6.06" x2="8" y2="14" /><line x1="10.88" y1="21.94" x2="15" y2="14" /></>,
+  method: <><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /></>,
+  locate: <><circle cx="12" cy="12" r="3" /><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" /></>,
+  reset: <><polyline points="1 4 1 10 7 10" /><path d="M3.51 15a9 9 0 1 0 .49-3" /></>,
+  moon: <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />,
+  sun: <><circle cx="12" cy="12" r="5" /><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" /></>,
+};
+
+function Icon({ name, size = 18, strokeWidth = 1.8, className = "" }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width={size}
+      height={size}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+      className={className}
+    >
+      {ICON_PATHS[name]}
+    </svg>
+  );
 }
 
 /*
@@ -455,10 +482,10 @@ function CardLabControls({
 function SignalLegend() {
   return (
     <div className="legend" aria-label="Participation signal legend">
-      <span><i className="signal-dot high" />High</span>
-      <span><i className="signal-dot medium" />Medium</span>
-      <span><i className="signal-dot low" />Low</span>
-      <span><i className="signal-dot insufficient_data" />Limited</span>
+      <span className="legend-item"><i className="signal-dot high" /><span>High</span></span>
+      <span className="legend-item"><i className="signal-dot medium" /><span>Medium</span></span>
+      <span className="legend-item"><i className="signal-dot low" /><span>Low</span></span>
+      <span className="legend-item"><i className="signal-dot insufficient_data" /><span>Limited</span></span>
     </div>
   );
 }
@@ -494,40 +521,6 @@ function RosterTooltip({ card, position }) {
   );
 }
 
-function LocateIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-      <circle cx="12" cy="12" r="5" />
-      <path d="M12 2v4M12 18v4M2 12h4M18 12h4" />
-    </svg>
-  );
-}
-
-function ResetIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-      <path d="M7 7h7a5 5 0 1 1-4.2 7.7" />
-      <path d="M7 7V3M7 7h4" />
-    </svg>
-  );
-}
-
-function MoonIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-    </svg>
-  );
-}
-
-function SunIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-      <circle cx="12" cy="12" r="5" />
-      <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
-    </svg>
-  );
-}
 
 function TopNav({ page, view, onViewChange, onNavigate, onLogin, darkMode, onToggleDarkMode }) {
   return (
@@ -542,7 +535,7 @@ function TopNav({ page, view, onViewChange, onNavigate, onLogin, darkMode, onTog
             type="button"
             onClick={() => onNavigate("app", "explorer")}
           >
-            <AppIcon name="map" />
+            <Icon name="map" size={15} />
             Map
           </button>
           <button
@@ -550,13 +543,13 @@ function TopNav({ page, view, onViewChange, onNavigate, onLogin, darkMode, onTog
             type="button"
             onClick={() => onNavigate("app", "collection")}
           >
-            <AppIcon name="cards" />
+            <Icon name="cards" size={15} />
             Collection
           </button>
         </nav>
         <div className="top-nav-actions">
           <button className="top-nav-icon-btn" type="button" onClick={onToggleDarkMode} aria-label="Toggle dark mode">
-            {darkMode ? <SunIcon /> : <MoonIcon />}
+            <Icon name={darkMode ? "sun" : "moon"} size={16} strokeWidth={1.6} />
           </button>
           <button className="top-nav-login-btn" type="button" onClick={onLogin}>Login</button>
         </div>
@@ -588,17 +581,17 @@ function LandingPage({ onNavigate, onLogin, darkMode, onToggleDarkMode }) {
           <h2 className="landing-features-heading">How it works</h2>
           <div className="landing-features-grid">
             <div className="landing-feature-card">
-              <div className="landing-feature-icon"><AppIcon name="map" /></div>
+              <div className="landing-feature-icon"><Icon name="map" size={22} strokeWidth={1.5} /></div>
               <h3>Interactive Map</h3>
               <p>Click any state to explore athlete counts and sport families across the US. Discovered states are highlighted as you build your collection.</p>
             </div>
             <div className="landing-feature-card">
-              <div className="landing-feature-icon"><AppIcon name="cards" /></div>
+              <div className="landing-feature-icon"><Icon name="cards" size={22} strokeWidth={1.5} /></div>
               <h3>State Cards</h3>
               <p>Collect digital cards for each state. Each card features Olympic and Paralympic programs with equal visual weight and a holographic shine on hover.</p>
             </div>
             <div className="landing-feature-card">
-              <div className="landing-feature-icon"><AppIcon name="game" /></div>
+              <div className="landing-feature-icon"><Icon name="game" size={22} strokeWidth={1.5} /></div>
               <h3>Fan Challenges</h3>
               <p>Test your instincts with short skill challenges tied to the shared athletic trait connecting each state's Olympic and Paralympic sports.</p>
             </div>
@@ -1010,11 +1003,11 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
         <div className="map-controls" aria-label="Map controls">
           <button className="map-control-button" type="button" onClick={zoomIn} aria-label="Zoom in" title="Zoom in">+</button>
           <button className="map-control-button" type="button" onClick={locateCurrentState} disabled={isLocating} aria-label="Use my location to zoom to my state" title="Use my location to zoom to my state">
-            <LocateIcon />
+            <Icon name="locate" size={18} strokeWidth={2} />
           </button>
-          <button className="map-control-button" type="button" onClick={zoomOut} aria-label="Zoom out" title="Zoom out">-</button>
+          <button className="map-control-button" type="button" onClick={zoomOut} aria-label="Zoom out" title="Zoom out">−</button>
           <button className="map-control-button" type="button" onClick={resetMap} aria-label="Reset map" title="Reset map">
-            <ResetIcon />
+            <Icon name="reset" size={18} strokeWidth={2} />
           </button>
         </div>
         <svg
@@ -1080,6 +1073,21 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
               })}
             </g>
             {borderPath && <path className="state-borders" d={borderPath} />}
+            <g className="discovered-markers" aria-hidden="true">
+              {features.map((item) => {
+                const code = item.properties.stateCode;
+                if (!discoveredCodes.has(code)) return null;
+                const centroid = path.centroid(item);
+                if (!Number.isFinite(centroid[0]) || !Number.isFinite(centroid[1])) return null;
+                const s = 1 / viewport.scale;
+                return (
+                  <g key={`chk-${code}`} transform={`translate(${centroid[0]} ${centroid[1]}) scale(${s})`} pointerEvents="none">
+                    <circle className="check-bg" r="9" />
+                    <polyline className="check-tick" points="-3.5,0.8 -1,3.3 5,-3.8" />
+                  </g>
+                );
+              })}
+            </g>
             {selectedCentroid && viewport.scale < 2.9 && (
               <text className="selected-state-label" x={selectedCentroid[0]} y={selectedCentroid[1]}>
                 {selectedCode}

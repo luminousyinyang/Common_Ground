@@ -959,12 +959,6 @@ select {
   cursor: pointer;
 }
 
-.state-path.is-discovered {
-  stroke: var(--gold);
-  stroke-width: 3;
-  filter: drop-shadow(0 0 5px color-mix(in srgb, var(--gold) 60%, transparent));
-}
-
 .state-path:hover,
 .state-path:focus-visible {
   opacity: 1;
@@ -972,10 +966,19 @@ select {
   stroke-width: 2.2;
 }
 
-.state-path.is-discovered:hover,
-.state-path.is-discovered:focus-visible {
-  stroke: var(--gold);
-  stroke-width: 2.8;
+/* Discovered state checkmark circle */
+.check-bg {
+  fill: var(--gold);
+  stroke: var(--paper);
+  stroke-width: 1.5;
+}
+
+.check-tick {
+  fill: none;
+  stroke: var(--paper);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .state-path.is-selected {
@@ -1170,10 +1173,19 @@ select {
 }
 
 .legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
   margin-top: 14px;
   color: var(--muted);
   font-size: 0.84rem;
   font-weight: 750;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
 }
 
 .map-progress {
@@ -1202,9 +1214,11 @@ select {
 }
 
 .signal-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 999px;
+  display: inline-block;
+  flex-shrink: 0;
+  width: 11px;
+  height: 11px;
+  border-radius: 3px;
   background: #7c8da5;
 }
 
@@ -3800,6 +3814,51 @@ select {
   font-weight: 750;
   cursor: pointer;
   text-decoration: underline;
+}
+
+@media (max-width: 860px) {
+  .landing-features-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .login-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .login-left {
+    padding: 40px clamp(20px, 4vw, 48px);
+    min-height: auto;
+  }
+
+  .login-card-visual {
+    display: none;
+  }
+
+  .top-nav-center {
+    gap: 2px;
+    padding: 3px;
+  }
+
+  .top-nav-tab {
+    padding: 5px 10px;
+    font-size: 0.82rem;
+    gap: 5px;
+  }
+}
+
+@media (max-width: 600px) {
+  .top-nav-brand {
+    font-size: 1rem;
+  }
+
+  .top-nav-login-btn {
+    padding: 6px 12px;
+    font-size: 0.82rem;
+  }
+
+  .landing-features-grid {
+    gap: 14px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
