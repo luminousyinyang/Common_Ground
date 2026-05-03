@@ -138,7 +138,7 @@ const CARD_THEME_LABELS = {
 };
 
 const EMPTY_CARD_PANEL_MANIFEST = { states: {} };
-const CURRENT_CARD_BACK_COPY_VERSION = "common-ground-card-back-v8-editorial-card";
+const CURRENT_CARD_BACK_COPY_VERSION = "common-ground-card-back-v11-qa-facts-no-signal";
 
 const SIGNAL_LABELS = {
   high: "High",
@@ -367,29 +367,61 @@ function factChipsForSport(visualCue, panel) {
     .slice(0, 4);
 }
 
-function storyParagraphForSport(visualCue, panel) {
+function moduleMixForSport(visualCue, panel) {
+  const sport = String(visualCue || "").toLowerCase();
+  const family = String(panel?.sportFamily || "").toLowerCase();
+  if (/water polo/.test(sport)) return ["Hidden Skill", "State Culture", "Watch Hook"];
+  if (/triathlon/.test(sport)) return ["Pace Shift", "Gear/Setup", "Broadcast Moment"];
+  if (/skateboarding|gymnastics|climbing|surfing|equestrian|breaking/.test(sport)) return ["Hidden Skill", "Terrain/Environment Lens", "Watch Hook"];
+  if (/cycling/.test(sport)) return ["Gear/Setup", "Pace Shift", "Terrain/Environment Lens"];
+  if (/shooting|archery/.test(sport) || /precision|focus/.test(family)) return ["Hidden Skill", "Rules Snapshot", "Watch Hook"];
+  return ["Watch Hook", "Sport Family Link", "Challenge Link"];
+}
+
+function qaFactsForSport(visualCue, panel) {
   const sport = String(visualCue || "").toLowerCase();
   const stateConnection = readableGeographyLens(panel, visualCue);
   if (/water polo/.test(sport)) {
-    return `Water polo is one of the easiest sports to underestimate until you watch it closely: almost everything happens while players tread, wrestle for space, and read passing angles in a pool that never gives them solid footing. ${stateConnection} Watch for the rhythm underneath the chaos: quick resets, sudden bursts, and how teams create space before a shot.`;
+    return {
+      aboutSport: "Water polo is an aquatic team sport built around passing lanes, body position, and quick resets.",
+      watchValue: "The ball moves fast, but the sharper read often happens before the pass, as players shift and fake to open a lane.",
+      stateConnection,
+      eventRhythm: "Slow setup, sudden burst. Possessions can move from patient passing to a quick strike in a short window.",
+      funFact: "Players keep moving without solid footing, so spacing and balance matter even away from the ball.",
+      watchFor: "The pass before the shot; that is often where the play is created."
+    };
   }
   if (/triathlon/.test(sport)) {
-    return `Para triathlon turns water, road, running, and transition moments into one continuous viewing story. ${stateConnection} The fun part to watch is the shift: every stage changes the rhythm, and every transition asks for control.`;
+    return {
+      aboutSport: "Para triathlon combines swimming, cycling, running, and transition strategy across changing surfaces and equipment needs.",
+      watchValue: "The transitions carry their own drama because every shift from water to bike to run changes the pacing problem.",
+      stateConnection,
+      eventRhythm: "Segmented momentum: the rhythm changes each time the environment changes.",
+      funFact: "Transition moments can be as revealing as the race segments because they show preparation, control, and adaptation.",
+      watchFor: "How quickly the rhythm changes after the swim ends and the road portion begins."
+    };
   }
-  const watchLens = watchLensForSport(visualCue, panel);
-  const fanTakeaway = fanTakeawayForSport(visualCue, panel);
-  return `${watchLens} ${stateConnection} ${fanTakeaway}`;
+  return {
+    aboutSport: `${visualCue} sits inside the card's ${panelThemePhrase(panel)} theme.`,
+    watchValue: watchLensForSport(visualCue, panel),
+    stateConnection,
+    eventRhythm: fanTakeawayForSport(visualCue, panel),
+    funFact: "Small setup choices can change how the movement reads for fans.",
+    watchFor: watchLensForSport(visualCue, panel).split(".")[0] + "."
+  };
 }
 
 function getPanelBackCopy(panel) {
   const visualCue = getPanelVisualCue(panel);
 
-  return panel.cardBackCopy || {
+  if (panel.cardBackCopy?.qaFacts) return panel.cardBackCopy;
+
+  return {
     featuredCue: visualCue,
+    moduleMix: moduleMixForSport(visualCue, panel),
     subtitle: subtitleForSport(visualCue, panel),
-    storyParagraph: storyParagraphForSport(visualCue, panel),
-    factChips: factChipsForSport(visualCue, panel),
-    watchFor: watchLensForSport(visualCue, panel).split(".")[0] + "."
+    qaFacts: qaFactsForSport(visualCue, panel),
+    factChips: factChipsForSport(visualCue, panel)
   };
 }
 
@@ -402,10 +434,10 @@ function getPanelBackCopyForDisplay(panel) {
   return {
     ...fallback,
     featuredCue: legacy.featuredCue || fallback.featuredCue,
+    moduleMix: Array.isArray(legacy.moduleMix) && legacy.moduleMix.length ? legacy.moduleMix : fallback.moduleMix,
     subtitle: legacy.subtitle || legacy.sportFamilyTheme || fallback.subtitle,
-    storyParagraph: legacy.storyParagraph || [legacy.watchLens || legacy.featuredCueExplanation, legacy.stateConnection || legacy.stateLens, legacy.fanTakeaway || legacy.featuredSportContext].filter(Boolean).join(" ") || fallback.storyParagraph,
+    qaFacts: legacy.qaFacts ? Object.fromEntries(Object.entries(legacy.qaFacts).filter(([key]) => key !== "stateSignal")) : fallback.qaFacts,
     factChips: Array.isArray(legacy.factChips) && legacy.factChips.length ? legacy.factChips : fallback.factChips,
-    watchFor: legacy.watchFor || legacy.watchLens || fallback.watchFor
   };
 }
 
@@ -983,10 +1015,22 @@ function StateSummary({ card }) {
   );
 }
 
+const PANEL_QA_ROWS = [
+  ["aboutSport", "A bit about the sport"],
+  ["watchValue", "What makes it fun"],
+  ["stateConnection", "State connection"],
+  ["eventRhythm", "Rhythm"],
+  ["funFact", "Fun fact"],
+  ["watchFor", "Watch for"]
+];
+
 function SportPanel({ panel }) {
   const copy = getPanelBackCopyForDisplay(panel);
   const visualCue = copy.featuredCue || getPanelVisualCue(panel);
   const factChips = Array.isArray(copy.factChips) ? copy.factChips.filter(Boolean).slice(0, 4) : [];
+  const qaRows = PANEL_QA_ROWS
+    .map(([key, label]) => [key, label, copy.qaFacts?.[key]])
+    .filter(([, , value]) => String(value || "").trim());
 
   return (
     <section className="panel">
@@ -996,16 +1040,19 @@ function SportPanel({ panel }) {
       <div className="panel-body">
         <h4>{visualCue}</h4>
         {copy.subtitle && <p className="panel-subtitle">{copy.subtitle}</p>}
-        <p className="panel-story">{copy.storyParagraph}</p>
+        <div className="panel-qa-list">
+          {qaRows.map(([key, label, value]) => (
+            <div className="panel-qa-row" key={key}>
+              <span>{label}</span>
+              <strong>{value}</strong>
+            </div>
+          ))}
+        </div>
         {factChips.length > 0 && (
           <div className="panel-fact-chips" aria-label={`${visualCue} card facts`}>
             {factChips.map((chip) => <span key={chip}>{chip}</span>)}
           </div>
         )}
-        <div className="panel-watch-for">
-          <span>Watch for</span>
-          <strong>{copy.watchFor}</strong>
-        </div>
       </div>
     </section>
   );
