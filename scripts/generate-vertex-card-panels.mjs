@@ -27,7 +27,7 @@ const imageRetryDelayMs = positiveInteger(process.env.CARD_IMAGE_RETRY_DELAY_MS,
 const imageRequestTimeoutMs = positiveInteger(process.env.CARD_IMAGE_REQUEST_TIMEOUT_MS, 900000);
 const textRequestTimeoutMs = positiveInteger(process.env.CARD_COPY_REQUEST_TIMEOUT_MS, 120000);
 const PROMPT_VERSION = "common-ground-card-panel-v3-top-sport-cue";
-const CARD_BACK_COPY_VERSION = "common-ground-card-back-v6-fan-takeaway";
+const CARD_BACK_COPY_VERSION = "common-ground-card-back-v8-editorial-card";
 
 let firebaseClientsPromise;
 
@@ -542,19 +542,42 @@ Do not use internal words like "row", "pipeline", "raw data", "card image cue", 
 Do not write "high signal", "medium signal", "low signal", or "high aggregate presence" in final copy. Use the bucket only to decide whether the copy should be specific or generalized.
 Avoid backend-sounding or vague phrases like "roster data", "roster", "representation", "prominent feature", "athletic connections", "frequently associated", "ties to", "backdrop", "frame", or "could help fans discover".
 Do not overstate the cue with words like "strong", "dominant", "best", or "proves".
-Avoid physical-demand wording such as "demands", "requires", "essential", "rigorous", "stamina", "maintain speed", or "intense physical pressure". Prefer fan-observation wording such as "look for", "notice", "watch how", "shows", "invites fans to read", and "could help fans understand".
+Avoid awkward generated openings such as "[Sport] invites fans", "[Sport] invites a look", "[Sport] is featured here", or "[Sport] is featured because".
+Avoid physical-demand wording such as "demands", "requires", "essential", "rigorous", "stamina", "maintain speed", or "intense physical pressure". Prefer concrete fan-observation wording such as "look for", "notice", "watch how", "shows", and "could help fans understand".
+Avoid generic enthusiasm words such as "fascinating", "interesting part", "compelling", or "dynamic" when concrete sport detail would be clearer.
 This panel is only about the featured sport. Do not mention other sports from otherTopSportTagsForStateBriefingOnly; those belong in the Gemini State Briefing.
 Make every field answer: "why would a fan care?"
 Avoid repeating the same abstract trait language across fields. Each field must add a different kind of value.
 Do not use section-title language like "Why this sport", "Movement read", "State context", "Fan Takeaway", or "Watch Lens" inside the values.
+Keep the same storytelling quality as the examples, but do not reuse the same sentence formulas on every card. Vary the opening line, paragraph rhythm, and sport-specific details by state/program.
 
 Return valid JSON only with these fields:
 - featuredCue: short display label. If primarySportTag is present, use it exactly. If not, use a concise generalized cue.
-- watchLens: 1-2 short sentences telling a fan what is interesting to watch in this featured sport. Be concrete about action, rhythm, space, transition, environment, pressure, equipment, or decision-making.
-- stateConnection: 1 sentence connecting state geography/culture context to this featured sport with conditional language and no causation claim. Prefer "could help fans understand..." or "could show how..." Do not say "popular" or "practiced" unless the provided data directly supports it.
-- fanTakeaway: 1 sentence explaining how this panel helps a fan understand the card theme or shared trait, without repeating watchLens.
-- sportFamilyTheme: concise display phrase using 2-4 theme terms separated by " · ". Example style: "Aquatic environment · Team spacing · Repeat rhythm".
+- subtitle: concise display line with 3-4 short phrases separated by " · ". It should feel like the subline on a collectible card.
+- storyParagraph: one rich editorial paragraph, 70-105 words, with useful fan context about how to watch the sport, how the state may relate to the card story, and how it connects to the shared trait. Use short vivid language. Do not mention unrelated sports. Do not start with "[Sport] invites".
+- factChips: array of 3-4 tiny chip labels. Each chip must be 2-4 words. Use sport-family facts, viewing cues, equipment/terrain/context cues, or event-type context. Do not include exact counts.
+- watchFor: one sharp sentence telling fans one specific thing to notice while watching this sport.
 - complianceWarnings: array of strings, empty if safe.
+
+Style references only. Do not copy them verbatim and do not force every state into waterline language:
+Example Olympic panel style:
+{
+  "featuredCue": "Water Polo",
+  "subtitle": "Aquatic team sport · pressure rhythm · passing lanes",
+  "storyParagraph": "Water polo is one of the easiest sports to underestimate until you watch it closely: almost everything happens while players tread, wrestle for space, and read passing angles in a pool that never gives them solid footing. For a California card, the Pacific coast, outdoor aquatic culture, and large urban sport communities could help fans understand why water-based team stories appear here. Watch for the rhythm underneath the chaos: quick resets, sudden bursts, and how teams create space before a shot.",
+  "factChips": ["Aquatic environment", "Team spacing", "Fast resets", "Passing lanes"],
+  "watchFor": "The ball moves fast, but the real story is how players create space before the pass.",
+  "complianceWarnings": []
+}
+Example Paralympic panel style:
+{
+  "featuredCue": "Paratriathlon",
+  "subtitle": "Swim · bike · run · transition control",
+  "storyParagraph": "Para triathlon gives a California card a different kind of waterline story. Instead of team movement in a pool, the sport moves through water, road, and running segments, with transitions becoming part of the drama. California's Pacific coast, road networks, varied terrain, and year-round outdoor access could help fans understand why water-connected endurance stories fit this geography lens. The fun part to watch is the shift: every stage changes the rhythm, and every transition asks for control.",
+  "factChips": ["Multi-stage endurance", "Transition control", "Equipment adaptation", "Outdoor rhythm"],
+  "watchFor": "The transitions are not dead time; they are part of the sport's rhythm.",
+  "complianceWarnings": []
+}
 
 Panel data:
 ${JSON.stringify(payload, null, 2)}`;
@@ -611,20 +634,23 @@ async function generateGeminiJson({ token, prompt, modelName, timeoutMs }) {
 
 function validateCardBackCopy({ card, program, rawCopy }) {
   const panel = programPanel(card, program);
-  const requiredFields = ["featuredCue", "watchLens", "stateConnection", "fanTakeaway", "sportFamilyTheme"];
+  const requiredFields = ["featuredCue", "subtitle", "storyParagraph", "watchFor"];
   const missingFields = requiredFields.filter((field) => !String(rawCopy?.[field] || "").trim());
   if (missingFields.length) {
     throw new Error(`Gemini card-back copy is missing required fields: ${missingFields.join(", ")}`);
+  }
+  if (!Array.isArray(rawCopy.factChips) || rawCopy.factChips.length < 3) {
+    throw new Error("Gemini card-back copy must include at least 3 factChips.");
   }
 
   const expectedCue = panel.primarySportTag || null;
   const copy = {
     featuredCue: expectedCue || String(rawCopy.featuredCue).trim(),
-    watchLens: String(rawCopy.watchLens).trim(),
+    subtitle: String(rawCopy.subtitle).trim(),
+    storyParagraph: String(rawCopy.storyParagraph).trim(),
+    factChips: rawCopy.factChips.map((chip) => String(chip || "").trim()).filter(Boolean).slice(0, 4),
+    watchFor: String(rawCopy.watchFor).trim(),
     relatedTags: (panel.topSportTags || []).filter((tag) => tag !== expectedCue),
-    stateConnection: String(rawCopy.stateConnection).trim(),
-    fanTakeaway: String(rawCopy.fanTakeaway).trim(),
-    sportFamilyTheme: String(rawCopy.sportFamilyTheme).trim(),
     complianceWarnings: Array.isArray(rawCopy.complianceWarnings)
       ? rawCopy.complianceWarnings.map((warning) => String(warning || "").trim()).filter(Boolean)
       : []
@@ -639,10 +665,10 @@ function validateCardBackCopy({ card, program, rawCopy }) {
 function complianceCheckCardBackCopy(copy) {
   const text = [
     copy.featuredCue,
-    copy.watchLens,
-    copy.stateConnection,
-    copy.fanTakeaway,
-    copy.sportFamilyTheme
+    copy.subtitle,
+    copy.storyParagraph,
+    ...(copy.factChips || []),
+    copy.watchFor
   ].filter(Boolean).join(" ");
   const bannedPatterns = [
     /\bguarantee(s|d)?\b/i,
@@ -670,7 +696,9 @@ function complianceCheckCardBackCopy(copy) {
     /\bframes?\b/i,
     /\bframing\b/i,
     /\bcould help fans discover\b/i,
+    /\binvites?\s+(fans|a|the|you)\b/i,
     /\bis featured because\b/i,
+    /\bis featured here\b/i,
     /\bfrequently associated\b/i,
     /\bties to\b/i,
     /\brows?\b/i,
@@ -692,6 +720,10 @@ function complianceCheckCardBackCopy(copy) {
     /\bstamina\b/i,
     /\bmaintain speed\b/i,
     /\bintense physical pressure\b/i,
+    /\bfascinating\b/i,
+    /\binteresting part\b/i,
+    /\bcompelling\b/i,
+    /\bdynamic\b/i,
     /\b\d+(\.\d+)?\s?(seconds?|minutes?|points?|percent|%)\b/i
   ];
   const warnings = bannedPatterns.filter((pattern) => pattern.test(text)).map((pattern) => `Unsafe phrase pattern: ${pattern}`);

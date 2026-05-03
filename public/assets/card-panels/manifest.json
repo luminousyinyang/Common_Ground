@@ -1,7 +1,7 @@
 {
   "model": "gemini-3-pro-image-preview",
   "location": "global",
-  "updatedAt": "2026-05-02T20:01:10.004Z",
+  "updatedAt": "2026-05-03T02:54:10.198Z",
   "states": {
     "CO": {
       "olympic": {
@@ -52,20 +52,25 @@
         "firebaseCollection": "cardPanels",
         "cardBackCopy": {
           "featuredCue": "Water Polo",
-          "watchLens": "Notice the constant shifting of spacing and timing above the surface. Watch how quick passes and coordinated movement keep the rhythm steady even as the water conditions change.",
+          "subtitle": "Aquatic team sport · passing angles · spatial awareness · controlled rhythm",
+          "storyParagraph": "The surface of a water polo match looks chaotic, but the underlying game is entirely about spatial control. Players constantly tread and navigate passing lanes without ever touching the bottom of the pool. For a California card, the extensive Pacific coastline, year-round outdoor access, and large urban aquatic centers could help fans understand why water-based team stories surface here. Watch how the rhythm shifts from slow, deliberate setups to sudden, explosive shots. The constant movement of the water means timing a pass perfectly relies on reading the shifting space before the window closes.",
+          "factChips": [
+            "Aquatic spatial control",
+            "Passing lane setups",
+            "Constant surface movement",
+            "Quick offensive resets"
+          ],
+          "watchFor": "Watch how players use the constant movement of the water to disguise their passing angles before taking a shot.",
           "relatedTags": [
             "Track and Field",
             "Skateboarding"
           ],
-          "stateConnection": "California's extensive Pacific coast and year-round outdoor access could show how aquatic environments become integrated into daily movement and recreation.",
-          "fanTakeaway": "This view invites fans to read the precise cadence and spatial awareness involved in mastering a fluid, unpredictable setting.",
-          "sportFamilyTheme": "Aquatic environment · Spatial coordination · Controlled cadence",
           "complianceWarnings": []
         },
         "cardBackCopySource": "gemini",
-        "cardBackCopyVersion": "common-ground-card-back-v6-fan-takeaway",
+        "cardBackCopyVersion": "common-ground-card-back-v8-editorial-card",
         "cardBackCopyModel": "gemini-3.1-pro-preview",
-        "cardBackCopyPromptHash": "b978dc91ab008b959fb56aa34a77b64dd42d09d5fb956cc14d1c0f3022936733"
+        "cardBackCopyPromptHash": "c6bfa9cf1019b09308048ae32135379f05dab53b052b417af12c9898beb18fce"
       },
       "paralympic": {
         "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v3-top-sport-cue%2Fca%2Fca-paralympic.png?alt=media&token=f1a37cb9-e066-41d5-8a8b-7653ba9b1118",
@@ -84,21 +89,26 @@
         ],
         "cardBackCopy": {
           "featuredCue": "Paratriathlon",
-          "watchLens": "Watch the complex transitions between open water swimming, cycling, and running. The constant shift in equipment and terrain requires precise pacing and physical adaptability to maintain speed.",
+          "subtitle": "Multi-stage endurance · transition pacing · changing environments",
+          "storyParagraph": "Paratriathlon shifts the viewing experience from a single continuous effort to a puzzle of changing environments. Moving from open water to road cycling and running means the rhythm never stays the same for long. California's Pacific coast, varied mountain and desert terrain, and year-round outdoor access could help fans understand why multi-stage endurance stories appear alongside this geography. The real viewing hook is how competitors manage the shift between segments. Watch how pacing and equipment adaptations work together to maintain momentum when the surface underneath completely changes.",
+          "factChips": [
+            "Open water starts",
+            "Equipment adaptation",
+            "Surface transitions",
+            "Pace control"
+          ],
+          "watchFor": "Notice how the rhythm changes the moment a competitor leaves the water and begins the equipment transition for the road.",
           "relatedTags": [
             "Para Track and Field",
             "Para-Cycling",
             "Para Shooting"
           ],
-          "stateConnection": "California's expansive Pacific coastline and year-round outdoor access could show how varied natural environments align with the rigorous demands of multi-stage endurance events.",
-          "fanTakeaway": "Following the continuous shift from water to land highlights the precise cadence required to keep momentum when physical conditions constantly change.",
-          "sportFamilyTheme": "Multi-stage endurance · Environmental transitions · Pace control",
           "complianceWarnings": []
         },
         "cardBackCopySource": "gemini",
-        "cardBackCopyVersion": "common-ground-card-back-v6-fan-takeaway",
+        "cardBackCopyVersion": "common-ground-card-back-v8-editorial-card",
         "cardBackCopyModel": "gemini-3.1-pro-preview",
-        "cardBackCopyPromptHash": "8e05f3710d3f0160257713725aafab26418c36aa480ff2ba5451c709c3010848",
+        "cardBackCopyPromptHash": "e22bc368dfca14da2eccd77086fc846bd41e13c979ef979c3a82b993a6fd830d",
         "paletteTheme": "Pacific Heat",
         "promptHash": "4623f8f78fd5f8fcc96437fdb6b6d188cb1b7f68a8fd9e6bb59603c77e17be95",
         "notes": "",
