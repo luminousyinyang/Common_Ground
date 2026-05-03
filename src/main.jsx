@@ -1829,18 +1829,42 @@ function MiniStateCard({ card, discovered, onSelect, panelManifest }) {
   );
 }
 
-function CollectionView({ states, discoveredCodes, onSelect, panelManifest }) {
+function CollectionView({ states, discoveredCodes, onSelect, panelManifest, isLoggedIn, onLogin }) {
   const discoveredStates = states.filter((card) => discoveredCodes.has(card.stateCode));
   const previewStates = states.filter((card) => !discoveredCodes.has(card.stateCode)).slice(0, 12);
   const remaining = states.length - discoveredStates.length;
 
   return (
     <section className="collection-view page-panel">
+      {!isLoggedIn && (
+        <div className="collection-gate">
+          <div className="collection-gate-content">
+            <span className="collection-gate-icon"><Icon name="cards" size={32} strokeWidth={1.3} /></span>
+            <h2 className="collection-gate-title">Your Collection Awaits</h2>
+            <p className="collection-gate-body">Sign in to save your discovered cards, track your progress across all 50 states, and build your fan collection.</p>
+            <button className="primary-button" type="button" onClick={onLogin}>Login to View Collection</button>
+          </div>
+          <div className="collection-gate-blur" aria-hidden="true">
+            <div className="collection-header">
+              <div>
+                <p className="eyebrow">Collection</p>
+                <h2>My Sport Cards</h2>
+              </div>
+            </div>
+            <div className="card-grid">
+              {states.slice(0, 12).map((card) => (
+                <MiniStateCard key={card.stateCode} card={card} discovered={discoveredCodes.has(card.stateCode)} onSelect={() => {}} panelManifest={panelManifest} />
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+      {isLoggedIn && <>
       <div className="collection-header">
         <div>
-          <p className="eyebrow">Guest collection</p>
+          <p className="eyebrow">Your collection</p>
           <h2>My Sport Cards</h2>
-          <p>Cards appear here after you select states on the map. Exploration stays available without login.</p>
+          <p>Cards appear here after you select states on the map.</p>
         </div>
         <div className="collection-progress-stack">
           <span className="collection-count">{discoveredStates.length} / {states.length}</span>
@@ -1867,6 +1891,7 @@ function CollectionView({ states, discoveredCodes, onSelect, panelManifest }) {
           </div>
         </>
       )}
+      </>}
     </section>
   );
 }
@@ -1986,6 +2011,7 @@ function AppShell({ view, setView, children, onNavigate, onLogin, darkMode, onTo
 
 function App() {
   const [page, setPage] = useState("landing");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [darkMode, setDarkMode] = useState(true);
   const [dataset, setDataset] = useState(null);
   const [mapTopology, setMapTopology] = useState(null);
@@ -2157,7 +2183,7 @@ function App() {
   }
 
   if (page === "login") {
-    return <LoginPage {...navProps} onLogin={() => navigate("app")} />;
+    return <LoginPage {...navProps} onLogin={() => { setIsLoggedIn(true); navigate("app"); }} />;
   }
 
   if (loadError) {
@@ -2206,7 +2232,7 @@ function App() {
       )}
 
       {view === "collection" && (
-        <CollectionView states={dataset.states} discoveredCodes={discoveredCodes} onSelect={(code) => selectState(code, "collection")} panelManifest={panelManifest} />
+        <CollectionView states={dataset.states} discoveredCodes={discoveredCodes} onSelect={(code) => selectState(code, "collection")} panelManifest={panelManifest} isLoggedIn={isLoggedIn} onLogin={() => navigate("login")} />
       )}
 
       {view === "challenge" && (

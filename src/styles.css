@@ -1250,7 +1250,7 @@ select {
 .ghost-button,
 .primary-button {
   border: 1px solid transparent;
-  border-radius: 12px;
+  border-radius: 999px;
   min-height: 38px;
   padding: 0 14px;
   font-weight: 800;
@@ -2678,6 +2678,72 @@ select {
   max-width: 1280px;
   margin: 0 auto;
   padding: 24px;
+  position: relative;
+}
+
+/* ── Collection login gate ────────────────────────────── */
+.collection-gate {
+  position: relative;
+  min-height: 560px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.collection-gate-blur {
+  position: absolute;
+  inset: 0;
+  filter: blur(8px) grayscale(0.4);
+  opacity: 0.35;
+  pointer-events: none;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.collection-gate-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: clamp(32px, 5vw, 56px) clamp(28px, 5vw, 64px);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06);
+  max-width: 420px;
+}
+
+.collection-gate-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  background: var(--surface-soft);
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+.collection-gate-title {
+  font-family: var(--display-font);
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  font-weight: 900;
+  text-transform: var(--display-transform);
+  letter-spacing: var(--display-letter-spacing);
+  line-height: 0.95;
+  margin: 0;
+}
+
+.collection-gate-body {
+  font-size: 0.95rem;
+  color: var(--copy);
+  line-height: 1.6;
+  margin: 0;
+  max-width: 34ch;
 }
 
 .challenge-header p {
