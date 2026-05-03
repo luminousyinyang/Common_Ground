@@ -410,6 +410,8 @@ const ICON_PATHS = {
   reset: <><polyline points="1 4 1 10 7 10" /><path d="M3.51 15a9 9 0 1 0 .49-3" /></>,
   moon: <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />,
   sun: <><circle cx="12" cy="12" r="5" /><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" /></>,
+  home: <><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></>,
+  close: <><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></>,
 };
 
 function Icon({ name, size = 18, strokeWidth = 1.8, className = "" }) {
@@ -523,38 +525,145 @@ function RosterTooltip({ card, position }) {
 
 
 function TopNav({ page, view, onViewChange, onNavigate, onLogin, darkMode, onToggleDarkMode }) {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuMounted, setMenuMounted] = useState(false);
+  const CLOSE_MS = 340;
+
+  function openMenu() {
+    setMenuMounted(true);
+    requestAnimationFrame(() => requestAnimationFrame(() => setMenuOpen(true)));
+  }
+
+  function closeMenu() {
+    setMenuOpen(false);
+    setTimeout(() => setMenuMounted(false), CLOSE_MS);
+  }
+
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [menuOpen]);
+
+  function go(targetPage, targetView) {
+    onNavigate(targetPage, targetView);
+    closeMenu();
+  }
+
   return (
-    <header className="top-nav">
-      <div className="top-nav-inner">
-        <button className="top-nav-brand" type="button" onClick={() => onNavigate("landing")} aria-label="Common Ground home">
-          Common Ground
-        </button>
-        <nav className="top-nav-center" aria-label="Primary navigation">
+    <>
+      <header className={`top-nav${menuOpen ? " has-menu-open" : ""}`}>
+        <div className="top-nav-inner">
+          <button className="top-nav-brand" type="button" onClick={() => go("landing")} aria-label="Common Ground home">
+            Common Ground
+          </button>
+          <nav className="top-nav-center" aria-label="Primary navigation">
+            <button
+              className={`top-nav-tab ${page === "app" && view === "explorer" ? "is-active" : ""}`}
+              type="button"
+              onClick={() => onNavigate("app", "explorer")}
+            >
+              <Icon name="map" size={15} />
+              <span className="nav-tab-label">Map</span>
+            </button>
+            <button
+              className={`top-nav-tab ${page === "app" && view === "collection" ? "is-active" : ""}`}
+              type="button"
+              onClick={() => onNavigate("app", "collection")}
+            >
+              <Icon name="cards" size={15} />
+              <span className="nav-tab-label">Collection</span>
+            </button>
+          </nav>
+          <div className="top-nav-actions">
+            <button className="top-nav-icon-btn" type="button" onClick={onToggleDarkMode} aria-label="Toggle dark mode">
+              <Icon name={darkMode ? "sun" : "moon"} size={16} strokeWidth={1.6} />
+            </button>
+            <button className="top-nav-login-btn" type="button" onClick={onLogin}>Login</button>
+          </div>
           <button
-            className={`top-nav-tab ${page === "app" && view === "explorer" ? "is-active" : ""}`}
+            className={`hamburger-btn${menuOpen ? " is-open" : ""}`}
             type="button"
-            onClick={() => onNavigate("app", "explorer")}
+            onClick={menuOpen ? closeMenu : openMenu}
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-menu"
           >
-            <Icon name="map" size={15} />
-            Map
+            <span className="hamburger-bar" />
+            <span className="hamburger-bar" />
+            <span className="hamburger-bar" />
           </button>
-          <button
-            className={`top-nav-tab ${page === "app" && view === "collection" ? "is-active" : ""}`}
-            type="button"
-            onClick={() => onNavigate("app", "collection")}
-          >
-            <Icon name="cards" size={15} />
-            Collection
-          </button>
-        </nav>
-        <div className="top-nav-actions">
-          <button className="top-nav-icon-btn" type="button" onClick={onToggleDarkMode} aria-label="Toggle dark mode">
-            <Icon name={darkMode ? "sun" : "moon"} size={16} strokeWidth={1.6} />
-          </button>
-          <button className="top-nav-login-btn" type="button" onClick={onLogin}>Login</button>
         </div>
-      </div>
-    </header>
+      </header>
+
+      {menuMounted && (
+        <div
+          id="mobile-menu"
+          className={`mobile-menu-overlay${menuOpen ? " is-open" : ""}`}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Navigation menu"
+        >
+          <div className="mobile-menu-header">
+            <button className="top-nav-brand" type="button" onClick={() => go("landing")}>
+              Common Ground
+            </button>
+            <button className="mobile-menu-close" type="button" onClick={closeMenu} aria-label="Close menu">
+              <Icon name="close" size={16} strokeWidth={2} />
+            </button>
+          </div>
+
+          <nav className="mobile-menu-nav">
+            <button
+              className={`mobile-menu-link${page === "landing" ? " is-active" : ""}`}
+              type="button"
+              onClick={() => go("landing")}
+              style={{ "--i": 0 }}
+            >
+              <span className="mobile-menu-link-icon"><Icon name="home" size={26} strokeWidth={1.4} /></span>
+              Home
+            </button>
+            <button
+              className={`mobile-menu-link${page === "app" && view === "explorer" ? " is-active" : ""}`}
+              type="button"
+              onClick={() => go("app", "explorer")}
+              style={{ "--i": 1 }}
+            >
+              <span className="mobile-menu-link-icon"><Icon name="map" size={26} strokeWidth={1.4} /></span>
+              Map
+            </button>
+            <button
+              className={`mobile-menu-link${page === "app" && view === "collection" ? " is-active" : ""}`}
+              type="button"
+              onClick={() => go("app", "collection")}
+              style={{ "--i": 2 }}
+            >
+              <span className="mobile-menu-link-icon"><Icon name="cards" size={26} strokeWidth={1.4} /></span>
+              Collection
+            </button>
+          </nav>
+          <div className="mobile-menu-sep" style={{ "--i": 3 }} />
+          <div className="mobile-menu-foot">
+            <button
+              className="mobile-menu-row"
+              type="button"
+              onClick={onToggleDarkMode}
+              style={{ "--i": 4 }}
+            >
+              <span>{darkMode ? "Light mode" : "Dark mode"}</span>
+              <Icon name={darkMode ? "sun" : "moon"} size={20} strokeWidth={1.5} />
+            </button>
+            <button
+              className="primary-button mobile-menu-login"
+              type="button"
+              onClick={() => { onLogin(); closeMenu(); }}
+              style={{ "--i": 5 }}
+            >
+              Login
+            </button>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 
