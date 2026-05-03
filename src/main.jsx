@@ -463,6 +463,18 @@ function SignalLegend() {
   );
 }
 
+function MapProgressBar({ discovered, total }) {
+  const pct = total > 0 ? Math.round((discovered / total) * 100) : 0;
+  return (
+    <div className="map-progress" aria-label={`${discovered} of ${total} states explored`}>
+      <div className="map-progress-track" aria-hidden="true">
+        <div className="map-progress-fill" style={{ width: `${pct}%` }} />
+      </div>
+      <span>{discovered} / {total} states explored · {pct}%</span>
+    </div>
+  );
+}
+
 function RosterTooltip({ card, position }) {
   if (!card || !position) return null;
   const counts = getRosterCounts(card);
@@ -500,6 +512,227 @@ function ResetIcon() {
   );
 }
 
+function MoonIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+    </svg>
+  );
+}
+
+function SunIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <circle cx="12" cy="12" r="5" />
+      <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+    </svg>
+  );
+}
+
+function TopNav({ page, view, onViewChange, onNavigate, onLogin, darkMode, onToggleDarkMode }) {
+  return (
+    <header className="top-nav">
+      <div className="top-nav-inner">
+        <button className="top-nav-brand" type="button" onClick={() => onNavigate("landing")} aria-label="Common Ground home">
+          Common Ground
+        </button>
+        <nav className="top-nav-center" aria-label="Primary navigation">
+          <button
+            className={`top-nav-tab ${page === "app" && view === "explorer" ? "is-active" : ""}`}
+            type="button"
+            onClick={() => onNavigate("app", "explorer")}
+          >
+            <AppIcon name="map" />
+            Map
+          </button>
+          <button
+            className={`top-nav-tab ${page === "app" && view === "collection" ? "is-active" : ""}`}
+            type="button"
+            onClick={() => onNavigate("app", "collection")}
+          >
+            <AppIcon name="cards" />
+            Collection
+          </button>
+        </nav>
+        <div className="top-nav-actions">
+          <button className="top-nav-icon-btn" type="button" onClick={onToggleDarkMode} aria-label="Toggle dark mode">
+            {darkMode ? <SunIcon /> : <MoonIcon />}
+          </button>
+          <button className="top-nav-login-btn" type="button" onClick={onLogin}>Login</button>
+        </div>
+      </div>
+    </header>
+  );
+}
+
+function LandingPage({ onNavigate, onLogin, darkMode, onToggleDarkMode }) {
+  return (
+    <div className="landing-page">
+      <TopNav page="landing" view={null} onViewChange={() => {}} onNavigate={onNavigate} onLogin={onLogin} darkMode={darkMode} onToggleDarkMode={onToggleDarkMode} />
+
+      <section className="landing-hero">
+        <div className="landing-section-inner">
+          <p className="eyebrow landing-eyebrow">Olympic + Paralympic Discovery</p>
+          <h1 className="landing-hero-title">Explore Team USA's Athletic Legacy</h1>
+          <p className="landing-hero-sub">Geography-powered fan discovery for LA28</p>
+          <p className="landing-hero-body">Click any state on the interactive map to discover Olympic and Paralympic athletes with equal prominence. Collect state cards, explore shared traits, and build your fan collection across all 50 states.</p>
+          <div className="landing-cta-row">
+            <button className="primary-button" type="button" onClick={() => onNavigate("app", "explorer")}>Explore the Map</button>
+            <button className="ghost-button" type="button" onClick={() => onNavigate("app", "collection")}>View Collection</button>
+          </div>
+        </div>
+      </section>
+
+      <section className="landing-features">
+        <div className="landing-section-inner">
+          <h2 className="landing-features-heading">How it works</h2>
+          <div className="landing-features-grid">
+            <div className="landing-feature-card">
+              <div className="landing-feature-icon"><AppIcon name="map" /></div>
+              <h3>Interactive Map</h3>
+              <p>Click any state to explore athlete counts and sport families across the US. Discovered states are highlighted as you build your collection.</p>
+            </div>
+            <div className="landing-feature-card">
+              <div className="landing-feature-icon"><AppIcon name="cards" /></div>
+              <h3>State Cards</h3>
+              <p>Collect digital cards for each state. Each card features Olympic and Paralympic programs with equal visual weight and a holographic shine on hover.</p>
+            </div>
+            <div className="landing-feature-card">
+              <div className="landing-feature-icon"><AppIcon name="game" /></div>
+              <h3>Fan Challenges</h3>
+              <p>Test your instincts with short skill challenges tied to the shared athletic trait connecting each state's Olympic and Paralympic sports.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="landing-cta2">
+        <div className="landing-section-inner landing-cta2-inner">
+          <h2 className="landing-cta2-title">Start Your Collection Today</h2>
+          <p className="landing-cta2-body">No account required to explore. Select states on the map to unlock cards and track your journey across all 50 states.</p>
+          <button className="primary-button" type="button" onClick={() => onNavigate("app", "explorer")}>Begin Exploring</button>
+        </div>
+      </section>
+
+      <footer className="landing-footer">
+        <div className="landing-footer-inner">
+          <div>
+            <strong className="landing-footer-brand">Common Ground</strong>
+            <p>Geography-powered fan discovery</p>
+          </div>
+          <nav className="landing-footer-nav" aria-label="Footer">
+            <button className="landing-footer-link" type="button" onClick={() => onNavigate("app", "explorer")}>Map</button>
+            <button className="landing-footer-link" type="button" onClick={() => onNavigate("app", "collection")}>Collection</button>
+            <button className="landing-footer-link" type="button" onClick={() => onNavigate("app", "methodology")}>Methodology</button>
+          </nav>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+function LoginPage({ onNavigate, onLogin, darkMode, onToggleDarkMode }) {
+  const [tab, setTab] = useState("login");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    onLogin();
+  }
+
+  return (
+    <div className="login-page">
+      <TopNav page="login" view={null} onViewChange={() => {}} onNavigate={onNavigate} onLogin={onLogin} darkMode={darkMode} onToggleDarkMode={onToggleDarkMode} />
+
+      <div className="login-layout">
+        <div className="login-left">
+          <div className="login-left-content">
+            <h2 className="login-left-title">Common Ground</h2>
+            <p className="login-left-tagline">Discover. Collect. Connect.</p>
+            <p className="login-left-body">Track your athlete discoveries and save your collection across sessions. Build your complete 50-state card set.</p>
+            <div className="login-card-visual" aria-hidden="true">
+              <div className="login-card-back" />
+              <div className="login-card-front" />
+            </div>
+          </div>
+        </div>
+
+        <div className="login-right">
+          <div className="login-form-wrap">
+            <div className="login-tabs" role="tablist">
+              <button className={`login-tab ${tab === "login" ? "is-active" : ""}`} type="button" role="tab" aria-selected={tab === "login"} onClick={() => setTab("login")}>Login</button>
+              <button className={`login-tab ${tab === "create" ? "is-active" : ""}`} type="button" role="tab" aria-selected={tab === "create"} onClick={() => setTab("create")}>Create Account</button>
+            </div>
+
+            {tab === "login" && (
+              <form className="login-form" onSubmit={handleSubmit}>
+                <div className="login-form-header">
+                  <h3>Welcome back</h3>
+                  <p>Sign in to save your collection</p>
+                </div>
+                <label className="login-field">
+                  <span>Email</span>
+                  <input className="login-input" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" autoComplete="email" />
+                </label>
+                <label className="login-field">
+                  <span>Password</span>
+                  <input className="login-input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" autoComplete="current-password" />
+                </label>
+                <button className="login-forgot" type="button">Forgot password?</button>
+                <button className="primary-button login-submit" type="submit">Log In</button>
+                <div className="login-or"><span>or</span></div>
+                <button className="ghost-button login-google" type="button">Continue with Google</button>
+                <p className="login-terms">By continuing you agree to our <button className="login-terms-link" type="button">Terms of Service</button></p>
+              </form>
+            )}
+
+            {tab === "create" && (
+              <form className="login-form" onSubmit={handleSubmit}>
+                <div className="login-form-header">
+                  <h3>Create your account</h3>
+                  <p>Start tracking your discoveries</p>
+                </div>
+                <label className="login-field">
+                  <span>Name</span>
+                  <input className="login-input" type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" autoComplete="name" />
+                </label>
+                <label className="login-field">
+                  <span>Email</span>
+                  <input className="login-input" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" autoComplete="email" />
+                </label>
+                <label className="login-field">
+                  <span>Password</span>
+                  <input className="login-input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Create a password" autoComplete="new-password" />
+                </label>
+                <button className="primary-button login-submit" type="submit">Create Account</button>
+                <div className="login-or"><span>or</span></div>
+                <button className="ghost-button login-google" type="button">Continue with Google</button>
+                <p className="login-terms">By creating an account you agree to our <button className="login-terms-link" type="button">Terms of Service</button></p>
+              </form>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <footer className="landing-footer">
+        <div className="landing-footer-inner">
+          <div>
+            <strong className="landing-footer-brand">Common Ground</strong>
+            <p>Geography-powered fan discovery</p>
+          </div>
+          <nav className="landing-footer-nav" aria-label="Footer">
+            <button className="landing-footer-link" type="button" onClick={() => onNavigate("app", "explorer")}>Map</button>
+            <button className="landing-footer-link" type="button" onClick={() => onNavigate("app", "collection")}>Collection</button>
+            <button className="landing-footer-link" type="button" onClick={() => onNavigate("app", "methodology")}>Methodology</button>
+          </nav>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
 class AppErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
@@ -528,7 +761,7 @@ class AppErrorBoundary extends React.Component {
   }
 }
 
-function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCode, onSelect }) {
+function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCode, onSelect, discoveredCodes = new Set(), totalStates = 0 }) {
   const [hint, setHint] = useState("Hover or focus a state to preview Olympic, Paralympic, and total counts.");
   const [hoverTip, setHoverTip] = useState(null);
   const [viewport, setViewport] = useState({ scale: 1, x: 0, y: 0 });
@@ -808,7 +1041,8 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
                   "state-path",
                   card ? "has-data" : "no-data",
                   signal,
-                  code === selectedCode ? "is-selected" : ""
+                  code === selectedCode ? "is-selected" : "",
+                  discoveredCodes.has(code) ? "is-discovered" : ""
                 ].filter(Boolean).join(" ");
 
                 return (
@@ -905,6 +1139,7 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
         <div className="map-hint">{hint}</div>
       </div>
       <SignalLegend />
+      <MapProgressBar discovered={discoveredCodes.size} total={totalStates} />
     </>
   );
 }
@@ -1050,7 +1285,7 @@ function UnifiedStateCard({ card, sourceRefs, briefing, briefingLoading, onRefre
   const [displayBack, setDisplayBack] = useState(false);
   const [flipPhase, setFlipPhase] = useState(null); // null | "out" | "in"
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
-  const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
+  const [mousePos, setMousePos] = useState({ x: 50, y: 50, angle: 120 });
   const [isHovered, setIsHovered] = useState(false);
   const tiltRef = useRef(null);
   const flipTimers = useRef([]);
@@ -1097,7 +1332,7 @@ function UnifiedStateCard({ card, sourceRefs, briefing, briefingLoading, onRefre
     const dx = (e.clientX - rect.left) / rect.width;
     const dy = (e.clientY - rect.top) / rect.height;
     setTilt({ x: (0.5 - dy) * 18, y: (dx - 0.5) * 26 });
-    setMousePos({ x: dx * 100, y: dy * 100 });
+    setMousePos({ x: dx * 100, y: dy * 100, angle: dx * 180 + dy * 90 + 60 });
   }
 
   function handleMouseLeave() {
@@ -1132,7 +1367,7 @@ function UnifiedStateCard({ card, sourceRefs, briefing, briefingLoading, onRefre
         >
           <div
             className={`sports-card ${isHovered && !displayBack ? "is-hovered" : ""}`}
-            style={{ "--holo-x": `${mousePos.x}%`, "--holo-y": `${mousePos.y}%` }}
+            style={{ "--holo-x": `${mousePos.x}%`, "--holo-y": `${mousePos.y}%`, "--holo-angle": `${mousePos.angle}deg` }}
           >
             <article
               className={frontClass}
@@ -1460,7 +1695,7 @@ function ChallengeView({ card, briefing, onReturn, panelManifest }) {
 
 function MiniStateCard({ card, discovered, onSelect, panelManifest }) {
   return (
-    <button className="mini-card" type="button" onClick={() => onSelect(card.stateCode)} aria-label={`Open ${card.stateName} card`}>
+    <button className={`mini-card ${discovered ? "is-discovered" : "is-locked"}`} type="button" onClick={() => onSelect(card.stateCode)} aria-label={`Open ${card.stateName} card`}>
       <CardArt card={card} compact panelManifest={panelManifest} />
       <div className="mini-card-body">
         <div>
@@ -1479,7 +1714,8 @@ function MiniStateCard({ card, discovered, onSelect, panelManifest }) {
 
 function CollectionView({ states, discoveredCodes, onSelect, panelManifest }) {
   const discoveredStates = states.filter((card) => discoveredCodes.has(card.stateCode));
-  const previewStates = states.filter((card) => !discoveredCodes.has(card.stateCode)).slice(0, 8);
+  const previewStates = states.filter((card) => !discoveredCodes.has(card.stateCode)).slice(0, 12);
+  const remaining = states.length - discoveredStates.length;
 
   return (
     <section className="collection-view page-panel">
@@ -1489,7 +1725,12 @@ function CollectionView({ states, discoveredCodes, onSelect, panelManifest }) {
           <h2>My Sport Cards</h2>
           <p>Cards appear here after you select states on the map. Exploration stays available without login.</p>
         </div>
-        <span className="collection-count">{discoveredStates.length} discovered</span>
+        <div className="collection-progress-stack">
+          <span className="collection-count">{discoveredStates.length} / {states.length}</span>
+          <div className="collection-progress-track" aria-hidden="true">
+            <div className="collection-progress-fill" style={{ width: `${Math.round((discoveredStates.length / states.length) * 100)}%` }} />
+          </div>
+        </div>
       </div>
 
       <div className="card-grid">
@@ -1501,7 +1742,7 @@ function CollectionView({ states, discoveredCodes, onSelect, panelManifest }) {
       {previewStates.length > 0 && (
         <>
           <div className="section-divider" />
-          <p className="eyebrow muted-eyebrow">More sourced geography cards</p>
+          <p className="eyebrow muted-eyebrow">Locked — explore on the map to unlock ({remaining} remaining)</p>
           <div className="card-grid compact-grid">
             {previewStates.map((card) => (
               <MiniStateCard key={card.stateCode} card={card} discovered={false} onSelect={onSelect} panelManifest={panelManifest} />
@@ -1607,37 +1848,19 @@ function MethodologyView({ refs, meta, states }) {
   );
 }
 
-function AppShell({ view, setView, children }) {
-  const navItems = [
-    ["explorer", "map"],
-    ["collection", "cards"],
-    ["challenge", "game"],
-    ["methodology", "method"]
-  ];
-
+function AppShell({ view, setView, children, onNavigate, onLogin, darkMode, onToggleDarkMode }) {
   return (
-    <div className="app-frame">
-      <aside className="sidebar">
-        <div className="brand-block">
-          <h1>Common Ground</h1>
-          <p>Geography-powered fan discovery</p>
-        </div>
-        <nav className="side-nav" aria-label="Primary">
-          {navItems.map(([key, icon]) => (
-            <button
-              key={key}
-              className={`side-nav-button ${view === key ? "is-active" : ""}`}
-              type="button"
-              onClick={() => setView(key)}
-            >
-              <AppIcon name={icon} />
-              <span>{VIEW_LABELS[key]}</span>
-            </button>
-          ))}
-        </nav>
-      </aside>
-
-      <div className="workspace">
+    <div className="app-frame-v2">
+      <TopNav
+        page="app"
+        view={view}
+        onViewChange={(nextView) => setView(nextView)}
+        onNavigate={onNavigate}
+        onLogin={onLogin}
+        darkMode={darkMode}
+        onToggleDarkMode={onToggleDarkMode}
+      />
+      <div className="workspace-v2">
         <main>{children}</main>
       </div>
     </div>
@@ -1645,6 +1868,8 @@ function AppShell({ view, setView, children }) {
 }
 
 function App() {
+  const [page, setPage] = useState("landing");
+  const [darkMode, setDarkMode] = useState(true);
   const [dataset, setDataset] = useState(null);
   const [mapTopology, setMapTopology] = useState(null);
   const [geoTopology, setGeoTopology] = useState(null);
@@ -1686,9 +1911,9 @@ function App() {
 
   useEffect(() => {
     document.documentElement.dataset.theme = ACTIVE_VISUAL_THEME.color;
-    document.documentElement.dataset.surface = ACTIVE_VISUAL_THEME.surface;
+    document.documentElement.dataset.surface = darkMode ? "blacktop" : "";
     document.documentElement.dataset.type = ACTIVE_VISUAL_THEME.type;
-  }, []);
+  }, [darkMode]);
 
   /*
   Card lab persistence, parked with the toggle UI:
@@ -1797,6 +2022,27 @@ function App() {
     setIsCardModalOpen(openCard);
   }
 
+  function navigate(nextPage, nextView = null) {
+    setPage(nextPage);
+    if (nextView) setView(nextView);
+    setIsCardModalOpen(false);
+  }
+
+  const navProps = {
+    onNavigate: navigate,
+    onLogin: () => navigate("login"),
+    darkMode,
+    onToggleDarkMode: () => setDarkMode((d) => !d)
+  };
+
+  if (page === "landing") {
+    return <LandingPage {...navProps} />;
+  }
+
+  if (page === "login") {
+    return <LoginPage {...navProps} onLogin={() => navigate("app")} />;
+  }
+
   if (loadError) {
     return (
       <main className="load-state">
@@ -1808,10 +2054,12 @@ function App() {
 
   if (!dataset || !mapTopology || !geoTopology || !selectedCard) {
     return (
-      <main className="load-state">
-        <h1>Common Ground</h1>
-        <p>Loading map and sourced state aggregates...</p>
-      </main>
+      <div className="app-frame-v2">
+        <TopNav page="app" view={view} onViewChange={setView} {...navProps} />
+        <main className="load-state">
+          <p>Loading map and sourced state aggregates...</p>
+        </main>
+      </div>
     );
   }
 
@@ -1822,6 +2070,7 @@ function App() {
         setIsCardModalOpen(false);
         setView(nextView);
       }}
+      {...navProps}
     >
       {view === "explorer" && (
         <section className="map-explorer-shell">
@@ -1834,7 +2083,7 @@ function App() {
               <StateControls states={dataset.states} selectedCode={selectedCode} onSelect={selectState} />
             </div>
             <p className="safe-note">Explore aggregate state signals from public Team USA and geography data. Patterns may suggest fan-discovery context and do not imply performance outcomes.</p>
-            <StateMap mapTopology={mapTopology} features={features} geoFeatures={geoFeatures} cardsByCode={cardsByCode} selectedCode={selectedCode} onSelect={selectState} />
+            <StateMap mapTopology={mapTopology} features={features} geoFeatures={geoFeatures} cardsByCode={cardsByCode} selectedCode={selectedCode} onSelect={selectState} discoveredCodes={discoveredCodes} totalStates={dataset.states.length} />
           </section>
         </section>
       )}
