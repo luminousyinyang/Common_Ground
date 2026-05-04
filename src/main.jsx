@@ -138,7 +138,7 @@ const CARD_THEME_LABELS = {
 };
 
 const EMPTY_CARD_PANEL_MANIFEST = { states: {} };
-const CURRENT_CARD_BACK_COPY_VERSION = "common-ground-card-back-v11-qa-facts-no-signal";
+const CURRENT_CARD_BACK_COPY_VERSION = "common-ground-card-back-v14-basic-rules";
 
 const SIGNAL_LABELS = {
   high: "High",
@@ -159,16 +159,36 @@ async function getJson(url, options) {
 }
 
 function fallbackBriefing(card, reason = "The Gemini backend is not available from this dev server.") {
-  const olympicMix = joinReadableList(card.olympicPanel.topSportTags || []);
-  const paralympicMix = joinReadableList(card.paralympicPanel.topSportTags || []);
+  const olympicTags = (card.olympicPanel.topSportTags || []).map(displaySportName);
+  const paralympicTags = (card.paralympicPanel.topSportTags || []).map(displaySportName);
+  const olympicMix = joinReadableList(olympicTags);
+  const paralympicMix = joinReadableList(paralympicTags);
+  const olympicCue = getPanelVisualCue(card.olympicPanel);
+  const paralympicCue = getPanelVisualCue(card.paralympicPanel);
+  const geography = getGeographySignals(card).length ? joinReadableList(getGeographySignals(card)) : card.geographySnapshot;
   return {
     source: "react-fallback",
     model: "safe-fallback",
     briefing: {
-      summary: `Public Team USA and geography data may suggest that ${card.stateName} has a wider sport mix worth exploring across Olympic and Paralympic programs. The geography notes could help fans understand the state context without implying performance outcomes.`,
-      olympicNarrative: olympicMix ? `The Olympic side includes ${olympicMix}, giving fans a broader view of the state's water, pace, team, and movement-control stories.` : `${card.olympicPanel.geographyConnection}`,
-      paralympicNarrative: paralympicMix ? `The Paralympic side includes ${paralympicMix}, which could help fans understand how endurance, control, and adaptive movement themes appear in the state view.` : `${card.paralympicPanel.geographyConnection}`,
-      sharedTraitExplanation: `${card.sharedTrait.name} links Olympic ${getPanelVisualCue(card.olympicPanel)} with Paralympic ${getPanelVisualCue(card.paralympicPanel)}: ${card.sharedTrait.description}`,
+      stateSnapshot: `In the public aggregate Team USA state data, ${card.stateName} shows ${olympicMix || card.olympicPanel.sportFamily} on the Olympic side and ${paralympicMix || card.paralympicPanel.sportFamily} on the Paralympic side. That does not mean geography causes outcomes; it gives fans a safer way to explore why different sport environments appear in one state view.`,
+      sportMix: [
+        {
+          theme: "Olympic-side mix",
+          detail: olympicMix ? `${olympicMix} appear in the Olympic side of this aggregate state view.` : `${card.olympicPanel.sportFamily} appears as the Olympic-side sport-family view.`
+        },
+        {
+          theme: "Paralympic-side mix",
+          detail: paralympicMix ? `${paralympicMix} appear in the Paralympic side of this aggregate state view.` : `${card.paralympicPanel.sportFamily} appears as the Paralympic-side sport-family view.`
+        },
+        {
+          theme: "Movement themes",
+          detail: "Across the combined state view, fans can look for rhythm, spacing, pacing, precision, equipment control, and surface changes."
+        }
+      ],
+      geographyLens: `${card.geographySnapshot} could help fans understand why varied sport environments appear in this aggregate state view.`,
+      whatToNotice: "The useful fan read is contrast: some sports emphasize spacing and quick decisions, while others emphasize rhythm, stillness, pacing, equipment, or transitions.",
+      surprisingConnection: `${olympicCue} and ${paralympicCue} do not need to look alike to share a viewing idea; both can point fans toward control when timing, surface, or spacing changes.`,
+      sharedStateSignal: `${card.sharedTrait.name}: ${card.sharedTrait.description}`,
       gameIntro: `Try a short fan challenge that reflects ${card.sharedTrait.name.toLowerCase()} as a personal interaction only.`,
       complianceWarnings: [reason]
     },
@@ -262,8 +282,14 @@ function joinReadableList(items = []) {
   return `${values.slice(0, -1).join(", ")}, and ${values.at(-1)}`;
 }
 
+function displaySportName(value) {
+  const text = String(value || "").trim();
+  if (/^paratriathlon$/i.test(text)) return "Para triathlon";
+  return text;
+}
+
 function getPanelVisualCue(panel) {
-  return panel?.primarySportTag || panel?.topSportTags?.[0] || "Generalized sport-family cue";
+  return displaySportName(panel?.primarySportTag || panel?.topSportTags?.[0] || "Generalized sport-family cue");
 }
 
 function panelProgramLabel(panel) {
@@ -344,7 +370,7 @@ function fanTakeawayForSport(visualCue, panel, sharedTraitName = "") {
 
 function subtitleForSport(visualCue, panel) {
   const sport = String(visualCue || "").toLowerCase();
-  if (/water polo/.test(sport)) return "Aquatic team sport · pressure rhythm · passing lanes";
+  if (/water polo/.test(sport)) return "Aquatic team sport · goals in net · possession pressure";
   if (/triathlon/.test(sport)) return "Swim · bike · run · transition control";
   if (/swimming/.test(sport)) return "Water rhythm · lane tempo · repeatable control";
   if (/track/.test(sport)) return "Pace changes · clean starts · sustained control";
@@ -355,8 +381,8 @@ function subtitleForSport(visualCue, panel) {
 
 function factChipsForSport(visualCue, panel) {
   const sport = String(visualCue || "").toLowerCase();
-  if (/water polo/.test(sport)) return ["Aquatic environment", "Team spacing", "Fast resets", "Passing lanes"];
-  if (/triathlon/.test(sport)) return ["Multi-stage endurance", "Transition control", "Outdoor rhythm", "Equipment adaptation"];
+  if (/water polo/.test(sport)) return ["7 per team: 6 field + goalkeeper", "4 quarters", "Possession pressure", "One-hand control"];
+  if (/triathlon/.test(sport)) return ["Swim segment", "Bike segment", "Run segment", "Transition control"];
   if (/swimming/.test(sport)) return ["Water rhythm", "Lane tempo", "Body position", "Repeat control"];
   if (/track/.test(sport)) return ["Pace shifts", "Start timing", "Lane awareness", "Sustained rhythm"];
   if (/cycling/.test(sport)) return ["Road movement", "Equipment rhythm", "Pacing choices", "Terrain changes"];
@@ -383,31 +409,25 @@ function qaFactsForSport(visualCue, panel) {
   const stateConnection = readableGeographyLens(panel, visualCue);
   if (/water polo/.test(sport)) {
     return {
-      aboutSport: "Water polo is an aquatic team sport built around passing lanes, body position, and quick resets.",
-      watchValue: "The ball moves fast, but the sharper read often happens before the pass, as players shift and fake to open a lane.",
+      howItWorks: "Two teams of seven play in the water: six field players plus one goalkeeper. The goal is to throw the ball into the opponent's net, so each attack has to create space, pass, and shoot before the chance disappears.",
+      watchValue: "Water polo gets easier to read when you watch the spacing before the shot. The drama is that every pass, fake, and goal attempt happens while players are swimming or treading water.",
       stateConnection,
-      eventRhythm: "Slow setup, sudden burst. Possessions can move from patient passing to a quick strike in a short window.",
-      funFact: "Players keep moving without solid footing, so spacing and balance matter even away from the ball.",
-      watchFor: "The pass before the shot; that is often where the play is created."
+      cardTrait: "Water polo connects to the shared trait through spacing, body position, and quick rhythm changes in a pool where no one has stable footing."
     };
   }
   if (/triathlon/.test(sport)) {
     return {
-      aboutSport: "Para triathlon combines swimming, cycling, running, and transition strategy across changing surfaces and equipment needs.",
-      watchValue: "The transitions carry their own drama because every shift from water to bike to run changes the pacing problem.",
+      howItWorks: "Para triathlon is a race across swim, bike, and run stages. The competitor with the fastest total race time in their event wins, and transition time between stages matters too.",
+      watchValue: "The race keeps changing shape as water gives way to equipment setup, bike rhythm, and another reset for the run.",
       stateConnection,
-      eventRhythm: "Segmented momentum: the rhythm changes each time the environment changes.",
-      funFact: "Transition moments can be as revealing as the race segments because they show preparation, control, and adaptation.",
-      watchFor: "How quickly the rhythm changes after the swim ends and the road portion begins."
+      cardTrait: "Para triathlon connects to the shared trait through pacing and adaptation across changing surfaces."
     };
   }
   return {
-    aboutSport: `${visualCue} sits inside the card's ${panelThemePhrase(panel)} theme.`,
+    howItWorks: `${visualCue} sits inside the card's ${panelThemePhrase(panel)} theme.`,
     watchValue: watchLensForSport(visualCue, panel),
     stateConnection,
-    eventRhythm: fanTakeawayForSport(visualCue, panel),
-    funFact: "Small setup choices can change how the movement reads for fans.",
-    watchFor: watchLensForSport(visualCue, panel).split(".")[0] + "."
+    cardTrait: fanTakeawayForSport(visualCue, panel)
   };
 }
 
@@ -431,12 +451,21 @@ function getPanelBackCopyForDisplay(panel) {
   }
   const fallback = getPanelBackCopy(panel);
   const legacy = panel?.cardBackCopy || {};
+  const legacyQa = legacy.qaFacts || {};
+  const legacyQaFacts = legacyQa && Object.keys(legacyQa).length
+    ? {
+      howItWorks: legacyQa.howItWorks || legacyQa.aboutSport,
+      watchValue: legacyQa.watchValue,
+      stateConnection: legacyQa.stateConnection,
+      cardTrait: legacyQa.cardTrait || legacyQa.eventRhythm || legacyQa.funFact
+    }
+    : fallback.qaFacts;
   return {
     ...fallback,
-    featuredCue: legacy.featuredCue || fallback.featuredCue,
+    featuredCue: displaySportName(legacy.featuredCue || fallback.featuredCue),
     moduleMix: Array.isArray(legacy.moduleMix) && legacy.moduleMix.length ? legacy.moduleMix : fallback.moduleMix,
     subtitle: legacy.subtitle || legacy.sportFamilyTheme || fallback.subtitle,
-    qaFacts: legacy.qaFacts ? Object.fromEntries(Object.entries(legacy.qaFacts).filter(([key]) => key !== "stateSignal")) : fallback.qaFacts,
+    qaFacts: legacyQaFacts,
     factChips: Array.isArray(legacy.factChips) && legacy.factChips.length ? legacy.factChips : fallback.factChips,
   };
 }
@@ -768,7 +797,7 @@ function LandingPage({ onNavigate, onLogin, darkMode, onToggleDarkMode }) {
                 <img src="/assets/graphics/Interactive Map.png" alt="Interactive Map" />
               </div>
               <h3>Interactive Map</h3>
-              <p>Click any state to explore athlete counts and sport families across the US. Discovered states are highlighted as you build your collection.</p>
+              <p>Click any state to explore public aggregate counts and sport families across the US. Discovered states are highlighted as you build your collection.</p>
             </div>
             <div className="landing-feature-card">
               <div className="landing-feature-img">
@@ -782,7 +811,7 @@ function LandingPage({ onNavigate, onLogin, darkMode, onToggleDarkMode }) {
                 <img src="/assets/graphics/Fan Challenges.png" alt="Fan Challenges" />
               </div>
               <h3>Fan Challenges</h3>
-              <p>Test your instincts with short skill challenges tied to the shared athletic trait connecting each state's Olympic and Paralympic sports.</p>
+              <p>Try short fan challenges tied to the shared sport trait connecting each state's Olympic and Paralympic panels.</p>
             </div>
           </div>
         </div>
@@ -833,7 +862,7 @@ function LoginPage({ onNavigate, onLogin, darkMode, onToggleDarkMode }) {
           <div className="login-left-content">
             <h2 className="login-left-title">Common Ground</h2>
             <p className="login-left-tagline">Discover. Collect. Connect.</p>
-            <p className="login-left-body">Track your athlete discoveries and save your collection across sessions. Build your complete 50-state card set.</p>
+            <p className="login-left-body">Track your state-card discoveries and save your collection across sessions. Build your complete 50-state card set.</p>
             <div className="login-card-visual" aria-hidden="true">
               <div className="login-card-back" />
               <div className="login-card-front" />
@@ -1362,12 +1391,10 @@ function StateSummary({ card }) {
 }
 
 const PANEL_QA_ROWS = [
-  ["aboutSport", "A bit about the sport"],
-  ["watchValue", "What makes it fun"],
+  ["howItWorks", "How it works"],
+  ["watchValue", "Why it's fun to watch"],
   ["stateConnection", "State connection"],
-  ["eventRhythm", "Rhythm"],
-  ["funFact", "Fun fact"],
-  ["watchFor", "Watch for"]
+  ["cardTrait", "Card trait"]
 ];
 
 function SportPanel({ panel }) {
@@ -1395,8 +1422,11 @@ function SportPanel({ panel }) {
           ))}
         </div>
         {factChips.length > 0 && (
-          <div className="panel-fact-chips" aria-label={`${visualCue} card facts`}>
-            {factChips.map((chip) => <span key={chip}>{chip}</span>)}
+          <div className="panel-fact-block">
+            <span className="panel-chip-label">Quick facts</span>
+            <div className="panel-fact-chips" aria-label={`${visualCue} card facts`}>
+              {factChips.map((chip) => <span key={chip}>{chip}</span>)}
+            </div>
           </div>
         )}
       </div>
@@ -1665,6 +1695,39 @@ function CardModal({
   );
 }
 
+function briefingSections(briefing = {}) {
+  if (briefing.stateSnapshot || briefing.whatToNotice || briefing.sharedStateSignal) {
+    return [
+      ["State Snapshot", briefing.stateSnapshot],
+      ["Sport Mix", briefing.sportMix],
+      ["Geography Lens", briefing.geographyLens],
+      ["What To Notice", briefing.whatToNotice],
+      ["Surprising Connection", briefing.surprisingConnection],
+      ["Shared State Signal", briefing.sharedStateSignal]
+    ].filter(([, value]) => Array.isArray(value) ? value.length : String(value || "").trim());
+  }
+
+  if (briefing.stateScene || briefing.sportMix || briefing.whyInteresting) {
+    return [
+      ["State Snapshot", briefing.stateScene],
+      ["Sport Mix", [briefing.sportMix?.olympic, briefing.sportMix?.paralympic].filter(Boolean)],
+      ["Geography Lens", briefing.geographyLens],
+      ["What To Notice", briefing.whyInteresting],
+      ["Surprising Connection", briefing.surprisingConnection],
+      ["Shared State Signal", briefing.sharedSignal]
+    ].filter(([, value]) => Array.isArray(value) ? value.length : String(value || "").trim());
+  }
+
+  return [
+    ["State Snapshot", briefing.summary],
+    ["Sport Mix", [
+      briefing.olympicNarrative ? `Olympic side: ${briefing.olympicNarrative}` : "",
+      briefing.paralympicNarrative ? `Paralympic side: ${briefing.paralympicNarrative}` : ""
+    ].filter(Boolean)],
+    ["Shared State Signal", briefing.sharedTraitExplanation]
+  ].filter(([, value]) => Array.isArray(value) ? value.length : String(value || "").trim());
+}
+
 function BriefingPanel({ payload, loading, onRefresh, compact = false }) {
   if (loading || !payload) {
     return (
@@ -1677,6 +1740,7 @@ function BriefingPanel({ payload, loading, onRefresh, compact = false }) {
       </section>
     );
   }
+  const sections = briefingSections(payload.briefing);
 
   return (
     <section className={`briefing-panel ${compact ? "is-compact" : ""}`}>
@@ -1684,12 +1748,24 @@ function BriefingPanel({ payload, loading, onRefresh, compact = false }) {
         <h3>Gemini State Briefing</h3>
         <button className="ghost-button small" type="button" onClick={onRefresh}>Refresh</button>
       </div>
-      <p>{payload.briefing.summary}</p>
-      <div className="briefing-split">
-        <p><strong>Olympic mix:</strong> {payload.briefing.olympicNarrative}</p>
-        <p><strong>Paralympic mix:</strong> {payload.briefing.paralympicNarrative}</p>
+      <div className="briefing-section-grid">
+        {sections.map(([label, value]) => (
+          <article className="briefing-section" key={label}>
+            <span>{label}</span>
+            {Array.isArray(value) ? (
+              <div className="briefing-list">
+                {value.map((item) => (
+                  typeof item === "object" && item !== null
+                    ? <p key={`${item.theme}-${item.detail}`}><strong>{item.theme}:</strong> {item.detail}</p>
+                    : <p key={item}>{item}</p>
+                ))}
+              </div>
+            ) : (
+              <p>{value}</p>
+            )}
+          </article>
+        ))}
       </div>
-      <p><strong>Shared trait:</strong> {payload.briefing.sharedTraitExplanation}</p>
     </section>
   );
 }
