@@ -3594,8 +3594,7 @@ select {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  background: rgba(235, 224, 199, 0.88);
-  border: 1.5px solid #EBE0C7;
+  background: #E5DED9;
   border-radius: 18px;
   padding: clamp(24px, 3.5vw, 44px) clamp(20px, 3vw, 40px);
   backdrop-filter: blur(4px);
@@ -3631,7 +3630,7 @@ select {
 
 html[data-surface="blacktop"] .landing-hero-content .primary-button {
   background: #131a1a;
-  color: #EBE0C7;
+  color: #E5DED9;
   border-color: #131a1a;
 }
 
