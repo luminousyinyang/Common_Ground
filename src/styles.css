@@ -2897,6 +2897,27 @@ main {
   outline: none;
 }
 
+.game-board.has-game-background {
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--paper) 72%, transparent), color-mix(in srgb, var(--paper) 44%, transparent)),
+    radial-gradient(circle at 50% 42%, color-mix(in srgb, var(--ink) 9%, transparent), transparent 9rem),
+    var(--game-bg-image),
+    linear-gradient(180deg, var(--glass-strong), var(--glass-soft));
+  background-size: cover, auto, cover, auto;
+  background-position: center;
+  box-shadow: inset 0 1px 0 var(--glass-line), 0 18px 40px color-mix(in srgb, var(--ink) 10%, transparent);
+}
+
+html[data-surface="blacktop"] .game-board.has-game-background {
+  background:
+    linear-gradient(180deg, color-mix(in srgb, #091220 72%, transparent), color-mix(in srgb, #091220 36%, transparent)),
+    radial-gradient(circle at 52% 38%, color-mix(in srgb, var(--gold) 12%, transparent), transparent 11rem),
+    var(--game-bg-image),
+    linear-gradient(180deg, var(--glass-strong), var(--glass-soft));
+  background-size: cover, auto, cover, auto;
+  background-position: center;
+}
+
 .reaction-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(64px, 1fr));
@@ -2914,6 +2935,22 @@ main {
   border-color: var(--ink);
   background: var(--ink);
   box-shadow: 0 0 0 4px color-mix(in srgb, var(--ink) 14%, transparent);
+}
+
+.game-board.has-game-background .reaction-cell,
+.game-board.has-game-background .trace-point,
+.game-board.has-game-background .pattern-cell,
+.game-board.has-game-background .focus-readout {
+  backdrop-filter: blur(10px) saturate(1.1);
+  background-color: color-mix(in srgb, var(--paper) 72%, transparent);
+}
+
+html[data-surface="blacktop"] .game-board.has-game-background .reaction-cell,
+html[data-surface="blacktop"] .game-board.has-game-background .trace-point,
+html[data-surface="blacktop"] .game-board.has-game-background .pattern-cell,
+html[data-surface="blacktop"] .game-board.has-game-background .focus-readout {
+  background-color: color-mix(in srgb, #111827 76%, transparent);
+  color: var(--paper);
 }
 
 .cadence-pad {
@@ -3095,6 +3132,22 @@ main {
   box-shadow:
     0 0 0 5px color-mix(in srgb, var(--gold) 26%, transparent),
     0 16px 34px color-mix(in srgb, var(--ink) 16%, transparent);
+}
+
+.game-board.has-game-background .cadence-pad,
+.game-board.has-game-background .trace-point,
+.game-board.has-game-background .pattern-cell,
+.game-board.has-game-background .focus-readout {
+  backdrop-filter: blur(10px) saturate(1.1);
+  background-color: color-mix(in srgb, var(--paper) 78%, transparent);
+}
+
+html[data-surface="blacktop"] .game-board.has-game-background .cadence-pad,
+html[data-surface="blacktop"] .game-board.has-game-background .trace-point,
+html[data-surface="blacktop"] .game-board.has-game-background .pattern-cell,
+html[data-surface="blacktop"] .game-board.has-game-background .focus-readout {
+  background-color: color-mix(in srgb, #111827 78%, transparent);
+  color: var(--paper);
 }
 
 .pattern-progress {

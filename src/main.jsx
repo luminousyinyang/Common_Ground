@@ -139,6 +139,14 @@ const CARD_THEME_LABELS = {
 
 const EMPTY_CARD_PANEL_MANIFEST = { states: {} };
 const CURRENT_CARD_BACK_COPY_VERSION = "common-ground-card-back-v14-basic-rules";
+const CURRENT_GAME_EXPERIENCE_VERSION = "common-ground-game-experience-v1";
+const GAME_TYPE_LABELS = {
+  reaction_grid: "Reaction Grid",
+  cadence_keeper: "Cadence Keeper",
+  precision_trace: "Precision Trace",
+  focus_hold: "Focus Hold",
+  pattern_scout: "Pattern Scout"
+};
 
 const SIGNAL_LABELS = {
   high: "High",
@@ -477,9 +485,17 @@ function getPanelArtUrl(card, program, manifest) {
   return CARD_ART[theme] || CARD_ART.neutral;
 }
 
+function getGeneratedGameExperience(statePanels = {}) {
+  const experience = statePanels.gameExperience || statePanels.game;
+  if (!experience || experience.version !== CURRENT_GAME_EXPERIENCE_VERSION) return null;
+  if (!GAME_TYPE_LABELS[experience.challengeType]) return null;
+  return experience;
+}
+
 function mergeGeneratedPanelData(card, manifest) {
   const statePanels = manifest?.states?.[card?.stateCode] || {};
-  if (!card || (!statePanels.olympic && !statePanels.paralympic)) return card;
+  if (!card || (!statePanels.olympic && !statePanels.paralympic && !statePanels.gameExperience && !statePanels.game)) return card;
+  const gameExperience = getGeneratedGameExperience(statePanels);
 
   function mergePanel(program, panel) {
     const generated = statePanels[program] || {};
@@ -495,9 +511,49 @@ function mergeGeneratedPanelData(card, manifest) {
 
   return {
     ...card,
+    sharedTrait: gameExperience
+      ? {
+        ...card.sharedTrait,
+        name: gameExperience.sharedTraitName || card.sharedTrait.name,
+        description: gameExperience.sharedTraitDescription || card.sharedTrait.description,
+        challengeType: gameExperience.challengeType
+      }
+      : card.sharedTrait,
+    cardStory: {
+      ...card.cardStory,
+      gameExperience: gameExperience || card.cardStory?.gameExperience,
+      fanChallengeName: gameExperience?.gameName || card.cardStory?.fanChallengeName
+    },
+    gameExperience: gameExperience || card.gameExperience,
     olympicPanel: mergePanel("olympic", card.olympicPanel),
     paralympicPanel: mergePanel("paralympic", card.paralympicPanel)
   };
+}
+
+function getGameExperience(card) {
+  const generated = card.gameExperience || card.cardStory?.gameExperience;
+  const challengeType = generated?.challengeType || card.sharedTrait?.challengeType || "reaction_grid";
+  return {
+    version: generated?.version,
+    source: generated?.source || "dataset",
+    challengeType,
+    gameName: generated?.gameName || card.cardStory?.fanChallengeName || `${GAME_TYPE_LABELS[challengeType] || "State Sync"} Challenge`,
+    gameIntro: generated?.gameIntro,
+    sharedTraitName: generated?.sharedTraitName || card.sharedTrait?.name,
+    sharedTraitDescription: generated?.sharedTraitDescription || card.sharedTrait?.description,
+    background: generated?.background || null,
+    theme: generated?.theme || null
+  };
+}
+
+function gameBoardStyle(gameExperience) {
+  const url = gameExperience?.background?.url || gameExperience?.backgroundUrl;
+  return url ? { "--game-bg-image": `url("${url}")` } : undefined;
+}
+
+function gameBoardClass(baseClass, gameExperience) {
+  const hasBackground = Boolean(gameExperience?.background?.url || gameExperience?.backgroundUrl);
+  return `game-board ${baseClass} ${hasBackground ? "has-game-background" : ""}`;
 }
 
 const ICON_PATHS = {
@@ -1770,7 +1826,7 @@ function BriefingPanel({ payload, loading, onRefresh, compact = false }) {
   );
 }
 
-function ReactionGrid({ card, onResult }) {
+function ReactionGrid({ card, onResult, gameExperience }) {
   const [target, setTarget] = useState(() => Math.floor(Math.random() * 16));
   const [hits, setHits] = useState(0);
   const [misses, setMisses] = useState(0);
@@ -1822,7 +1878,7 @@ function ReactionGrid({ card, onResult }) {
   return (
     <>
       <div className="game-status">Reaction Grid: {Math.max(remaining, 0)} seconds left. Hits: {hits}. Misses: {misses}.</div>
-      <div className="game-board" tabIndex="0" aria-label={`${card.stateName} reaction grid`}>
+      <div className={gameBoardClass("reaction-board", gameExperience)} style={gameBoardStyle(gameExperience)} tabIndex="0" aria-label={`${card.stateName} reaction grid`}>
         <div className="reaction-grid">
           {Array.from({ length: 16 }, (_, index) => (
             <button
@@ -1839,7 +1895,7 @@ function ReactionGrid({ card, onResult }) {
   );
 }
 
-function CadenceKeeper({ card, onResult }) {
+function CadenceKeeper({ card, onResult, gameExperience }) {
   const [taps, setTaps] = useState([]);
   const targetMs = 700;
   const requiredTaps = 14;
@@ -1885,7 +1941,7 @@ function CadenceKeeper({ card, onResult }) {
   return (
     <>
       <div className="game-status">Cadence Keeper: {Math.max(requiredTaps - taps.length, 0)} taps left. Keep each tap close to the same tempo.</div>
-      <div className="game-board" tabIndex="0" aria-label={`${card.stateName} cadence keeper`}>
+      <div className={gameBoardClass("cadence-board", gameExperience)} style={gameBoardStyle(gameExperience)} tabIndex="0" aria-label={`${card.stateName} cadence keeper`}>
         <button className="cadence-pad" type="button" onClick={recordTap}>
           <span>Tap here or press space</span>
           <strong>Keep a steady rhythm</strong>
@@ -1896,7 +1952,7 @@ function CadenceKeeper({ card, onResult }) {
   );
 }
 
-function PrecisionTrace({ card, onResult }) {
+function PrecisionTrace({ card, onResult, gameExperience }) {
   const checkpoints = [
     { x: 9, y: 78 },
     { x: 22, y: 61 },
@@ -1936,7 +1992,7 @@ function PrecisionTrace({ card, onResult }) {
   return (
     <>
       <div className="game-status">Precision Trace: follow the line from marker to marker. Next marker: {Math.min(activeIndex + 1, checkpoints.length)} of {checkpoints.length}.</div>
-      <div className="game-board trace-board" tabIndex="0" aria-label={`${card.stateName} precision trace`}>
+      <div className={gameBoardClass("trace-board", gameExperience)} style={gameBoardStyle(gameExperience)} tabIndex="0" aria-label={`${card.stateName} precision trace`}>
         <svg className="trace-path" viewBox="0 0 100 100" aria-hidden="true" preserveAspectRatio="none">
           <polyline points={checkpoints.map((point) => `${point.x},${point.y}`).join(" ")} />
         </svg>
@@ -1958,7 +2014,7 @@ function PrecisionTrace({ card, onResult }) {
   );
 }
 
-function FocusHold({ card, onResult }) {
+function FocusHold({ card, onResult, gameExperience }) {
   const boardRef = useRef(null);
   const markerRef = useRef({ x: 50, y: 50 });
   const zoneRef = useRef({ x: 50, y: 50 });
@@ -2044,7 +2100,8 @@ function FocusHold({ card, onResult }) {
     <>
       <div className="game-status">Focus Hold: {remaining} seconds left. Keep your marker inside the moving zone.</div>
       <div
-        className="game-board focus-board"
+        className={gameBoardClass("focus-board", gameExperience)}
+        style={gameBoardStyle(gameExperience)}
         tabIndex="0"
         ref={boardRef}
         aria-label={`${card.stateName} focus hold`}
@@ -2059,7 +2116,7 @@ function FocusHold({ card, onResult }) {
   );
 }
 
-function PatternScout({ card, onResult }) {
+function PatternScout({ card, onResult, gameExperience }) {
   const sequence = useMemo(() => {
     const seed = card.stateCode.split("").reduce((sum, char) => sum + char.charCodeAt(0), 0);
     const nextSequence = [];
@@ -2161,7 +2218,7 @@ function PatternScout({ card, onResult }) {
   return (
     <>
       <div className="game-status">{previewing ? "Pattern Scout: watch the route." : `Pattern Scout: repeat the route. Step ${Math.min(userIndex + 1, sequence.length)} of ${sequence.length}.`} {feedback}</div>
-      <div className="game-board pattern-board" tabIndex="0" aria-label={`${card.stateName} pattern scout`}>
+      <div className={gameBoardClass("pattern-board", gameExperience)} style={gameBoardStyle(gameExperience)} tabIndex="0" aria-label={`${card.stateName} pattern scout`}>
         <div className="pattern-grid">
           {labels.map((label, index) => (
             <button
@@ -2190,19 +2247,20 @@ function PatternScout({ card, onResult }) {
   );
 }
 
-function ChallengeGame({ challengeType, card, onResult }) {
-  if (challengeType === "cadence_keeper") return <CadenceKeeper card={card} onResult={onResult} />;
-  if (challengeType === "precision_trace") return <PrecisionTrace card={card} onResult={onResult} />;
-  if (challengeType === "focus_hold") return <FocusHold card={card} onResult={onResult} />;
-  if (challengeType === "pattern_scout") return <PatternScout card={card} onResult={onResult} />;
-  return <ReactionGrid card={card} onResult={onResult} />;
+function ChallengeGame({ challengeType, card, onResult, gameExperience }) {
+  if (challengeType === "cadence_keeper") return <CadenceKeeper card={card} onResult={onResult} gameExperience={gameExperience} />;
+  if (challengeType === "precision_trace") return <PrecisionTrace card={card} onResult={onResult} gameExperience={gameExperience} />;
+  if (challengeType === "focus_hold") return <FocusHold card={card} onResult={onResult} gameExperience={gameExperience} />;
+  if (challengeType === "pattern_scout") return <PatternScout card={card} onResult={onResult} gameExperience={gameExperience} />;
+  return <ReactionGrid card={card} onResult={onResult} gameExperience={gameExperience} />;
 }
 
 function ChallengeView({ card, briefing, onReturn, panelManifest }) {
   const [started, setStarted] = useState(false);
   const [result, setResult] = useState(null);
   const [reflection, setReflection] = useState(null);
-  const challengeType = card.sharedTrait.challengeType || "reaction_grid";
+  const gameExperience = getGameExperience(card);
+  const challengeType = gameExperience.challengeType || "reaction_grid";
 
   const onResult = React.useCallback(async (nextResult) => {
     setResult(nextResult);
@@ -2236,23 +2294,23 @@ function ChallengeView({ card, briefing, onReturn, panelManifest }) {
       <div className="challenge-header">
         <div>
           <p className="eyebrow">Fan skill challenge</p>
-          <h2>{card.stateName} State Sync Challenge</h2>
-          <p>{card.sharedTrait.name}: {card.sharedTrait.description}</p>
+          <h2>{gameExperience.gameName || `${card.stateName} State Sync Challenge`}</h2>
+          <p>{gameExperience.sharedTraitName}: {gameExperience.sharedTraitDescription}</p>
         </div>
         <button className="ghost-button" type="button" onClick={onReturn}>Return to State Card</button>
       </div>
       <div className="challenge-grid">
         <section className="challenge-copy">
           <CardArt card={card} compact panelManifest={panelManifest} />
-          <p className="state-pill">{card.stateName} - {challengeType.replaceAll("_", " ")}</p>
-          <h3>{card.sharedTrait.name}</h3>
-          <p>{briefing?.briefing?.gameIntro || `Try a short fan challenge inspired by ${card.sharedTrait.name.toLowerCase()}.`}</p>
+          <p className="state-pill">{card.stateName} - {GAME_TYPE_LABELS[challengeType] || challengeType.replaceAll("_", " ")}</p>
+          <h3>{gameExperience.sharedTraitName}</h3>
+          <p>{gameExperience.gameIntro || briefing?.briefing?.gameIntro || `Try a short fan challenge inspired by ${String(gameExperience.sharedTraitName || "state sync").toLowerCase()}.`}</p>
           <p className="safe-note">Personal fan result only. This is for appreciation, not measurement or comparison.</p>
           <button className="primary-button wide" type="button" onClick={start}>Start Challenge</button>
         </section>
         <section className="game-surface">
           {!started && !result && <div className="game-status">Press start when you are ready.</div>}
-          {started && <ChallengeGame challengeType={challengeType} card={card} onResult={onResult} />}
+          {started && <ChallengeGame challengeType={challengeType} card={card} onResult={onResult} gameExperience={gameExperience} />}
           {result && (
             <div className="game-result">
               <p><strong>Personal result:</strong> {result.summary}</p>

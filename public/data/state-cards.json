@@ -2319,7 +2319,7 @@
       "sharedTrait": {
         "name": "Spatial Timing",
         "description": "Fast recognition, clean timing, and attention to changing space across sport families.",
-        "challengeType": "pattern_scout"
+        "challengeType": "reaction_grid"
       },
       "cardStory": {
         "themeName": "Spatial Timing",
@@ -2351,9 +2351,9 @@
         "sharedTrait": {
           "name": "Spatial Timing",
           "description": "Fast recognition, clean timing, and attention to changing space across sport families.",
-          "challengeType": "pattern_scout"
+          "challengeType": "reaction_grid"
         },
-        "fanChallengeName": "Pattern Scout Challenge",
+        "fanChallengeName": "Spatial Timing Challenge",
         "pairingPolicy": "sourced_coherent",
         "pairingScore": 0
       },
@@ -3320,7 +3320,7 @@
       "sharedTrait": {
         "name": "Focus Timing",
         "description": "Clean recognition, controlled timing, and repeatable focus under changing conditions.",
-        "challengeType": "precision_trace"
+        "challengeType": "reaction_grid"
       },
       "cardStory": {
         "themeName": "Focus Lines",
@@ -3354,9 +3354,9 @@
         "sharedTrait": {
           "name": "Focus Timing",
           "description": "Clean recognition, controlled timing, and repeatable focus under changing conditions.",
-          "challengeType": "precision_trace"
+          "challengeType": "reaction_grid"
         },
-        "fanChallengeName": "Precision Trace Challenge",
+        "fanChallengeName": "Focus Timing Challenge",
         "pairingPolicy": "sourced_coherent",
         "pairingScore": 0
       },
@@ -5359,7 +5359,7 @@
       "sharedTrait": {
         "name": "Focus Timing",
         "description": "Clean recognition, controlled timing, and repeatable focus under changing conditions.",
-        "challengeType": "focus_hold"
+        "challengeType": "reaction_grid"
       },
       "cardStory": {
         "themeName": "Cold Pace",
@@ -5392,9 +5392,9 @@
         "sharedTrait": {
           "name": "Focus Timing",
           "description": "Clean recognition, controlled timing, and repeatable focus under changing conditions.",
-          "challengeType": "focus_hold"
+          "challengeType": "reaction_grid"
         },
-        "fanChallengeName": "Focus Hold Challenge",
+        "fanChallengeName": "Pace Control Challenge",
         "pairingPolicy": "sourced_coherent",
         "pairingScore": 0
       },
