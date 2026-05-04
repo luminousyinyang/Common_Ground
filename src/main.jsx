@@ -743,13 +743,18 @@ function LandingPage({ onNavigate, onLogin, darkMode, onToggleDarkMode }) {
       <TopNav page="landing" view={null} onViewChange={() => {}} onNavigate={onNavigate} onLogin={onLogin} darkMode={darkMode} onToggleDarkMode={onToggleDarkMode} />
 
       <section className="landing-hero">
-      <div className="landing-section-inner">
-      <p className="eyebrow landing-eyebrow">Team USA Discovery</p>
-            <h1 className="landing-hero-title">Explore Team USA by State</h1>
-            <p className="landing-hero-body">Click a state to discover the number of athletes, minigames, and collect cards.</p>
-          <div className="landing-cta-row">
-            <button className="primary-button" type="button" onClick={() => onNavigate("app", "explorer")}>Explore the Map</button>
-            <button className="ghost-button" type="button" onClick={() => onNavigate("app", "collection")}>View Collection</button>
+        <div className="landing-section-inner">
+          <div className="landing-hero-container">
+            <img className="landing-hero-graphic" src="/assets/graphics/Hero Graphic.png" alt="" aria-hidden="true" />
+            <div className="landing-hero-content">
+              <p className="eyebrow landing-eyebrow">Team USA Discovery</p>
+              <h1 className="landing-hero-title">Explore Team USA by State</h1>
+              <p className="landing-hero-body">Click a state to discover the number of athletes, minigames, and collect cards.</p>
+              <div className="landing-cta-row">
+                <button className="primary-button" type="button" onClick={() => onNavigate("app", "explorer")}>Explore the Map</button>
+                <button className="ghost-button" type="button" onClick={() => onNavigate("app", "collection")}>View Collection</button>
+              </div>
+            </div>
           </div>
         </div>
       </section>
