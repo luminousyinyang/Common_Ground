@@ -3408,7 +3408,7 @@ select {
   max-width: 1440px;
   margin: 0 auto;
   padding: 0 clamp(20px, 3vw, 48px);
-  height: 72px;
+  height: 60px;
   gap: 24px;
 }
 
@@ -3532,7 +3532,7 @@ select {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  padding-top: 72px;
+  padding-top: 60px;
 }
 
 .workspace-v2 {
@@ -3550,7 +3550,7 @@ select {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  padding-top: 72px;
+  padding-top: 60px;
 }
 
 .landing-section-inner {
@@ -3586,19 +3586,6 @@ select {
   object-fit: cover;
   object-position: right center;
   display: block;
-  transition: opacity 400ms ease;
-}
-
-.landing-hero-graphic-dark {
-  opacity: 0;
-}
-
-html[data-surface="blacktop"] .landing-hero-graphic-dark {
-  opacity: 1;
-}
-
-html[data-surface="blacktop"] .landing-hero-graphic:not(.landing-hero-graphic-dark) {
-  opacity: 0;
 }
 
 .landing-hero-content {
@@ -3640,11 +3627,6 @@ html[data-surface="blacktop"] .landing-hero-graphic:not(.landing-hero-graphic-da
 .landing-hero-content .ghost-button:hover {
   background: rgba(19, 26, 26, 0.08);
   border-color: #131a1a;
-}
-
-html[data-surface="blacktop"] .landing-hero-content {
-  background: rgba(229, 222, 217, 0.88);
-  border-color: #E5DED9;
 }
 
 html[data-surface="blacktop"] .landing-hero-content .primary-button {
@@ -3892,7 +3874,7 @@ html[data-surface="blacktop"] .landing-hero-content .ghost-button:hover {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  padding-top: 72px;
+  padding-top: 60px;
 }
 
 .login-layout {
@@ -4202,7 +4184,7 @@ html[data-surface="blacktop"] .landing-hero-content .ghost-button:hover {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 72px;
+  height: 60px;
   padding: 0 clamp(16px, 3vw, 24px);
   border-bottom: 1px solid var(--line);
   flex-shrink: 0;
