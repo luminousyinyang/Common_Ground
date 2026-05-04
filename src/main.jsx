@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { geoContains, geoMercator, geoPath } from "d3-geo";
 import { feature, mesh } from "topojson-client";
@@ -505,12 +505,14 @@ const ICON_PATHS = {
   cards: <><rect x="2" y="5" width="15" height="14" rx="2" /><path d="M6 5V3a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-2" /></>,
   game: <><circle cx="12" cy="12" r="10" /><circle cx="12" cy="12" r="4" /><line x1="21.17" y1="8" x2="12" y2="8" /><line x1="3.95" y1="6.06" x2="8" y2="14" /><line x1="10.88" y1="21.94" x2="15" y2="14" /></>,
   method: <><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /></>,
-  locate: <><circle cx="12" cy="12" r="3" /><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" /></>,
-  reset: <><polyline points="1 4 1 10 7 10" /><path d="M3.51 15a9 9 0 1 0 .49-3" /></>,
+  locate: <polygon points="3 11 22 2 13 21 11 13 3 11" />,
+  reset: <><polyline points="23 4 23 10 17 10" /><path d="M20.49 15a9 9 0 1 1-.39-4.67" /></>,
   moon: <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />,
   sun: <><circle cx="12" cy="12" r="5" /><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" /></>,
   home: <><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></>,
   close: <><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></>,
+  lock: <><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></>,
+  "arrow-down": <><line x1="12" y1="5" x2="12" y2="19" /><polyline points="19 12 12 19 5 12" /></>,
 };
 
 function Icon({ name, size = 18, strokeWidth = 1.8, className = "" }) {
@@ -627,6 +629,56 @@ function TopNav({ page, view, onViewChange, onNavigate, onLogin, darkMode, onTog
   const [menuOpen, setMenuOpen] = useState(false);
   const [menuMounted, setMenuMounted] = useState(false);
   const CLOSE_MS = 340;
+  const mapTabRef = useRef(null);
+  const collTabRef = useRef(null);
+  const [pillBase, setPillBase] = useState({ left: 0, width: 0 });
+  const [dragDelta, setDragDelta] = useState(0);
+  const dragRef = useRef({ active: false, startX: 0, startView: null });
+
+  useLayoutEffect(() => {
+    const activeRef = (page === "app" && view === "collection") ? collTabRef : mapTabRef;
+    const el = activeRef.current;
+    if (!el) return;
+    setPillBase({ left: el.offsetLeft, width: el.offsetWidth });
+  }, [page, view]);
+
+  function handleNavPointerDown(e) {
+    if (page !== "app") return;
+    const startView = view === "collection" ? "collection" : "explorer";
+    dragRef.current = { active: true, startX: e.clientX, startView, delta: 0 };
+    setDragDelta(0);
+  }
+
+  function handleNavPointerMove(e) {
+    if (!dragRef.current.active) return;
+    const raw = e.clientX - dragRef.current.startX;
+    const mapEl = mapTabRef.current;
+    const collEl = collTabRef.current;
+    if (!mapEl || !collEl) return;
+    const span = collEl.offsetLeft - mapEl.offsetLeft;
+    const clamped = dragRef.current.startView === "explorer"
+      ? Math.max(0, Math.min(raw, span))
+      : Math.max(-span, Math.min(raw, 0));
+    dragRef.current.delta = clamped;
+    setDragDelta(clamped);
+  }
+
+  function handleNavPointerUp() {
+    if (!dragRef.current.active) return;
+    dragRef.current.active = false;
+    const { delta = 0, startView } = dragRef.current;
+    if (Math.abs(delta) < 6) { setDragDelta(0); return; }
+    const mapEl = mapTabRef.current;
+    const collEl = collTabRef.current;
+    if (!mapEl || !collEl) { setDragDelta(0); return; }
+    const span = collEl.offsetLeft - mapEl.offsetLeft;
+    if (startView === "explorer" && delta > span / 2) {
+      onNavigate("app", "collection");
+    } else if (startView === "collection" && -delta > span / 2) {
+      onNavigate("app", "explorer");
+    }
+    setDragDelta(0);
+  }
 
   function openMenu() {
     setMenuMounted(true);
@@ -655,8 +707,28 @@ function TopNav({ page, view, onViewChange, onNavigate, onLogin, darkMode, onTog
           <button className="top-nav-brand" type="button" onClick={() => go("landing")} aria-label="Common Ground home">
             Common Ground
           </button>
-          <nav className="top-nav-center" aria-label="Primary navigation">
+          <nav
+            className="top-nav-center"
+            aria-label="Primary navigation"
+            onPointerDown={handleNavPointerDown}
+            onPointerMove={handleNavPointerMove}
+            onPointerUp={handleNavPointerUp}
+            onPointerCancel={handleNavPointerUp}
+            style={{ touchAction: "none" }}
+          >
+            {page === "app" && pillBase.width > 0 && (
+              <div
+                className="nav-sliding-pill"
+                style={{
+                  width: pillBase.width,
+                  transform: `translateX(${pillBase.left + dragDelta}px)`,
+                  transition: dragRef.current.active ? "none" : undefined,
+                }}
+                aria-hidden="true"
+              />
+            )}
             <button
+              ref={mapTabRef}
               className={`top-nav-tab ${page === "app" && view === "explorer" ? "is-active" : ""}`}
               type="button"
               onClick={() => onNavigate("app", "explorer")}
@@ -665,6 +737,7 @@ function TopNav({ page, view, onViewChange, onNavigate, onLogin, darkMode, onTog
               <span className="nav-tab-label">Map</span>
             </button>
             <button
+              ref={collTabRef}
               className={`top-nav-tab ${page === "app" && view === "collection" ? "is-active" : ""}`}
               type="button"
               onClick={() => onNavigate("app", "collection")}
@@ -781,14 +854,16 @@ function LandingPage({ onNavigate, onLogin, darkMode, onToggleDarkMode }) {
               <p className="landing-hero-body">Click a state to discover the number of athletes, minigames, and collect cards.</p>
               <div className="landing-cta-row">
                 <button className="primary-button" type="button" onClick={() => onNavigate("app", "explorer")}>Explore the Map</button>
-                <button className="ghost-button" type="button" onClick={() => onNavigate("app", "collection")}>View Collection</button>
+                <button className="ghost-button hero-features-btn" type="button" onClick={() => document.getElementById("landing-features")?.scrollIntoView({ behavior: "smooth" })}>
+                  View Features <Icon name="arrow-down" size={16} strokeWidth={2} />
+                </button>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="landing-features">
+      <section className="landing-features" id="landing-features">
         <div className="landing-section-inner">
           <h2 className="landing-features-heading">How it works</h2>
           <div className="landing-features-grid">
@@ -847,6 +922,15 @@ function LoginPage({ onNavigate, onLogin, darkMode, onToggleDarkMode }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const loginTabRef = useRef(null);
+  const createTabRef = useRef(null);
+  const [indicator, setIndicator] = useState({ left: 0, width: 0 });
+
+  useLayoutEffect(() => {
+    const el = (tab === "login" ? loginTabRef : createTabRef).current;
+    if (!el) return;
+    setIndicator({ left: el.offsetLeft, width: el.offsetWidth });
+  }, [tab]);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -859,22 +943,22 @@ function LoginPage({ onNavigate, onLogin, darkMode, onToggleDarkMode }) {
 
       <div className="login-layout">
         <div className="login-left">
-          <div className="login-left-content">
+          <img className="login-left-graphic" src="/assets/graphics/Login Graphic.png" alt="" aria-hidden="true" />
+          <div className="login-left-overlay">
             <h2 className="login-left-title">Common Ground</h2>
             <p className="login-left-tagline">Discover. Collect. Connect.</p>
             <p className="login-left-body">Track your state-card discoveries and save your collection across sessions. Build your complete 50-state card set.</p>
-            <div className="login-card-visual" aria-hidden="true">
-              <div className="login-card-back" />
-              <div className="login-card-front" />
-            </div>
           </div>
         </div>
 
         <div className="login-right">
           <div className="login-form-wrap">
             <div className="login-tabs" role="tablist">
-              <button className={`login-tab ${tab === "login" ? "is-active" : ""}`} type="button" role="tab" aria-selected={tab === "login"} onClick={() => setTab("login")}>Login</button>
-              <button className={`login-tab ${tab === "create" ? "is-active" : ""}`} type="button" role="tab" aria-selected={tab === "create"} onClick={() => setTab("create")}>Create Account</button>
+              <button ref={loginTabRef} className={`login-tab ${tab === "login" ? "is-active" : ""}`} type="button" role="tab" aria-selected={tab === "login"} onClick={() => setTab("login")}>Login</button>
+              <button ref={createTabRef} className={`login-tab ${tab === "create" ? "is-active" : ""}`} type="button" role="tab" aria-selected={tab === "create"} onClick={() => setTab("create")}>Create Account</button>
+              {indicator.width > 0 && (
+                <div className="login-tab-indicator" style={{ width: indicator.width, transform: `translateX(${indicator.left}px)` }} aria-hidden="true" />
+              )}
             </div>
 
             {tab === "login" && (
@@ -1219,13 +1303,13 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
     <>
       <div className="map-wrap">
         <div className="map-controls" aria-label="Map controls">
-          <button className="map-control-button" type="button" onClick={zoomIn} aria-label="Zoom in" title="Zoom in">+</button>
-          <button className="map-control-button" type="button" onClick={locateCurrentState} disabled={isLocating} aria-label="Use my location to zoom to my state" title="Use my location to zoom to my state">
-            <Icon name="locate" size={18} strokeWidth={2} />
+          <button className="map-control-button" type="button" onClick={zoomIn} aria-label="Zoom in" data-tooltip="Zoom in">+</button>
+          <button className="map-control-button" type="button" onClick={zoomOut} aria-label="Zoom out" data-tooltip="Zoom out">−</button>
+          <button className="map-control-button" type="button" onClick={locateCurrentState} disabled={isLocating} aria-label="Use my location" data-tooltip="My location">
+            <Icon name="locate" size={16} strokeWidth={2} />
           </button>
-          <button className="map-control-button" type="button" onClick={zoomOut} aria-label="Zoom out" title="Zoom out">−</button>
-          <button className="map-control-button" type="button" onClick={resetMap} aria-label="Reset map" title="Reset map">
-            <Icon name="reset" size={18} strokeWidth={2} />
+          <button className="map-control-button" type="button" onClick={resetMap} aria-label="Reset map" data-tooltip="Reset map">
+            <Icon name="reset" size={16} strokeWidth={2} />
           </button>
         </div>
         <svg
@@ -1539,11 +1623,11 @@ function UnifiedStateCard({ card, sourceRefs, briefing, briefingLoading, onRefre
       setDisplayBack(next);
       setFlipPhase("in");
       onFlipChange?.(next);
-    }, 220);
+    }, 150);
 
     const t2 = setTimeout(() => {
       setFlipPhase(null);
-    }, 440);
+    }, 300);
 
     flipTimers.current = [t1, t2];
   }
@@ -1965,8 +2049,21 @@ function ChallengeView({ card, briefing, onReturn, panelManifest }) {
 
 function MiniStateCard({ card, discovered, onSelect, panelManifest }) {
   return (
-    <button className={`mini-card ${discovered ? "is-discovered" : "is-locked"}`} type="button" onClick={() => onSelect(card.stateCode)} aria-label={`Open ${card.stateName} card`}>
-      <CardArt card={card} compact panelManifest={panelManifest} />
+    <button
+      className={`mini-card ${discovered ? "is-discovered" : "is-locked"}`}
+      type="button"
+      onClick={discovered ? () => onSelect(card.stateCode) : undefined}
+      disabled={!discovered}
+      aria-label={discovered ? `Open ${card.stateName} card` : `${card.stateName} — locked`}
+    >
+      <div className="mini-card-art-wrap">
+        <CardArt card={card} compact panelManifest={panelManifest} />
+        {!discovered && (
+          <div className="mini-card-lock-overlay">
+            <Icon name="lock" size={24} strokeWidth={1.8} />
+          </div>
+        )}
+      </div>
       <div className="mini-card-body">
         <div>
           <strong>{card.sharedTrait.name}</strong>
@@ -2143,6 +2240,19 @@ function MethodologyView({ refs, meta, states }) {
   );
 }
 
+function ViewSlider({ activeIndex, children }) {
+  return (
+    <div className="view-slider-viewport">
+      <div
+        className="view-slider-track"
+        style={{ transform: `translateX(${activeIndex * -100}%)` }}
+      >
+        {children}
+      </div>
+    </div>
+  );
+}
+
 function AppShell({ view, setView, children, onNavigate, onLogin, darkMode, onToggleDarkMode }) {
   return (
     <div className="app-frame-v2">
@@ -2158,6 +2268,19 @@ function AppShell({ view, setView, children, onNavigate, onLogin, darkMode, onTo
       <div className="workspace-v2">
         <main>{children}</main>
       </div>
+      <footer className="landing-footer">
+        <div className="landing-footer-inner">
+          <div>
+            <strong className="landing-footer-brand">Common Ground</strong>
+            <p>Geography-powered fan discovery</p>
+          </div>
+          <nav className="landing-footer-nav" aria-label="Footer">
+            <button className="landing-footer-link" type="button" onClick={() => onNavigate("app", "explorer")}>Map</button>
+            <button className="landing-footer-link" type="button" onClick={() => onNavigate("app", "collection")}>Collection</button>
+            <button className="landing-footer-link" type="button" onClick={() => onNavigate("app", "methodology")}>Methodology</button>
+          </nav>
+        </div>
+      </footer>
     </div>
   );
 }
@@ -2165,9 +2288,7 @@ function AppShell({ view, setView, children, onNavigate, onLogin, darkMode, onTo
 function App() {
   const [page, setPage] = useState("landing");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [darkMode, setDarkMode] = useState(
-    () => window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? true
-  );
+  const [darkMode, setDarkMode] = useState(false);
   const [dataset, setDataset] = useState(null);
   const [mapTopology, setMapTopology] = useState(null);
   const [geoTopology, setGeoTopology] = useState(null);
@@ -2328,6 +2449,7 @@ function App() {
     setPage(nextPage);
     if (nextView) setView(nextView);
     setIsCardModalOpen(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   const navProps = {
@@ -2374,23 +2496,26 @@ function App() {
       }}
       {...navProps}
     >
-      {view === "explorer" && (
-        <section className="map-explorer-shell">
-          <section className="map-surface page-panel" aria-labelledby="mapTitle">
-            <div className="section-heading">
-              <div>
-                <p className="eyebrow">Geography-powered fan discovery</p>
-                <h2 id="mapTitle">State Atlas</h2>
-              </div>
-            </div>
-            <p className="safe-note">Explore aggregate state signals from public Team USA and geography data. Patterns may suggest fan-discovery context and do not imply performance outcomes.</p>
-            <StateMap mapTopology={mapTopology} features={features} geoFeatures={geoFeatures} cardsByCode={cardsByCode} selectedCode={selectedCode} onSelect={selectState} discoveredCodes={discoveredCodes} totalStates={dataset.states.length} />
-          </section>
-        </section>
-      )}
-
-      {view === "collection" && (
-        <CollectionView states={dataset.states} discoveredCodes={discoveredCodes} onSelect={(code) => selectState(code, "collection")} panelManifest={panelManifest} isLoggedIn={isLoggedIn} onLogin={() => navigate("login")} />
+      {(view === "explorer" || view === "collection") && (
+        <ViewSlider activeIndex={view === "explorer" ? 0 : 1}>
+          <div className="view-slide">
+            <section className="map-explorer-shell">
+              <section className="map-surface page-panel" aria-labelledby="mapTitle">
+                <div className="section-heading">
+                  <div>
+                    <p className="eyebrow">Geography-powered fan discovery</p>
+                    <h2 id="mapTitle">State Atlas</h2>
+                  </div>
+                </div>
+                <p className="safe-note">Explore aggregate state signals from public Team USA and geography data. Patterns may suggest fan-discovery context and do not imply performance outcomes.</p>
+                <StateMap mapTopology={mapTopology} features={features} geoFeatures={geoFeatures} cardsByCode={cardsByCode} selectedCode={selectedCode} onSelect={selectState} discoveredCodes={discoveredCodes} totalStates={dataset.states.length} />
+              </section>
+            </section>
+          </div>
+          <div className="view-slide">
+            <CollectionView states={dataset.states} discoveredCodes={discoveredCodes} onSelect={(code) => selectState(code, "collection")} panelManifest={panelManifest} isLoggedIn={isLoggedIn} onLogin={() => navigate("login")} />
+          </div>
+        </ViewSlider>
       )}
 
       {view === "challenge" && (
