@@ -744,13 +744,17 @@ function LandingPage({ onNavigate, onLogin, darkMode, onToggleDarkMode }) {
 
       <section className="landing-hero">
         <div className="landing-section-inner">
-          <p className="eyebrow landing-eyebrow">Olympic + Paralympic Discovery</p>
-          <h1 className="landing-hero-title">Explore Team USA's Athletic Legacy</h1>
-          <p className="landing-hero-sub">Geography-powered fan discovery for LA28</p>
-          <p className="landing-hero-body">Click any state on the interactive map to discover Olympic and Paralympic athletes with equal prominence. Collect state cards, explore shared traits, and build your fan collection across all 50 states.</p>
-          <div className="landing-cta-row">
-            <button className="primary-button" type="button" onClick={() => onNavigate("app", "explorer")}>Explore the Map</button>
-            <button className="ghost-button" type="button" onClick={() => onNavigate("app", "collection")}>View Collection</button>
+          <div className="landing-hero-container">
+            <img className="landing-hero-graphic" src="/assets/graphics/Hero Graphic.png" alt="" aria-hidden="true" />
+            <div className="landing-hero-content">
+              <p className="eyebrow landing-eyebrow">Team USA Discovery</p>
+              <h1 className="landing-hero-title">Explore Team USA by State</h1>
+              <p className="landing-hero-body">Click a state to discover the number of athletes, minigames, and collect cards.</p>
+              <div className="landing-cta-row">
+                <button className="primary-button" type="button" onClick={() => onNavigate("app", "explorer")}>Explore the Map</button>
+                <button className="ghost-button" type="button" onClick={() => onNavigate("app", "collection")}>View Collection</button>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -760,17 +764,23 @@ function LandingPage({ onNavigate, onLogin, darkMode, onToggleDarkMode }) {
           <h2 className="landing-features-heading">How it works</h2>
           <div className="landing-features-grid">
             <div className="landing-feature-card">
-              <div className="landing-feature-icon"><Icon name="map" size={22} strokeWidth={1.5} /></div>
+              <div className="landing-feature-img">
+                <img src="/assets/graphics/Interactive Map.png" alt="Interactive Map" />
+              </div>
               <h3>Interactive Map</h3>
               <p>Click any state to explore athlete counts and sport families across the US. Discovered states are highlighted as you build your collection.</p>
             </div>
             <div className="landing-feature-card">
-              <div className="landing-feature-icon"><Icon name="cards" size={22} strokeWidth={1.5} /></div>
+              <div className="landing-feature-img">
+                <img src="/assets/graphics/State Cards.png" alt="State Cards" />
+              </div>
               <h3>State Cards</h3>
               <p>Collect digital cards for each state. Each card features Olympic and Paralympic programs with equal visual weight and a holographic shine on hover.</p>
             </div>
             <div className="landing-feature-card">
-              <div className="landing-feature-icon"><Icon name="game" size={22} strokeWidth={1.5} /></div>
+              <div className="landing-feature-img">
+                <img src="/assets/graphics/Fan Challenges.png" alt="Fan Challenges" />
+              </div>
               <h3>Fan Challenges</h3>
               <p>Test your instincts with short skill challenges tied to the shared athletic trait connecting each state's Olympic and Paralympic sports.</p>
             </div>
@@ -1896,18 +1906,42 @@ function MiniStateCard({ card, discovered, onSelect, panelManifest }) {
   );
 }
 
-function CollectionView({ states, discoveredCodes, onSelect, panelManifest }) {
+function CollectionView({ states, discoveredCodes, onSelect, panelManifest, isLoggedIn, onLogin }) {
   const discoveredStates = states.filter((card) => discoveredCodes.has(card.stateCode));
   const previewStates = states.filter((card) => !discoveredCodes.has(card.stateCode)).slice(0, 12);
   const remaining = states.length - discoveredStates.length;
 
   return (
     <section className="collection-view page-panel">
+      {!isLoggedIn && (
+        <div className="collection-gate">
+          <div className="collection-gate-content">
+            <span className="collection-gate-icon"><Icon name="cards" size={32} strokeWidth={1.3} /></span>
+            <h2 className="collection-gate-title">Your Collection Awaits</h2>
+            <p className="collection-gate-body">Sign in to save your discovered cards, track your progress across all 50 states, and build your fan collection.</p>
+            <button className="primary-button" type="button" onClick={onLogin}>Login to View Collection</button>
+          </div>
+          <div className="collection-gate-blur" aria-hidden="true">
+            <div className="collection-header">
+              <div>
+                <p className="eyebrow">Collection</p>
+                <h2>My Sport Cards</h2>
+              </div>
+            </div>
+            <div className="card-grid">
+              {states.slice(0, 12).map((card) => (
+                <MiniStateCard key={card.stateCode} card={card} discovered={discoveredCodes.has(card.stateCode)} onSelect={() => {}} panelManifest={panelManifest} />
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+      {isLoggedIn && <>
       <div className="collection-header">
         <div>
-          <p className="eyebrow">Guest collection</p>
+          <p className="eyebrow">Your collection</p>
           <h2>My Sport Cards</h2>
-          <p>Cards appear here after you select states on the map. Exploration stays available without login.</p>
+          <p>Cards appear here after you select states on the map.</p>
         </div>
         <div className="collection-progress-stack">
           <span className="collection-count">{discoveredStates.length} / {states.length}</span>
@@ -1934,6 +1968,7 @@ function CollectionView({ states, discoveredCodes, onSelect, panelManifest }) {
           </div>
         </>
       )}
+      </>}
     </section>
   );
 }
@@ -2053,7 +2088,10 @@ function AppShell({ view, setView, children, onNavigate, onLogin, darkMode, onTo
 
 function App() {
   const [page, setPage] = useState("landing");
-  const [darkMode, setDarkMode] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [darkMode, setDarkMode] = useState(
+    () => window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? true
+  );
   const [dataset, setDataset] = useState(null);
   const [mapTopology, setMapTopology] = useState(null);
   const [geoTopology, setGeoTopology] = useState(null);
@@ -2094,9 +2132,13 @@ function App() {
   }, [discoveredCodes]);
 
   useEffect(() => {
-    document.documentElement.dataset.theme = ACTIVE_VISUAL_THEME.color;
-    document.documentElement.dataset.surface = darkMode ? "blacktop" : "";
-    document.documentElement.dataset.type = ACTIVE_VISUAL_THEME.type;
+    const html = document.documentElement;
+    html.classList.add("theme-transitioning");
+    html.dataset.theme = ACTIVE_VISUAL_THEME.color;
+    html.dataset.surface = darkMode ? "blacktop" : "";
+    html.dataset.type = ACTIVE_VISUAL_THEME.type;
+    const t = setTimeout(() => html.classList.remove("theme-transitioning"), 400);
+    return () => clearTimeout(t);
   }, [darkMode]);
 
   /*
@@ -2224,7 +2266,7 @@ function App() {
   }
 
   if (page === "login") {
-    return <LoginPage {...navProps} onLogin={() => navigate("app")} />;
+    return <LoginPage {...navProps} onLogin={() => { setIsLoggedIn(true); navigate("app"); }} />;
   }
 
   if (loadError) {
@@ -2272,7 +2314,7 @@ function App() {
       )}
 
       {view === "collection" && (
-        <CollectionView states={dataset.states} discoveredCodes={discoveredCodes} onSelect={(code) => selectState(code, "collection")} panelManifest={panelManifest} />
+        <CollectionView states={dataset.states} discoveredCodes={discoveredCodes} onSelect={(code) => selectState(code, "collection")} panelManifest={panelManifest} isLoggedIn={isLoggedIn} onLogin={() => navigate("login")} />
       )}
 
       {view === "challenge" && (
