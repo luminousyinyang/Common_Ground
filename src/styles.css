@@ -1175,8 +1175,9 @@ main {
 .primary-button {
   border: 1px solid transparent;
   border-radius: 999px;
-  min-height: 38px;
-  padding: 0 14px;
+  min-height: 46px;
+  padding: 0 24px;
+  font-size: 0.95rem;
   font-weight: 800;
 }
 
@@ -3387,7 +3388,7 @@ main {
   max-width: 1440px;
   margin: 0 auto;
   padding: 0 clamp(20px, 3vw, 48px);
-  height: 60px;
+  height: 72px;
   gap: 24px;
 }
 
@@ -3526,7 +3527,7 @@ main {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  padding-top: 60px;
+  padding-top: 72px;
 }
 
 .workspace-v2 {
@@ -3569,7 +3570,7 @@ main {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  padding-top: 60px;
+  padding-top: 72px;
 }
 
 .landing-section-inner {
@@ -3639,10 +3640,22 @@ main {
   max-width: 38ch;
 }
 
+@keyframes bounce-down {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+}
+
 .landing-hero-content .ghost-button {
   color: #131a1a;
   border-color: rgba(19, 26, 26, 0.45);
   background: transparent;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.landing-hero-content .ghost-button:hover svg {
+  animation: bounce-down 900ms ease-in-out infinite;
 }
 
 .landing-hero-content .ghost-button:hover {
@@ -3712,13 +3725,6 @@ html[data-surface="blacktop"] .landing-hero-content .ghost-button:hover {
   gap: 12px;
 }
 
-.landing-cta-row .primary-button,
-.landing-cta-row .ghost-button {
-  min-height: 46px;
-  padding-inline: 24px;
-  border-radius: 999px;
-  font-size: 0.95rem;
-}
 
 .landing-features {
   padding: clamp(64px, 9vw, 32px) 0;
@@ -3895,87 +3901,80 @@ html[data-surface="blacktop"] .landing-hero-content .ghost-button:hover {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  padding-top: 60px;
+  padding-top: 72px;
 }
 
 .login-layout {
-  flex: 1;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  min-height: 0;
+  height: calc(100vh - 72px);
 }
 
 .login-left {
+  position: relative;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: clamp(40px, 6vw, 80px);
-  background:
-    radial-gradient(circle at 20% 30%, var(--paper-accent-a), transparent 36rem),
-    var(--surface);
 }
 
-.login-left-content {
-  max-width: 460px;
+.login-left-graphic {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.login-left-overlay {
+  position: relative;
+  z-index: 1;
+  max-width: 360px;
+  background: #E5DED9;
+  border: 1.5px solid #E5DED9;
+  border-radius: 18px;
+  padding: clamp(24px, 3.5vw, 40px) clamp(20px, 3vw, 36px);
+  backdrop-filter: blur(4px);
+  margin: clamp(24px, 4vw, 48px);
+  text-align: center;
+}
+
+html[data-surface="blacktop"] .login-left-overlay {
+  background: rgba(229, 222, 217, 0.88);
+  border-color: #E5DED9;
 }
 
 .login-left-title {
   margin: 0 0 8px;
-  font-size: clamp(1.8rem, 3vw, 2.8rem);
-  line-height: 0.95;
+  font-size: clamp(1.6rem, 2.5vw, 2.4rem);
+  line-height: 1;
+  color: #131a1a;
 }
 
 .login-left-tagline {
-  margin: 0 0 14px;
-  color: var(--muted);
-  font-size: clamp(1rem, 1.8vw, 1.25rem);
+  margin: 0 0 12px;
+  font-size: clamp(0.95rem, 1.4vw, 1.1rem);
   font-weight: 700;
+  color: #2d3a3a;
 }
 
 .login-left-body {
-  margin: 0 0 40px;
-  color: var(--copy);
+  margin: 0;
   line-height: 1.6;
-}
-
-.login-card-visual {
-  position: relative;
-  height: 260px;
-}
-
-.login-card-back,
-.login-card-front {
-  position: absolute;
-  width: 180px;
-  height: 240px;
-  border-radius: 18px;
-  background: var(--glass-strong);
-  border: 1px solid var(--line);
-  box-shadow: var(--shadow);
-}
-
-.login-card-back {
-  top: 20px;
-  left: 40px;
-  transform: rotate(-8deg);
-  background: var(--paper);
-}
-
-.login-card-front {
-  top: 0;
-  left: 80px;
-  transform: rotate(4deg);
-  background:
-    linear-gradient(135deg, var(--paper-accent-a), var(--paper-accent-b));
+  font-size: 0.9rem;
+  color: #3a4444;
 }
 
 .login-right {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  padding: clamp(40px, 6vw, 80px);
+  padding: clamp(48px, 8vh, 100px) clamp(40px, 6vw, 80px) clamp(40px, 6vw, 80px);
   background: var(--paper-2);
   border-left: 1px solid var(--line);
+  overflow-y: auto;
 }
 
 .login-form-wrap {
@@ -4390,12 +4389,7 @@ html[data-surface="blacktop"] .landing-hero-content .ghost-button:hover {
   }
 
   .login-left {
-    padding: 40px clamp(20px, 4vw, 48px);
-    min-height: auto;
-  }
-
-  .login-card-visual {
-    display: none;
+    min-height: 280px;
   }
 
   .top-nav-center {
@@ -4488,11 +4482,6 @@ html[data-surface="blacktop"] .landing-hero-content .ghost-button:hover {
     flex-direction: column;
   }
 
-  .landing-cta-row .primary-button,
-  .landing-cta-row .ghost-button {
-    width: 100%;
-    text-align: center;
-  }
 
   .landing-features {
     padding: clamp(40px, 8vw, 72px) 0;
