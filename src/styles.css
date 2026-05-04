@@ -773,24 +773,25 @@ main {
 
 .map-explorer-shell {
   display: grid;
-  max-width: 1320px;
+  max-width: 1440px;
   margin: 0 auto;
 }
 
 .map-surface {
-  min-height: calc(100vh - 140px);
   border: 0;
-  padding: clamp(14px, 2.2vw, 26px);
+  padding: clamp(12px, 1.8vw, 20px);
   background: transparent;
   box-shadow: none;
 }
 
 .map-explorer-shell .map-wrap {
-  min-height: min(680px, calc(100vh - 360px));
+  min-height: min(480px, calc(100vh - 320px));
+  max-height: calc(100vh - 300px);
 }
 
 .map-explorer-shell .state-map {
-  min-height: min(650px, calc(100vh - 370px));
+  min-height: min(460px, calc(100vh - 330px));
+  max-height: calc(100vh - 310px);
 }
 
 .section-heading,
@@ -813,7 +814,7 @@ main {
 .collection-header h2 {
   margin: 0;
   font-family: var(--display-font);
-  font-size: clamp(32px, 4vw, 54px);
+  font-size: clamp(24px, 3vw, 40px);
   line-height: 0.94;
   font-weight: 900;
   text-transform: var(--display-transform);
@@ -1335,11 +1336,11 @@ main {
 }
 
 .sports-card-face.flip-out {
-  animation: cardFaceOut 220ms ease-in forwards;
+  animation: cardFaceOut 150ms ease-in forwards;
 }
 
 .sports-card-face.flip-in {
-  animation: cardFaceIn 220ms ease-out forwards;
+  animation: cardFaceIn 150ms ease-out forwards;
 }
 
 /* Tilt viewport */
@@ -2728,7 +2729,7 @@ main {
 .challenge-view,
 .methodology-view,
 .collection-view {
-  max-width: 1280px;
+  max-width: 1440px;
   margin: 0 auto;
   padding: 24px;
   position: relative;
@@ -3410,6 +3411,7 @@ main {
 }
 
 .top-nav-center {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 4px;
@@ -3419,7 +3421,22 @@ main {
   background: var(--glass);
 }
 
+.nav-sliding-pill {
+  position: absolute;
+  top: 4px;
+  left: 0;
+  height: calc(100% - 8px);
+  background: var(--glass-strong);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  pointer-events: none;
+  transition: width 240ms cubic-bezier(0.4, 0, 0.2, 1), transform 240ms cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, width;
+}
+
 .top-nav-tab {
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
   gap: 7px;
@@ -3431,7 +3448,7 @@ main {
   font-size: 0.88rem;
   font-weight: 800;
   cursor: pointer;
-  transition: background 140ms ease, color 140ms ease, border-color 140ms ease;
+  transition: color 140ms ease;
 }
 
 .top-nav-tab .nav-glyph {
@@ -3446,8 +3463,7 @@ main {
 
 .top-nav-tab.is-active {
   color: var(--ink);
-  background: var(--glass-strong);
-  border-color: var(--line);
+  position: relative;
 }
 
 .top-nav-actions {
@@ -3516,10 +3532,35 @@ main {
 .workspace-v2 {
   flex: 1;
   min-width: 0;
+  overflow: hidden;
 }
 
 .workspace-v2 > main {
-  padding: clamp(18px, 2.8vw, 32px);
+  padding: clamp(14px, 2vw, 24px);
+}
+
+.view-slider-viewport {
+  overflow: hidden;
+  width: 100%;
+}
+
+.view-slider-track {
+  display: flex;
+  width: 100%;
+  transition: transform 340ms cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+}
+
+@media (max-width: 640px) {
+  .view-slider-track {
+    transition: none;
+  }
+}
+
+.view-slide {
+  flex: 0 0 100%;
+  width: 100%;
+  min-width: 0;
 }
 
 /* ─── Landing Page ────────────────────────────────── */
@@ -3532,9 +3573,9 @@ main {
 }
 
 .landing-section-inner {
-  max-width: 1100px;
+  max-width: 1440px;
   margin: 0 auto;
-  padding: 0 clamp(20px, 4vw, 60px);
+  padding: 0 clamp(32px, 5vw, 80px);
 }
 
 .landing-hero {
@@ -3550,6 +3591,7 @@ main {
 .landing-hero-container {
   position: relative;
   width: 90vw;
+  max-width: 1440px;
   margin: 0 auto;
   border-radius: 28px;
   overflow: hidden;
@@ -3583,6 +3625,8 @@ main {
 .landing-hero-content .landing-eyebrow {
   color: #5a6060;
   margin-bottom: 12px;
+  font-size: 0.88rem;
+  opacity: 1;
 }
 
 .landing-hero-content .landing-hero-title {
@@ -3635,7 +3679,7 @@ html[data-surface="blacktop"] .landing-hero-content .ghost-button:hover {
 .landing-hero-title {
   margin: 0 0 20px;
   font-family: var(--display-font);
-  font-size: clamp(3rem, 8vw, 6.5rem);
+  font-size: clamp(2.4rem, 5.5vw, 4.8rem);
   line-height: 0.9;
   font-weight: 900;
   text-transform: var(--display-transform);
@@ -3682,7 +3726,7 @@ html[data-surface="blacktop"] .landing-hero-content .ghost-button:hover {
 }
 
 .landing-features .landing-section-inner {
-  max-width: 1360px;
+  max-width: 1440px;
 }
 
 .landing-features-heading {
@@ -3805,7 +3849,7 @@ html[data-surface="blacktop"] .landing-hero-content .ghost-button:hover {
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 16px;
-  max-width: 1100px;
+  max-width: 1440px;
   margin: 0 auto;
   padding: 0 clamp(20px, 4vw, 60px);
 }

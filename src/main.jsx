@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { geoContains, geoMercator, geoPath } from "d3-geo";
 import { feature, mesh } from "topojson-client";
@@ -628,6 +628,56 @@ function TopNav({ page, view, onViewChange, onNavigate, onLogin, darkMode, onTog
   const [menuOpen, setMenuOpen] = useState(false);
   const [menuMounted, setMenuMounted] = useState(false);
   const CLOSE_MS = 340;
+  const mapTabRef = useRef(null);
+  const collTabRef = useRef(null);
+  const [pillBase, setPillBase] = useState({ left: 0, width: 0 });
+  const [dragDelta, setDragDelta] = useState(0);
+  const dragRef = useRef({ active: false, startX: 0, startView: null });
+
+  useLayoutEffect(() => {
+    const activeRef = (page === "app" && view === "collection") ? collTabRef : mapTabRef;
+    const el = activeRef.current;
+    if (!el) return;
+    setPillBase({ left: el.offsetLeft, width: el.offsetWidth });
+  }, [page, view]);
+
+  function handleNavPointerDown(e) {
+    if (page !== "app") return;
+    const startView = view === "collection" ? "collection" : "explorer";
+    dragRef.current = { active: true, startX: e.clientX, startView, delta: 0 };
+    setDragDelta(0);
+  }
+
+  function handleNavPointerMove(e) {
+    if (!dragRef.current.active) return;
+    const raw = e.clientX - dragRef.current.startX;
+    const mapEl = mapTabRef.current;
+    const collEl = collTabRef.current;
+    if (!mapEl || !collEl) return;
+    const span = collEl.offsetLeft - mapEl.offsetLeft;
+    const clamped = dragRef.current.startView === "explorer"
+      ? Math.max(0, Math.min(raw, span))
+      : Math.max(-span, Math.min(raw, 0));
+    dragRef.current.delta = clamped;
+    setDragDelta(clamped);
+  }
+
+  function handleNavPointerUp() {
+    if (!dragRef.current.active) return;
+    dragRef.current.active = false;
+    const { delta = 0, startView } = dragRef.current;
+    if (Math.abs(delta) < 6) { setDragDelta(0); return; }
+    const mapEl = mapTabRef.current;
+    const collEl = collTabRef.current;
+    if (!mapEl || !collEl) { setDragDelta(0); return; }
+    const span = collEl.offsetLeft - mapEl.offsetLeft;
+    if (startView === "explorer" && delta > span / 2) {
+      onNavigate("app", "collection");
+    } else if (startView === "collection" && -delta > span / 2) {
+      onNavigate("app", "explorer");
+    }
+    setDragDelta(0);
+  }
 
   function openMenu() {
     setMenuMounted(true);
@@ -656,8 +706,28 @@ function TopNav({ page, view, onViewChange, onNavigate, onLogin, darkMode, onTog
           <button className="top-nav-brand" type="button" onClick={() => go("landing")} aria-label="Common Ground home">
             Common Ground
           </button>
-          <nav className="top-nav-center" aria-label="Primary navigation">
+          <nav
+            className="top-nav-center"
+            aria-label="Primary navigation"
+            onPointerDown={handleNavPointerDown}
+            onPointerMove={handleNavPointerMove}
+            onPointerUp={handleNavPointerUp}
+            onPointerCancel={handleNavPointerUp}
+            style={{ touchAction: "none" }}
+          >
+            {page === "app" && pillBase.width > 0 && (
+              <div
+                className="nav-sliding-pill"
+                style={{
+                  width: pillBase.width,
+                  transform: `translateX(${pillBase.left + dragDelta}px)`,
+                  transition: dragRef.current.active ? "none" : undefined,
+                }}
+                aria-hidden="true"
+              />
+            )}
             <button
+              ref={mapTabRef}
               className={`top-nav-tab ${page === "app" && view === "explorer" ? "is-active" : ""}`}
               type="button"
               onClick={() => onNavigate("app", "explorer")}
@@ -666,6 +736,7 @@ function TopNav({ page, view, onViewChange, onNavigate, onLogin, darkMode, onTog
               <span className="nav-tab-label">Map</span>
             </button>
             <button
+              ref={collTabRef}
               className={`top-nav-tab ${page === "app" && view === "collection" ? "is-active" : ""}`}
               type="button"
               onClick={() => onNavigate("app", "collection")}
@@ -1540,11 +1611,11 @@ function UnifiedStateCard({ card, sourceRefs, briefing, briefingLoading, onRefre
       setDisplayBack(next);
       setFlipPhase("in");
       onFlipChange?.(next);
-    }, 220);
+    }, 150);
 
     const t2 = setTimeout(() => {
       setFlipPhase(null);
-    }, 440);
+    }, 300);
 
     flipTimers.current = [t1, t2];
   }
@@ -2157,6 +2228,19 @@ function MethodologyView({ refs, meta, states }) {
   );
 }
 
+function ViewSlider({ activeIndex, children }) {
+  return (
+    <div className="view-slider-viewport">
+      <div
+        className="view-slider-track"
+        style={{ transform: `translateX(${activeIndex * -100}%)` }}
+      >
+        {children}
+      </div>
+    </div>
+  );
+}
+
 function AppShell({ view, setView, children, onNavigate, onLogin, darkMode, onToggleDarkMode }) {
   return (
     <div className="app-frame-v2">
@@ -2172,6 +2256,19 @@ function AppShell({ view, setView, children, onNavigate, onLogin, darkMode, onTo
       <div className="workspace-v2">
         <main>{children}</main>
       </div>
+      <footer className="landing-footer">
+        <div className="landing-footer-inner">
+          <div>
+            <strong className="landing-footer-brand">Common Ground</strong>
+            <p>Geography-powered fan discovery</p>
+          </div>
+          <nav className="landing-footer-nav" aria-label="Footer">
+            <button className="landing-footer-link" type="button" onClick={() => onNavigate("app", "explorer")}>Map</button>
+            <button className="landing-footer-link" type="button" onClick={() => onNavigate("app", "collection")}>Collection</button>
+            <button className="landing-footer-link" type="button" onClick={() => onNavigate("app", "methodology")}>Methodology</button>
+          </nav>
+        </div>
+      </footer>
     </div>
   );
 }
@@ -2388,23 +2485,26 @@ function App() {
       }}
       {...navProps}
     >
-      {view === "explorer" && (
-        <section className="map-explorer-shell">
-          <section className="map-surface page-panel" aria-labelledby="mapTitle">
-            <div className="section-heading">
-              <div>
-                <p className="eyebrow">Geography-powered fan discovery</p>
-                <h2 id="mapTitle">State Atlas</h2>
-              </div>
-            </div>
-            <p className="safe-note">Explore aggregate state signals from public Team USA and geography data. Patterns may suggest fan-discovery context and do not imply performance outcomes.</p>
-            <StateMap mapTopology={mapTopology} features={features} geoFeatures={geoFeatures} cardsByCode={cardsByCode} selectedCode={selectedCode} onSelect={selectState} discoveredCodes={discoveredCodes} totalStates={dataset.states.length} />
-          </section>
-        </section>
-      )}
-
-      {view === "collection" && (
-        <CollectionView states={dataset.states} discoveredCodes={discoveredCodes} onSelect={(code) => selectState(code, "collection")} panelManifest={panelManifest} isLoggedIn={isLoggedIn} onLogin={() => navigate("login")} />
+      {(view === "explorer" || view === "collection") && (
+        <ViewSlider activeIndex={view === "explorer" ? 0 : 1}>
+          <div className="view-slide">
+            <section className="map-explorer-shell">
+              <section className="map-surface page-panel" aria-labelledby="mapTitle">
+                <div className="section-heading">
+                  <div>
+                    <p className="eyebrow">Geography-powered fan discovery</p>
+                    <h2 id="mapTitle">State Atlas</h2>
+                  </div>
+                </div>
+                <p className="safe-note">Explore aggregate state signals from public Team USA and geography data. Patterns may suggest fan-discovery context and do not imply performance outcomes.</p>
+                <StateMap mapTopology={mapTopology} features={features} geoFeatures={geoFeatures} cardsByCode={cardsByCode} selectedCode={selectedCode} onSelect={selectState} discoveredCodes={discoveredCodes} totalStates={dataset.states.length} />
+              </section>
+            </section>
+          </div>
+          <div className="view-slide">
+            <CollectionView states={dataset.states} discoveredCodes={discoveredCodes} onSelect={(code) => selectState(code, "collection")} panelManifest={panelManifest} isLoggedIn={isLoggedIn} onLogin={() => navigate("login")} />
+          </div>
+        </ViewSlider>
       )}
 
       {view === "challenge" && (
