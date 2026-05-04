@@ -673,11 +673,10 @@ function LandingPage({ onNavigate, onLogin, darkMode, onToggleDarkMode }) {
       <TopNav page="landing" view={null} onViewChange={() => {}} onNavigate={onNavigate} onLogin={onLogin} darkMode={darkMode} onToggleDarkMode={onToggleDarkMode} />
 
       <section className="landing-hero">
-        <div className="landing-section-inner">
-          <p className="eyebrow landing-eyebrow">Olympic + Paralympic Discovery</p>
-          <h1 className="landing-hero-title">Explore Team USA's Athletic Legacy</h1>
-          <p className="landing-hero-sub">Geography-powered fan discovery for LA28</p>
-          <p className="landing-hero-body">Click any state on the interactive map to discover Olympic and Paralympic athletes with equal prominence. Collect state cards, explore shared traits, and build your fan collection across all 50 states.</p>
+      <div className="landing-section-inner">
+      <p className="eyebrow landing-eyebrow">Team USA Discovery</p>
+            <h1 className="landing-hero-title">Explore Team USA by State</h1>
+            <p className="landing-hero-body">Click a state to discover the number of athletes, minigames, and collect cards.</p>
           <div className="landing-cta-row">
             <button className="primary-button" type="button" onClick={() => onNavigate("app", "explorer")}>Explore the Map</button>
             <button className="ghost-button" type="button" onClick={() => onNavigate("app", "collection")}>View Collection</button>
@@ -690,17 +689,23 @@ function LandingPage({ onNavigate, onLogin, darkMode, onToggleDarkMode }) {
           <h2 className="landing-features-heading">How it works</h2>
           <div className="landing-features-grid">
             <div className="landing-feature-card">
-              <div className="landing-feature-icon"><Icon name="map" size={22} strokeWidth={1.5} /></div>
+              <div className="landing-feature-img">
+                <img src="/assets/graphics/Interactive Map.png" alt="Interactive Map" />
+              </div>
               <h3>Interactive Map</h3>
               <p>Click any state to explore athlete counts and sport families across the US. Discovered states are highlighted as you build your collection.</p>
             </div>
             <div className="landing-feature-card">
-              <div className="landing-feature-icon"><Icon name="cards" size={22} strokeWidth={1.5} /></div>
+              <div className="landing-feature-img">
+                <img src="/assets/graphics/State Cards.png" alt="State Cards" />
+              </div>
               <h3>State Cards</h3>
               <p>Collect digital cards for each state. Each card features Olympic and Paralympic programs with equal visual weight and a holographic shine on hover.</p>
             </div>
             <div className="landing-feature-card">
-              <div className="landing-feature-icon"><Icon name="game" size={22} strokeWidth={1.5} /></div>
+              <div className="landing-feature-img">
+                <img src="/assets/graphics/Fan Challenges.png" alt="Fan Challenges" />
+              </div>
               <h3>Fan Challenges</h3>
               <p>Test your instincts with short skill challenges tied to the shared athletic trait connecting each state's Olympic and Paralympic sports.</p>
             </div>
