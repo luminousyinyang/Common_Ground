@@ -2449,6 +2449,7 @@ function App() {
     setPage(nextPage);
     if (nextView) setView(nextView);
     setIsCardModalOpen(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   const navProps = {

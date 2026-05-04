@@ -3686,7 +3686,6 @@ main {
 
 .landing-hero-content .ghost-button {
   color: #131a1a;
-  border-color: rgba(19, 26, 26, 0.45);
   background: transparent;
   display: inline-flex;
   align-items: center;
@@ -3698,8 +3697,9 @@ main {
 }
 
 .landing-hero-content .ghost-button:hover {
-  background: rgba(19, 26, 26, 0.08);
-  border-color: #131a1a;
+  background: rgba(147, 122, 84, 0.1);
+  border-color: rgba(19, 26, 26, 0.45);
+  box-shadow: none;
 }
 
 html[data-surface="blacktop"] .landing-hero-content .primary-button {
@@ -3715,7 +3715,7 @@ html[data-surface="blacktop"] .landing-hero-content .ghost-button {
 }
 
 html[data-surface="blacktop"] .landing-hero-content .ghost-button:hover {
-  background: rgba(19, 26, 26, 0.1);
+  background: rgba(118, 96, 64, 0.1);
 }
 
 @media (max-width: 1100px) {
@@ -3768,6 +3768,7 @@ html[data-surface="blacktop"] .landing-hero-content .ghost-button:hover {
 .landing-features {
   padding: clamp(64px, 9vw, 32px) 0;
   background: var(--surface);
+  scroll-margin-top: 64px;
 }
 
 .landing-features .landing-section-inner {
@@ -4433,6 +4434,17 @@ html[data-surface="blacktop"] .login-left-overlay {
     grid-template-columns: 1fr;
   }
 
+  .landing-cta-row {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .landing-cta-row .primary-button,
+  .landing-cta-row .ghost-button {
+    width: 100%;
+    justify-content: center;
+  }
+
   .login-layout {
     grid-template-columns: 1fr;
   }
@@ -4527,9 +4539,6 @@ html[data-surface="blacktop"] .login-left-overlay {
     padding-inline: 16px;
   }
 
-  .landing-cta-row {
-    flex-direction: column;
-  }
 
 
   .landing-features {
