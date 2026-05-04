@@ -1,7 +1,7 @@
 {
   "model": "gemini-3-pro-image-preview",
   "location": "global",
-  "updatedAt": "2026-05-04T20:22:11.246Z",
+  "updatedAt": "2026-05-04T20:44:18.069Z",
   "states": {
     "CO": {
       "olympic": {
@@ -117,13 +117,13 @@
     },
     "CA": {
       "olympic": {
-        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v3-top-sport-cue%2Fca%2Fca-olympic.png?alt=media&token=9d0d683b-eeaa-4798-a252-0acacd83d6c5",
+        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v4-rough-fan-atlas%2Fca%2Fca-olympic.png?alt=media&token=2ef3fa28-74eb-4fc8-8beb-5f75f182ee88",
         "localUrl": null,
         "model": "gemini-3-pro-image-preview",
         "location": "global",
         "mimeType": "image/png",
-        "generatedAt": "2026-05-02T15:00:14.869Z",
-        "promptVersion": "common-ground-card-panel-v3-top-sport-cue",
+        "generatedAt": "2026-05-04T20:45:02.120Z",
+        "promptVersion": "common-ground-card-panel-v4-rough-fan-atlas",
         "promptSummary": "California olympic Water Polo",
         "primarySportTag": "Water Polo",
         "topSportTags": [
@@ -131,34 +131,25 @@
           "Track and Field",
           "Skateboarding"
         ],
-        "paletteTheme": "Pacific Heat",
-        "promptHash": "8b20528cfeb978408f5960dd2dacf28239c0c4317155f324e2cf351befb1ebe1",
-        "notes": "",
-        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v3-top-sport-cue%2Fca%2Fca-olympic.png?alt=media&token=9d0d683b-eeaa-4798-a252-0acacd83d6c5",
-        "storageBucket": "common-ground-tests.firebasestorage.app",
-        "firebaseProjectId": "common-ground-tests",
-        "storagePath": "card-panels/common-ground-card-panel-v3-top-sport-cue/ca/ca-olympic.png",
-        "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v3-top-sport-cue/ca/ca-olympic.png",
-        "firebaseCollection": "cardPanels",
         "cardBackCopy": {
           "featuredCue": "Water Polo",
           "moduleMix": [
+            "Rules Snapshot",
             "Pace Shift",
-            "Watch Hook",
-            "State Culture"
+            "Watch Hook"
           ],
-          "subtitle": "Aquatic team sport · goals in net · possession clock",
+          "subtitle": "Aquatic team sport · four 8-minute quarters · 28-second possessions",
           "qaFacts": {
-            "howItWorks": "Two teams of seven compete in the pool, featuring six field players and one goalkeeper. The objective is to score by throwing the ball into the opponent's net, and the team with the most goals after four eight-minute quarters wins. Field players must pass and shoot using only one hand while working within a 28-second possession clock.",
-            "watchValue": "Notice how the rhythm shifts from a structured offensive setup to a sudden counterattack. The appeal is watching athletes execute precise passes and fakes while constantly adjusting their body position in the water.",
-            "stateConnection": "California's extensive Pacific coastline, large urban regions, and year-round outdoor aquatic access may suggest why water-based team stories fit this state card.",
-            "cardTrait": "Water polo connects to Waterline Control through the constant adjustments in spacing and timing as players manage the possession clock in a shifting aquatic environment."
+            "howItWorks": "Matches unfold across four eight-minute quarters where two teams of seven try to outscore each other. The objective is to throw the ball into the opponent's net, and field players may only touch the ball with one hand to control it.",
+            "watchValue": "Notice how the rhythm of the game shifts as the 28-second possession clock ticks down. The excitement comes from watching teams coordinate their spacing and set up a scoring angle while constantly treading water.",
+            "stateConnection": "Year-round outdoor access and a long Pacific coastline could help fans understand why aquatic team events appear so naturally connected to California's sport culture.",
+            "cardTrait": "Water polo demonstrates Waterline Control as athletes manage their passing cadence and spatial rhythm, keeping the ball moving smoothly despite the shifting aquatic surface."
           },
           "factChips": [
-            "7 players per team",
+            "7 per team: 6 field + goalkeeper",
             "Four 8-minute quarters",
             "28-second possession clock",
-            "One-hand rule"
+            "One-hand touch rule"
           ],
           "relatedTags": [
             "Track and Field",
@@ -169,16 +160,25 @@
         "cardBackCopySource": "gemini",
         "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
         "cardBackCopyModel": "gemini-3.1-pro-preview",
-        "cardBackCopyPromptHash": "be5abcd3a78d57da86fff2a64defd8442f2405a0db0f8e7458979c36e0ec38b3"
+        "cardBackCopyPromptHash": "be5abcd3a78d57da86fff2a64defd8442f2405a0db0f8e7458979c36e0ec38b3",
+        "paletteTheme": "Pacific Heat",
+        "promptHash": "0d2bf038e56f37af3b84ce7384b5444e87d767322be855c164d4e4ab7f13fca6",
+        "notes": "",
+        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v4-rough-fan-atlas%2Fca%2Fca-olympic.png?alt=media&token=2ef3fa28-74eb-4fc8-8beb-5f75f182ee88",
+        "storageBucket": "common-ground-tests.firebasestorage.app",
+        "firebaseProjectId": "common-ground-tests",
+        "storagePath": "card-panels/common-ground-card-panel-v4-rough-fan-atlas/ca/ca-olympic.png",
+        "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v4-rough-fan-atlas/ca/ca-olympic.png",
+        "firebaseCollection": "cardPanels"
       },
       "paralympic": {
-        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v3-top-sport-cue%2Fca%2Fca-paralympic.png?alt=media&token=f1a37cb9-e066-41d5-8a8b-7653ba9b1118",
+        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v4-rough-fan-atlas%2Fca%2Fca-paralympic.png?alt=media&token=2982b059-d9ff-4e64-9620-3fe02fa42c22",
         "localUrl": null,
         "model": "gemini-3-pro-image-preview",
         "location": "global",
         "mimeType": "image/png",
-        "generatedAt": "2026-05-02T18:34:09.656Z",
-        "promptVersion": "common-ground-card-panel-v3-top-sport-cue",
+        "generatedAt": "2026-05-04T20:54:05.388Z",
+        "promptVersion": "common-ground-card-panel-v4-rough-fan-atlas",
         "promptSummary": "California paralympic Para triathlon",
         "primarySportTag": "Paratriathlon",
         "topSportTags": [
@@ -189,22 +189,22 @@
         "cardBackCopy": {
           "featuredCue": "Para triathlon",
           "moduleMix": [
+            "Watch Hook",
             "Pace Shift",
-            "Gear/Setup",
-            "Watch Hook"
+            "Terrain/Environment Lens"
           ],
-          "subtitle": "750m swim · 20km bike · 5km run · transition pacing",
+          "subtitle": "Three-stage race · transition timing · changing race rhythm",
           "qaFacts": {
-            "howItWorks": "Para triathlon is a three-stage race consisting of a 750m swim, a 20km bike segment, and a 5km run. The competitor with the fastest total race time wins, and the clock keeps ticking during the equipment transitions between each stage.",
-            "watchValue": "Watch how quickly athletes adapt their rhythm when moving from the water to the bike or racing wheelchair. The tension spikes in the transition zones, where a smooth equipment change can make or break a lead.",
-            "stateConnection": "California's Pacific coastline, varied road networks, and year-round outdoor access could help fans understand why multi-stage endurance events fit this state card.",
-            "cardTrait": "Para triathlon connects to Waterline Control through the way athletes adjust their cadence and pacing as the race surface changes from open water to pavement."
+            "howItWorks": "Para triathlon is a continuous three-stage race featuring a 750m swim, a 20km bike segment, and a 5km run. The competitor with the fastest total time across all stages wins the event. Because the clock never stops, the time spent swapping equipment in the transition zones is just as critical as the race itself.",
+            "watchValue": "Look for the moment competitors exit the water and move into the first transition. The tension spikes as they switch gear—like moving to a handcycle or tandem bicycle—and immediately try to establish a new rhythm on the road.",
+            "stateConnection": "California's Pacific coast, mountain roads, and year-round outdoor access could help fans see why multi-surface endurance events naturally align with this state card.",
+            "cardTrait": "Para triathlon connects to Waterline Control through the constant adjustments to pacing and cadence needed when shifting from water to wheels to the final run."
           },
           "factChips": [
             "750m swim, 20km bike, 5km run",
-            "Fastest total time wins",
-            "Clock runs during transitions",
-            "Adaptive racing equipment"
+            "Fastest total race time wins",
+            "Clock runs through transitions",
+            "Handcycles, tandems, or racing wheelchairs"
           ],
           "relatedTags": [
             "Para Track and Field",
@@ -218,13 +218,13 @@
         "cardBackCopyModel": "gemini-3.1-pro-preview",
         "cardBackCopyPromptHash": "d02abdd3c1638ba213b284e3c609efbc741c28ee15c0fad04a61d1eb21fe1f99",
         "paletteTheme": "Pacific Heat",
-        "promptHash": "368ca74b7bbdadb8c33071a2079d2937b6f4082f17903a701915bd9a17406fe6",
+        "promptHash": "0d75c0fc06c2ef0bbbbeafc3dcc579fa9dce6a4bee2e2ad1d972caa9a1beaf6d",
         "notes": "",
-        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v3-top-sport-cue%2Fca%2Fca-paralympic.png?alt=media&token=f1a37cb9-e066-41d5-8a8b-7653ba9b1118",
+        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v4-rough-fan-atlas%2Fca%2Fca-paralympic.png?alt=media&token=2982b059-d9ff-4e64-9620-3fe02fa42c22",
         "storageBucket": "common-ground-tests.firebasestorage.app",
         "firebaseProjectId": "common-ground-tests",
-        "storagePath": "card-panels/common-ground-card-panel-v3-top-sport-cue/ca/ca-paralympic.png",
-        "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v3-top-sport-cue/ca/ca-paralympic.png",
+        "storagePath": "card-panels/common-ground-card-panel-v4-rough-fan-atlas/ca/ca-paralympic.png",
+        "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v4-rough-fan-atlas/ca/ca-paralympic.png",
         "firebaseCollection": "cardPanels"
       },
       "gameExperience": {

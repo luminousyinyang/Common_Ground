@@ -1549,7 +1549,6 @@ function CardArt({ card, compact = false, panelManifest = EMPTY_CARD_PANEL_MANIF
           <span className="art-panel-label">{shortProgramName(card.paralympicPanel.program)}</span>
           {!compact && <strong className="art-panel-sport">{getPanelVisualCue(card.paralympicPanel)}</strong>}
         </div>
-        <CommonGroundSeal />
       </div>
       <div className="art-state-lockup">
         <strong>{card.stateName}</strong>

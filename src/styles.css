@@ -29,6 +29,9 @@
   --paper-accent-b: rgba(215, 220, 235, 0.30);
   --grain-ink: rgba(7, 20, 95, 0.10);
   --grain-warm: rgba(100, 105, 120, 0.06);
+  --print-grain-texture: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.84' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.72'/%3E%3C/svg%3E");
+  --card-print-grain-opacity: 0.24;
+  --card-paper-finish-opacity: 0.12;
   --glass: color-mix(in srgb, var(--paper-2) 86%, transparent);
   --glass-strong: color-mix(in srgb, var(--paper-2) 94%, transparent);
   --glass-soft: color-mix(in srgb, var(--paper) 74%, transparent);
@@ -1343,6 +1346,22 @@ main {
   outline-offset: -3px;
 }
 
+.sports-card-front::before {
+  position: absolute;
+  inset: 0;
+  z-index: 9;
+  border-radius: inherit;
+  pointer-events: none;
+  content: "";
+  opacity: var(--card-paper-finish-opacity);
+  background-image:
+    var(--print-grain-texture),
+    radial-gradient(circle, rgba(255, 255, 255, 0.46) 0 0.45px, transparent 0.65px),
+    radial-gradient(circle, rgba(8, 18, 34, 0.30) 0 0.38px, transparent 0.6px);
+  background-size: 180px 180px, 11px 11px, 17px 17px;
+  mix-blend-mode: overlay;
+}
+
 .sports-card-back {
   color: var(--ink);
   background:
@@ -1443,6 +1462,19 @@ main {
 .card-art.is-compact {
   min-height: 245px;
   border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-art.is-compact .card-art-stack {
+  display: flex;
+  flex-direction: column;
+  min-height: 160px;
+}
+
+.card-art.is-compact .card-art-panel {
+  flex: 1;
+  height: auto;
 }
 
 .card-art-stack {
@@ -1457,6 +1489,21 @@ main {
   min-height: 0;
   overflow: hidden;
   background: var(--paper);
+}
+
+.card-art-panel::after {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  content: "";
+  opacity: var(--card-print-grain-opacity);
+  background-image:
+    var(--print-grain-texture),
+    radial-gradient(circle, rgba(255, 255, 255, 0.48) 0 0.55px, transparent 0.75px),
+    radial-gradient(circle, rgba(8, 18, 34, 0.28) 0 0.4px, transparent 0.62px);
+  background-size: 160px 160px, 9px 9px, 14px 14px;
+  mix-blend-mode: multiply;
 }
 
 .card-art-panel img {
@@ -1479,6 +1526,7 @@ main {
 .art-vignette {
   position: absolute;
   inset: 0;
+  z-index: 1;
   background: linear-gradient(180deg, color-mix(in srgb, var(--ink) 5%, transparent), transparent 44%, color-mix(in srgb, var(--ink) 18%, transparent));
 }
 
@@ -1498,7 +1546,7 @@ main {
   position: absolute;
   top: 12px;
   left: 12px;
-  z-index: 2;
+  z-index: 4;
   width: fit-content;
   border-radius: 999px;
   padding: 6px 10px;
@@ -1521,7 +1569,7 @@ main {
   left: 12px;
   right: 12px;
   bottom: 12px;
-  z-index: 2;
+  z-index: 4;
   max-width: 94%;
   color: #ffffff;
   font-family: var(--display-font);
@@ -1534,7 +1582,7 @@ main {
   position: absolute;
   top: 50%;
   left: 50%;
-  z-index: 3;
+  z-index: 5;
   display: grid;
   place-items: center;
   width: 54px;
@@ -1578,6 +1626,7 @@ main {
 }
 
 .art-state-lockup {
+  position: relative;
   display: grid;
   gap: 4px;
   min-height: 96px;
@@ -1586,6 +1635,37 @@ main {
   background:
     linear-gradient(180deg, var(--glass-strong), color-mix(in srgb, var(--paper) 96%, transparent));
   border-top: 1px solid var(--line);
+}
+
+.art-state-lockup::after {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  opacity: 0.16;
+  background-image: var(--print-grain-texture);
+  background-size: 140px 140px;
+  mix-blend-mode: multiply;
+}
+
+.art-state-lockup > * {
+  position: relative;
+  z-index: 1;
+}
+
+html[data-surface="blacktop"] .sports-card-front::before {
+  opacity: 0.16;
+  mix-blend-mode: screen;
+}
+
+html[data-surface="blacktop"] .card-art-panel::after {
+  opacity: 0.18;
+  mix-blend-mode: screen;
+}
+
+html[data-surface="blacktop"] .art-state-lockup::after {
+  opacity: 0.10;
+  mix-blend-mode: screen;
 }
 
 .art-state-lockup strong {
@@ -1644,6 +1724,24 @@ main {
   bottom: -2px;
   width: 2px;
   height: 12px;
+}
+
+.card-art.is-compact .art-vignette {
+  background: linear-gradient(180deg, transparent 20%, color-mix(in srgb, var(--ink) 8%, transparent));
+}
+
+.card-art.is-compact .olympic-art-panel .art-vignette {
+  background: linear-gradient(180deg, transparent 20%, color-mix(in srgb, var(--ink) 10%, transparent));
+}
+
+.card-art.is-compact .paralympic-art-panel .art-vignette {
+  background: linear-gradient(180deg, transparent 20%, color-mix(in srgb, var(--ink) 10%, transparent));
+}
+
+html[data-surface="blacktop"] .card-art.is-compact .art-vignette,
+html[data-surface="blacktop"] .card-art.is-compact .olympic-art-panel .art-vignette,
+html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vignette {
+  background: linear-gradient(180deg, transparent 15%, color-mix(in srgb, var(--ink) 14%, transparent));
 }
 
 .sports-card-front-footer {
