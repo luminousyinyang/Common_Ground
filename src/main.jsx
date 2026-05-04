@@ -922,6 +922,15 @@ function LoginPage({ onNavigate, onLogin, darkMode, onToggleDarkMode }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const loginTabRef = useRef(null);
+  const createTabRef = useRef(null);
+  const [indicator, setIndicator] = useState({ left: 0, width: 0 });
+
+  useLayoutEffect(() => {
+    const el = (tab === "login" ? loginTabRef : createTabRef).current;
+    if (!el) return;
+    setIndicator({ left: el.offsetLeft, width: el.offsetWidth });
+  }, [tab]);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -945,8 +954,11 @@ function LoginPage({ onNavigate, onLogin, darkMode, onToggleDarkMode }) {
         <div className="login-right">
           <div className="login-form-wrap">
             <div className="login-tabs" role="tablist">
-              <button className={`login-tab ${tab === "login" ? "is-active" : ""}`} type="button" role="tab" aria-selected={tab === "login"} onClick={() => setTab("login")}>Login</button>
-              <button className={`login-tab ${tab === "create" ? "is-active" : ""}`} type="button" role="tab" aria-selected={tab === "create"} onClick={() => setTab("create")}>Create Account</button>
+              <button ref={loginTabRef} className={`login-tab ${tab === "login" ? "is-active" : ""}`} type="button" role="tab" aria-selected={tab === "login"} onClick={() => setTab("login")}>Login</button>
+              <button ref={createTabRef} className={`login-tab ${tab === "create" ? "is-active" : ""}`} type="button" role="tab" aria-selected={tab === "create"} onClick={() => setTab("create")}>Create Account</button>
+              {indicator.width > 0 && (
+                <div className="login-tab-indicator" style={{ width: indicator.width, transform: `translateX(${indicator.left}px)` }} aria-hidden="true" />
+              )}
             </div>
 
             {tab === "login" && (

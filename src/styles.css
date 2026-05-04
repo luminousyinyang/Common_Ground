@@ -3983,6 +3983,7 @@ html[data-surface="blacktop"] .login-left-overlay {
 }
 
 .login-tabs {
+  position: relative;
   display: flex;
   border-bottom: 1px solid var(--line);
   margin-bottom: 28px;
@@ -3991,7 +3992,6 @@ html[data-surface="blacktop"] .login-left-overlay {
 .login-tab {
   flex: 1;
   border: 0;
-  border-bottom: 2px solid transparent;
   padding: 10px;
   color: var(--muted);
   background: transparent;
@@ -4000,13 +4000,23 @@ html[data-surface="blacktop"] .login-left-overlay {
   letter-spacing: 0.04em;
   text-transform: uppercase;
   cursor: pointer;
-  transition: color 140ms ease, border-color 140ms ease;
-  margin-bottom: -1px;
+  transition: color 200ms ease;
 }
 
 .login-tab.is-active {
   color: var(--ink);
-  border-bottom-color: var(--ink);
+}
+
+.login-tab-indicator {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  height: 2px;
+  background: var(--ink);
+  border-radius: 999px;
+  pointer-events: none;
+  transition: width 240ms cubic-bezier(0.4, 0, 0.2, 1), transform 240ms cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, width;
 }
 
 .login-form {
