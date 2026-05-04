@@ -481,6 +481,16 @@ html {
   overflow-x: hidden;
 }
 
+html.theme-transitioning *,
+html.theme-transitioning *::before,
+html.theme-transitioning *::after {
+  transition:
+    background-color 300ms ease,
+    color 280ms ease,
+    border-color 280ms ease,
+    box-shadow 280ms ease !important;
+}
+
 body {
   position: relative;
   margin: 0;
@@ -1208,7 +1218,7 @@ main {
 .ghost-button,
 .primary-button {
   border: 1px solid transparent;
-  border-radius: 12px;
+  border-radius: 999px;
   min-height: 38px;
   padding: 0 14px;
   font-weight: 800;
@@ -2766,6 +2776,72 @@ main {
   max-width: 1280px;
   margin: 0 auto;
   padding: 24px;
+  position: relative;
+}
+
+/* ── Collection login gate ────────────────────────────── */
+.collection-gate {
+  position: relative;
+  min-height: 560px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.collection-gate-blur {
+  position: absolute;
+  inset: 0;
+  filter: blur(8px) grayscale(0.4);
+  opacity: 0.35;
+  pointer-events: none;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.collection-gate-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: clamp(32px, 5vw, 56px) clamp(28px, 5vw, 64px);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06);
+  max-width: 420px;
+}
+
+.collection-gate-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  background: var(--surface-soft);
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+.collection-gate-title {
+  font-family: var(--display-font);
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  font-weight: 900;
+  text-transform: var(--display-transform);
+  letter-spacing: var(--display-letter-spacing);
+  line-height: 0.95;
+  margin: 0;
+}
+
+.collection-gate-body {
+  font-size: 0.95rem;
+  color: var(--copy);
+  line-height: 1.6;
+  margin: 0;
+  max-width: 34ch;
 }
 
 .challenge-header p {
@@ -3496,11 +3572,94 @@ main {
 }
 
 .landing-hero {
-  padding: clamp(72px, 10vw, 120px) 0 clamp(64px, 9vw, 100px);
-  background:
-    radial-gradient(circle at 20% 30%, var(--paper-accent-a), transparent 42rem),
-    radial-gradient(circle at 82% 60%, var(--paper-accent-b), transparent 36rem),
-    var(--paper-2);
+  padding: clamp(64px, 9vw, 100px) 0;
+  background: var(--surface);
+}
+
+.landing-hero .landing-section-inner {
+  max-width: none;
+  padding: 0;
+}
+
+.landing-hero-container {
+  position: relative;
+  width: 90vw;
+  margin: 0 auto;
+  border-radius: 28px;
+  overflow: hidden;
+  min-height: clamp(320px, 36vw, 520px);
+}
+
+.landing-hero-graphic {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right center;
+  display: block;
+}
+
+.landing-hero-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background: #E5DED9;
+  border-radius: 18px;
+  padding: clamp(24px, 3.5vw, 44px) clamp(20px, 3vw, 40px);
+  backdrop-filter: blur(4px);
+  margin: clamp(28px, 5vw, 52px) clamp(24px, 5vw, 52px);
+  max-width: min(50%, 520px);
+}
+
+.landing-hero-content .landing-eyebrow {
+  color: #5a6060;
+  margin-bottom: 12px;
+}
+
+.landing-hero-content .landing-hero-title {
+  color: #131a1a;
+  max-width: 14ch;
+}
+
+.landing-hero-content .landing-hero-body {
+  color: #3a4444;
+  max-width: 38ch;
+}
+
+.landing-hero-content .ghost-button {
+  color: #131a1a;
+  border-color: rgba(19, 26, 26, 0.45);
+  background: transparent;
+}
+
+.landing-hero-content .ghost-button:hover {
+  background: rgba(19, 26, 26, 0.08);
+  border-color: #131a1a;
+}
+
+html[data-surface="blacktop"] .landing-hero-content .primary-button {
+  background: #131a1a;
+  color: #E5DED9;
+  border-color: #131a1a;
+}
+
+html[data-surface="blacktop"] .landing-hero-content .ghost-button {
+  background: transparent;
+  color: #131a1a;
+  border-color: rgba(19, 26, 26, 0.55);
+}
+
+html[data-surface="blacktop"] .landing-hero-content .ghost-button:hover {
+  background: rgba(19, 26, 26, 0.1);
+}
+
+@media (max-width: 1100px) {
+  .landing-hero-content {
+    max-width: calc(100% - clamp(48px, 10vw, 104px));
+  }
 }
 
 .landing-eyebrow {
@@ -3556,6 +3715,10 @@ main {
   background: var(--surface);
 }
 
+.landing-features .landing-section-inner {
+  max-width: 1360px;
+}
+
 .landing-features-heading {
   margin: 0 0 clamp(36px, 5vw, 56px);
   font-family: var(--display-font);
@@ -3576,35 +3739,41 @@ main {
 .landing-feature-card {
   border: 1px solid var(--line);
   border-radius: 20px;
-  padding: clamp(24px, 3vw, 36px);
+  overflow: hidden;
   background: var(--glass-soft);
-}
-
-.landing-feature-icon {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 48px;
-  height: 48px;
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  margin-bottom: 20px;
-  background: var(--glass-strong);
+  flex-direction: column;
 }
 
-.landing-feature-icon .nav-glyph {
-  width: 22px;
-  height: 22px;
+.landing-feature-img {
+  width: 100%;
+  aspect-ratio: 13 / 10;
+  overflow: hidden;
+  background: var(--surface-soft);
+}
+
+.landing-feature-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 320ms ease;
+}
+
+.landing-feature-card:hover .landing-feature-img img {
+  transform: scale(1.04);
 }
 
 .landing-feature-card h3 {
-  margin: 0 0 12px;
+  margin: 0 0 10px;
   font-family: var(--display-font);
   font-size: clamp(1.4rem, 2.2vw, 1.8rem);
   font-weight: 900;
   line-height: 0.95;
   text-transform: var(--display-transform);
   letter-spacing: var(--display-letter-spacing);
+  padding: clamp(20px, 2.5vw, 28px) clamp(20px, 2.5vw, 28px) 0;
 }
 
 .landing-feature-card p {
@@ -3613,6 +3782,13 @@ main {
   font-size: 0.92rem;
   font-weight: 400;
   line-height: 1.65;
+  padding: 0 clamp(20px, 2.5vw, 28px) clamp(20px, 2.5vw, 28px);
+}
+
+@media (max-width: 720px) {
+  .landing-features-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .landing-cta2 {
@@ -4308,16 +4484,12 @@ main {
     text-align: center;
   }
 
-  .landing-feature-card {
-    padding: 20px;
-  }
-
   .landing-features {
     padding: clamp(40px, 8vw, 72px) 0;
   }
 
   .landing-cta2 {
-    padding: clamp(48px, 8vw, 80px) 0;
+    padding: clamp(64px, 9vw, 100px) 0;
   }
 
   /* Login: hide branding panel, show form only */
@@ -4365,11 +4537,6 @@ main {
 
 /* ─── Mobile: 2-col feature grid for mid-range ───── */
 
-@media (min-width: 480px) and (max-width: 860px) {
-  .landing-features-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
 
 /* ─── Tablet: login layout single column ≤ 860px ─── */
 
