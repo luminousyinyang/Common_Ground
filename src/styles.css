@@ -1815,11 +1815,25 @@ main {
   line-height: 1.38;
 }
 
+.panel-fact-block {
+  display: grid;
+  gap: 7px;
+  margin-top: 16px;
+}
+
+.panel-chip-label {
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
 .panel-fact-chips {
   display: flex;
   flex-wrap: wrap;
   gap: 7px;
-  margin-top: 16px;
 }
 
 .panel-fact-chips span {
@@ -2673,11 +2687,54 @@ main {
   font-size: 0.88rem;
 }
 
+.briefing-panel.is-compact .briefing-section-grid {
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.briefing-panel.is-compact .briefing-section {
+  padding: 10px 0;
+}
+
 .briefing-panel h3 {
   margin: 0 0 12px;
   font-size: 1.45rem;
   line-height: 0.95;
   font-weight: 700;
+}
+
+.briefing-section-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 14px;
+}
+
+.briefing-section {
+  display: grid;
+  gap: 6px;
+  border-top: 1px solid var(--line);
+  padding: 12px 0 0;
+}
+
+.briefing-section span {
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.briefing-section p {
+  margin: 0;
+  color: var(--copy);
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.briefing-list {
+  display: grid;
+  gap: 6px;
 }
 
 .briefing-split {
@@ -3187,7 +3244,8 @@ main {
 
   .panel,
   .trait-band,
-  .briefing-split {
+  .briefing-split,
+  .briefing-section-grid {
     grid-template-columns: 1fr;
   }
 

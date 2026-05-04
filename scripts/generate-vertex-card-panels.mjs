@@ -27,7 +27,7 @@ const imageRetryDelayMs = positiveInteger(process.env.CARD_IMAGE_RETRY_DELAY_MS,
 const imageRequestTimeoutMs = positiveInteger(process.env.CARD_IMAGE_REQUEST_TIMEOUT_MS, 900000);
 const textRequestTimeoutMs = positiveInteger(process.env.CARD_COPY_REQUEST_TIMEOUT_MS, 120000);
 const PROMPT_VERSION = "common-ground-card-panel-v3-top-sport-cue";
-const CARD_BACK_COPY_VERSION = "common-ground-card-back-v11-qa-facts-no-signal";
+const CARD_BACK_COPY_VERSION = "common-ground-card-back-v13-teach-sport-no-watch-for";
 
 let firebaseClientsPromise;
 
@@ -370,6 +370,44 @@ function programPanel(card, program) {
   return program === "paralympic" ? card.paralympicPanel : card.olympicPanel;
 }
 
+function displaySportName(value) {
+  const text = String(value || "").trim();
+  if (/^paratriathlon$/i.test(text)) return "Para triathlon";
+  return text;
+}
+
+function sourceBackedSportFacts(featuredSport) {
+  const sport = String(featuredSport || "").toLowerCase();
+  if (/water polo/.test(sport)) {
+    return {
+      sourceLabels: ["LA28 Water Polo"],
+      sourceUrls: ["https://la28.org/en/games-plan/olympics/water-polo.html"],
+      facts: [
+        "Water polo is played by two teams of seven in the water, including a goalkeeper.",
+        "LA28 describes water polo matches as four 8-minute quarters.",
+        "LA28 describes 28-second possessions.",
+        "LA28 notes players may only touch the ball with one hand, except the goalkeeper."
+      ]
+    };
+  }
+  if (/para\s*triathlon|paratriathlon/.test(sport)) {
+    return {
+      sourceLabels: ["Paralympic.org Para triathlon"],
+      sourceUrls: ["https://www.paralympic.org/triathlon/about"],
+      facts: [
+        "Para triathlon includes a 750m swim, 20km bike segment, and 5km run.",
+        "Para triathlon includes transition control across swim, bike, and run segments.",
+        "Depending on event context, equipment may include a handcycle, tandem bicycle, bicycle, racing wheelchair, or guide support."
+      ]
+    };
+  }
+  return {
+    sourceLabels: [],
+    sourceUrls: [],
+    facts: []
+  };
+}
+
 function paletteStoryForCard(card) {
   const explicitStory = STATE_PALETTE_STORIES[card.stateCode];
   if (explicitStory) return explicitStory;
@@ -436,19 +474,19 @@ Return only the image.`;
 }
 
 function imageSubjectForPanel(panel) {
-  return panel.primarySportTag || panel.topSportTags?.[0] || panel.sportFamily || "general sport-family theme";
+  return displaySportName(panel.primarySportTag || panel.topSportTags?.[0] || panel.sportFamily || "general sport-family theme");
 }
 
 function topSportContextForPanel(panel) {
   const broaderTags = (panel.topSportTags || []).filter((tag) => tag !== panel.primarySportTag);
   if (panel.primarySportTag && broaderTags.length) {
-    return `Lead with ${panel.primarySportTag}. Broader aggregate public sport tags for this state/program include ${joinList(broaderTags)}; use them only as secondary context and do not display counts.`;
+    return `Lead with ${displaySportName(panel.primarySportTag)}. Broader aggregate public sport tags for this state/program include ${joinList(broaderTags.map(displaySportName))}; use them only as secondary context and do not display counts.`;
   }
   if (panel.primarySportTag) {
-    return `Lead with ${panel.primarySportTag}. This is the sourced featured sport tag for this state/program and should guide the illustration without displaying counts.`;
+    return `Lead with ${displaySportName(panel.primarySportTag)}. This is the sourced featured sport tag for this state/program and should guide the illustration without displaying counts.`;
   }
   if (panel.topSportTags?.length) {
-    return `${joinList(panel.topSportTags)}. These are aggregate public sport tags for this state/program and should guide the illustration without displaying counts.`;
+    return `${joinList(panel.topSportTags.map(displaySportName))}. These are aggregate public sport tags for this state/program and should guide the illustration without displaying counts.`;
   }
   return "No top sport tag is exposed for this panel because the public roster signal is low-volume or unavailable; keep the artwork generalized.";
 }
@@ -519,6 +557,7 @@ function buildCardBackCopyPrompt(card, program) {
   const programName = program === "paralympic" ? "Paralympic" : "Olympic";
   const storyFeatured = program === "paralympic" ? card.cardStory?.paralympicFeatured : card.cardStory?.olympicFeatured;
   const otherTopSportTags = (panel.topSportTags || []).filter((tag) => tag !== panel.primarySportTag);
+  const featuredSport = displaySportName(storyFeatured?.sportTag || panel.primarySportTag || panel.topSportTags?.[0] || "");
   const payload = {
     stateName: card.stateName,
     program: programName,
@@ -537,17 +576,19 @@ function buildCardBackCopyPrompt(card, program) {
       label: panel.label,
       sportFamily: panel.sportFamily,
       aggregateSignal: panel.aggregateSignal,
-      primarySportTag: panel.primarySportTag || null,
-      otherTopSportTagsForStateBriefingOnly: otherTopSportTags,
+      featuredSportDisplayName: featuredSport || null,
+      primarySportTag: displaySportName(panel.primarySportTag) || null,
+      otherTopSportTagsForStateBriefingOnly: otherTopSportTags.map(displaySportName),
       geographyConnection: panel.geographyConnection,
       sourceLabels: (panel.sourceRefs || []).map((source) => source.label)
-    }
+    },
+    sourceBackedSportFacts: sourceBackedSportFacts(featuredSport)
   };
 
   return `You are Gemini writing the back of one collectible Common Ground state card panel.
 
 Use only the provided aggregate public Team USA and geography data.
-Do not mention individual athlete names, athlete profiles, photos, biographies, teams, rankings, medals, finish times, scoring results, or exact counts.
+Do not mention individual athlete names, athlete profiles, photos, biographies, specific team names, rankings, medals, finish times, scoring results, or exact counts.
 Do not use the word "athlete" or "athletes" in final copy; write about the featured sport, movement, equipment, setting, rhythm, spacing, or fan discovery instead.
 Do not say geography causes, creates, produces, predicts, or guarantees athletic results.
 Use conditional fan-discovery language such as "may suggest", "could help fans understand", "appears associated with", or "could show how".
@@ -559,14 +600,16 @@ Do not overstate the cue with words like "strong", "dominant", "best", or "prove
 Avoid awkward generated openings such as "[Sport] invites fans", "[Sport] invites a look", "[Sport] is featured here", or "[Sport] is featured because".
 Avoid physical-demand wording such as "demands", "requires", "essential", "rigorous", "stamina", "maintain speed", or "intense physical pressure". Prefer concrete fan-observation wording such as "look for", "notice", "watch how", "shows", and "could help fans understand".
 Avoid generic enthusiasm words such as "fascinating", "interesting part", "compelling", or "dynamic" when concrete sport detail would be clearer.
+Gemini should write the final copy. The provided sourceBackedSportFacts are guardrails and context, not a prewritten answer. Use the facts only when they make the panel more useful for a fan.
 This panel is only about the featured sport. Do not mention other sports from otherTopSportTagsForStateBriefingOnly; those belong in the Gemini State Briefing.
 Make every field answer: "why would a fan care?"
 Avoid repeating the same abstract trait language across fields. Each field must add a different kind of value.
 Do not use section-title language like "Why this sport", "Movement read", "State context", "Fan Takeaway", or "Watch Lens" inside the values.
-Keep the same storytelling quality as the examples, but do not reuse the same sentence formulas on every card. Vary the opening line, paragraph rhythm, and sport-specific details by state/program.
+Keep the same storytelling quality as the examples, but do not reuse the same sentence formulas on every card. Vary the opening line, answer rhythm, and sport-specific details by state/program.
 Do not use a fixed skeleton like "Sport looks chaotic, but actually..." + "For a [state] card..." + "Watch how...".
 Do not force every sport panel to mention the state in the same sentence pattern. Sometimes the state connection can sit in the middle. Sometimes the watch hook can lead. Sometimes a hidden skill can lead.
-Before writing, choose 2-3 content modules that fit the sport/state pairing. Blend them into one paragraph without visible module headings.
+Start by teaching the user what they are watching. Then explain why it is fun, how the state context may connect, and how the card trait works.
+Use concrete sport facts only when they are present in sourceBackedSportFacts or safely general from the provided sport-family data.
 
 Allowed content modules:
 - Watch Hook: what a fan should notice while watching
@@ -582,50 +625,44 @@ Allowed content modules:
 - Challenge Link: how this connects to the mini-game
 
 Return valid JSON only with these fields:
-- featuredCue: short display label. If primarySportTag is present, use it exactly. If not, use a concise generalized cue.
+- featuredCue: short display label. If featuredSportDisplayName or primarySportTag is present, use that display name exactly. If not, use a concise generalized cue.
 - moduleMix: array of 2-3 chosen module names from the allowed content modules. Choose modules that fit this sport/state. Do not choose the same moduleMix pattern for every panel.
 - subtitle: concise display line with 3-4 short phrases separated by " · ". It should feel like the subline on a collectible card.
 - qaFacts: object with exactly these string fields. Each answer should be 1-2 short sentences, useful, and concrete:
-  - aboutSport: answer "A bit about the sport".
-  - watchValue: answer "What makes it fun to watch".
+  - howItWorks: answer "How it works" with plain rules, format, or what the sport is.
+  - watchValue: answer "Why it's fun to watch" with a concrete fan-facing hook.
   - stateConnection: answer "State connection" with conditional geography/weather/context language.
-  - eventRhythm: answer "Rhythm of the game/event".
-  - funFact: answer "Fun fact" using only broad, watchable sport context, no exact records, individual people, unsourced rule details, classifications, or event-format claims.
-  - watchFor: answer "Watch for" with one specific thing fans should notice.
-- factChips: array of 3-4 tiny chip labels. Each chip must be 2-4 words. Use sport-family facts, viewing cues, equipment/terrain/context cues, or event-type context. Do not include exact counts.
+  - cardTrait: answer "Card trait" by tying this featured sport to the sharedTrait and mini-game idea.
+- factChips: array of 3-4 tiny "Quick facts" chip labels. Each chip must be 2-5 words. Use source-backed sport facts, viewing cues, equipment/terrain/context cues, or event-type context. Do not include exact counts from the roster dataset.
 - complianceWarnings: array of strings, empty if safe.
 
 Style references only. Do not copy them verbatim and do not force every state into waterline language:
 Example Olympic panel style:
 {
   "featuredCue": "Water Polo",
-  "moduleMix": ["Hidden Skill", "State Culture", "Watch Hook"],
-  "subtitle": "Aquatic team sport · pressure rhythm · passing lanes",
+  "moduleMix": ["Rules Snapshot", "Hidden Skill", "Watch Hook"],
+  "subtitle": "Aquatic team sport · 7 in water · possession pressure",
   "qaFacts": {
-    "aboutSport": "Water polo is an aquatic team sport built around passing lanes, body positioning, and quick resets.",
-    "watchValue": "The ball moves fast, but the smarter read often happens before the pass, as players shift and fake to open a lane.",
-    "stateConnection": "California's Pacific coast, outdoor aquatic access, and large urban sport communities could help fans understand why water-based team stories feel natural here.",
-    "eventRhythm": "Slow setup, sudden burst. Possessions can move from patient passing to a quick strike in a very short window.",
-    "funFact": "Players keep moving without solid footing, so spacing and balance matter even away from the ball.",
-    "watchFor": "The pass before the shot; that is often where the play is created."
+    "howItWorks": "Water polo is played by two teams of seven in the water, including a goalkeeper. LA28 describes four 8-minute quarters and 28-second possessions, so each attack has to form quickly while everyone is swimming or treading water.",
+    "watchValue": "The ball moves fast, but the sharper read often happens before the pass, when players shift, fake, and open a lane.",
+    "stateConnection": "California's Pacific coast, outdoor aquatic access, and large urban sport communities could help fans understand why water-based team stories fit this state card.",
+    "cardTrait": "Water polo connects to Waterline Control through spacing, body position, and quick rhythm changes in a pool where no one has stable footing."
   },
-  "factChips": ["Aquatic environment", "Team spacing", "Fast resets", "Passing lanes"],
+  "factChips": ["7 in water", "4 quarters", "28-second possessions", "One-hand control"],
   "complianceWarnings": []
 }
 Example Paralympic panel style:
 {
-  "featuredCue": "Paratriathlon",
-  "moduleMix": ["Pace Shift", "Gear/Setup", "Broadcast Moment"],
+  "featuredCue": "Para triathlon",
+  "moduleMix": ["Rules Snapshot", "Gear/Setup", "Pace Shift"],
   "subtitle": "Swim · bike · run · transition control",
   "qaFacts": {
-    "aboutSport": "Para triathlon combines swimming, cycling, running, and transition strategy across changing surfaces and equipment needs.",
+    "howItWorks": "Para triathlon combines a 750m swim, 20km bike segment, and 5km run. Depending on event context, equipment may include a handcycle, tandem bicycle, bicycle, racing wheelchair, or guide support.",
     "watchValue": "The transitions carry their own drama because every shift from water to bike to run changes the pacing problem.",
     "stateConnection": "California's coastline, road networks, varied terrain, and year-round outdoor access could help fans understand why water-connected endurance stories fit this state card.",
-    "eventRhythm": "Segmented momentum: the rhythm changes each time the environment changes.",
-    "funFact": "Transition moments can be as revealing as the race segments because they show preparation, control, and adaptation.",
-    "watchFor": "How quickly the rhythm changes after the swim ends and the road portion begins."
+    "cardTrait": "Para triathlon connects to Waterline Control through pacing and adaptation across changing surfaces."
   },
-  "factChips": ["Multi-stage endurance", "Transition control", "Equipment adaptation", "Outdoor rhythm"],
+  "factChips": ["750m swim", "20km bike", "5km run", "Transition control"],
   "complianceWarnings": []
 }
 
@@ -689,7 +726,7 @@ function validateCardBackCopy({ card, program, rawCopy }) {
   if (missingFields.length) {
     throw new Error(`Gemini card-back copy is missing required fields: ${missingFields.join(", ")}`);
   }
-  const requiredQaFields = ["aboutSport", "watchValue", "stateConnection", "eventRhythm", "funFact", "watchFor"];
+  const requiredQaFields = ["howItWorks", "watchValue", "stateConnection", "cardTrait"];
   const missingQaFields = requiredQaFields.filter((field) => !String(rawCopy.qaFacts?.[field] || "").trim());
   if (missingQaFields.length) {
     throw new Error(`Gemini card-back copy is missing qaFacts fields: ${missingQaFields.join(", ")}`);
@@ -709,7 +746,7 @@ function validateCardBackCopy({ card, program, rawCopy }) {
     throw new Error("Gemini card-back copy did not choose enough allowed moduleMix entries.");
   }
 
-  const expectedCue = panel.primarySportTag || null;
+  const expectedCue = displaySportName(panel.primarySportTag) || null;
   const qaFacts = Object.fromEntries(requiredQaFields.map((field) => [field, String(rawCopy.qaFacts[field]).trim()]));
   const copy = {
     featuredCue: expectedCue || String(rawCopy.featuredCue).trim(),
@@ -717,7 +754,7 @@ function validateCardBackCopy({ card, program, rawCopy }) {
     subtitle: String(rawCopy.subtitle).trim(),
     qaFacts,
     factChips: rawCopy.factChips.map((chip) => String(chip || "").trim()).filter(Boolean).slice(0, 4),
-    relatedTags: (panel.topSportTags || []).filter((tag) => tag !== expectedCue),
+    relatedTags: (panel.topSportTags || []).map(displaySportName).filter((tag) => tag !== expectedCue),
     complianceWarnings: Array.isArray(rawCopy.complianceWarnings)
       ? rawCopy.complianceWarnings.map((warning) => String(warning || "").trim()).filter(Boolean)
       : []
@@ -796,7 +833,7 @@ function complianceCheckCardBackCopy(copy) {
     /\bmost popular county\b/i,
     /\brace order\b/i,
     /\bclassifications?\b/i,
-    /\b\d+(\.\d+)?\s?(seconds?|minutes?|points?|percent|%)\b/i
+    /\b\d+(\.\d+)?\s?(points?|percent|%)\b/i
   ];
   const warnings = bannedPatterns.filter((pattern) => pattern.test(text)).map((pattern) => `Unsafe phrase pattern: ${pattern}`);
   for (const tag of copy.relatedTags || []) {
