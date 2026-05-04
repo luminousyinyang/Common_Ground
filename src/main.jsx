@@ -511,6 +511,7 @@ const ICON_PATHS = {
   sun: <><circle cx="12" cy="12" r="5" /><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" /></>,
   home: <><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></>,
   close: <><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></>,
+  lock: <><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></>,
 };
 
 function Icon({ name, size = 18, strokeWidth = 1.8, className = "" }) {
@@ -1965,8 +1966,21 @@ function ChallengeView({ card, briefing, onReturn, panelManifest }) {
 
 function MiniStateCard({ card, discovered, onSelect, panelManifest }) {
   return (
-    <button className={`mini-card ${discovered ? "is-discovered" : "is-locked"}`} type="button" onClick={() => onSelect(card.stateCode)} aria-label={`Open ${card.stateName} card`}>
-      <CardArt card={card} compact panelManifest={panelManifest} />
+    <button
+      className={`mini-card ${discovered ? "is-discovered" : "is-locked"}`}
+      type="button"
+      onClick={discovered ? () => onSelect(card.stateCode) : undefined}
+      disabled={!discovered}
+      aria-label={discovered ? `Open ${card.stateName} card` : `${card.stateName} — locked`}
+    >
+      <div className="mini-card-art-wrap">
+        <CardArt card={card} compact panelManifest={panelManifest} />
+        {!discovered && (
+          <div className="mini-card-lock-overlay">
+            <Icon name="lock" size={24} strokeWidth={1.8} />
+          </div>
+        )}
+      </div>
       <div className="mini-card-body">
         <div>
           <strong>{card.sharedTrait.name}</strong>

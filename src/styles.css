@@ -2987,19 +2987,30 @@ main {
 .mini-card.is-locked {
   opacity: 0.72;
   filter: saturate(0.6);
+  cursor: default;
 }
 
-.mini-card:hover,
-.mini-card:focus-visible {
+.mini-card:not(.is-locked):hover,
+.mini-card:not(.is-locked):focus-visible {
   border-color: var(--ink);
   transform: translateY(-2px);
   box-shadow: 0 18px 38px color-mix(in srgb, var(--ink) 12%, transparent);
 }
 
-.mini-card.is-locked:hover,
-.mini-card.is-locked:focus-visible {
-  opacity: 0.9;
-  filter: saturate(0.85);
+.mini-card-art-wrap {
+  position: relative;
+}
+
+.mini-card-lock-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(2px);
 }
 
 .mini-card-body {
