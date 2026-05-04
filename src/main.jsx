@@ -2062,14 +2062,24 @@ function FocusHold({ card, onResult }) {
 function PatternScout({ card, onResult }) {
   const sequence = useMemo(() => {
     const seed = card.stateCode.split("").reduce((sum, char) => sum + char.charCodeAt(0), 0);
-    return Array.from({ length: 6 }, (_, index) => (seed + index * 3 + index ** 2) % 4);
+    const nextSequence = [];
+    let current = seed % 4;
+    for (let index = 0; index < 6; index += 1) {
+      current = (current + 1 + ((seed + index * 2) % 3)) % 4;
+      nextSequence.push(current);
+    }
+    return nextSequence;
   }, [card.stateCode]);
   const labels = ["Coast", "Road", "Court", "Peak"];
   const [previewing, setPreviewing] = useState(true);
   const [highlight, setHighlight] = useState(null);
   const [userIndex, setUserIndex] = useState(0);
   const [misses, setMisses] = useState(0);
+  const [feedback, setFeedback] = useState("Watch the route.");
+  const [previewRound, setPreviewRound] = useState(0);
   const finishedRef = useRef(false);
+  const previewTimersRef = useRef([]);
+  const flashTimerRef = useRef(null);
 
   function finish(nextIndex, nextMisses) {
     if (finishedRef.current || nextIndex < sequence.length) return;
@@ -2084,19 +2094,35 @@ function PatternScout({ card, onResult }) {
   }
 
   useEffect(() => {
-    let step = 0;
-    const timer = setInterval(() => {
-      if (step >= sequence.length) {
+    setPreviewing(true);
+    setHighlight(null);
+    setUserIndex(0);
+    setFeedback("Watch the route.");
+    previewTimersRef.current.forEach(clearTimeout);
+    previewTimersRef.current = [];
+    if (flashTimerRef.current) clearTimeout(flashTimerRef.current);
+
+    sequence.forEach((tile, index) => {
+      previewTimersRef.current.push(setTimeout(() => {
+        setFeedback(`Watch step ${index + 1} of ${sequence.length}.`);
+        setHighlight(tile);
+      }, index * 720));
+      previewTimersRef.current.push(setTimeout(() => {
         setHighlight(null);
-        setPreviewing(false);
-        clearInterval(timer);
-        return;
-      }
-      setHighlight(sequence[step]);
-      step += 1;
-    }, 620);
-    return () => clearInterval(timer);
-  }, [sequence]);
+      }, index * 720 + 390));
+    });
+
+    previewTimersRef.current.push(setTimeout(() => {
+      setPreviewing(false);
+      setFeedback("Your turn: repeat the route.");
+    }, sequence.length * 720 + 160));
+
+    return () => {
+      previewTimersRef.current.forEach(clearTimeout);
+      previewTimersRef.current = [];
+      if (flashTimerRef.current) clearTimeout(flashTimerRef.current);
+    };
+  }, [sequence, previewRound]);
 
   useEffect(() => {
     function onKey(event) {
@@ -2110,19 +2136,31 @@ function PatternScout({ card, onResult }) {
 
   function choosePattern(index) {
     if (previewing || finishedRef.current) return;
+    if (flashTimerRef.current) clearTimeout(flashTimerRef.current);
+    setHighlight(index);
+    flashTimerRef.current = setTimeout(() => setHighlight(null), 180);
+
     if (sequence[userIndex] === index) {
       const nextIndex = userIndex + 1;
       setUserIndex(nextIndex);
+      setFeedback(nextIndex >= sequence.length ? "Pattern complete." : `Good. Step ${nextIndex + 1} of ${sequence.length} next.`);
       finish(nextIndex, misses);
     } else {
       setMisses((value) => value + 1);
       setUserIndex(0);
+      setFeedback("Pattern reset. Start again from the first tile.");
     }
+  }
+
+  function replayPattern() {
+    if (finishedRef.current) return;
+    setMisses((value) => value + 1);
+    setPreviewRound((value) => value + 1);
   }
 
   return (
     <>
-      <div className="game-status">{previewing ? "Pattern Scout: watch the route." : `Pattern Scout: repeat the route. Step ${userIndex + 1} of ${sequence.length}.`}</div>
+      <div className="game-status">{previewing ? "Pattern Scout: watch the route." : `Pattern Scout: repeat the route. Step ${Math.min(userIndex + 1, sequence.length)} of ${sequence.length}.`} {feedback}</div>
       <div className="game-board pattern-board" tabIndex="0" aria-label={`${card.stateName} pattern scout`}>
         <div className="pattern-grid">
           {labels.map((label, index) => (
@@ -2138,7 +2176,15 @@ function PatternScout({ card, onResult }) {
             </button>
           ))}
         </div>
-        <p className="pattern-hint">Use buttons or keys 1-4.</p>
+        <div className="pattern-progress" aria-label={`${userIndex} of ${sequence.length} pattern steps completed`}>
+          {sequence.map((_, index) => (
+            <span key={index} className={index < userIndex ? "is-complete" : ""} />
+          ))}
+        </div>
+        <div className="pattern-actions">
+          <p className="pattern-hint">Use buttons or keys 1-4. A wrong tile resets the route.</p>
+          <button className="ghost-button small" type="button" onClick={replayPattern} disabled={previewing}>Show pattern again</button>
+        </div>
       </div>
     </>
   );

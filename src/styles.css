@@ -3097,10 +3097,41 @@ main {
     0 16px 34px color-mix(in srgb, var(--ink) 16%, transparent);
 }
 
+.pattern-progress {
+  display: flex;
+  gap: 7px;
+  margin-top: 12px;
+}
+
+.pattern-progress span {
+  flex: 1;
+  height: 8px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ink) 8%, transparent);
+}
+
+.pattern-progress span.is-complete {
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
+.pattern-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 12px;
+}
+
 .pattern-hint {
   margin: 12px 0 0;
   color: var(--copy);
   font-weight: 760;
+}
+
+.pattern-actions .pattern-hint {
+  margin: 0;
 }
 
 .game-result {
