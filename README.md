@@ -198,9 +198,12 @@ GOOGLE_CLOUD_PROJECT=[PROJECT-ID]
 GOOGLE_CLOUD_LOCATION=global
 GEMINI_MODEL=gemini-3.1-pro-preview
 FIREBASE_STORAGE_BUCKET=[PROJECT-ID].firebasestorage.app
+CLOUD_RUN_MIN_INSTANCES=1
 ```
 
 Cloud Run uses its attached service account for Vertex AI, Firestore, and Firebase Storage. Do not upload or set a service-account JSON credentials file in Cloud Run.
+
+`CLOUD_RUN_MIN_INSTANCES=1` keeps at least one Cloud Run instance warm to reduce cold starts. This increases Cloud Run cost compared with scaling to zero. Set it to `0` only when cold starts are acceptable.
 
 ## File Map
 

@@ -20,6 +20,7 @@ REPOSITORY="${ARTIFACT_REGISTRY_REPOSITORY:-common-ground}"
 SERVICE_ACCOUNT_NAME="${CLOUD_RUN_SERVICE_ACCOUNT_NAME:-common-ground-vertex}"
 SERVICE_ACCOUNT_EMAIL="${CLOUD_RUN_SERVICE_ACCOUNT:-${SERVICE_ACCOUNT_NAME}@${PROJECT_ID}.iam.gserviceaccount.com}"
 GEMINI_MODEL="${GEMINI_MODEL:-gemini-3.1-pro-preview}"
+CLOUD_RUN_MIN_INSTANCES="${CLOUD_RUN_MIN_INSTANCES:-1}"
 IMAGE="${REGION}-docker.pkg.dev/${PROJECT_ID}/${REPOSITORY}/${SERVICE_NAME}:latest"
 
 if [[ -z "$PROJECT_ID" ]]; then
@@ -32,10 +33,15 @@ if ! command -v gcloud >/dev/null 2>&1; then
   exit 1
 fi
 
+PROJECT_NUMBER="$(gcloud projects describe "$PROJECT_ID" --format="value(projectNumber)")"
+CLOUD_BUILD_SERVICE_ACCOUNT="${CLOUD_BUILD_SERVICE_ACCOUNT:-${PROJECT_NUMBER}-compute@developer.gserviceaccount.com}"
+
 echo "Deploying ${SERVICE_NAME} to Cloud Run"
 echo "Project: ${PROJECT_ID}"
 echo "Region: ${REGION}"
 echo "Runtime service account: ${SERVICE_ACCOUNT_EMAIL}"
+echo "Cloud Build service account: ${CLOUD_BUILD_SERVICE_ACCOUNT}"
+echo "Minimum warm instances: ${CLOUD_RUN_MIN_INSTANCES}"
 echo "Image: ${IMAGE}"
 
 npm run build
@@ -69,6 +75,20 @@ gcloud projects add-iam-policy-binding "$PROJECT_ID" \
   --role="roles/datastore.user" \
   --condition=None \
   >/dev/null
+
+for role in \
+  roles/cloudbuild.builds.builder \
+  roles/storage.objectViewer \
+  roles/storage.objectCreator \
+  roles/artifactregistry.writer \
+  roles/logging.logWriter
+do
+  gcloud projects add-iam-policy-binding "$PROJECT_ID" \
+    --member="serviceAccount:${CLOUD_BUILD_SERVICE_ACCOUNT}" \
+    --role="$role" \
+    --condition=None \
+    >/dev/null
+done
 
 if [[ -n "$FIREBASE_STORAGE_BUCKET" ]]; then
   gcloud storage buckets add-iam-policy-binding "gs://${FIREBASE_STORAGE_BUCKET}" \
@@ -104,6 +124,7 @@ gcloud run deploy "$SERVICE_NAME" \
   --image "$IMAGE" \
   --service-account "$SERVICE_ACCOUNT_EMAIL" \
   --allow-unauthenticated \
+  --min "$CLOUD_RUN_MIN_INSTANCES" \
   --set-env-vars "GOOGLE_CLOUD_PROJECT=${PROJECT_ID},GOOGLE_CLOUD_LOCATION=${VERTEX_LOCATION},GEMINI_MODEL=${GEMINI_MODEL},FIREBASE_STORAGE_BUCKET=${FIREBASE_STORAGE_BUCKET},NODE_ENV=production"
 
 gcloud run services describe "$SERVICE_NAME" \
