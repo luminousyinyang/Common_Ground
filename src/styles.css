@@ -481,6 +481,16 @@ html {
   overflow-x: hidden;
 }
 
+html.theme-transitioning *,
+html.theme-transitioning *::before,
+html.theme-transitioning *::after {
+  transition:
+    background-color 300ms ease,
+    color 280ms ease,
+    border-color 280ms ease,
+    box-shadow 280ms ease !important;
+}
+
 body {
   position: relative;
   margin: 0;

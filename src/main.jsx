@@ -2100,7 +2100,9 @@ function AppShell({ view, setView, children, onNavigate, onLogin, darkMode, onTo
 function App() {
   const [page, setPage] = useState("landing");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [darkMode, setDarkMode] = useState(true);
+  const [darkMode, setDarkMode] = useState(
+    () => window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? true
+  );
   const [dataset, setDataset] = useState(null);
   const [mapTopology, setMapTopology] = useState(null);
   const [geoTopology, setGeoTopology] = useState(null);
@@ -2141,9 +2143,13 @@ function App() {
   }, [discoveredCodes]);
 
   useEffect(() => {
-    document.documentElement.dataset.theme = ACTIVE_VISUAL_THEME.color;
-    document.documentElement.dataset.surface = darkMode ? "blacktop" : "";
-    document.documentElement.dataset.type = ACTIVE_VISUAL_THEME.type;
+    const html = document.documentElement;
+    html.classList.add("theme-transitioning");
+    html.dataset.theme = ACTIVE_VISUAL_THEME.color;
+    html.dataset.surface = darkMode ? "blacktop" : "";
+    html.dataset.type = ACTIVE_VISUAL_THEME.type;
+    const t = setTimeout(() => html.classList.remove("theme-transitioning"), 400);
+    return () => clearTimeout(t);
   }, [darkMode]);
 
   /*
