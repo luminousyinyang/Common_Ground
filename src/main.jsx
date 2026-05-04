@@ -1896,10 +1896,267 @@ function CadenceKeeper({ card, onResult }) {
   );
 }
 
+function PrecisionTrace({ card, onResult }) {
+  const checkpoints = [
+    { x: 9, y: 78 },
+    { x: 22, y: 61 },
+    { x: 38, y: 68 },
+    { x: 52, y: 42 },
+    { x: 68, y: 50 },
+    { x: 83, y: 24 },
+    { x: 92, y: 37 }
+  ];
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [detours, setDetours] = useState(0);
+  const finishedRef = useRef(false);
+
+  function finish(nextIndex, nextDetours) {
+    if (finishedRef.current || nextIndex < checkpoints.length) return;
+    finishedRef.current = true;
+    const traceLabel = nextDetours <= 1 ? "clean" : nextDetours <= 4 ? "steady" : "exploratory";
+    onResult({
+      type: "precision_trace",
+      summary: `Your trace stayed ${traceLabel} across ${checkpoints.length} checkpoints in this personal game.`,
+      traceLabel,
+      detours: nextDetours
+    });
+  }
+
+  function chooseCheckpoint(index) {
+    if (finishedRef.current) return;
+    if (index === activeIndex) {
+      const nextIndex = activeIndex + 1;
+      setActiveIndex(nextIndex);
+      finish(nextIndex, detours);
+    } else {
+      setDetours((value) => value + 1);
+    }
+  }
+
+  return (
+    <>
+      <div className="game-status">Precision Trace: follow the line from marker to marker. Next marker: {Math.min(activeIndex + 1, checkpoints.length)} of {checkpoints.length}.</div>
+      <div className="game-board trace-board" tabIndex="0" aria-label={`${card.stateName} precision trace`}>
+        <svg className="trace-path" viewBox="0 0 100 100" aria-hidden="true" preserveAspectRatio="none">
+          <polyline points={checkpoints.map((point) => `${point.x},${point.y}`).join(" ")} />
+        </svg>
+        {checkpoints.map((point, index) => (
+          <button
+            key={`${point.x}-${point.y}`}
+            className={`trace-point ${index < activeIndex ? "is-complete" : ""} ${index === activeIndex ? "is-active" : ""}`}
+            type="button"
+            aria-label={`Trace checkpoint ${index + 1}`}
+            style={{ left: `${point.x}%`, top: `${point.y}%` }}
+            onPointerEnter={() => chooseCheckpoint(index)}
+            onClick={() => chooseCheckpoint(index)}
+          >
+            {index + 1}
+          </button>
+        ))}
+      </div>
+    </>
+  );
+}
+
+function FocusHold({ card, onResult }) {
+  const boardRef = useRef(null);
+  const markerRef = useRef({ x: 50, y: 50 });
+  const zoneRef = useRef({ x: 50, y: 50 });
+  const finishedRef = useRef(false);
+  const tickRef = useRef(0);
+  const stableTicksRef = useRef(0);
+  const [marker, setMarker] = useState(markerRef.current);
+  const [zone, setZone] = useState(zoneRef.current);
+  const [remaining, setRemaining] = useState(12);
+  const [stableTicks, setStableTicks] = useState(0);
+
+  function distance(a, b) {
+    return Math.hypot(a.x - b.x, a.y - b.y);
+  }
+
+  function updateMarker(nextMarker) {
+    const bounded = {
+      x: Math.max(4, Math.min(96, nextMarker.x)),
+      y: Math.max(4, Math.min(96, nextMarker.y))
+    };
+    markerRef.current = bounded;
+    setMarker(bounded);
+  }
+
+  function finish() {
+    if (finishedRef.current) return;
+    finishedRef.current = true;
+    const ratio = stableTicksRef.current / Math.max(tickRef.current, 1);
+    const holdLabel = ratio >= 0.7 ? "steady" : ratio >= 0.42 ? "developing" : "wandering";
+    onResult({
+      type: "focus_hold",
+      summary: `Your focus hold felt ${holdLabel} while the target zone moved in this personal game.`,
+      holdLabel
+    });
+  }
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      tickRef.current += 1;
+      const tick = tickRef.current;
+      const nextZone = {
+        x: 50 + Math.sin(tick / 4) * 27,
+        y: 50 + Math.cos(tick / 5) * 21
+      };
+      zoneRef.current = nextZone;
+      setZone(nextZone);
+      if (distance(markerRef.current, nextZone) <= 16) {
+        stableTicksRef.current += 1;
+        setStableTicks(stableTicksRef.current);
+      }
+      setRemaining(Math.max(0, 12 - Math.floor(tick / 4)));
+      if (tick >= 48) finish();
+    }, 250);
+    return () => clearInterval(timer);
+  }, []);
+
+  function handlePointerMove(event) {
+    const rect = boardRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    updateMarker({
+      x: ((event.clientX - rect.left) / rect.width) * 100,
+      y: ((event.clientY - rect.top) / rect.height) * 100
+    });
+  }
+
+  function handleKeyDown(event) {
+    const step = event.shiftKey ? 8 : 4;
+    const keyMoves = {
+      ArrowLeft: { x: -step, y: 0 },
+      ArrowRight: { x: step, y: 0 },
+      ArrowUp: { x: 0, y: -step },
+      ArrowDown: { x: 0, y: step }
+    };
+    const move = keyMoves[event.key];
+    if (!move) return;
+    event.preventDefault();
+    updateMarker({ x: markerRef.current.x + move.x, y: markerRef.current.y + move.y });
+  }
+
+  const isInside = distance(marker, zone) <= 16;
+
+  return (
+    <>
+      <div className="game-status">Focus Hold: {remaining} seconds left. Keep your marker inside the moving zone.</div>
+      <div
+        className="game-board focus-board"
+        tabIndex="0"
+        ref={boardRef}
+        aria-label={`${card.stateName} focus hold`}
+        onPointerMove={handlePointerMove}
+        onKeyDown={handleKeyDown}
+      >
+        <div className="focus-zone" style={{ left: `${zone.x}%`, top: `${zone.y}%` }} />
+        <div className={`focus-marker ${isInside ? "is-inside" : ""}`} style={{ left: `${marker.x}%`, top: `${marker.y}%` }} />
+        <div className="focus-readout">Stable moments: {stableTicks}</div>
+      </div>
+    </>
+  );
+}
+
+function PatternScout({ card, onResult }) {
+  const sequence = useMemo(() => {
+    const seed = card.stateCode.split("").reduce((sum, char) => sum + char.charCodeAt(0), 0);
+    return Array.from({ length: 6 }, (_, index) => (seed + index * 3 + index ** 2) % 4);
+  }, [card.stateCode]);
+  const labels = ["Coast", "Road", "Court", "Peak"];
+  const [previewing, setPreviewing] = useState(true);
+  const [highlight, setHighlight] = useState(null);
+  const [userIndex, setUserIndex] = useState(0);
+  const [misses, setMisses] = useState(0);
+  const finishedRef = useRef(false);
+
+  function finish(nextIndex, nextMisses) {
+    if (finishedRef.current || nextIndex < sequence.length) return;
+    finishedRef.current = true;
+    const patternLabel = nextMisses === 0 ? "cleanly" : nextMisses <= 2 ? "with a few resets" : "with extra scouting";
+    onResult({
+      type: "pattern_scout",
+      summary: `You repeated the state pattern ${patternLabel} in this personal game.`,
+      patternLabel,
+      misses: nextMisses
+    });
+  }
+
+  useEffect(() => {
+    let step = 0;
+    const timer = setInterval(() => {
+      if (step >= sequence.length) {
+        setHighlight(null);
+        setPreviewing(false);
+        clearInterval(timer);
+        return;
+      }
+      setHighlight(sequence[step]);
+      step += 1;
+    }, 620);
+    return () => clearInterval(timer);
+  }, [sequence]);
+
+  useEffect(() => {
+    function onKey(event) {
+      if (!/^[1-4]$/.test(event.key)) return;
+      event.preventDefault();
+      choosePattern(Number(event.key) - 1);
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  });
+
+  function choosePattern(index) {
+    if (previewing || finishedRef.current) return;
+    if (sequence[userIndex] === index) {
+      const nextIndex = userIndex + 1;
+      setUserIndex(nextIndex);
+      finish(nextIndex, misses);
+    } else {
+      setMisses((value) => value + 1);
+      setUserIndex(0);
+    }
+  }
+
+  return (
+    <>
+      <div className="game-status">{previewing ? "Pattern Scout: watch the route." : `Pattern Scout: repeat the route. Step ${userIndex + 1} of ${sequence.length}.`}</div>
+      <div className="game-board pattern-board" tabIndex="0" aria-label={`${card.stateName} pattern scout`}>
+        <div className="pattern-grid">
+          {labels.map((label, index) => (
+            <button
+              key={label}
+              className={`pattern-cell ${highlight === index ? "is-highlighted" : ""}`}
+              type="button"
+              onClick={() => choosePattern(index)}
+              aria-label={`${label} pattern tile ${index + 1}`}
+            >
+              <span>{index + 1}</span>
+              <strong>{label}</strong>
+            </button>
+          ))}
+        </div>
+        <p className="pattern-hint">Use buttons or keys 1-4.</p>
+      </div>
+    </>
+  );
+}
+
+function ChallengeGame({ challengeType, card, onResult }) {
+  if (challengeType === "cadence_keeper") return <CadenceKeeper card={card} onResult={onResult} />;
+  if (challengeType === "precision_trace") return <PrecisionTrace card={card} onResult={onResult} />;
+  if (challengeType === "focus_hold") return <FocusHold card={card} onResult={onResult} />;
+  if (challengeType === "pattern_scout") return <PatternScout card={card} onResult={onResult} />;
+  return <ReactionGrid card={card} onResult={onResult} />;
+}
+
 function ChallengeView({ card, briefing, onReturn, panelManifest }) {
   const [started, setStarted] = useState(false);
   const [result, setResult] = useState(null);
   const [reflection, setReflection] = useState(null);
+  const challengeType = card.sharedTrait.challengeType || "reaction_grid";
 
   const onResult = React.useCallback(async (nextResult) => {
     setResult(nextResult);
@@ -1941,7 +2198,7 @@ function ChallengeView({ card, briefing, onReturn, panelManifest }) {
       <div className="challenge-grid">
         <section className="challenge-copy">
           <CardArt card={card} compact panelManifest={panelManifest} />
-          <p className="state-pill">{card.stateName} - {card.sharedTrait.challengeType.replaceAll("_", " ")}</p>
+          <p className="state-pill">{card.stateName} - {challengeType.replaceAll("_", " ")}</p>
           <h3>{card.sharedTrait.name}</h3>
           <p>{briefing?.briefing?.gameIntro || `Try a short fan challenge inspired by ${card.sharedTrait.name.toLowerCase()}.`}</p>
           <p className="safe-note">Personal fan result only. This is for appreciation, not measurement or comparison.</p>
@@ -1949,8 +2206,7 @@ function ChallengeView({ card, briefing, onReturn, panelManifest }) {
         </section>
         <section className="game-surface">
           {!started && !result && <div className="game-status">Press start when you are ready.</div>}
-          {started && card.sharedTrait.challengeType === "cadence_keeper" && <CadenceKeeper card={card} onResult={onResult} />}
-          {started && card.sharedTrait.challengeType !== "cadence_keeper" && <ReactionGrid card={card} onResult={onResult} />}
+          {started && <ChallengeGame challengeType={challengeType} card={card} onResult={onResult} />}
           {result && (
             <div className="game-result">
               <p><strong>Personal result:</strong> {result.summary}</p>

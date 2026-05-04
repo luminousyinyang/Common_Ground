@@ -101,6 +101,12 @@ const TRAITS = [
   }
 ];
 
+const CHALLENGE_TYPE_STATE_OVERRIDES = {
+  Hawaii: "pattern_scout",
+  Kansas: "precision_trace",
+  Montana: "focus_hold"
+};
+
 const SPORT_CANDIDATE_LIMIT = 8;
 
 const args = parseArgs(process.argv.slice(2));
@@ -477,7 +483,10 @@ function buildCardStory({ stateName, geographySnapshot, climateSignal, terrainSi
   const pair = chooseFeaturedPair(olympicPanel.sportTagCandidates, paralympicPanel.sportTagCandidates, geographyTags);
   const olympicFeatured = serializeFeaturedCandidate(pair.olympic, "olympic");
   const paralympicFeatured = serializeFeaturedCandidate(pair.paralympic, "paralympic");
-  const sharedTrait = chooseSharedTraitForFeatured(olympicFeatured, paralympicFeatured, olympicPanel, paralympicPanel);
+  const sharedTrait = withChallengeTypeOverride(
+    stateName,
+    chooseSharedTraitForFeatured(olympicFeatured, paralympicFeatured, olympicPanel, paralympicPanel)
+  );
   const themeName = cardThemeName({ stateName, geographyTags, olympicFeatured, paralympicFeatured, sharedTrait });
 
   return {
@@ -649,11 +658,23 @@ function geographySignalLabels(geographySnapshot) {
 }
 
 function fanChallengeName(themeName, sharedTrait) {
+  if (sharedTrait?.challengeType === "precision_trace") return "Precision Trace Challenge";
+  if (sharedTrait?.challengeType === "focus_hold") return "Focus Hold Challenge";
+  if (sharedTrait?.challengeType === "pattern_scout") return "Pattern Scout Challenge";
   if (/coastal|water/i.test(themeName)) return "Waterline Timing Challenge";
   if (/elevation|cold|pace/i.test(themeName)) return "Pace Control Challenge";
   if (/focus/i.test(themeName)) return "Focus Timing Challenge";
   if (/city|spatial/i.test(themeName) || /spatial/i.test(sharedTrait?.name || "")) return "Spatial Timing Challenge";
   return `${sharedTrait?.name || "State Sync"} Challenge`;
+}
+
+function withChallengeTypeOverride(stateName, sharedTrait) {
+  const challengeType = CHALLENGE_TYPE_STATE_OVERRIDES[stateName];
+  if (!challengeType) return sharedTrait;
+  return {
+    ...sharedTrait,
+    challengeType
+  };
 }
 
 function titleCase(value) {
