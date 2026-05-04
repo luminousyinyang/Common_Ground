@@ -138,7 +138,7 @@ const CARD_THEME_LABELS = {
 };
 
 const EMPTY_CARD_PANEL_MANIFEST = { states: {} };
-const CURRENT_CARD_BACK_COPY_VERSION = "common-ground-card-back-v13-teach-sport-no-watch-for";
+const CURRENT_CARD_BACK_COPY_VERSION = "common-ground-card-back-v14-basic-rules";
 
 const SIGNAL_LABELS = {
   high: "High",
@@ -159,8 +159,10 @@ async function getJson(url, options) {
 }
 
 function fallbackBriefing(card, reason = "The Gemini backend is not available from this dev server.") {
-  const olympicMix = joinReadableList((card.olympicPanel.topSportTags || []).map(displaySportName));
-  const paralympicMix = joinReadableList((card.paralympicPanel.topSportTags || []).map(displaySportName));
+  const olympicTags = (card.olympicPanel.topSportTags || []).map(displaySportName);
+  const paralympicTags = (card.paralympicPanel.topSportTags || []).map(displaySportName);
+  const olympicMix = joinReadableList(olympicTags);
+  const paralympicMix = joinReadableList(paralympicTags);
   const olympicCue = getPanelVisualCue(card.olympicPanel);
   const paralympicCue = getPanelVisualCue(card.paralympicPanel);
   const geography = getGeographySignals(card).length ? joinReadableList(getGeographySignals(card)) : card.geographySnapshot;
@@ -168,18 +170,25 @@ function fallbackBriefing(card, reason = "The Gemini backend is not available fr
     source: "react-fallback",
     model: "safe-fallback",
     briefing: {
-      stateScene: `${card.stateName} reads as a layered state sport story: ${geography}. Public Team USA and geography data may suggest several fan-discovery paths without implying geography determines outcomes.`,
-      sportMix: {
-        olympic: olympicMix ? `Olympic side: ${olympicMix}.` : `Olympic side: ${card.olympicPanel.sportFamily}.`,
-        paralympic: paralympicMix ? `Paralympic side: ${paralympicMix}.` : `Paralympic side: ${card.paralympicPanel.sportFamily}.`
-      },
-      whyInteresting: "The state-wide hook is contrast: fans can compare different settings, surfaces, and movement rhythms inside one shared state card.",
+      stateSnapshot: `In the public aggregate Team USA state data, ${card.stateName} shows ${olympicMix || card.olympicPanel.sportFamily} on the Olympic side and ${paralympicMix || card.paralympicPanel.sportFamily} on the Paralympic side. That does not mean geography causes outcomes; it gives fans a safer way to explore why different sport environments appear in one state view.`,
+      sportMix: [
+        {
+          theme: "Olympic-side mix",
+          detail: olympicMix ? `${olympicMix} appear in the Olympic side of this aggregate state view.` : `${card.olympicPanel.sportFamily} appears as the Olympic-side sport-family view.`
+        },
+        {
+          theme: "Paralympic-side mix",
+          detail: paralympicMix ? `${paralympicMix} appear in the Paralympic side of this aggregate state view.` : `${card.paralympicPanel.sportFamily} appears as the Paralympic-side sport-family view.`
+        },
+        {
+          theme: "Movement themes",
+          detail: "Across the combined state view, fans can look for rhythm, spacing, pacing, precision, equipment control, and surface changes."
+        }
+      ],
       geographyLens: `${card.geographySnapshot} could help fans understand why varied sport environments appear in this aggregate state view.`,
-      fanHook: "Start with the featured pairing, then scan the broader mix for sports that look unrelated but share rhythm, spacing, pacing, precision, or equipment-control ideas.",
-      surprisingConnection: `${olympicCue} and ${paralympicCue} look different, but both can point fans toward ${card.sharedTrait.name.toLowerCase()} as a shared viewing idea.`,
-      sharedSignal: `${card.sharedTrait.name}: ${card.sharedTrait.description}`,
-      exploreNext: "Try the State Sync Challenge as a fan-game interaction only; it is not a performance measurement or comparison.",
-      dataSafetyNote: "Aggregate state view only. No individual names, likenesses, finish times, scoring results, rankings, medals, or performance predictions.",
+      whatToNotice: "The useful fan read is contrast: some sports emphasize spacing and quick decisions, while others emphasize rhythm, stillness, pacing, equipment, or transitions.",
+      surprisingConnection: `${olympicCue} and ${paralympicCue} do not need to look alike to share a viewing idea; both can point fans toward control when timing, surface, or spacing changes.`,
+      sharedStateSignal: `${card.sharedTrait.name}: ${card.sharedTrait.description}`,
       gameIntro: `Try a short fan challenge that reflects ${card.sharedTrait.name.toLowerCase()} as a personal interaction only.`,
       complianceWarnings: [reason]
     },
@@ -361,7 +370,7 @@ function fanTakeawayForSport(visualCue, panel, sharedTraitName = "") {
 
 function subtitleForSport(visualCue, panel) {
   const sport = String(visualCue || "").toLowerCase();
-  if (/water polo/.test(sport)) return "Aquatic team sport · 7 in water · possession pressure";
+  if (/water polo/.test(sport)) return "Aquatic team sport · goals in net · possession pressure";
   if (/triathlon/.test(sport)) return "Swim · bike · run · transition control";
   if (/swimming/.test(sport)) return "Water rhythm · lane tempo · repeatable control";
   if (/track/.test(sport)) return "Pace changes · clean starts · sustained control";
@@ -372,7 +381,7 @@ function subtitleForSport(visualCue, panel) {
 
 function factChipsForSport(visualCue, panel) {
   const sport = String(visualCue || "").toLowerCase();
-  if (/water polo/.test(sport)) return ["7 in water", "4 quarters", "Possession pressure", "One-hand control"];
+  if (/water polo/.test(sport)) return ["7 per team: 6 field + goalkeeper", "4 quarters", "Possession pressure", "One-hand control"];
   if (/triathlon/.test(sport)) return ["Swim segment", "Bike segment", "Run segment", "Transition control"];
   if (/swimming/.test(sport)) return ["Water rhythm", "Lane tempo", "Body position", "Repeat control"];
   if (/track/.test(sport)) return ["Pace shifts", "Start timing", "Lane awareness", "Sustained rhythm"];
@@ -400,16 +409,16 @@ function qaFactsForSport(visualCue, panel) {
   const stateConnection = readableGeographyLens(panel, visualCue);
   if (/water polo/.test(sport)) {
     return {
-      howItWorks: "Water polo is played by two teams of seven in the water, including a goalkeeper. Each attack has to form quickly while everyone is swimming or treading water.",
-      watchValue: "The ball moves fast, but the sharper read often happens before the pass, as players shift and fake to open a lane.",
+      howItWorks: "Two teams of seven play in the water: six field players plus one goalkeeper. The goal is to throw the ball into the opponent's net, so each attack has to create space, pass, and shoot before the chance disappears.",
+      watchValue: "Water polo gets easier to read when you watch the spacing before the shot. The drama is that every pass, fake, and goal attempt happens while players are swimming or treading water.",
       stateConnection,
       cardTrait: "Water polo connects to the shared trait through spacing, body position, and quick rhythm changes in a pool where no one has stable footing."
     };
   }
   if (/triathlon/.test(sport)) {
     return {
-      howItWorks: "Para triathlon combines a swim, bike segment, run, and transition strategy across changing surfaces and equipment needs.",
-      watchValue: "The transitions carry their own drama because every shift from water to bike to run changes the pacing problem.",
+      howItWorks: "Para triathlon is a race across swim, bike, and run stages. The competitor with the fastest total race time in their event wins, and transition time between stages matters too.",
+      watchValue: "The race keeps changing shape as water gives way to equipment setup, bike rhythm, and another reset for the run.",
       stateConnection,
       cardTrait: "Para triathlon connects to the shared trait through pacing and adaptation across changing surfaces."
     };
@@ -1677,28 +1686,35 @@ function CardModal({
 }
 
 function briefingSections(briefing = {}) {
+  if (briefing.stateSnapshot || briefing.whatToNotice || briefing.sharedStateSignal) {
+    return [
+      ["State Snapshot", briefing.stateSnapshot],
+      ["Sport Mix", briefing.sportMix],
+      ["Geography Lens", briefing.geographyLens],
+      ["What To Notice", briefing.whatToNotice],
+      ["Surprising Connection", briefing.surprisingConnection],
+      ["Shared State Signal", briefing.sharedStateSignal]
+    ].filter(([, value]) => Array.isArray(value) ? value.length : String(value || "").trim());
+  }
+
   if (briefing.stateScene || briefing.sportMix || briefing.whyInteresting) {
     return [
-      ["State Scene", briefing.stateScene],
+      ["State Snapshot", briefing.stateScene],
       ["Sport Mix", [briefing.sportMix?.olympic, briefing.sportMix?.paralympic].filter(Boolean)],
-      ["Why It's Interesting", briefing.whyInteresting],
       ["Geography Lens", briefing.geographyLens],
-      ["Fan Hook", briefing.fanHook],
+      ["What To Notice", briefing.whyInteresting],
       ["Surprising Connection", briefing.surprisingConnection],
-      ["Shared Signal", briefing.sharedSignal],
-      ["Explore Next", briefing.exploreNext],
-      ["Data Safety Note", briefing.dataSafetyNote]
+      ["Shared State Signal", briefing.sharedSignal]
     ].filter(([, value]) => Array.isArray(value) ? value.length : String(value || "").trim());
   }
 
   return [
-    ["State Scene", briefing.summary],
+    ["State Snapshot", briefing.summary],
     ["Sport Mix", [
       briefing.olympicNarrative ? `Olympic side: ${briefing.olympicNarrative}` : "",
       briefing.paralympicNarrative ? `Paralympic side: ${briefing.paralympicNarrative}` : ""
     ].filter(Boolean)],
-    ["Shared Signal", briefing.sharedTraitExplanation],
-    ["Explore Next", briefing.gameIntro]
+    ["Shared State Signal", briefing.sharedTraitExplanation]
   ].filter(([, value]) => Array.isArray(value) ? value.length : String(value || "").trim());
 }
 
@@ -1728,7 +1744,11 @@ function BriefingPanel({ payload, loading, onRefresh, compact = false }) {
             <span>{label}</span>
             {Array.isArray(value) ? (
               <div className="briefing-list">
-                {value.map((item) => <p key={item}>{item}</p>)}
+                {value.map((item) => (
+                  typeof item === "object" && item !== null
+                    ? <p key={`${item.theme}-${item.detail}`}><strong>{item.theme}:</strong> {item.detail}</p>
+                    : <p key={item}>{item}</p>
+                ))}
               </div>
             ) : (
               <p>{value}</p>

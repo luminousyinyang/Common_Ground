@@ -105,26 +105,35 @@ function displaySportName(value) {
 }
 
 function safeFallbackBriefing(card, reason = "No live Gemini response was available.") {
-  const olympicMix = joinReadableList((card.olympicPanel.topSportTags || []).map(displaySportName));
-  const paralympicMix = joinReadableList((card.paralympicPanel.topSportTags || []).map(displaySportName));
+  const olympicTags = (card.olympicPanel.topSportTags || []).map(displaySportName);
+  const paralympicTags = (card.paralympicPanel.topSportTags || []).map(displaySportName);
+  const olympicMix = joinReadableList(olympicTags);
+  const paralympicMix = joinReadableList(paralympicTags);
   const olympicCue = displaySportName(card.olympicPanel.primarySportTag || card.olympicPanel.topSportTags?.[0] || card.olympicPanel.sportFamily);
   const paralympicCue = displaySportName(card.paralympicPanel.primarySportTag || card.paralympicPanel.topSportTags?.[0] || card.paralympicPanel.sportFamily);
   const geography = card.cardStory?.geographySignal?.length
     ? joinReadableList(card.cardStory.geographySignal)
     : card.geographySnapshot;
   return {
-    stateScene: `${card.stateName} reads as a layered state sport story: ${geography}. Public Team USA and geography data may suggest several fan-discovery paths without implying geography determines outcomes.`,
-    sportMix: {
-      olympic: olympicMix ? `Olympic side: ${olympicMix}.` : `Olympic side: ${card.olympicPanel.sportFamily}.`,
-      paralympic: paralympicMix ? `Paralympic side: ${paralympicMix}.` : `Paralympic side: ${card.paralympicPanel.sportFamily}.`
-    },
-    whyInteresting: `The state-wide hook is contrast: fans can compare different settings, surfaces, and movement rhythms inside one shared state card.`,
+    stateSnapshot: `In the public aggregate Team USA state data, ${card.stateName} shows a sport mix shaped by ${olympicMix || card.olympicPanel.sportFamily} on the Olympic side and ${paralympicMix || card.paralympicPanel.sportFamily} on the Paralympic side. That does not mean ${card.stateName} geography causes outcomes; it gives fans a safer way to explore why different sport environments appear in one state view.`,
+    sportMix: [
+      {
+        theme: "Olympic-side mix",
+        detail: olympicMix ? `${olympicMix} appear in the Olympic side of this aggregate state view.` : `${card.olympicPanel.sportFamily} appears as the Olympic-side sport-family view.`
+      },
+      {
+        theme: "Paralympic-side mix",
+        detail: paralympicMix ? `${paralympicMix} appear in the Paralympic side of this aggregate state view.` : `${card.paralympicPanel.sportFamily} appears as the Paralympic-side sport-family view.`
+      },
+      {
+        theme: "Movement themes",
+        detail: `Across the combined state view, fans can look for rhythm, spacing, pacing, precision, equipment control, and surface changes.`
+      }
+    ],
     geographyLens: `${card.geographySnapshot} could help fans understand why varied sport environments appear in this aggregate state view.`,
-    fanHook: `Start with the featured pairing, then scan the broader mix for sports that look unrelated but share rhythm, spacing, pacing, precision, or equipment-control ideas.`,
-    surprisingConnection: `${olympicCue} and ${paralympicCue} look different, but both can point fans toward ${card.sharedTrait.name.toLowerCase()} as a shared viewing idea.`,
-    sharedSignal: `${card.sharedTrait.name}: ${card.sharedTrait.description}`,
-    exploreNext: `Try the State Sync Challenge as a fan-game interaction only; it is not a performance measurement or comparison.`,
-    dataSafetyNote: "Aggregate state view only. No individual names, likenesses, finish times, scoring results, rankings, medals, or performance predictions.",
+    whatToNotice: `The useful fan read is contrast: some sports emphasize spacing and quick decisions, while others emphasize rhythm, stillness, pacing, equipment, or transitions.`,
+    surprisingConnection: `${olympicCue} and ${paralympicCue} do not need to look alike to share a viewing idea; both can point fans toward control when timing, surface, or spacing changes.`,
+    sharedStateSignal: `${card.sharedTrait.name}: ${card.sharedTrait.description}`,
     gameIntro: `Try a short fan challenge that reflects ${card.sharedTrait.name.toLowerCase()} as a personal game interaction only.`,
     complianceWarnings: [reason, "Fallback copy used because live Gemini generation is unavailable or did not pass validation."]
   };
@@ -139,7 +148,7 @@ function safeFallbackGameReflection(card, result, reason = "No live Gemini respo
   };
 }
 
-function complianceCheckBriefing(briefing) {
+function complianceCheckBriefing(briefing, card) {
   const warnings = [];
   const text = collectStrings(briefing).join(" ");
 
@@ -188,7 +197,7 @@ function complianceCheckBriefing(briefing) {
     if (pattern.test(text)) warnings.push(`Unsafe phrase pattern: ${pattern}`);
   }
 
-  const requiredFields = ["stateScene", "sportMix", "whyInteresting", "geographyLens", "fanHook", "surprisingConnection", "sharedSignal", "exploreNext", "dataSafetyNote", "gameIntro"];
+  const requiredFields = ["stateSnapshot", "sportMix", "geographyLens", "whatToNotice", "surprisingConnection", "sharedStateSignal", "gameIntro"];
   for (const field of requiredFields) {
     if (typeof briefing[field] === "object") {
       if (!briefing[field] || !Object.keys(briefing[field]).length) warnings.push(`Missing briefing field: ${field}`);
@@ -197,17 +206,42 @@ function complianceCheckBriefing(briefing) {
     }
   }
 
-  const olympicWords = String(briefing.sportMix?.olympic || briefing.olympicNarrative || "").trim().split(/\s+/).filter(Boolean).length;
-  const paralympicWords = String(briefing.sportMix?.paralympic || briefing.paralympicNarrative || "").trim().split(/\s+/).filter(Boolean).length;
-  if (!olympicWords || !paralympicWords) {
-    warnings.push("Both Olympic and Paralympic sport mix sections are required.");
-  } else if (Math.max(olympicWords, paralympicWords) > 0) {
-    const smaller = Math.min(olympicWords, paralympicWords);
-    const larger = Math.max(olympicWords, paralympicWords);
-    if (smaller / larger < 0.55) warnings.push("Panel narratives are not similar enough in length.");
+  const sportMixText = collectStrings(briefing.sportMix || []).join(" ");
+  const hasOlympicContext = /Olympic/i.test(sportMixText)
+    || textIncludesAnySport(sportMixText, sportNamesForProgram(card, "olympic"));
+  const hasParalympicContext = /Paralympic/i.test(sportMixText)
+    || textIncludesAnySport(sportMixText, sportNamesForProgram(card, "paralympic"));
+  if (!hasOlympicContext || !hasParalympicContext) {
+    warnings.push("Sport Mix must include both Olympic and Paralympic context.");
   }
 
   return warnings;
+}
+
+function normalizeMatchText(value) {
+  return displaySportName(value)
+    .toLowerCase()
+    .replace(/&/g, " and ")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+function textIncludesAnySport(text, sportNames) {
+  const normalizedText = normalizeMatchText(text);
+  return sportNames.some((sportName) => {
+    const normalizedSport = normalizeMatchText(sportName);
+    return normalizedSport.length > 2 && normalizedText.includes(normalizedSport);
+  });
+}
+
+function sportNamesForProgram(card, program) {
+  const panel = program === "paralympic" ? card?.paralympicPanel : card?.olympicPanel;
+  return [
+    panel?.primarySportTag,
+    ...(panel?.topSportTags || []),
+    ...(panel?.sportTagCandidates || []).map((candidate) => candidate?.sportTag),
+    panel?.cardBackCopy?.sportName
+  ].filter(Boolean);
 }
 
 function collectStrings(value) {
@@ -239,36 +273,36 @@ Do not imply geography causes success.
 Do not claim that terrain, climate, or training access guarantees outcomes.
 Use conditional language: "may suggest", "could help fans understand", "appears associated with", "could show how".
 Write like a sports explainer for curious fans, not like a data policy disclaimer.
-The featured card panels already deep-dive on two selected sports. The Gemini State Briefing is the wider state story layer: the state scene, broader sport mix, geography and climate context, fan hooks, surprising connections, shared signal, and what to explore next.
+The featured card panels already deep-dive on two selected sports. The Gemini State Briefing is the wider state story layer: state snapshot, broader sport mix grouped by theme, geography lens, what to notice, a surprising connection, and one shared card thread.
 Use all provided topSportTags for Olympic and Paralympic programs as the broader sport mix, but do not use the phrase "sport tags" in the output.
 Give Olympic and Paralympic sport mixes equal depth, equal respect, and equal analytical specificity.
 If olympicPanel.cardBackCopy or paralympicPanel.cardBackCopy are present, use that Gemini card-back copy as supporting context, but do not simply repeat it.
 Do not expose internal implementation terms such as "row", "pipeline", "fallback", "template", "card image cue", "featured cue", "card lens", "sport tag", "sport tags", "raw data", "signal", "participation signal", "aggregate presence", or "athletic landscape".
+Do not use these weak or internal-sounding words and phrases: "backdrop", "frame", "framing", "could help fans discover", "state signal", "high signal", "medium signal", "low signal".
 Avoid overstatement words such as "strong", "dominant", "best", or "proves".
 Do not use athlete names, finish times, scores, rankings, medals, or claims that geography causes success.
 Do not write bland compliance paragraphs. Use concrete sport context, readable observations, and a few fun fan hooks.
 Output concise, scannable, fan-facing copy. Add new insight about the whole state; do not restate the sport-panel copy.
+Do not imply these sports are all trained in the state or caused by state geography. Use phrases such as "appears in the public aggregate state data", "state view", "could help fans explore", and "may suggest a fan-discovery lens."
 
 Return valid JSON with these fields:
-- stateScene: 1-2 sentences setting up the statewide sport scene.
-- sportMix: object with:
-  - olympic: 1 sentence naming the broader Olympic side sports and what kind of viewing profile they create.
-  - paralympic: 1 sentence naming the broader Paralympic side sports and what kind of viewing profile they create.
-- whyInteresting: 1-2 sentences about the state's most interesting fan story.
+- stateSnapshot: 2-3 sentences starting with "In the public aggregate Team USA state data..." or similar safe wording. It should explain the broad state view without implying geography causes outcomes.
+- sportMix: array of 3-5 objects. Each object has:
+  - theme: a short label such as "Aquatic and transition", "Road and endurance", "Precision and control", "Urban and balance", "Team spacing".
+  - detail: 1 sentence grouping multiple sports by theme. Use sports from both Olympic and Paralympic lists when possible.
 - geographyLens: 1-2 sentences connecting geography/climate/terrain to fan context with conditional language.
-- fanHook: 1 sentence telling fans what to look for across the wider mix.
-- surprisingConnection: 1 sentence connecting sports that seem unrelated through a shared hidden skill or viewing idea.
-- sharedSignal: 1 sentence naming and explaining the shared signal without implying performance outcomes.
-- exploreNext: 1 sentence connecting to the State Sync Challenge as a fan-game interaction only.
-- dataSafetyNote: 1 sentence noting aggregate state view and excluded unsafe content.
+- whatToNotice: 2-3 sentences with concrete fan viewing observations across the broader sport mix.
+- surprisingConnection: 1-2 sentences. Choose one surprising connection across the broader state sport mix. Prefer one Olympic-side sport and one Paralympic-side sport, but do not force the featured card pair if another connection is more interesting.
+- sharedStateSignal: 1 sentence naming and explaining the shared card thread without using the phrase "state signal" or implying performance outcomes.
 - gameIntro: 1 sentence safe challenge intro for the challenge screen.
 - complianceWarnings
 
 Style target:
-State Scene should feel like "California looks like a layered sport map..." but with the actual state.
-Sport Mix should be concrete and name sports from the provided lists.
-Why It's Interesting and Fan Hook should answer "why would a fan care?"
+State Snapshot should feel like "In the public aggregate state data, California shows..." and should not sound guaranteed.
+Sport Mix should be concrete, grouped by theme, and name more sports than the two featured sports when available.
+What To Notice should answer "what did I actually learn?"
 Geography Lens should use conditional language such as "could help fans understand" or "may suggest".
+Surprising Connection should be dynamic, not always the two featured sports.
 Do not use the same sentence structure for every state.
 
 State data:
@@ -297,6 +331,46 @@ ${JSON.stringify({
   },
   sourceLabels: (card.sourceRefs || []).map((source) => source.label)
 }, null, 2)}`;
+}
+
+function buildBriefingRepairPrompt(card, briefing, validationWarnings) {
+  return `Rewrite this Gemini State Briefing JSON so it passes the local compliance validator.
+
+Keep the same JSON schema and the same state/sport meaning.
+Use only the provided aggregate state data and the rejected briefing as context.
+Do not mention individual athlete names, athlete likeness, finish times, scores, rankings, medals, exact counts, or performance predictions.
+Do not imply geography causes athletic outcomes.
+Use conditional wording such as "may suggest", "could help fans understand", "appears in the state view", and "could show how".
+Remove every word or phrase flagged by the validator. In particular, do not use any form of "guarantee", "frame", "framing", "backdrop", "signal", "row", "roster data", "athletic landscape", "dominant", "best", or "strong".
+Use "does not imply performance outcomes" instead of any sentence containing the word "guarantee".
+Use "could help fans understand" or "could show how" instead of "frame", "framing", or "backdrop".
+For complianceWarnings, return an empty array unless there is a real unresolved issue.
+
+Return valid JSON with these exact fields:
+- stateSnapshot
+- sportMix: array of 3-5 objects with theme and detail
+- geographyLens
+- whatToNotice
+- surprisingConnection
+- sharedStateSignal
+- gameIntro
+- complianceWarnings
+
+Validation warnings to fix:
+${JSON.stringify(validationWarnings, null, 2)}
+
+State context:
+${JSON.stringify({
+  stateCode: card.stateCode,
+  stateName: card.stateName,
+  geographySnapshot: card.geographySnapshot,
+  olympicSports: (card.olympicPanel?.topSportTags || []).map(displaySportName),
+  paralympicSports: (card.paralympicPanel?.topSportTags || []).map(displaySportName),
+  sharedTrait: card.sharedTrait
+}, null, 2)}
+
+Rejected briefing:
+${JSON.stringify(briefing, null, 2)}`;
 }
 
 function buildGamePrompt(card, result) {
@@ -373,15 +447,37 @@ async function getVertexAccessToken() {
     // Not running on Cloud Run/Compute metadata. Try local gcloud below.
   }
 
-  try {
-    const { stdout } = await execFileAsync("gcloud", ["auth", "print-access-token"], { timeout: 15000 });
-    const token = stdout.trim();
-    if (token) return token;
-  } catch {
-    // Fall through to the explicit setup error below.
-  }
+  const token = await getGcloudAccessToken();
+  if (token) return token;
 
   throw new Error("No Vertex AI auth token is available. On Cloud Run, attach a service account with roles/aiplatform.user. Locally, run `gcloud auth login` or set VERTEX_ACCESS_TOKEN.");
+}
+
+async function getGcloudAccessToken() {
+  const attempts = [
+    { command: "gcloud", args: ["auth", "print-access-token"] },
+    { command: "/opt/homebrew/bin/gcloud", args: ["auth", "print-access-token"] },
+    { command: "/usr/local/bin/gcloud", args: ["auth", "print-access-token"] },
+    {
+      command: "/bin/zsh",
+      args: [
+        "-lc",
+        "source \"$(brew --prefix 2>/dev/null)/share/google-cloud-sdk/path.zsh.inc\" 2>/dev/null || true; export CLOUDSDK_PYTHON=${CLOUDSDK_PYTHON:-/usr/bin/python3}; gcloud auth print-access-token"
+      ]
+    }
+  ];
+
+  for (const attempt of attempts) {
+    try {
+      const { stdout } = await execFileAsync(attempt.command, attempt.args, { timeout: 15000 });
+      const token = stdout.trim();
+      if (token) return token;
+    } catch {
+      // Try the next local auth strategy.
+    }
+  }
+
+  return null;
 }
 
 async function callVertexGemini(prompt) {
@@ -445,13 +541,32 @@ async function handleApi(req, res, url) {
       }
 
       const briefing = JSON.parse(normalizeJsonText(gemini.text));
-      const warnings = complianceCheckBriefing(briefing).concat(briefing.complianceWarnings || []);
-      if (warnings.length > 0) {
+      const validationWarnings = complianceCheckBriefing(briefing, card);
+      if (validationWarnings.length > 0) {
+        try {
+          const repairedGemini = await callGemini(buildBriefingRepairPrompt(card, briefing, validationWarnings));
+          if (repairedGemini) {
+            const repairedBriefing = JSON.parse(normalizeJsonText(repairedGemini.text));
+            const repairedWarnings = complianceCheckBriefing(repairedBriefing, card);
+            if (repairedWarnings.length === 0) {
+              sendJson(res, 200, {
+                source: "gemini-rewrite",
+                model: repairedGemini.model,
+                briefing: repairedBriefing,
+                complianceWarnings: repairedBriefing.complianceWarnings || []
+              });
+              return true;
+            }
+          }
+        } catch {
+          // Fall back below with the original local validation warnings.
+        }
+
         sendJson(res, 200, {
           source: "fallback-after-validation",
           model: gemini.model,
           briefing: safeFallbackBriefing(card, "Gemini output was replaced after local compliance validation."),
-          complianceWarnings: warnings
+          complianceWarnings: validationWarnings
         });
         return true;
       }
@@ -460,7 +575,7 @@ async function handleApi(req, res, url) {
         source: "gemini",
         model: gemini.model,
         briefing,
-        complianceWarnings: []
+        complianceWarnings: briefing.complianceWarnings || []
       });
     } catch (error) {
       sendJson(res, 200, {

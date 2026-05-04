@@ -27,7 +27,7 @@ const imageRetryDelayMs = positiveInteger(process.env.CARD_IMAGE_RETRY_DELAY_MS,
 const imageRequestTimeoutMs = positiveInteger(process.env.CARD_IMAGE_REQUEST_TIMEOUT_MS, 900000);
 const textRequestTimeoutMs = positiveInteger(process.env.CARD_COPY_REQUEST_TIMEOUT_MS, 120000);
 const PROMPT_VERSION = "common-ground-card-panel-v3-top-sport-cue";
-const CARD_BACK_COPY_VERSION = "common-ground-card-back-v13-teach-sport-no-watch-for";
+const CARD_BACK_COPY_VERSION = "common-ground-card-back-v14-basic-rules";
 
 let firebaseClientsPromise;
 
@@ -383,7 +383,8 @@ function sourceBackedSportFacts(featuredSport) {
       sourceLabels: ["LA28 Water Polo"],
       sourceUrls: ["https://la28.org/en/games-plan/olympics/water-polo.html"],
       facts: [
-        "Water polo is played by two teams of seven in the water, including a goalkeeper.",
+        "Water polo is played by two teams of seven in the water: six field players plus one goalkeeper.",
+        "The goal is to throw the ball into the opponent's net; the team with more goals wins.",
         "LA28 describes water polo matches as four 8-minute quarters.",
         "LA28 describes 28-second possessions.",
         "LA28 notes players may only touch the ball with one hand, except the goalkeeper."
@@ -392,12 +393,14 @@ function sourceBackedSportFacts(featuredSport) {
   }
   if (/para\s*triathlon|paratriathlon/.test(sport)) {
     return {
-      sourceLabels: ["Paralympic.org Para triathlon"],
-      sourceUrls: ["https://www.paralympic.org/triathlon/about"],
+      sourceLabels: ["Paralympic.org Para triathlon", "LA28 Para Triathlon"],
+      sourceUrls: ["https://www.paralympic.org/triathlon/about", "https://la28.org/en/games-plan/paralympics/para-triathlon.html"],
       facts: [
         "Para triathlon includes a 750m swim, 20km bike segment, and 5km run.",
+        "The competitor with the fastest total race time in their event wins.",
+        "Transition time between stages is part of the race.",
         "Para triathlon includes transition control across swim, bike, and run segments.",
-        "Depending on event context, equipment may include a handcycle, tandem bicycle, bicycle, racing wheelchair, or guide support."
+        "Depending on classification or event context, equipment may include a handcycle, tandem bicycle, bicycle, racing wheelchair, or guide support."
       ]
     };
   }
@@ -588,8 +591,8 @@ function buildCardBackCopyPrompt(card, program) {
   return `You are Gemini writing the back of one collectible Common Ground state card panel.
 
 Use only the provided aggregate public Team USA and geography data.
-Do not mention individual athlete names, athlete profiles, photos, biographies, specific team names, rankings, medals, finish times, scoring results, or exact counts.
-Do not use the word "athlete" or "athletes" in final copy; write about the featured sport, movement, equipment, setting, rhythm, spacing, or fan discovery instead.
+Do not mention individual athlete names, athlete profiles, photos, biographies, specific team names, rankings, medals, actual finish times, actual scores, scoring results, or exact roster counts.
+Sport education is allowed: you may explain how scoring works, how winning works, rule clocks, field-of-play numbers, event distances, and whether the fastest total race time wins.
 Do not say geography causes, creates, produces, predicts, or guarantees athletic results.
 Use conditional fan-discovery language such as "may suggest", "could help fans understand", "appears associated with", or "could show how".
 Keep the copy useful for a sports fan, not a data engineer.
@@ -610,6 +613,14 @@ Do not use a fixed skeleton like "Sport looks chaotic, but actually..." + "For a
 Do not force every sport panel to mention the state in the same sentence pattern. Sometimes the state connection can sit in the middle. Sometimes the watch hook can lead. Sometimes a hidden skill can lead.
 Start by teaching the user what they are watching. Then explain why it is fun, how the state context may connect, and how the card trait works.
 Use concrete sport facts only when they are present in sourceBackedSportFacts or safely general from the provided sport-family data.
+
+HOW IT WORKS must assume the user has never watched the sport before. It must explain:
+1. the basic objective,
+2. how scoring or winning works,
+3. the core format,
+4. one beginner-friendly rule or mechanic.
+
+WHY IT'S FUN TO WATCH must sound like a fan viewing guide, not a trait analysis. It should tell the user what makes the sport exciting to watch.
 
 Allowed content modules:
 - Watch Hook: what a fan should notice while watching
@@ -633,7 +644,7 @@ Return valid JSON only with these fields:
   - watchValue: answer "Why it's fun to watch" with a concrete fan-facing hook.
   - stateConnection: answer "State connection" with conditional geography/weather/context language.
   - cardTrait: answer "Card trait" by tying this featured sport to the sharedTrait and mini-game idea.
-- factChips: array of 3-4 tiny "Quick facts" chip labels. Each chip must be 2-5 words. Use source-backed sport facts, viewing cues, equipment/terrain/context cues, or event-type context. Do not include exact counts from the roster dataset.
+- factChips: array of 3-4 tiny "Quick facts" chip labels. Each chip must be 2-8 words. Use source-backed sport facts, viewing cues, equipment/terrain/context cues, or event-type context. Do not include exact counts from the roster dataset.
 - complianceWarnings: array of strings, empty if safe.
 
 Style references only. Do not copy them verbatim and do not force every state into waterline language:
@@ -641,14 +652,14 @@ Example Olympic panel style:
 {
   "featuredCue": "Water Polo",
   "moduleMix": ["Rules Snapshot", "Hidden Skill", "Watch Hook"],
-  "subtitle": "Aquatic team sport · 7 in water · possession pressure",
+  "subtitle": "Aquatic team sport · goals in net · possession pressure",
   "qaFacts": {
-    "howItWorks": "Water polo is played by two teams of seven in the water, including a goalkeeper. LA28 describes four 8-minute quarters and 28-second possessions, so each attack has to form quickly while everyone is swimming or treading water.",
-    "watchValue": "The ball moves fast, but the sharper read often happens before the pass, when players shift, fake, and open a lane.",
+    "howItWorks": "Two teams of seven play in the water: six field players plus one goalkeeper. The goal is to throw the ball into the opponent's net, and each short possession pushes teams to create space, pass, and shoot before the chance disappears.",
+    "watchValue": "Water polo gets easier to read when you watch the spacing before the shot. The drama is that every pass, fake, and goal attempt happens while players are swimming or treading water.",
     "stateConnection": "California's Pacific coast, outdoor aquatic access, and large urban sport communities could help fans understand why water-based team stories fit this state card.",
     "cardTrait": "Water polo connects to Waterline Control through spacing, body position, and quick rhythm changes in a pool where no one has stable footing."
   },
-  "factChips": ["7 in water", "4 quarters", "28-second possessions", "One-hand control"],
+  "factChips": ["7 per team: 6 field + goalkeeper", "4 quarters", "28-second possessions", "One-hand control"],
   "complianceWarnings": []
 }
 Example Paralympic panel style:
@@ -657,8 +668,8 @@ Example Paralympic panel style:
   "moduleMix": ["Rules Snapshot", "Gear/Setup", "Pace Shift"],
   "subtitle": "Swim · bike · run · transition control",
   "qaFacts": {
-    "howItWorks": "Para triathlon combines a 750m swim, 20km bike segment, and 5km run. Depending on event context, equipment may include a handcycle, tandem bicycle, bicycle, racing wheelchair, or guide support.",
-    "watchValue": "The transitions carry their own drama because every shift from water to bike to run changes the pacing problem.",
+    "howItWorks": "Para triathlon is a race across three stages: a 750m swim, a 20km bike segment, and a 5km run. The competitor with the fastest total race time in their event wins, and transition time between stages matters too.",
+    "watchValue": "The race keeps changing shape: water gives way to equipment setup, then bike rhythm, then another reset for the run. The fun is watching how quickly the event can shift at each transition.",
     "stateConnection": "California's coastline, road networks, varied terrain, and year-round outdoor access could help fans understand why water-connected endurance stories fit this state card.",
     "cardTrait": "Para triathlon connects to Waterline Control through pacing and adaptation across changing surfaces."
   },
@@ -748,12 +759,14 @@ function validateCardBackCopy({ card, program, rawCopy }) {
 
   const expectedCue = displaySportName(panel.primarySportTag) || null;
   const qaFacts = Object.fromEntries(requiredQaFields.map((field) => [field, String(rawCopy.qaFacts[field]).trim()]));
+  const rawFactChips = rawCopy.factChips.map((chip) => String(chip || "").trim()).filter(Boolean).slice(0, 4);
+  const factChips = normalizeFactChipsForSport(expectedCue || rawCopy.featuredCue, rawFactChips);
   const copy = {
     featuredCue: expectedCue || String(rawCopy.featuredCue).trim(),
     moduleMix,
     subtitle: String(rawCopy.subtitle).trim(),
     qaFacts,
-    factChips: rawCopy.factChips.map((chip) => String(chip || "").trim()).filter(Boolean).slice(0, 4),
+    factChips,
     relatedTags: (panel.topSportTags || []).map(displaySportName).filter((tag) => tag !== expectedCue),
     complianceWarnings: Array.isArray(rawCopy.complianceWarnings)
       ? rawCopy.complianceWarnings.map((warning) => String(warning || "").trim()).filter(Boolean)
@@ -764,6 +777,16 @@ function validateCardBackCopy({ card, program, rawCopy }) {
     throw new Error(`Gemini card-back copy failed validation: ${warnings.join("; ")}`);
   }
   return copy;
+}
+
+function normalizeFactChipsForSport(featuredCue, factChips) {
+  if (!/water polo/i.test(String(featuredCue || ""))) return factChips;
+  const clearerTeamChip = "7 per team: 6 field + goalkeeper";
+  const nextChips = factChips.map((chip) => (/^7\b/i.test(chip) ? clearerTeamChip : chip));
+  if (!nextChips.includes(clearerTeamChip)) {
+    return [clearerTeamChip, ...nextChips].slice(0, 4);
+  }
+  return nextChips;
 }
 
 function complianceCheckCardBackCopy(copy) {
@@ -783,7 +806,6 @@ function complianceCheckCardBackCopy(copy) {
     /\bmedal(s|ist|ists)?\b/i,
     /\bfinish times?\b/i,
     /\bscore(s|d|ing)? result\b/i,
-    /\bathletes?\b/i,
     /\bsignals?\b/i,
     /\bsport tags?\b/i,
     /\bfeatured cue\b/i,
@@ -832,7 +854,6 @@ function complianceCheckCardBackCopy(copy) {
     /\bFor (a|an) [A-Z][A-Za-z .'-]+ card\b/,
     /\bmost popular county\b/i,
     /\brace order\b/i,
-    /\bclassifications?\b/i,
     /\b\d+(\.\d+)?\s?(points?|percent|%)\b/i
   ];
   const warnings = bannedPatterns.filter((pattern) => pattern.test(text)).map((pattern) => `Unsafe phrase pattern: ${pattern}`);
