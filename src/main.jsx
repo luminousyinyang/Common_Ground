@@ -1323,26 +1323,10 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
           )}
         </svg>
         <RosterTooltip card={hoverTip?.card} position={hoverTip?.position} />
-        <div className="map-hint">{hint}</div>
       </div>
       <SignalLegend />
       <MapProgressBar discovered={discoveredCodes.size} total={totalStates} />
     </>
-  );
-}
-
-function StateControls({ states, selectedCode, onSelect }) {
-  return (
-    <div className="state-controls">
-      <label className="select-label">
-        Select state
-        <select value={selectedCode} onChange={(event) => onSelect(event.target.value)}>
-          {states.map((card) => (
-            <option key={card.stateCode} value={card.stateCode}>{card.stateName}</option>
-          ))}
-        </select>
-      </label>
-    </div>
   );
 }
 
@@ -2280,7 +2264,6 @@ function App() {
                 <p className="eyebrow">Geography-powered fan discovery</p>
                 <h2 id="mapTitle">State Atlas</h2>
               </div>
-              <StateControls states={dataset.states} selectedCode={selectedCode} onSelect={selectState} />
             </div>
             <p className="safe-note">Explore aggregate state signals from public Team USA and geography data. Patterns may suggest fan-discovery context and do not imply performance outcomes.</p>
             <StateMap mapTopology={mapTopology} features={features} geoFeatures={geoFeatures} cardsByCode={cardsByCode} selectedCode={selectedCode} onSelect={selectState} discoveredCodes={discoveredCodes} totalStates={dataset.states.length} />

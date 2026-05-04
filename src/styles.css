@@ -855,33 +855,6 @@ main {
   letter-spacing: var(--display-letter-spacing);
 }
 
-.state-controls {
-  display: grid;
-  justify-items: end;
-  gap: 10px;
-  min-width: min(260px, 100%);
-}
-
-.select-label {
-  display: grid;
-  gap: 6px;
-  min-width: min(210px, 100%);
-  color: var(--muted);
-  font-size: 0.72rem;
-  font-weight: 800;
-  text-transform: uppercase;
-}
-
-select {
-  min-height: 40px;
-  border: 1px solid var(--line-strong);
-  border-radius: 999px;
-  padding: 0 12px;
-  color: var(--ink);
-  background: var(--glass-strong);
-  text-transform: none;
-}
-
 .safe-note {
   margin: 18px 0;
   border-left: 4px solid var(--ink);
@@ -1163,21 +1136,6 @@ select {
 .map-tooltip span {
   color: var(--muted);
   font-weight: 700;
-}
-
-.map-hint {
-  position: absolute;
-  left: 16px;
-  right: 16px;
-  bottom: 16px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  padding: 10px 12px;
-  color: var(--ink);
-  background: var(--glass);
-  box-shadow: var(--shadow-soft);
-  font-size: 0.86rem;
-  font-weight: 720;
 }
 
 .legend {
@@ -3227,10 +3185,6 @@ select {
     border-radius: 10px;
   }
 
-  .state-controls {
-    justify-items: stretch;
-  }
-
   .panel,
   .trait-band,
   .briefing-split {
@@ -4343,12 +4297,6 @@ select {
 
   .compact-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  /* Fix select-label fixed min-width causing overflow */
-  .select-label {
-    min-width: 0;
-    width: 100%;
   }
 
   /* Map tooltip: keep inside viewport */
