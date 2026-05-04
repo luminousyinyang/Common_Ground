@@ -1,14 +1,17 @@
 .git
 .gitignore
-.env
-.DS_Store
-ServiceAccountKey.json
-*ServiceAccount*.json
-*service-account*.json
-*firebase-adminsdk*.json
-*credentials*.json
+
 node_modules
 dist
-npm-debug.log
-.cache
-coverage
+.DS_Store
+
+.env
+.env.*
+
+# Local service-account keys and credentials should never be uploaded
+# in the Cloud Build source archive.
+*firebase-adminsdk*.json
+*service-account*.json
+*credentials*.json
+*-key.json
+*.pem
