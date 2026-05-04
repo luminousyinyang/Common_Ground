@@ -26,7 +26,7 @@ const imageMaxAttempts = positiveInteger(process.env.CARD_IMAGE_MAX_ATTEMPTS, 3)
 const imageRetryDelayMs = positiveInteger(process.env.CARD_IMAGE_RETRY_DELAY_MS, 5000);
 const imageRequestTimeoutMs = positiveInteger(process.env.CARD_IMAGE_REQUEST_TIMEOUT_MS, 900000);
 const textRequestTimeoutMs = positiveInteger(process.env.CARD_COPY_REQUEST_TIMEOUT_MS, 120000);
-const PROMPT_VERSION = "common-ground-card-panel-v3-top-sport-cue";
+const PROMPT_VERSION = "common-ground-card-panel-v5-rough-atlas-no-people";
 const CARD_BACK_COPY_VERSION = "common-ground-card-back-v14-basic-rules";
 
 let firebaseClientsPromise;
@@ -172,6 +172,18 @@ const DEFAULT_PALETTE_STORY = {
   paralympic: "moss green, copper, clay, deep blue shadow, and soft cream light",
   atmosphere: "regional geography, sport-card motion, and printed atlas texture"
 };
+
+const ROUGH_FAN_ATLAS_STYLE = [
+  "Rough printed fan-atlas illustration style, like a screen-printed editorial sports graphic.",
+  "Visible paper grain, speckled risograph noise, dry-brush edges, and slightly imperfect ink coverage across every color block.",
+  "Soft rounded organic hills, waves, courts, tracks, roads, and equipment shapes with fuzzy painted borders.",
+  "Flat layered shapes with gentle depth, not glossy 3D, not photoreal, not clean corporate vector art.",
+  "Palette language: powder blue, cornflower, deep denim, forest green, olive, sage, cream paper, coral red-orange, sun gold, muted teal, rust, and charcoal ink.",
+  "Use sports equipment, field markings, water lanes, balls, racquets, wheels, roads, waves, pools, tracks, or terrain as the subject.",
+  "No people, no athletes, no human figures, no silhouettes, no hands, no faces, no bodies, and no riders; tell the sport story through equipment, surfaces, routes, terrain, and motion marks only.",
+  "Compositions should feel hand-made and collectible, with playful sport-object placement and state geography woven into the background.",
+  "The app overlays all labels and card framing, so the image itself must be pure artwork: no words, letters, numbers, symbols, logos, badges, borders, or UI."
+].join("\n- ");
 
 if (!project) {
   throw new Error("GOOGLE_CLOUD_PROJECT is required. Add it to .env or export it before running this script.");
@@ -436,8 +448,8 @@ function buildPrompt(card, program) {
   const paletteStory = paletteStoryForCard(card);
   const palette = paletteStory[program] || paletteStory.olympic;
   const programPhrase = program === "paralympic"
-    ? "an adaptive sport-family scene with abstract equipment cues when relevant"
-    : "an Olympic sport-family scene with abstract sport movement cues when relevant";
+    ? "a Paralympic sport-family scene led by abstract equipment, playing surface, transition, or route cues"
+    : "an Olympic sport-family scene led by abstract equipment, playing surface, ball, water, route, or terrain cues";
 
   return `Create one full-bleed 16:9 sports-card illustration artwork for Common Ground, a compliant Team USA x Google Cloud Hackathon prototype.
 
@@ -450,12 +462,15 @@ Shared trait: ${card.sharedTrait.name} — ${card.sharedTrait.description}
 Geography context: ${card.geographySnapshot}
 
 Visual direction:
-- Match a premium collectible atlas sports-card style: clean, polished, modern, lightly dimensional, vector/low-poly illustration.
-- Use ${programPhrase}, led by the primary visual sport cue when one is available; the figure must be faceless, generic, and non-identifiable.
-- If a primary sport cue is available, show abstract equipment, setting, motion, or silhouette language for that sport cue without portraying a real athlete.
+- Match a premium rough collectible fan-atlas style, not the previous glossy low-poly card style.
+- Style extraction target:
+- ${ROUGH_FAN_ATLAS_STYLE}
+- Use ${programPhrase}, led by the primary visual sport cue when one is available.
+- If a primary sport cue is available, show abstract equipment, setting, motion trails, terrain, field-of-play markings, or object language for that sport cue without portraying any person.
 - If the sport cue is generalized because the source sport-tag count is limited or missing, use broad sport-family motion cues only.
 - Use the state geography as the environment inspiration, not as a performance claim.
 - Full-bleed artwork only: the illustration must fill the entire image canvas edge to edge.
+- The rough paper texture must live inside the artwork; do not create a blank cream paper border around the image.
 - Do not draw an inner card, picture frame, rounded rectangle, border, mat, white margin, inset panel, drop shadow, UI container, poster frame, or card-within-a-card.
 - Do not reserve a visible boxed label area. Leave open negative space through composition only, not by drawing a panel or blank rectangle.
 - Palette theme: ${paletteStory.name}.
@@ -463,11 +478,11 @@ Visual direction:
 - Environmental color mood: ${paletteStory.atmosphere}.
 - The Olympic and Paralympic panels are siblings on the same card; keep them visually related through the palette theme while giving this panel its own emphasis.
 - Do not default to Olympic-as-blue and Paralympic-as-orange. Let the state palette drive the colors, and avoid a political campaign or national-flag color composition.
-- Composition: 16:9 landscape artwork, clear central action silhouette, generous clean negative space in the upper-left for an overlaid app label, but no visible label box.
-- Style should feel like the supplied Stitch reference: crisp geometric shapes, soft gradients, paper-cut mountain/wave/terrain planes, subtle depth, no photo realism.
+- Composition: 16:9 landscape artwork, readable at card size, with strong sport-object silhouette or environment cue and generous clean negative space in the upper-left for an overlaid app label, but no visible label box.
+- Include the slight roughness/grain as a real visible texture, especially along color edges and in large flat fields. The artwork should not look too smooth or AI-glossy.
 
 Compliance constraints:
-- No real athlete likeness, no recognizable face, no athlete names, no jersey numbers, no official uniforms.
+- No people, no athlete likeness, no recognizable face, no athlete names, no jersey numbers, no official uniforms. Use abstract equipment and geography only.
 - No Olympic rings, Paralympic Agitos, torches, medals, podiums, flags, Team USA logos, LA28 logos, NGB logos, sponsor logos, or brand marks.
 - No embedded text, letters, labels, UI chrome, borders, or icons inside the image; the app will overlay labels separately.
 - Do not imply geography creates, produces, guarantees, predicts, or proves athletic results.

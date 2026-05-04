@@ -1,7 +1,7 @@
 {
   "model": "gemini-3-pro-image-preview",
   "location": "global",
-  "updatedAt": "2026-05-04T13:18:33.247Z",
+  "updatedAt": "2026-05-04T20:44:18.069Z",
   "states": {
     "CO": {
       "olympic": {
@@ -117,13 +117,13 @@
     },
     "CA": {
       "olympic": {
-        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v3-top-sport-cue%2Fca%2Fca-olympic.png?alt=media&token=9d0d683b-eeaa-4798-a252-0acacd83d6c5",
+        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v4-rough-fan-atlas%2Fca%2Fca-olympic.png?alt=media&token=2ef3fa28-74eb-4fc8-8beb-5f75f182ee88",
         "localUrl": null,
         "model": "gemini-3-pro-image-preview",
         "location": "global",
         "mimeType": "image/png",
-        "generatedAt": "2026-05-02T15:00:14.869Z",
-        "promptVersion": "common-ground-card-panel-v3-top-sport-cue",
+        "generatedAt": "2026-05-04T20:45:02.120Z",
+        "promptVersion": "common-ground-card-panel-v4-rough-fan-atlas",
         "promptSummary": "California olympic Water Polo",
         "primarySportTag": "Water Polo",
         "topSportTags": [
@@ -131,34 +131,25 @@
           "Track and Field",
           "Skateboarding"
         ],
-        "paletteTheme": "Pacific Heat",
-        "promptHash": "8b20528cfeb978408f5960dd2dacf28239c0c4317155f324e2cf351befb1ebe1",
-        "notes": "",
-        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v3-top-sport-cue%2Fca%2Fca-olympic.png?alt=media&token=9d0d683b-eeaa-4798-a252-0acacd83d6c5",
-        "storageBucket": "common-ground-tests.firebasestorage.app",
-        "firebaseProjectId": "common-ground-tests",
-        "storagePath": "card-panels/common-ground-card-panel-v3-top-sport-cue/ca/ca-olympic.png",
-        "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v3-top-sport-cue/ca/ca-olympic.png",
-        "firebaseCollection": "cardPanels",
         "cardBackCopy": {
           "featuredCue": "Water Polo",
           "moduleMix": [
+            "Rules Snapshot",
             "Pace Shift",
-            "Watch Hook",
-            "State Culture"
+            "Watch Hook"
           ],
-          "subtitle": "Aquatic team sport · goals in net · possession clock",
+          "subtitle": "Aquatic team sport · four 8-minute quarters · 28-second possessions",
           "qaFacts": {
-            "howItWorks": "Two teams of seven compete in the pool, featuring six field players and one goalkeeper. The objective is to score by throwing the ball into the opponent's net, and the team with the most goals after four eight-minute quarters wins. Field players must pass and shoot using only one hand while working within a 28-second possession clock.",
-            "watchValue": "Notice how the rhythm shifts from a structured offensive setup to a sudden counterattack. The appeal is watching athletes execute precise passes and fakes while constantly adjusting their body position in the water.",
-            "stateConnection": "California's extensive Pacific coastline, large urban regions, and year-round outdoor aquatic access may suggest why water-based team stories fit this state card.",
-            "cardTrait": "Water polo connects to Waterline Control through the constant adjustments in spacing and timing as players manage the possession clock in a shifting aquatic environment."
+            "howItWorks": "Matches unfold across four eight-minute quarters where two teams of seven try to outscore each other. The objective is to throw the ball into the opponent's net, and field players may only touch the ball with one hand to control it.",
+            "watchValue": "Notice how the rhythm of the game shifts as the 28-second possession clock ticks down. The excitement comes from watching teams coordinate their spacing and set up a scoring angle while constantly treading water.",
+            "stateConnection": "Year-round outdoor access and a long Pacific coastline could help fans understand why aquatic team events appear so naturally connected to California's sport culture.",
+            "cardTrait": "Water polo demonstrates Waterline Control as athletes manage their passing cadence and spatial rhythm, keeping the ball moving smoothly despite the shifting aquatic surface."
           },
           "factChips": [
-            "7 players per team",
+            "7 per team: 6 field + goalkeeper",
             "Four 8-minute quarters",
             "28-second possession clock",
-            "One-hand rule"
+            "One-hand touch rule"
           ],
           "relatedTags": [
             "Track and Field",
@@ -169,16 +160,25 @@
         "cardBackCopySource": "gemini",
         "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
         "cardBackCopyModel": "gemini-3.1-pro-preview",
-        "cardBackCopyPromptHash": "be5abcd3a78d57da86fff2a64defd8442f2405a0db0f8e7458979c36e0ec38b3"
+        "cardBackCopyPromptHash": "be5abcd3a78d57da86fff2a64defd8442f2405a0db0f8e7458979c36e0ec38b3",
+        "paletteTheme": "Pacific Heat",
+        "promptHash": "0d2bf038e56f37af3b84ce7384b5444e87d767322be855c164d4e4ab7f13fca6",
+        "notes": "",
+        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v4-rough-fan-atlas%2Fca%2Fca-olympic.png?alt=media&token=2ef3fa28-74eb-4fc8-8beb-5f75f182ee88",
+        "storageBucket": "common-ground-tests.firebasestorage.app",
+        "firebaseProjectId": "common-ground-tests",
+        "storagePath": "card-panels/common-ground-card-panel-v4-rough-fan-atlas/ca/ca-olympic.png",
+        "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v4-rough-fan-atlas/ca/ca-olympic.png",
+        "firebaseCollection": "cardPanels"
       },
       "paralympic": {
-        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v3-top-sport-cue%2Fca%2Fca-paralympic.png?alt=media&token=f1a37cb9-e066-41d5-8a8b-7653ba9b1118",
+        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v4-rough-fan-atlas%2Fca%2Fca-paralympic.png?alt=media&token=2982b059-d9ff-4e64-9620-3fe02fa42c22",
         "localUrl": null,
         "model": "gemini-3-pro-image-preview",
         "location": "global",
         "mimeType": "image/png",
-        "generatedAt": "2026-05-02T18:34:09.656Z",
-        "promptVersion": "common-ground-card-panel-v3-top-sport-cue",
+        "generatedAt": "2026-05-04T20:54:05.388Z",
+        "promptVersion": "common-ground-card-panel-v4-rough-fan-atlas",
         "promptSummary": "California paralympic Para triathlon",
         "primarySportTag": "Paratriathlon",
         "topSportTags": [
@@ -189,22 +189,22 @@
         "cardBackCopy": {
           "featuredCue": "Para triathlon",
           "moduleMix": [
+            "Watch Hook",
             "Pace Shift",
-            "Gear/Setup",
-            "Watch Hook"
+            "Terrain/Environment Lens"
           ],
-          "subtitle": "750m swim · 20km bike · 5km run · transition pacing",
+          "subtitle": "Three-stage race · transition timing · changing race rhythm",
           "qaFacts": {
-            "howItWorks": "Para triathlon is a three-stage race consisting of a 750m swim, a 20km bike segment, and a 5km run. The competitor with the fastest total race time wins, and the clock keeps ticking during the equipment transitions between each stage.",
-            "watchValue": "Watch how quickly athletes adapt their rhythm when moving from the water to the bike or racing wheelchair. The tension spikes in the transition zones, where a smooth equipment change can make or break a lead.",
-            "stateConnection": "California's Pacific coastline, varied road networks, and year-round outdoor access could help fans understand why multi-stage endurance events fit this state card.",
-            "cardTrait": "Para triathlon connects to Waterline Control through the way athletes adjust their cadence and pacing as the race surface changes from open water to pavement."
+            "howItWorks": "Para triathlon is a continuous three-stage race featuring a 750m swim, a 20km bike segment, and a 5km run. The competitor with the fastest total time across all stages wins the event. Because the clock never stops, the time spent swapping equipment in the transition zones is just as critical as the race itself.",
+            "watchValue": "Look for the moment competitors exit the water and move into the first transition. The tension spikes as they switch gear—like moving to a handcycle or tandem bicycle—and immediately try to establish a new rhythm on the road.",
+            "stateConnection": "California's Pacific coast, mountain roads, and year-round outdoor access could help fans see why multi-surface endurance events naturally align with this state card.",
+            "cardTrait": "Para triathlon connects to Waterline Control through the constant adjustments to pacing and cadence needed when shifting from water to wheels to the final run."
           },
           "factChips": [
             "750m swim, 20km bike, 5km run",
-            "Fastest total time wins",
-            "Clock runs during transitions",
-            "Adaptive racing equipment"
+            "Fastest total race time wins",
+            "Clock runs through transitions",
+            "Handcycles, tandems, or racing wheelchairs"
           ],
           "relatedTags": [
             "Para Track and Field",
@@ -218,14 +218,48 @@
         "cardBackCopyModel": "gemini-3.1-pro-preview",
         "cardBackCopyPromptHash": "d02abdd3c1638ba213b284e3c609efbc741c28ee15c0fad04a61d1eb21fe1f99",
         "paletteTheme": "Pacific Heat",
-        "promptHash": "368ca74b7bbdadb8c33071a2079d2937b6f4082f17903a701915bd9a17406fe6",
+        "promptHash": "0d75c0fc06c2ef0bbbbeafc3dcc579fa9dce6a4bee2e2ad1d972caa9a1beaf6d",
         "notes": "",
-        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v3-top-sport-cue%2Fca%2Fca-paralympic.png?alt=media&token=f1a37cb9-e066-41d5-8a8b-7653ba9b1118",
+        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v4-rough-fan-atlas%2Fca%2Fca-paralympic.png?alt=media&token=2982b059-d9ff-4e64-9620-3fe02fa42c22",
         "storageBucket": "common-ground-tests.firebasestorage.app",
         "firebaseProjectId": "common-ground-tests",
-        "storagePath": "card-panels/common-ground-card-panel-v3-top-sport-cue/ca/ca-paralympic.png",
-        "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v3-top-sport-cue/ca/ca-paralympic.png",
+        "storagePath": "card-panels/common-ground-card-panel-v4-rough-fan-atlas/ca/ca-paralympic.png",
+        "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v4-rough-fan-atlas/ca/ca-paralympic.png",
         "firebaseCollection": "cardPanels"
+      },
+      "gameExperience": {
+        "version": "common-ground-game-experience-v1",
+        "source": "gemini",
+        "stateCode": "CA",
+        "stateName": "California",
+        "challengeType": "cadence_keeper",
+        "sharedTraitName": "Waterline Rhythm",
+        "sharedTraitDescription": "Maintaining a steady pace and controlled timing when conditions are constantly shifting.",
+        "gameName": "Coastal Cadence Challenge",
+        "gameIntro": "Tap to the steady rhythm of the waves and see if you can keep the pace as the current shifts!",
+        "theme": "Abstract coastal waves",
+        "whyThisGame": "The cadence_keeper game perfectly captures the steady pacing and rhythmic timing essential to both water polo and paratriathlon.",
+        "darkModeNotes": "Use deep ocean blues and glowing teal accents to ensure the rhythm markers stand out.",
+        "lightModeNotes": "Use bright aqua and soft sand tones with high-contrast navy markers for clear visibility.",
+        "background": {
+          "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/game-backgrounds%2Fcommon-ground-game-experience-v1%2Fca%2Fca-cadence_keeper.png?alt=media&token=9baf411f-e008-401e-b08e-df3ebcce44b3",
+          "localUrl": null,
+          "mimeType": "image/png",
+          "model": "gemini-3.1-flash-image-preview",
+          "location": "global",
+          "promptHash": "38f629bda8899ffb9d6403262deaea93e5b3d1a0146dfdb18b09e9fadc46443c",
+          "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/game-backgrounds%2Fcommon-ground-game-experience-v1%2Fca%2Fca-cadence_keeper.png?alt=media&token=9baf411f-e008-401e-b08e-df3ebcce44b3",
+          "storageBucket": "common-ground-tests.firebasestorage.app",
+          "firebaseProjectId": "common-ground-tests",
+          "storagePath": "game-backgrounds/common-ground-game-experience-v1/ca/ca-cadence_keeper.png",
+          "gsUri": "gs://common-ground-tests.firebasestorage.app/game-backgrounds/common-ground-game-experience-v1/ca/ca-cadence_keeper.png"
+        },
+        "assignmentModel": "gemini-3.1-pro-preview",
+        "backgroundModel": "gemini-3.1-flash-image-preview",
+        "location": "global",
+        "generatedAt": "2026-05-04T20:22:50.903Z",
+        "promptHash": "38f629bda8899ffb9d6403262deaea93e5b3d1a0146dfdb18b09e9fadc46443c",
+        "complianceWarnings": []
       }
     },
     "WA": {
@@ -249,7 +283,154 @@
         "paletteTheme": "Cascade Rain",
         "notes": ""
       }
+    },
+    "AL": {
+      "gameExperience": {
+        "version": "common-ground-game-experience-v1",
+        "source": "gemini",
+        "stateCode": "AL",
+        "stateName": "Alabama",
+        "challengeType": "reaction_grid",
+        "sharedTraitName": "Spatial Timing",
+        "sharedTraitDescription": "Fast recognition, clean timing, and attention to changing space across sport families.",
+        "gameName": "Field Vision Grid",
+        "gameIntro": "Tap the targets as they appear to celebrate the quick decision-making seen in fast-paced team sports!",
+        "theme": "Lush river valley greens",
+        "whyThisGame": "The reaction grid mirrors the fast spatial recognition and quick decision-making essential in team sports like soccer.",
+        "darkModeNotes": "Use glowing neon green for active targets to ensure high contrast against dark backgrounds.",
+        "lightModeNotes": "Use deep forest green for active targets to stand out clearly on lighter backgrounds.",
+        "background": {
+          "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/game-backgrounds%2Fcommon-ground-game-experience-v1%2Fal%2Fal-reaction_grid.png?alt=media&token=7f4a437c-e893-46e1-a5e4-0b4b9fb5b659",
+          "localUrl": null,
+          "mimeType": "image/png",
+          "model": "gemini-3-pro-image-preview",
+          "location": "global",
+          "promptHash": "c9832895198f3869dae5137acbcf118ac7f0becbf079be332ece175c8e440446",
+          "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/game-backgrounds%2Fcommon-ground-game-experience-v1%2Fal%2Fal-reaction_grid.png?alt=media&token=7f4a437c-e893-46e1-a5e4-0b4b9fb5b659",
+          "storageBucket": "common-ground-tests.firebasestorage.app",
+          "firebaseProjectId": "common-ground-tests",
+          "storagePath": "game-backgrounds/common-ground-game-experience-v1/al/al-reaction_grid.png",
+          "gsUri": "gs://common-ground-tests.firebasestorage.app/game-backgrounds/common-ground-game-experience-v1/al/al-reaction_grid.png"
+        },
+        "assignmentModel": "gemini-3.1-pro-preview",
+        "backgroundModel": "gemini-3-pro-image-preview",
+        "location": "global",
+        "generatedAt": "2026-05-04T19:19:22.468Z",
+        "promptHash": "c9832895198f3869dae5137acbcf118ac7f0becbf079be332ece175c8e440446",
+        "complianceWarnings": []
+      }
+    },
+    "HI": {
+      "gameExperience": {
+        "version": "common-ground-game-experience-v1",
+        "source": "gemini",
+        "stateCode": "HI",
+        "stateName": "Hawaii",
+        "challengeType": "focus_hold",
+        "sharedTraitName": "Spatial Timing",
+        "sharedTraitDescription": "Celebrate the ability to maintain focus and balance as spaces and conditions shift.",
+        "gameName": "Dynamic Focus Hold",
+        "gameIntro": "Keep your cursor inside the moving zone to celebrate the spatial awareness seen in volleyball and surfing.",
+        "theme": "Tropical coastal court",
+        "whyThisGame": "The focus_hold mechanic captures the continuous spatial tracking and balance required in both volleyball and surfing, matching the state's spatial timing trait.",
+        "darkModeNotes": "Use deep ocean blues and glowing teal for the moving focus zone to ensure high contrast.",
+        "lightModeNotes": "Use bright sand and clear water tones, with a distinct dark blue outline for the focus zone.",
+        "background": {
+          "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/game-backgrounds%2Fcommon-ground-game-experience-v1%2Fhi%2Fhi-focus_hold.png?alt=media&token=4706b54d-3352-4675-8041-f4377ef9057a",
+          "localUrl": null,
+          "mimeType": "image/png",
+          "model": "gemini-3-pro-image-preview",
+          "location": "global",
+          "promptHash": "55e15a32c191797859581566bfbef4d1c442b503bfc62fa7efbbbba5129f3acd",
+          "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/game-backgrounds%2Fcommon-ground-game-experience-v1%2Fhi%2Fhi-focus_hold.png?alt=media&token=4706b54d-3352-4675-8041-f4377ef9057a",
+          "storageBucket": "common-ground-tests.firebasestorage.app",
+          "firebaseProjectId": "common-ground-tests",
+          "storagePath": "game-backgrounds/common-ground-game-experience-v1/hi/hi-focus_hold.png",
+          "gsUri": "gs://common-ground-tests.firebasestorage.app/game-backgrounds/common-ground-game-experience-v1/hi/hi-focus_hold.png"
+        },
+        "assignmentModel": "gemini-3.1-pro-preview",
+        "backgroundModel": "gemini-3-pro-image-preview",
+        "location": "global",
+        "generatedAt": "2026-05-04T19:21:51.042Z",
+        "promptHash": "55e15a32c191797859581566bfbef4d1c442b503bfc62fa7efbbbba5129f3acd",
+        "complianceWarnings": []
+      }
+    },
+    "KS": {
+      "gameExperience": {
+        "version": "common-ground-game-experience-v1",
+        "source": "gemini",
+        "stateCode": "KS",
+        "stateName": "Kansas",
+        "challengeType": "precision_trace",
+        "sharedTraitName": "Focus and Precision",
+        "sharedTraitDescription": "Celebrate the steady control and sharp focus required to excel in precision sports.",
+        "gameName": "Focus Line Challenge",
+        "gameIntro": "Trace the path steadily to celebrate the incredible focus and control seen in precision sports.",
+        "theme": "Open plains wind lines",
+        "whyThisGame": "The precision_trace mechanic perfectly mirrors the steady hand and deep focus celebrated in Para Archery and the card's 'Focus Lines' theme.",
+        "darkModeNotes": "Use glowing amber or soft gold lines against a deep twilight background for clear path visibility.",
+        "lightModeNotes": "Use crisp navy or deep green lines against a soft, sunlit background to ensure high contrast.",
+        "background": {
+          "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/game-backgrounds%2Fcommon-ground-game-experience-v1%2Fks%2Fks-precision_trace.png?alt=media&token=ba6c58b5-cfb8-427b-85d6-4e4207a988df",
+          "localUrl": null,
+          "mimeType": "image/png",
+          "model": "gemini-3-pro-image-preview",
+          "location": "global",
+          "promptHash": "216e2c04f309a3c125a25a1c3f3a386469fb33ad732b26db9dd3eed20986254b",
+          "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/game-backgrounds%2Fcommon-ground-game-experience-v1%2Fks%2Fks-precision_trace.png?alt=media&token=ba6c58b5-cfb8-427b-85d6-4e4207a988df",
+          "storageBucket": "common-ground-tests.firebasestorage.app",
+          "firebaseProjectId": "common-ground-tests",
+          "storagePath": "game-backgrounds/common-ground-game-experience-v1/ks/ks-precision_trace.png",
+          "gsUri": "gs://common-ground-tests.firebasestorage.app/game-backgrounds/common-ground-game-experience-v1/ks/ks-precision_trace.png"
+        },
+        "assignmentModel": "gemini-3.1-pro-preview",
+        "backgroundModel": "gemini-3-pro-image-preview",
+        "location": "global",
+        "generatedAt": "2026-05-04T19:42:45.621Z",
+        "promptHash": "216e2c04f309a3c125a25a1c3f3a386469fb33ad732b26db9dd3eed20986254b",
+        "complianceWarnings": []
+      }
+    },
+    "MT": {
+      "gameExperience": {
+        "version": "common-ground-game-experience-v1",
+        "source": "gemini",
+        "stateCode": "MT",
+        "stateName": "Montana",
+        "challengeType": "focus_hold",
+        "sharedTraitName": "Focus Timing",
+        "sharedTraitDescription": "Clean recognition, controlled timing, and repeatable focus under changing conditions.",
+        "gameName": "High Plains Focus",
+        "gameIntro": "Keep your cursor steady within the moving target zone to celebrate the intense concentration of precision sports.",
+        "theme": "Frosty mountain target range",
+        "whyThisGame": "The focus_hold challenge mirrors the steady concentration and aim required in precision sports like archery, set against a mountain-inspired backdrop.",
+        "darkModeNotes": "Use deep twilight blues and crisp white target outlines for high contrast.",
+        "lightModeNotes": "Use pale icy blues and dark navy target outlines to ensure visibility.",
+        "background": {
+          "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/game-backgrounds%2Fcommon-ground-game-experience-v1%2Fmt%2Fmt-focus_hold.png?alt=media&token=6f1b4b2f-dc22-4259-94d1-bf6a2676fca2",
+          "localUrl": null,
+          "mimeType": "image/png",
+          "model": "gemini-3.1-flash-image-preview",
+          "location": "global",
+          "promptHash": "f3b9b87bdb2c67cd0d0ba516b6904d54aff7c02d29b0bee00658e0ad8d4afe74",
+          "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/game-backgrounds%2Fcommon-ground-game-experience-v1%2Fmt%2Fmt-focus_hold.png?alt=media&token=6f1b4b2f-dc22-4259-94d1-bf6a2676fca2",
+          "storageBucket": "common-ground-tests.firebasestorage.app",
+          "firebaseProjectId": "common-ground-tests",
+          "storagePath": "game-backgrounds/common-ground-game-experience-v1/mt/mt-focus_hold.png",
+          "gsUri": "gs://common-ground-tests.firebasestorage.app/game-backgrounds/common-ground-game-experience-v1/mt/mt-focus_hold.png"
+        },
+        "assignmentModel": "gemini-3.1-pro-preview",
+        "backgroundModel": "gemini-3.1-flash-image-preview",
+        "location": "global",
+        "generatedAt": "2026-05-04T20:17:04.996Z",
+        "promptHash": "f3b9b87bdb2c67cd0d0ba516b6904d54aff7c02d29b0bee00658e0ad8d4afe74",
+        "complianceWarnings": []
+      }
     }
   },
-  "cardCopyModel": "gemini-3.1-pro-preview"
+  "cardCopyModel": "gemini-3.1-pro-preview",
+  "gameExperienceModel": "gemini-3.1-pro-preview",
+  "gameBackgroundModel": "gemini-3.1-flash-image-preview",
+  "gameExperienceVersion": "common-ground-game-experience-v1"
 }

@@ -15,6 +15,8 @@
     "generate:card-art": "node scripts/generate-card-art.mjs",
     "generate:card-panels": "node scripts/generate-vertex-card-panels.mjs",
     "generate:card-panels:firebase": "node scripts/generate-vertex-card-panels.mjs --firebase --no-local",
+    "generate:game-experiences": "node scripts/generate-vertex-game-experiences.mjs",
+    "generate:game-experiences:firebase": "node scripts/generate-vertex-game-experiences.mjs --firebase --no-local",
     "deploy:cloud-run": "bash scripts/deploy-cloud-run.sh"
   },
   "engines": {
