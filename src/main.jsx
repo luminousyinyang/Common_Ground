@@ -746,6 +746,7 @@ function LandingPage({ onNavigate, onLogin, darkMode, onToggleDarkMode }) {
         <div className="landing-section-inner">
           <div className="landing-hero-container">
             <img className="landing-hero-graphic" src="/assets/graphics/Hero Graphic.png" alt="" aria-hidden="true" />
+            <img className="landing-hero-graphic landing-hero-graphic-dark" src="/assets/graphics/Hero Graphic Dark.png" alt="" aria-hidden="true" />
             <div className="landing-hero-content">
               <p className="eyebrow landing-eyebrow">Team USA Discovery</p>
               <h1 className="landing-hero-title">Explore Team USA by State</h1>
