@@ -138,7 +138,7 @@ const CARD_THEME_LABELS = {
 };
 
 const EMPTY_CARD_PANEL_MANIFEST = { states: {} };
-const CURRENT_CARD_BACK_COPY_VERSION = "common-ground-card-back-v6-fan-takeaway";
+const CURRENT_CARD_BACK_COPY_VERSION = "common-ground-card-back-v11-qa-facts-no-signal";
 
 const SIGNAL_LABELS = {
   high: "High",
@@ -168,7 +168,7 @@ function fallbackBriefing(card, reason = "The Gemini backend is not available fr
       summary: `Public Team USA and geography data may suggest that ${card.stateName} has a wider sport mix worth exploring across Olympic and Paralympic programs. The geography notes could help fans understand the state context without implying performance outcomes.`,
       olympicNarrative: olympicMix ? `The Olympic side includes ${olympicMix}, giving fans a broader view of the state's water, pace, team, and movement-control stories.` : `${card.olympicPanel.geographyConnection}`,
       paralympicNarrative: paralympicMix ? `The Paralympic side includes ${paralympicMix}, which could help fans understand how endurance, control, and adaptive movement themes appear in the state view.` : `${card.paralympicPanel.geographyConnection}`,
-      sharedTraitExplanation: `${card.sharedTrait.name} links the featured Olympic cue, ${getPanelVisualCue(card.olympicPanel)}, with the featured Paralympic cue, ${getPanelVisualCue(card.paralympicPanel)}, through ${card.sharedTrait.description.toLowerCase()}`,
+      sharedTraitExplanation: `${card.sharedTrait.name} links Olympic ${getPanelVisualCue(card.olympicPanel)} with Paralympic ${getPanelVisualCue(card.paralympicPanel)}: ${card.sharedTrait.description}`,
       gameIntro: `Try a short fan challenge that reflects ${card.sharedTrait.name.toLowerCase()} as a personal interaction only.`,
       complianceWarnings: [reason]
     },
@@ -342,16 +342,86 @@ function fanTakeawayForSport(visualCue, panel, sharedTraitName = "") {
   return `${visualCue} helps fans read ${sharedTraitName || panel?.sportFamily || "the shared trait"} through a specific sport instead of an abstract data label.`;
 }
 
+function subtitleForSport(visualCue, panel) {
+  const sport = String(visualCue || "").toLowerCase();
+  if (/water polo/.test(sport)) return "Aquatic team sport · pressure rhythm · passing lanes";
+  if (/triathlon/.test(sport)) return "Swim · bike · run · transition control";
+  if (/swimming/.test(sport)) return "Water rhythm · lane tempo · repeatable control";
+  if (/track/.test(sport)) return "Pace changes · clean starts · sustained control";
+  if (/cycling/.test(sport)) return "Road rhythm · equipment control · outdoor pace";
+  if (/shooting|archery/.test(sport)) return "Quiet setup · focus line · repeat control";
+  return String(panel?.sportFamily || "Sport-family story").replaceAll(" / ", " · ");
+}
+
+function factChipsForSport(visualCue, panel) {
+  const sport = String(visualCue || "").toLowerCase();
+  if (/water polo/.test(sport)) return ["Aquatic environment", "Team spacing", "Fast resets", "Passing lanes"];
+  if (/triathlon/.test(sport)) return ["Multi-stage endurance", "Transition control", "Outdoor rhythm", "Equipment adaptation"];
+  if (/swimming/.test(sport)) return ["Water rhythm", "Lane tempo", "Body position", "Repeat control"];
+  if (/track/.test(sport)) return ["Pace shifts", "Start timing", "Lane awareness", "Sustained rhythm"];
+  if (/cycling/.test(sport)) return ["Road movement", "Equipment rhythm", "Pacing choices", "Terrain changes"];
+  return String(panel?.sportFamily || "Sport-family theme")
+    .split(/\s*[+/·]\s*|\s+\/\s+/)
+    .map((item) => item.trim())
+    .filter(Boolean)
+    .slice(0, 4);
+}
+
+function moduleMixForSport(visualCue, panel) {
+  const sport = String(visualCue || "").toLowerCase();
+  const family = String(panel?.sportFamily || "").toLowerCase();
+  if (/water polo/.test(sport)) return ["Hidden Skill", "State Culture", "Watch Hook"];
+  if (/triathlon/.test(sport)) return ["Pace Shift", "Gear/Setup", "Broadcast Moment"];
+  if (/skateboarding|gymnastics|climbing|surfing|equestrian|breaking/.test(sport)) return ["Hidden Skill", "Terrain/Environment Lens", "Watch Hook"];
+  if (/cycling/.test(sport)) return ["Gear/Setup", "Pace Shift", "Terrain/Environment Lens"];
+  if (/shooting|archery/.test(sport) || /precision|focus/.test(family)) return ["Hidden Skill", "Rules Snapshot", "Watch Hook"];
+  return ["Watch Hook", "Sport Family Link", "Challenge Link"];
+}
+
+function qaFactsForSport(visualCue, panel) {
+  const sport = String(visualCue || "").toLowerCase();
+  const stateConnection = readableGeographyLens(panel, visualCue);
+  if (/water polo/.test(sport)) {
+    return {
+      aboutSport: "Water polo is an aquatic team sport built around passing lanes, body position, and quick resets.",
+      watchValue: "The ball moves fast, but the sharper read often happens before the pass, as players shift and fake to open a lane.",
+      stateConnection,
+      eventRhythm: "Slow setup, sudden burst. Possessions can move from patient passing to a quick strike in a short window.",
+      funFact: "Players keep moving without solid footing, so spacing and balance matter even away from the ball.",
+      watchFor: "The pass before the shot; that is often where the play is created."
+    };
+  }
+  if (/triathlon/.test(sport)) {
+    return {
+      aboutSport: "Para triathlon combines swimming, cycling, running, and transition strategy across changing surfaces and equipment needs.",
+      watchValue: "The transitions carry their own drama because every shift from water to bike to run changes the pacing problem.",
+      stateConnection,
+      eventRhythm: "Segmented momentum: the rhythm changes each time the environment changes.",
+      funFact: "Transition moments can be as revealing as the race segments because they show preparation, control, and adaptation.",
+      watchFor: "How quickly the rhythm changes after the swim ends and the road portion begins."
+    };
+  }
+  return {
+    aboutSport: `${visualCue} sits inside the card's ${panelThemePhrase(panel)} theme.`,
+    watchValue: watchLensForSport(visualCue, panel),
+    stateConnection,
+    eventRhythm: fanTakeawayForSport(visualCue, panel),
+    funFact: "Small setup choices can change how the movement reads for fans.",
+    watchFor: watchLensForSport(visualCue, panel).split(".")[0] + "."
+  };
+}
+
 function getPanelBackCopy(panel) {
   const visualCue = getPanelVisualCue(panel);
-  const themePhrase = panelThemePhrase(panel);
 
-  return panel.cardBackCopy || {
+  if (panel.cardBackCopy?.qaFacts) return panel.cardBackCopy;
+
+  return {
     featuredCue: visualCue,
-    watchLens: watchLensForSport(visualCue, panel),
-    stateConnection: readableGeographyLens(panel, visualCue),
-    fanTakeaway: fanTakeawayForSport(visualCue, panel),
-    sportFamilyTheme: panel.sportFamily || themePhrase
+    moduleMix: moduleMixForSport(visualCue, panel),
+    subtitle: subtitleForSport(visualCue, panel),
+    qaFacts: qaFactsForSport(visualCue, panel),
+    factChips: factChipsForSport(visualCue, panel)
   };
 }
 
@@ -364,10 +434,10 @@ function getPanelBackCopyForDisplay(panel) {
   return {
     ...fallback,
     featuredCue: legacy.featuredCue || fallback.featuredCue,
-    watchLens: legacy.watchLens || legacy.featuredCueExplanation || fallback.watchLens,
-    stateConnection: legacy.stateConnection || legacy.stateLens || fallback.stateConnection,
-    fanTakeaway: legacy.fanTakeaway || legacy.featuredSportContext || fallback.fanTakeaway,
-    sportFamilyTheme: legacy.sportFamilyTheme || fallback.sportFamilyTheme
+    moduleMix: Array.isArray(legacy.moduleMix) && legacy.moduleMix.length ? legacy.moduleMix : fallback.moduleMix,
+    subtitle: legacy.subtitle || legacy.sportFamilyTheme || fallback.subtitle,
+    qaFacts: legacy.qaFacts ? Object.fromEntries(Object.entries(legacy.qaFacts).filter(([key]) => key !== "stateSignal")) : fallback.qaFacts,
+    factChips: Array.isArray(legacy.factChips) && legacy.factChips.length ? legacy.factChips : fallback.factChips,
   };
 }
 
@@ -1302,15 +1372,22 @@ function StateSummary({ card }) {
   );
 }
 
+const PANEL_QA_ROWS = [
+  ["aboutSport", "A bit about the sport"],
+  ["watchValue", "What makes it fun"],
+  ["stateConnection", "State connection"],
+  ["eventRhythm", "Rhythm"],
+  ["funFact", "Fun fact"],
+  ["watchFor", "Watch for"]
+];
+
 function SportPanel({ panel }) {
   const copy = getPanelBackCopyForDisplay(panel);
   const visualCue = copy.featuredCue || getPanelVisualCue(panel);
-  const rows = [
-    ["Watch Lens", copy.watchLens],
-    ["State Connection", copy.stateConnection],
-    ["Fan Takeaway", copy.fanTakeaway],
-    ["Sport-Family Theme", copy.sportFamilyTheme || panel.sportFamily]
-  ].filter(([, value]) => String(value || "").trim());
+  const factChips = Array.isArray(copy.factChips) ? copy.factChips.filter(Boolean).slice(0, 4) : [];
+  const qaRows = PANEL_QA_ROWS
+    .map(([key, label]) => [key, label, copy.qaFacts?.[key]])
+    .filter(([, , value]) => String(value || "").trim());
 
   return (
     <section className="panel">
@@ -1319,14 +1396,20 @@ function SportPanel({ panel }) {
       </div>
       <div className="panel-body">
         <h4>{visualCue}</h4>
-        <div className="panel-stat-list">
-          {rows.map(([label, value]) => (
-            <div className="panel-stat" key={label}>
+        {copy.subtitle && <p className="panel-subtitle">{copy.subtitle}</p>}
+        <div className="panel-qa-list">
+          {qaRows.map(([key, label, value]) => (
+            <div className="panel-qa-row" key={key}>
               <span>{label}</span>
               <strong>{value}</strong>
             </div>
           ))}
         </div>
+        {factChips.length > 0 && (
+          <div className="panel-fact-chips" aria-label={`${visualCue} card facts`}>
+            {factChips.map((chip) => <span key={chip}>{chip}</span>)}
+          </div>
+        )}
       </div>
     </section>
   );
