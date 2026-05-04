@@ -1038,6 +1038,7 @@ main {
 }
 
 .map-control-button {
+  position: relative;
   display: grid;
   place-items: center;
   width: 34px;
@@ -1050,6 +1051,44 @@ main {
   background: var(--glass-strong);
   font-size: 1.1rem;
   font-weight: 900;
+}
+
+.map-control-button[data-tooltip]::before,
+.map-control-button[data-tooltip]::after {
+  position: absolute;
+  right: calc(100% + 10px);
+  top: 50%;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 140ms ease;
+}
+
+.map-control-button[data-tooltip]::before {
+  content: attr(data-tooltip);
+  transform: translateY(-50%);
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  padding: 5px 10px;
+  border-radius: 6px;
+}
+
+.map-control-button[data-tooltip]::after {
+  content: '';
+  right: calc(100% + 4px);
+  transform: translateY(-50%);
+  border: 5px solid transparent;
+  border-left-color: var(--ink);
+}
+
+.map-control-button[data-tooltip]:hover::before,
+.map-control-button[data-tooltip]:hover::after,
+.map-control-button[data-tooltip]:focus-visible::before,
+.map-control-button[data-tooltip]:focus-visible::after {
+  opacity: 1;
 }
 
 .map-control-button svg {

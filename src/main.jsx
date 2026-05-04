@@ -505,8 +505,8 @@ const ICON_PATHS = {
   cards: <><rect x="2" y="5" width="15" height="14" rx="2" /><path d="M6 5V3a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-2" /></>,
   game: <><circle cx="12" cy="12" r="10" /><circle cx="12" cy="12" r="4" /><line x1="21.17" y1="8" x2="12" y2="8" /><line x1="3.95" y1="6.06" x2="8" y2="14" /><line x1="10.88" y1="21.94" x2="15" y2="14" /></>,
   method: <><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /></>,
-  locate: <><circle cx="12" cy="12" r="3" /><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" /></>,
-  reset: <><polyline points="1 4 1 10 7 10" /><path d="M3.51 15a9 9 0 1 0 .49-3" /></>,
+  locate: <polygon points="3 11 22 2 13 21 11 13 3 11" />,
+  reset: <><polyline points="23 4 23 10 17 10" /><path d="M20.49 15a9 9 0 1 1-.39-4.67" /></>,
   moon: <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />,
   sun: <><circle cx="12" cy="12" r="5" /><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" /></>,
   home: <><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></>,
@@ -1303,13 +1303,13 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
     <>
       <div className="map-wrap">
         <div className="map-controls" aria-label="Map controls">
-          <button className="map-control-button" type="button" onClick={zoomIn} aria-label="Zoom in" title="Zoom in">+</button>
-          <button className="map-control-button" type="button" onClick={locateCurrentState} disabled={isLocating} aria-label="Use my location to zoom to my state" title="Use my location to zoom to my state">
-            <Icon name="locate" size={18} strokeWidth={2} />
+          <button className="map-control-button" type="button" onClick={zoomIn} aria-label="Zoom in" data-tooltip="Zoom in">+</button>
+          <button className="map-control-button" type="button" onClick={zoomOut} aria-label="Zoom out" data-tooltip="Zoom out">−</button>
+          <button className="map-control-button" type="button" onClick={locateCurrentState} disabled={isLocating} aria-label="Use my location" data-tooltip="My location">
+            <Icon name="locate" size={16} strokeWidth={2} />
           </button>
-          <button className="map-control-button" type="button" onClick={zoomOut} aria-label="Zoom out" title="Zoom out">−</button>
-          <button className="map-control-button" type="button" onClick={resetMap} aria-label="Reset map" title="Reset map">
-            <Icon name="reset" size={18} strokeWidth={2} />
+          <button className="map-control-button" type="button" onClick={resetMap} aria-label="Reset map" data-tooltip="Reset map">
+            <Icon name="reset" size={16} strokeWidth={2} />
           </button>
         </div>
         <svg
@@ -2288,9 +2288,7 @@ function AppShell({ view, setView, children, onNavigate, onLogin, darkMode, onTo
 function App() {
   const [page, setPage] = useState("landing");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [darkMode, setDarkMode] = useState(
-    () => window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? true
-  );
+  const [darkMode, setDarkMode] = useState(false);
   const [dataset, setDataset] = useState(null);
   const [mapTopology, setMapTopology] = useState(null);
   const [geoTopology, setGeoTopology] = useState(null);
