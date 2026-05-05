@@ -219,37 +219,93 @@ function CompactSportLens({ panel }) {
 }
 
 function CompactCardBack({ card, briefing, onReadFullBriefing }) {
+  const scrollRef = useRef(null);
+  const [hasMoreToScroll, setHasMoreToScroll] = useState(false);
   const themeName = getCardThemeName(card);
   const olympicCue = getPanelVisualCue(card.olympicPanel);
   const paralympicCue = getPanelVisualCue(card.paralympicPanel);
 
-  return (
-    <div className="compact-card-back">
-      <header className="compact-back-header">
-        <span>Common Ground State Card</span>
-        <h3>{card.stateName}</h3>
-        <p>{themeName}</p>
-      </header>
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    el.scrollTop = 0;
+    setHasMoreToScroll(el.scrollHeight - el.clientHeight > 3);
+  }, [card.stateCode]);
 
-      <div className="compact-lens-grid">
-        <CompactSportLens panel={card.olympicPanel} />
-        <CompactSportLens panel={card.paralympicPanel} />
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return undefined;
+
+    let frame = 0;
+    const updateScrollCue = () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(() => {
+        frame = 0;
+        const remainingScroll = el.scrollHeight - el.clientHeight - el.scrollTop;
+        setHasMoreToScroll(remainingScroll > 3);
+      });
+    };
+
+    updateScrollCue();
+    el.addEventListener("scroll", updateScrollCue, { passive: true });
+    window.addEventListener("resize", updateScrollCue);
+
+    let resizeObserver;
+    if ("ResizeObserver" in window) {
+      resizeObserver = new ResizeObserver(updateScrollCue);
+      resizeObserver.observe(el);
+      Array.from(el.children).forEach((child) => resizeObserver.observe(child));
+    }
+
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      el.removeEventListener("scroll", updateScrollCue);
+      window.removeEventListener("resize", updateScrollCue);
+      resizeObserver?.disconnect();
+    };
+  }, [card.stateCode, briefing]);
+
+  function scrollCompactBack() {
+    const el = scrollRef.current;
+    if (!el) return;
+    el.scrollBy({ top: Math.max(120, el.clientHeight * 0.56), behavior: "smooth" });
+  }
+
+  return (
+    <div className={`compact-back-shell ${hasMoreToScroll ? "has-more-scroll" : ""}`}>
+      <div className="compact-card-back" ref={scrollRef}>
+        <header className="compact-back-header">
+          <span>Common Ground State Card</span>
+          <h3>{card.stateName}</h3>
+          <p>{themeName}</p>
+        </header>
+
+        <div className="compact-lens-grid">
+          <CompactSportLens panel={card.olympicPanel} />
+          <CompactSportLens panel={card.paralympicPanel} />
+        </div>
+
+        <section className="compact-shared-block">
+          <span>Shared signal</span>
+          <strong>{card.sharedTrait.name}</strong>
+          <p>Olympic <b>{olympicCue}</b> and Paralympic <b>{paralympicCue}</b> connect through {card.sharedTrait.description.toLowerCase()}</p>
+        </section>
+
+        <section className="compact-connection-block">
+          <span>{card.stateName} connection</span>
+          <p>{compactStateConnection(card, briefing)}</p>
+        </section>
+
+        <button className="compact-read-more" type="button" onClick={onReadFullBriefing}>
+          Read full state briefing
+        </button>
       </div>
 
-      <section className="compact-shared-block">
-        <span>Shared signal</span>
-        <strong>{card.sharedTrait.name}</strong>
-        <p>Olympic <b>{olympicCue}</b> and Paralympic <b>{paralympicCue}</b> connect through {card.sharedTrait.description.toLowerCase()}</p>
-      </section>
-
-      <section className="compact-connection-block">
-        <span>{card.stateName} connection</span>
-        <p>{compactStateConnection(card, briefing)}</p>
-      </section>
-
-      <button className="compact-read-more" type="button" onClick={onReadFullBriefing}>
-        Read full state briefing
-      </button>
+      {hasMoreToScroll && (
+        <button className="compact-back-scroll-cue" type="button" aria-label="Scroll card details" onClick={scrollCompactBack}>
+          <Icon name="arrow-down" size={17} strokeWidth={2} />
+        </button>
+      )}
     </div>
   );
 }
