@@ -1,0 +1,528 @@
+import {
+  SIGNAL_LABELS,
+  CARD_THEME_LABELS,
+  CARD_ART,
+  FRAMED_CARD_PANEL_PROMPT_VERSIONS,
+  CURRENT_CARD_BACK_COPY_VERSION,
+  CURRENT_GAME_EXPERIENCE_VERSION,
+  GAME_TYPE_LABELS,
+  PANEL_QA_ROWS
+} from "./constants.js";
+
+export function titleBucket(bucket) {
+  const normalized = String(bucket || "insufficient_data");
+  return SIGNAL_LABELS[normalized] || normalized.replaceAll("_", " ");
+}
+
+export async function getJson(url, options) {
+  const response = await fetch(url, options);
+  if (!response.ok) throw new Error(`Request failed: ${response.status}`);
+  return response.json();
+}
+
+export function fallbackBriefing(card, reason = "The Gemini backend is not available from this dev server.") {
+  const olympicTags = (card.olympicPanel.topSportTags || []).map(displaySportName);
+  const paralympicTags = (card.paralympicPanel.topSportTags || []).map(displaySportName);
+  const olympicMix = joinReadableList(olympicTags);
+  const paralympicMix = joinReadableList(paralympicTags);
+  const olympicCue = getPanelVisualCue(card.olympicPanel);
+  const paralympicCue = getPanelVisualCue(card.paralympicPanel);
+  const geography = getGeographySignals(card).length ? joinReadableList(getGeographySignals(card)) : card.geographySnapshot;
+  return {
+    source: "react-fallback",
+    model: "safe-fallback",
+    briefing: {
+      stateSnapshot: `In the public aggregate Team USA state data, ${card.stateName} shows ${olympicMix || card.olympicPanel.sportFamily} on the Olympic side and ${paralympicMix || card.paralympicPanel.sportFamily} on the Paralympic side. That does not mean geography causes outcomes; it gives fans a safer way to explore why different sport environments appear in one state view.`,
+      sportMix: [
+        {
+          theme: "Olympic-side mix",
+          detail: olympicMix ? `${olympicMix} appear in the Olympic side of this aggregate state view.` : `${card.olympicPanel.sportFamily} appears as the Olympic-side sport-family view.`
+        },
+        {
+          theme: "Paralympic-side mix",
+          detail: paralympicMix ? `${paralympicMix} appear in the Paralympic side of this aggregate state view.` : `${card.paralympicPanel.sportFamily} appears as the Paralympic-side sport-family view.`
+        },
+        {
+          theme: "Movement themes",
+          detail: "Across the combined state view, fans can look for rhythm, spacing, pacing, precision, equipment control, and surface changes."
+        }
+      ],
+      geographyLens: `${card.geographySnapshot} could help fans understand why varied sport environments appear in this aggregate state view.`,
+      hometownAreas: formatHometownAreas(card.topHometownSignals),
+      whatToNotice: "The useful fan read is contrast: some sports emphasize spacing and quick decisions, while others emphasize rhythm, stillness, pacing, equipment, or transitions.",
+      surprisingConnection: `${olympicCue} and ${paralympicCue} do not need to look alike to share a viewing idea; both can point fans toward control when timing, surface, or spacing changes.`,
+      sharedStateSignal: `${card.sharedTrait.name}: ${card.sharedTrait.description}`,
+      gameIntro: `Try a short fan challenge that reflects ${card.sharedTrait.name.toLowerCase()} as a personal interaction only.`,
+      complianceWarnings: [reason]
+    },
+    complianceWarnings: [reason]
+  };
+}
+
+export function formatHometownAreas(signals = []) {
+  return (signals || []).slice(0, 3).map((area) => ({
+    area: area.label,
+    detail: `${area.total} ${area.countLabel || "public hometown entries"} in the public source view, with ${area.olympic} Olympic-side and ${area.paralympic} Paralympic-side entries.`
+  }));
+}
+
+export function fallbackGameReflection(card, result, reason = "The Gemini backend is not available from this dev server.") {
+  return {
+    reflection: `${result.summary} That could help you appreciate why ${card.sharedTrait.name.toLowerCase()} matters across several sport families. This is a fan challenge only and does not measure ability or compare you with anyone.`,
+    model: "safe-fallback",
+    warnings: [reason]
+  };
+}
+
+export function uniqueSourceRefs(refs) {
+  const seen = new Set();
+  return refs.filter((ref) => {
+    const key = `${ref.label}-${ref.url}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+export function formatExcludedRows(rows = {}) {
+  const entries = Object.entries(rows);
+  if (!entries.length) return "none";
+  return entries.map(([key, value]) => `${key}: ${value}`).join(", ");
+}
+
+export function getRosterCounts(card) {
+  return card?.hometownRosterCounts || { olympic: 0, paralympic: 0, total: 0 };
+}
+
+export function formatMapHint(card) {
+  const counts = getRosterCounts(card);
+  return `${card.stateName}: ${counts.olympic} Olympic, ${counts.paralympic} Paralympic, ${counts.total} total public roster records.`;
+}
+
+export function getCardStory(card) {
+  return card?.cardStory || {
+    themeName: card?.sharedTrait?.name || getCardThemeLabel(card),
+    geographySignal: card?.terrainSignals || [],
+    olympicFeatured: {
+      sportTag: card?.olympicPanel?.primarySportTag || getPanelVisualCue(card?.olympicPanel),
+      sportFamily: card?.olympicPanel?.sportFamily
+    },
+    paralympicFeatured: {
+      sportTag: card?.paralympicPanel?.primarySportTag || getPanelVisualCue(card?.paralympicPanel),
+      sportFamily: card?.paralympicPanel?.sportFamily
+    },
+    sharedTrait: card?.sharedTrait,
+    fanChallengeName: `${card?.sharedTrait?.name || "State Sync"} Challenge`
+  };
+}
+
+export function getGeographySignals(card) {
+  const storySignals = getCardStory(card).geographySignal || [];
+  const signals = storySignals.length ? storySignals : card.terrainSignals || [];
+  return signals.filter(Boolean).slice(0, 5);
+}
+
+export function getCardThemeName(card) {
+  return getCardStory(card).themeName || card.sharedTrait?.name || getCardThemeLabel(card);
+}
+
+export function getCardTheme(card) {
+  const counts = getRosterCounts(card);
+  const text = `${card.olympicPanel.sportFamily} ${card.paralympicPanel.sportFamily} ${card.sharedTrait.name} ${card.sharedTrait.description}`;
+  if (!counts.total || card.hometownPresenceBucket === "insufficient_data") return "neutral";
+  if (/aquatic|water|surf|sail|swimming|coast|ocean/i.test(text)) return "aquatic";
+  if (/winter|snow|mountain|endurance|pace/i.test(text)) return "winter-endurance";
+  if (/precision|team|spatial|focus/i.test(text)) return "spatial-timing";
+  if (/balance|power|pressure|contact|mixed|control/i.test(text)) return "control-pressure";
+  return "rhythm-pace";
+}
+
+export function getCardThemeLabel(card) {
+  return CARD_THEME_LABELS[getCardTheme(card)] || CARD_THEME_LABELS.neutral;
+}
+
+export function shortProgramName(program) {
+  return program === "paralympic" ? "Paralympic" : "Olympic";
+}
+
+export function joinReadableList(items = []) {
+  const values = items.filter(Boolean);
+  if (values.length <= 1) return values[0] || "";
+  if (values.length === 2) return `${values[0]} and ${values[1]}`;
+  return `${values.slice(0, -1).join(", ")}, and ${values.at(-1)}`;
+}
+
+export function displaySportName(value) {
+  const text = String(value || "").trim();
+  if (/^paratriathlon$/i.test(text)) return "Para triathlon";
+  return text;
+}
+
+export function getPanelVisualCue(panel) {
+  return displaySportName(panel?.primarySportTag || panel?.topSportTags?.[0] || "Generalized sport-family cue");
+}
+
+export function panelProgramLabel(panel) {
+  return panel?.primarySportTag
+    ? `${shortProgramName(panel.program)} featured sport`
+    : `${shortProgramName(panel.program)} sport-family`;
+}
+
+export function getPanelTopSportText(panel) {
+  if (panel?.aggregateSignal === "insufficient_data") return "No sourced public sport tag is available in this dataset.";
+  return "Generalized because the sourced sport-tag count is limited.";
+}
+
+export function panelThemePhrase(panel) {
+  const family = String(panel?.sportFamily || "").toLowerCase();
+  if (/aquatic|water/.test(family) && /team|spatial/.test(family)) return "aquatic team-sport";
+  if (/aquatic|water/.test(family)) return "water-sport";
+  if (/endurance|pace/.test(family) && /team|spatial/.test(family)) return "pace-and-spatial sport";
+  if (/endurance|pace/.test(family)) return "pace-control sport";
+  if (/precision|focus/.test(family)) return "precision-sport";
+  if (/team|spatial/.test(family)) return "team-and-space sport";
+  if (/balance|technical/.test(family)) return "technical-control sport";
+  if (/power|contact/.test(family)) return "power-and-control sport";
+  return "sport-family";
+}
+
+export function readableGeographyLens(panel, visualCue) {
+  const raw = String(panel?.geographyConnection || "").trim();
+  const geography = raw
+    .replace(/\s+could help fans frame the state's .*? sport-family presence without implying geography causes outcomes\.$/i, "")
+    .trim();
+  if (geography && geography !== raw) {
+    return `${geography} could show how regional geography may offer useful context for ${visualCue}'s ${panelThemePhrase(panel)} qualities.`;
+  }
+  return raw || getPanelTopSportText(panel);
+}
+
+export function watchLensForSport(visualCue, panel) {
+  const sport = String(visualCue || "").toLowerCase();
+  const family = String(panel?.sportFamily || "").toLowerCase();
+  if (/water polo/.test(sport)) {
+    return "Look for fast decisions in crowded water: passing lanes, defensive resets, and how teams create space without stable footing.";
+  }
+  if (/triathlon/.test(sport)) {
+    return "Watch the pacing across stages and transitions, where control has to carry from water to road to run.";
+  }
+  if (/swimming/.test(sport)) {
+    return "Notice tempo, lane awareness, and how a steady stroke rhythm turns water movement into repeatable control.";
+  }
+  if (/track|cycling|rowing|canoe|marathon|race walk/.test(sport) || /endurance|pace/.test(family)) {
+    return "Watch how pace changes over time: starts, surges, recovery moments, and steady control under pressure.";
+  }
+  if (/shooting|archery|fencing|golf|tennis|table tennis|badminton/.test(sport) || /precision|focus/.test(family)) {
+    return "Look for quiet control: setup, timing, focus, and clean decisions in short windows.";
+  }
+  if (/basketball|soccer|volleyball|rugby|goalball|hockey|handball|baseball|softball/.test(sport) || /team|spatial/.test(family)) {
+    return "Watch spacing and rhythm: how movement opens lanes, resets pressure, and turns timing into team shape.";
+  }
+  if (/skateboarding|gymnastics|climbing|surfing|equestrian|breaking/.test(sport) || /balance|technical/.test(family)) {
+    return "Notice balance, line choice, and how small timing changes shape the whole movement sequence.";
+  }
+  return `Watch how ${visualCue} turns movement, timing, and decisions into a readable sport story for fans.`;
+}
+
+export function fanTakeawayForSport(visualCue, panel, sharedTraitName = "") {
+  const sport = String(visualCue || "").toLowerCase();
+  if (/water polo/.test(sport)) {
+    return "This panel is about rhythm under pressure: players are constantly reading space, coordinating, and moving through resistance.";
+  }
+  if (/triathlon/.test(sport)) {
+    return "This panel extends the waterline idea into endurance: pacing, transitions, and control across changing environments.";
+  }
+  if (/swimming|surfing|sailing|rowing|canoe/.test(sport)) {
+    return "This panel keeps the card close to water movement: rhythm, balance, and control while conditions shift.";
+  }
+  return `${visualCue} helps fans read ${sharedTraitName || panel?.sportFamily || "the shared trait"} through a specific sport instead of an abstract data label.`;
+}
+
+export function subtitleForSport(visualCue, panel) {
+  const sport = String(visualCue || "").toLowerCase();
+  if (/water polo/.test(sport)) return "Aquatic team sport · goals in net · possession pressure";
+  if (/triathlon/.test(sport)) return "Swim · bike · run · transition control";
+  if (/swimming/.test(sport)) return "Water rhythm · lane tempo · repeatable control";
+  if (/track/.test(sport)) return "Pace changes · clean starts · sustained control";
+  if (/cycling/.test(sport)) return "Road rhythm · equipment control · outdoor pace";
+  if (/shooting|archery/.test(sport)) return "Quiet setup · focus line · repeat control";
+  return String(panel?.sportFamily || "Sport-family story").replaceAll(" / ", " · ");
+}
+
+export function factChipsForSport(visualCue, panel) {
+  const sport = String(visualCue || "").toLowerCase();
+  if (/water polo/.test(sport)) return ["7 per team: 6 field + goalkeeper", "4 quarters", "Possession pressure", "One-hand control"];
+  if (/triathlon/.test(sport)) return ["Swim segment", "Bike segment", "Run segment", "Transition control"];
+  if (/swimming/.test(sport)) return ["Water rhythm", "Lane tempo", "Body position", "Repeat control"];
+  if (/track/.test(sport)) return ["Pace shifts", "Start timing", "Lane awareness", "Sustained rhythm"];
+  if (/cycling/.test(sport)) return ["Road movement", "Equipment rhythm", "Pacing choices", "Terrain changes"];
+  return String(panel?.sportFamily || "Sport-family theme")
+    .split(/\s*[+/·]\s*|\s+\/\s+/)
+    .map((item) => item.trim())
+    .filter(Boolean)
+    .slice(0, 4);
+}
+
+export function moduleMixForSport(visualCue, panel) {
+  const sport = String(visualCue || "").toLowerCase();
+  const family = String(panel?.sportFamily || "").toLowerCase();
+  if (/water polo/.test(sport)) return ["Hidden Skill", "State Culture", "Watch Hook"];
+  if (/triathlon/.test(sport)) return ["Pace Shift", "Gear/Setup", "Broadcast Moment"];
+  if (/skateboarding|gymnastics|climbing|surfing|equestrian|breaking/.test(sport)) return ["Hidden Skill", "Terrain/Environment Lens", "Watch Hook"];
+  if (/cycling/.test(sport)) return ["Gear/Setup", "Pace Shift", "Terrain/Environment Lens"];
+  if (/shooting|archery/.test(sport) || /precision|focus/.test(family)) return ["Hidden Skill", "Rules Snapshot", "Watch Hook"];
+  return ["Watch Hook", "Sport Family Link", "Challenge Link"];
+}
+
+export function qaFactsForSport(visualCue, panel) {
+  const sport = String(visualCue || "").toLowerCase();
+  const stateConnection = readableGeographyLens(panel, visualCue);
+  if (/water polo/.test(sport)) {
+    return {
+      howItWorks: "Two teams of seven play in the water: six field players plus one goalkeeper. The goal is to throw the ball into the opponent's net, so each attack has to create space, pass, and shoot before the chance disappears.",
+      watchValue: "Water polo gets easier to read when you watch the spacing before the shot. The drama is that every pass, fake, and goal attempt happens while players are swimming or treading water.",
+      stateConnection,
+      cardTrait: "Water polo connects to the shared trait through spacing, body position, and quick rhythm changes in a pool where no one has stable footing."
+    };
+  }
+  if (/triathlon/.test(sport)) {
+    return {
+      howItWorks: "Para triathlon is a race across swim, bike, and run stages. The competitor with the fastest total race time in their event wins, and transition time between stages matters too.",
+      watchValue: "The race keeps changing shape as water gives way to equipment setup, bike rhythm, and another reset for the run.",
+      stateConnection,
+      cardTrait: "Para triathlon connects to the shared trait through pacing and adaptation across changing surfaces."
+    };
+  }
+  return {
+    howItWorks: `${visualCue} sits inside the card's ${panelThemePhrase(panel)} theme.`,
+    watchValue: watchLensForSport(visualCue, panel),
+    stateConnection,
+    cardTrait: fanTakeawayForSport(visualCue, panel)
+  };
+}
+
+export function getPanelBackCopy(panel) {
+  const visualCue = getPanelVisualCue(panel);
+
+  if (panel.cardBackCopy?.qaFacts) return panel.cardBackCopy;
+
+  return {
+    featuredCue: visualCue,
+    moduleMix: moduleMixForSport(visualCue, panel),
+    subtitle: subtitleForSport(visualCue, panel),
+    qaFacts: qaFactsForSport(visualCue, panel),
+    factChips: factChipsForSport(visualCue, panel)
+  };
+}
+
+export function getPanelBackCopyForDisplay(panel) {
+  if (panel?.cardBackCopyVersion === CURRENT_CARD_BACK_COPY_VERSION && panel?.cardBackCopy) {
+    return panel.cardBackCopy;
+  }
+  const fallback = getPanelBackCopy(panel);
+  const legacy = panel?.cardBackCopy || {};
+  const legacyQa = legacy.qaFacts || {};
+  const legacyQaFacts = legacyQa && Object.keys(legacyQa).length
+    ? {
+      howItWorks: legacyQa.howItWorks || legacyQa.aboutSport,
+      watchValue: legacyQa.watchValue,
+      stateConnection: legacyQa.stateConnection,
+      cardTrait: legacyQa.cardTrait || legacyQa.eventRhythm || legacyQa.funFact
+    }
+    : fallback.qaFacts;
+  return {
+    ...fallback,
+    featuredCue: displaySportName(legacy.featuredCue || fallback.featuredCue),
+    moduleMix: Array.isArray(legacy.moduleMix) && legacy.moduleMix.length ? legacy.moduleMix : fallback.moduleMix,
+    subtitle: legacy.subtitle || legacy.sportFamilyTheme || fallback.subtitle,
+    qaFacts: legacyQaFacts,
+    factChips: Array.isArray(legacy.factChips) && legacy.factChips.length ? legacy.factChips : fallback.factChips,
+  };
+}
+
+export function getPanelArtUrl(card, program, manifest) {
+  const panel = manifest?.states?.[card.stateCode]?.[program];
+  if (panel?.url && !FRAMED_CARD_PANEL_PROMPT_VERSIONS.has(panel.promptVersion)) return panel.url;
+  const theme = getCardTheme(card);
+  return CARD_ART[theme] || CARD_ART.neutral;
+}
+
+export function getGeneratedGameExperience(statePanels = {}) {
+  const experience = statePanels.gameExperience || statePanels.game;
+  if (!experience || experience.version !== CURRENT_GAME_EXPERIENCE_VERSION) return null;
+  if (!GAME_TYPE_LABELS[experience.challengeType]) return null;
+  return experience;
+}
+
+export function mergeGeneratedPanelData(card, manifest) {
+  const statePanels = manifest?.states?.[card?.stateCode] || {};
+  if (!card || (!statePanels.olympic && !statePanels.paralympic && !statePanels.gameExperience && !statePanels.game)) return card;
+  const gameExperience = getGeneratedGameExperience(statePanels);
+
+  function mergePanel(program, panel) {
+    const generated = statePanels[program] || {};
+    const hasCurrentCardCopy = generated.cardBackCopyVersion === CURRENT_CARD_BACK_COPY_VERSION && generated.cardBackCopy;
+    return {
+      ...panel,
+      cardBackCopy: hasCurrentCardCopy ? generated.cardBackCopy : panel.cardBackCopy,
+      cardBackCopySource: hasCurrentCardCopy ? generated.cardBackCopySource : panel.cardBackCopySource,
+      cardBackCopyModel: hasCurrentCardCopy ? generated.cardBackCopyModel : panel.cardBackCopyModel,
+      cardBackCopyVersion: hasCurrentCardCopy ? generated.cardBackCopyVersion : panel.cardBackCopyVersion
+    };
+  }
+
+  return {
+    ...card,
+    sharedTrait: gameExperience
+      ? {
+        ...card.sharedTrait,
+        name: gameExperience.sharedTraitName || card.sharedTrait.name,
+        description: gameExperience.sharedTraitDescription || card.sharedTrait.description,
+        challengeType: gameExperience.challengeType
+      }
+      : card.sharedTrait,
+    cardStory: {
+      ...card.cardStory,
+      gameExperience: gameExperience || card.cardStory?.gameExperience,
+      fanChallengeName: gameExperience?.gameName || card.cardStory?.fanChallengeName
+    },
+    gameExperience: gameExperience || card.gameExperience,
+    olympicPanel: mergePanel("olympic", card.olympicPanel),
+    paralympicPanel: mergePanel("paralympic", card.paralympicPanel)
+  };
+}
+
+export function getGameExperience(card) {
+  const generated = card.gameExperience || card.cardStory?.gameExperience;
+  const challengeType = generated?.challengeType || card.sharedTrait?.challengeType || "reaction_grid";
+  return {
+    version: generated?.version,
+    source: generated?.source || "dataset",
+    challengeType,
+    gameName: generated?.gameName || card.cardStory?.fanChallengeName || `${GAME_TYPE_LABELS[challengeType] || "State Sync"} Challenge`,
+    gameIntro: generated?.gameIntro,
+    sharedTraitName: generated?.sharedTraitName || card.sharedTrait?.name,
+    sharedTraitDescription: generated?.sharedTraitDescription || card.sharedTrait?.description,
+    background: generated?.background || null,
+    theme: generated?.theme || null
+  };
+}
+
+export function gameBoardStyle(gameExperience) {
+  const url = gameExperience?.background?.url || gameExperience?.backgroundUrl;
+  return url ? { "--game-bg-image": `url("${url}")` } : undefined;
+}
+
+export function gameBoardClass(baseClass, gameExperience) {
+  const hasBackground = Boolean(gameExperience?.background?.url || gameExperience?.backgroundUrl);
+  return `game-board ${baseClass} ${hasBackground ? "has-game-background" : ""}`;
+}
+
+export function briefingSections(briefing = {}) {
+  if (briefing.stateSnapshot || briefing.whatToNotice || briefing.sharedStateSignal) {
+    return [
+      ["State Snapshot", briefing.stateSnapshot],
+      ["Sport Mix", briefing.sportMix],
+      ["Geography Lens", briefing.geographyLens],
+      ["What To Notice", briefing.whatToNotice],
+      ["Surprising Connection", briefing.surprisingConnection],
+      ["Shared State Signal", briefing.sharedStateSignal]
+    ].filter(([, value]) => Array.isArray(value) ? value.length : String(value || "").trim());
+  }
+
+  if (briefing.stateScene || briefing.sportMix || briefing.whyInteresting) {
+    return [
+      ["State Snapshot", briefing.stateScene],
+      ["Sport Mix", [briefing.sportMix?.olympic, briefing.sportMix?.paralympic].filter(Boolean)],
+      ["Geography Lens", briefing.geographyLens],
+      ["What To Notice", briefing.whyInteresting],
+      ["Surprising Connection", briefing.surprisingConnection],
+      ["Shared State Signal", briefing.sharedSignal]
+    ].filter(([, value]) => Array.isArray(value) ? value.length : String(value || "").trim());
+  }
+
+  return [
+    ["State Snapshot", briefing.summary],
+    ["Sport Mix", [
+      briefing.olympicNarrative ? `Olympic side: ${briefing.olympicNarrative}` : "",
+      briefing.paralympicNarrative ? `Paralympic side: ${briefing.paralympicNarrative}` : ""
+    ].filter(Boolean)],
+    ["Shared State Signal", briefing.sharedTraitExplanation]
+  ].filter(([, value]) => Array.isArray(value) ? value.length : String(value || "").trim());
+}
+
+export function compactSentences(value, maxSentences = 2) {
+  const text = String(value || "").replace(/\s+/g, " ").trim();
+  if (!text) return "";
+  const sentences = text.match(/[^.!?]+[.!?]+|[^.!?]+$/g)?.map((item) => item.trim()).filter(Boolean) || [text];
+  return sentences.slice(0, maxSentences).join(" ");
+}
+
+export function compactSnippet(value, maxLength = 205) {
+  const text = compactSentences(value, 1);
+  if (text.length <= maxLength) return text;
+  const trimmed = text.slice(0, maxLength).replace(/\s+\S*$/, "").replace(/[,:;]+$/, "");
+  return `${trimmed}.`;
+}
+
+export function compactPanelCopy(panel) {
+  const copy = getPanelBackCopyForDisplay(panel);
+  const visualCue = copy.featuredCue || getPanelVisualCue(panel);
+  const factChips = Array.isArray(copy.factChips) ? copy.factChips.filter(Boolean).slice(0, 2) : [];
+  return {
+    visualCue,
+    summary: compactSnippet(copy.qaFacts?.howItWorks || copy.qaFacts?.watchValue || panel.geographyConnection),
+    chips: factChips
+  };
+}
+
+export function compactStateConnection(card, briefing) {
+  const generatedLens = briefing?.briefing?.geographyLens;
+  if (String(generatedLens || "").trim()) return compactSnippet(generatedLens, 132);
+  return compactSnippet(`${card.geographySnapshot} could help fans understand why this state card connects these sport environments.`, 132);
+}
+
+export function normalizeHometownAreaRows(card, briefing = {}) {
+  const sourceRows = Array.isArray(card?.hometownAreaSignals) && card.hometownAreaSignals.length
+    ? card.hometownAreaSignals
+    : Array.isArray(card?.allHometownSignals) && card.allHometownSignals.length
+      ? card.allHometownSignals
+      : Array.isArray(card?.topHometownSignals)
+        ? card.topHometownSignals
+        : [];
+
+  const rows = sourceRows
+    .map((area, index) => normalizeHometownAreaRow(area, index))
+    .filter(Boolean);
+
+  if (rows.length) return rows;
+
+  return (Array.isArray(briefing?.hometownAreas) ? briefing.hometownAreas : [])
+    .map((area, index) => normalizeHometownAreaRow(area, index))
+    .filter(Boolean);
+}
+
+export function normalizeHometownAreaRow(area, index) {
+  if (!area || typeof area !== "object") return null;
+  const label = String(area.label || area.area || area.city || "").trim();
+  if (!label) return null;
+  const total = Number.isFinite(Number(area.total)) ? Number(area.total) : null;
+  const olympic = Number.isFinite(Number(area.olympic)) ? Number(area.olympic) : null;
+  const paralympic = Number.isFinite(Number(area.paralympic)) ? Number(area.paralympic) : null;
+  const countLabel = area.countLabel || "public hometown entries";
+  const detail = area.detail || (
+    total !== null && olympic !== null && paralympic !== null
+      ? `${total} ${countLabel} in the public source view, with ${olympic} Olympic-side and ${paralympic} Paralympic-side entries.`
+      : "Public aggregate hometown area in the state source view."
+  );
+
+  return {
+    rank: area.rank || index + 1,
+    label,
+    total,
+    olympic,
+    paralympic,
+    countLabel,
+    detail
+  };
+}
