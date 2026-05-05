@@ -1,0 +1,517 @@
+.map-explorer-shell {
+  display: grid;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.map-surface {
+  border: 0;
+  padding: clamp(12px, 1.8vw, 20px);
+  background: transparent;
+  box-shadow: none;
+}
+
+.map-explorer-shell .map-wrap {
+  min-height: min(480px, calc(100vh - 320px));
+  max-height: calc(100vh - 300px);
+}
+
+.map-explorer-shell .state-map {
+  min-height: min(460px, calc(100vh - 330px));
+  max-height: calc(100vh - 310px);
+}
+
+.section-heading,
+.challenge-header,
+.collection-header,
+.panel-heading-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.section-heading {
+  flex-wrap: wrap;
+}
+
+.section-heading h2,
+.challenge-header h2,
+.methodology-hero h2,
+.collection-header h2 {
+  margin: 0;
+  font-family: var(--display-font);
+  font-size: clamp(24px, 3vw, 40px);
+  line-height: 0.94;
+  font-weight: 900;
+  text-transform: var(--display-transform);
+  letter-spacing: var(--display-letter-spacing);
+}
+
+.safe-note {
+  margin: 18px 0;
+  border-left: 4px solid var(--ink);
+  border-radius: 0 12px 12px 0;
+  padding: 9px 12px;
+  color: var(--copy-strong);
+  background: var(--glass-faint);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.map-wrap {
+  position: relative;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  min-height: 500px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 18% 18%, var(--paper-accent-a), transparent 28rem),
+    radial-gradient(circle at 82% 64%, var(--paper-accent-b), transparent 30rem),
+    linear-gradient(180deg, var(--glass-strong), var(--glass-soft));
+  box-shadow: inset 0 0 0 1px var(--glass-line), var(--shadow-soft);
+}
+
+.state-map {
+  display: block;
+  width: 100%;
+  height: auto;
+  min-height: 490px;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.state-map.is-dragging {
+  cursor: grabbing;
+}
+
+.map-viewport {
+  transition: transform 220ms ease;
+  transform-box: fill-box;
+}
+
+.map-small-label {
+  fill: color-mix(in srgb, var(--ink) 45%, transparent);
+  font-size: 12px;
+  font-weight: 700;
+  pointer-events: none;
+  text-anchor: middle;
+}
+
+.state-path {
+  stroke: var(--glass-line);
+  stroke-linejoin: round;
+  stroke-width: 1.2;
+  transition: fill 160ms ease, opacity 160ms ease, stroke 160ms ease;
+  vector-effect: non-scaling-stroke;
+  outline: none;
+}
+
+.state-path.high {
+  fill: var(--map-high);
+}
+
+.state-path.medium {
+  fill: var(--map-medium);
+}
+
+.state-path.low {
+  fill: var(--map-low);
+}
+
+.state-path.insufficient_data {
+  fill: var(--map-limited);
+}
+
+.state-path.no-data {
+  fill: var(--map-empty);
+  opacity: 0.76;
+}
+
+.state-path.has-data {
+  cursor: pointer;
+}
+
+.state-path:hover,
+.state-path:focus-visible {
+  opacity: 1;
+  stroke: var(--navy);
+  stroke-width: 2.2;
+}
+
+/* Discovered state checkmark circle */
+.check-bg {
+  fill: var(--gold);
+  stroke: var(--paper);
+  stroke-width: 1.5;
+}
+
+.check-tick {
+  fill: none;
+  stroke: var(--paper);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.state-path.is-selected {
+  fill: var(--map-selected);
+  stroke: var(--glass-strong);
+  stroke-width: 3.8;
+}
+
+.state-borders {
+  fill: none;
+  pointer-events: none;
+  stroke: var(--glass-line);
+  stroke-linejoin: round;
+  stroke-width: 0.9;
+  vector-effect: non-scaling-stroke;
+}
+
+.selected-state-label {
+  fill: var(--paper-2);
+  paint-order: stroke;
+  pointer-events: none;
+  stroke: var(--ink);
+  stroke-linejoin: round;
+  stroke-width: 5;
+  font-size: 18px;
+  font-weight: 900;
+  text-anchor: middle;
+}
+
+.territory-inset-layer {
+  pointer-events: none;
+}
+
+.territory-inset {
+  cursor: pointer;
+  outline: none;
+  pointer-events: auto;
+}
+
+.territory-inset-hit {
+  fill: transparent;
+  stroke: none;
+  pointer-events: all;
+}
+
+.territory-inset-code {
+  fill: var(--ink);
+  font-family: var(--display-font);
+  font-weight: 900;
+  paint-order: stroke;
+  pointer-events: none;
+  stroke: var(--paper-2);
+  stroke-linejoin: round;
+  stroke-width: 5;
+  text-anchor: middle;
+}
+
+.territory-inset-code {
+  font-size: 24px;
+}
+
+.territory-inset-shape {
+  fill: var(--map-low);
+  filter: drop-shadow(0 8px 18px color-mix(in srgb, #000000 16%, transparent));
+  pointer-events: none;
+  stroke: var(--glass-line);
+  stroke-linejoin: round;
+  stroke-width: 1.2;
+  transition: fill 160ms ease, opacity 160ms ease, stroke 160ms ease;
+  vector-effect: non-scaling-stroke;
+}
+
+.territory-inset.medium .territory-inset-shape {
+  fill: var(--map-medium);
+}
+
+.territory-inset.high .territory-inset-shape {
+  fill: var(--map-high);
+}
+
+.territory-inset.insufficient_data .territory-inset-shape {
+  fill: var(--map-limited);
+}
+
+.territory-inset.is-selected .territory-inset-shape,
+.territory-inset:hover .territory-inset-shape,
+.territory-inset:focus-visible .territory-inset-shape {
+  opacity: 1;
+  stroke: var(--map-selected);
+  stroke-width: 2.2;
+}
+
+.territory-inset.is-selected .territory-inset-shape {
+  fill: var(--map-selected);
+}
+
+.map-controls {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 4;
+  display: grid;
+  gap: 6px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 6px;
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  box-shadow: var(--shadow-soft);
+}
+
+.map-control-button {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  min-height: 34px;
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  padding: 0;
+  color: var(--navy);
+  background: var(--glass-strong);
+  font-size: 1.1rem;
+  font-weight: 900;
+}
+
+.map-control-button[data-tooltip]::before,
+.map-control-button[data-tooltip]::after {
+  position: absolute;
+  right: calc(100% + 10px);
+  top: 50%;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 140ms ease;
+}
+
+.map-control-button[data-tooltip]::before {
+  content: attr(data-tooltip);
+  transform: translateY(-50%);
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  padding: 5px 10px;
+  border-radius: 6px;
+}
+
+.map-control-button[data-tooltip]::after {
+  content: '';
+  right: calc(100% + 4px);
+  transform: translateY(-50%);
+  border: 5px solid transparent;
+  border-left-color: var(--ink);
+}
+
+.map-control-button[data-tooltip]:hover::before,
+.map-control-button[data-tooltip]:hover::after,
+.map-control-button[data-tooltip]:focus-visible::before,
+.map-control-button[data-tooltip]:focus-visible::after {
+  opacity: 1;
+}
+
+.map-control-button svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+
+.map-control-button:hover,
+.map-control-button:focus-visible {
+  color: var(--ink-contrast);
+  border-color: var(--blue);
+  background: var(--blue);
+}
+
+.map-control-button:disabled {
+  cursor: progress;
+  opacity: 0.62;
+}
+
+.map-tooltip {
+  position: absolute;
+  left: min(calc(100% - 236px), max(12px, var(--tooltip-x)));
+  top: min(calc(100% - 142px), max(12px, var(--tooltip-y)));
+  z-index: 3;
+  display: grid;
+  gap: 4px;
+  width: 224px;
+  border: 1px solid var(--line-strong);
+  border-radius: 14px;
+  padding: 10px 12px;
+  color: var(--ink);
+  background: var(--glass-strong);
+  box-shadow: var(--shadow-soft);
+  font-size: 0.82rem;
+  line-height: 1.25;
+  pointer-events: none;
+}
+
+.map-tooltip strong {
+  font-family: var(--display-font);
+  font-size: 1.12rem;
+  line-height: 0.95;
+}
+
+.map-tooltip span {
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 14px;
+  color: var(--muted);
+  font-size: 0.84rem;
+  font-weight: 750;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.map-progress {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 750;
+}
+
+.map-progress-track {
+  flex: 1;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.map-progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--gold);
+  transition: width 500ms ease;
+}
+
+.signal-dot {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 11px;
+  height: 11px;
+  border-radius: 3px;
+  background: #7c8da5;
+}
+
+.signal-dot.high {
+  background: var(--map-high);
+}
+
+.signal-dot.medium {
+  background: var(--map-medium);
+}
+
+.signal-dot.low {
+  background: var(--map-low);
+}
+
+.signal-dot.insufficient_data {
+  background: var(--map-limited);
+}
+
+.state-button,
+.ghost-button,
+.primary-button {
+  border: 1px solid transparent;
+  border-radius: 999px;
+  min-height: 46px;
+  padding: 0 24px;
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+
+.state-button {
+  min-height: 32px;
+  padding-inline: 10px;
+  color: var(--ink);
+  background: var(--glass);
+  border-color: var(--line);
+}
+
+.state-button.is-active,
+.state-button:hover,
+.state-button:focus-visible {
+  color: var(--ink-contrast);
+  background: var(--blue);
+}
+
+.ghost-button {
+  color: var(--navy);
+  background: var(--glass);
+  border-color: var(--line-strong);
+  transition: background 140ms ease, border-color 140ms ease, transform 160ms ease, box-shadow 160ms ease;
+}
+
+.ghost-button:hover,
+.ghost-button:focus-visible {
+  background: rgba(255, 255, 255, 0.45);
+  border-color: var(--blue);
+  box-shadow: 4px 4px 0 #9D4D32;
+  transform: translateY(-3px);
+}
+
+html[data-surface="blacktop"] .ghost-button:hover,
+html[data-surface="blacktop"] .ghost-button:focus-visible {
+  background: transparent;
+  box-shadow: 4px 4px 0 #CFA14D;
+}
+
+.ghost-button.small {
+  min-height: 32px;
+  padding-inline: 10px;
+  font-size: 0.86rem;
+}
+
+.primary-button {
+  color: var(--cta-text);
+  background: var(--cta);
+  border-color: var(--cta);
+  transition: background 140ms ease, border-color 140ms ease, transform 160ms ease, box-shadow 160ms ease;
+}
+
+.primary-button:hover,
+.primary-button:focus-visible {
+  background: var(--navy-2);
+  border-color: var(--navy-2);
+  box-shadow: 4px 4px 0 #CFA14D;
+  transform: translateY(-3px);
+}
+
+html[data-surface="blacktop"] .primary-button:hover,
+html[data-surface="blacktop"] .primary-button:focus-visible {
+  background: color-mix(in srgb, var(--cta) 55%, white);
+  border-color: color-mix(in srgb, var(--cta) 55%, white);
+  box-shadow: 4px 4px 0 #9D4D32;
+  transform: translateY(-3px);
+}
+
+.primary-button.wide {
+  width: 100%;
+}

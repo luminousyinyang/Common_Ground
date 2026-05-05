@@ -209,8 +209,12 @@ Cloud Run uses its attached service account for Vertex AI, Firestore, and Fireba
 
 ## File Map
 
-- `src/main.jsx` - React app, map, unified card, collection, challenge, and methodology views.
-- `src/styles.css` - Common Ground visual system.
+- `src/main.jsx` - React entry point.
+- `src/App.jsx` - top-level app state, data loading, routing, and view composition.
+- `src/components/` - reusable UI modules for map, cards, collection, challenge games, and navigation.
+- `src/pages/` - landing, login, and methodology page views.
+- `src/lib/` - shared constants and state-card data helpers.
+- `src/styles/` - Common Ground visual system split by feature area and imported through `src/styles/index.css`.
 - `server.js` - Cloud Run static server and Gemini API routes.
 - `public/data/state-cards.json` - aggregate state/territory-level dataset.
 - `public/data/us-states-*.json` - state boundary TopoJSON.

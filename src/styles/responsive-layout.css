@@ -1,0 +1,201 @@
+@media (max-width: 1180px) {
+  .map-explorer-shell,
+  .challenge-grid,
+  .method-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .map-surface {
+    min-height: auto;
+  }
+
+  .sports-card {
+    height: clamp(560px, calc(100vh - 176px), 700px);
+  }
+
+  .card-grid,
+  .compact-grid {
+    grid-template-columns: repeat(2, minmax(220px, 1fr));
+  }
+
+  .card-modal-panel.is-back-expanded .card-back-scroll {
+    grid-template-columns: 1fr;
+  }
+
+  .card-modal-panel.is-back-expanded .program-panel-grid {
+    flex-direction: column;
+  }
+
+  .card-modal-panel.is-back-expanded .program-panel-grid > .panel {
+    flex: 0 0 auto;
+  }
+
+  .card-modal-panel.is-back-expanded .card-footer {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 920px) {
+  .app-frame {
+    grid-template-columns: 204px minmax(0, 1fr);
+  }
+
+  .sidebar {
+    gap: 16px;
+    padding: 18px 12px;
+  }
+
+  .brand-block h1 {
+    font-size: 1.45rem;
+  }
+
+  .brand-block p:last-child {
+    font-size: 0.84rem;
+  }
+
+  .side-nav-button {
+    grid-template-columns: 20px minmax(0, 1fr);
+    gap: 8px;
+    padding-inline: 10px;
+    font-size: 0.9rem;
+  }
+
+  main {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 640px) {
+  .app-frame {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: static;
+    height: auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 16px;
+  }
+
+  .brand-block {
+    min-width: 230px;
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .brand-block h1 {
+    font-size: 1.55rem;
+  }
+
+  .side-nav {
+    display: flex;
+    flex: 1;
+    flex-wrap: wrap;
+  }
+
+  .sidebar > .card-lab-controls {
+    flex: 1 1 100%;
+    grid-template-columns: repeat(2, minmax(140px, 1fr));
+    margin-top: 0;
+   }
+
+}
+
+@media (max-width: 720px) {
+  .section-heading,
+  .challenge-header,
+  .collection-header,
+  .sports-card-front-footer {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  main {
+    padding: 12px;
+  }
+
+  .map-surface,
+  .challenge-view,
+  .methodology-view,
+  .collection-view {
+    padding: 16px;
+    border-radius: 10px;
+  }
+
+  .panel,
+  .trait-band,
+  .briefing-split,
+  .briefing-section-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .panel-qa-row {
+    grid-template-columns: 1fr;
+    gap: 5px;
+  }
+
+  .card-modal-panel.is-back-expanded .card-back-scroll > .trait-band {
+    grid-template-columns: 1fr;
+  }
+
+  .sports-card {
+    height: min(620px, calc(100vh - 220px));
+    min-height: 480px;
+  }
+
+  .card-modal-backdrop {
+    padding: 14px;
+  }
+
+  .card-modal-panel,
+  .card-modal-panel.is-back-expanded {
+    width: min(460px, calc(100vw - 24px));
+    max-height: calc(100vh - 36px);
+    max-height: calc(100svh - 36px);
+    padding: 10px 10px 12px;
+  }
+
+  .modal-toolbar {
+    justify-content: stretch;
+  }
+
+  .card-lab-controls.is-compact {
+    flex: 1 1 100%;
+  }
+
+  .card-lab-controls.is-compact .card-lab-toggle {
+    flex: 1 1 130px;
+  }
+
+  .card-modal-panel.is-back-expanded .sports-card {
+    height: auto;
+    max-height: calc(100vh - 244px);
+    max-height: calc(100svh - 244px);
+  }
+
+  .card-modal-panel.is-back-expanded .card-back-scroll {
+    max-height: calc(100vh - 254px);
+    max-height: calc(100svh - 254px);
+    padding: 10px 10px 16px;
+  }
+
+  .sports-card-face {
+    border-radius: 12px;
+  }
+
+  .card-art {
+    min-height: 0;
+  }
+
+  .card-grid,
+  .compact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .reaction-grid {
+    grid-template-columns: repeat(4, minmax(44px, 1fr));
+  }
+
+}
