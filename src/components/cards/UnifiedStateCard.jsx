@@ -5,6 +5,7 @@ import {
   briefingSections,
   compactPanelCopy,
   compactStateConnection,
+  featuredSportsIntro,
   getCardThemeName,
   getGeographySignals,
   getPanelBackCopyForDisplay,
@@ -62,6 +63,15 @@ function SportPanel({ panel }) {
           </div>
         )}
       </div>
+    </section>
+  );
+}
+
+function FeaturedSportsIntro({ card }) {
+  return (
+    <section className="featured-sports-intro">
+      <span>Featured sport lenses</span>
+      <p>{featuredSportsIntro(card)}</p>
     </section>
   );
 }
@@ -400,6 +410,7 @@ function UnifiedStateCard({
                     <p className="metric-row-note">Public Team USA roster records by hometown state, not a complete athlete census.</p>
                   </div>
                   <HometownAreasCard card={card} payload={briefing} compact />
+                  <FeaturedSportsIntro card={card} />
                   <div className="program-panel-grid">
                     <SportPanel panel={card.olympicPanel} />
                     <SportPanel panel={card.paralympicPanel} />

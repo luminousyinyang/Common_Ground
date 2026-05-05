@@ -168,6 +168,14 @@ export function panelProgramLabel(panel) {
     : `${shortProgramName(panel.program)} sport-family`;
 }
 
+export function featuredSportsIntro(card) {
+  const olympicCue = getPanelVisualCue(card?.olympicPanel);
+  const paralympicCue = getPanelVisualCue(card?.paralympicPanel);
+  const stateName = card?.stateName || "this state";
+
+  return `${olympicCue} and ${paralympicCue} are the featured Olympic and Paralympic sport lenses for ${stateName}. The notes below explain how each sport works and how ${stateName}'s geography connects to the state story.`;
+}
+
 export function getPanelTopSportText(panel) {
   if (panel?.aggregateSignal === "insufficient_data") return "No sourced public sport tag is available in this dataset.";
   return "Generalized because the sourced sport-tag count is limited.";
