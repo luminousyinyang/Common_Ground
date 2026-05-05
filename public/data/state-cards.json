@@ -13,7 +13,7 @@
       "total": 814
     },
     "aggregationPolicy": "The build script strips athlete names, profile URLs, images, biographies, medals, finish placements, and other individual-level fields before writing frontend data. State cards display signal buckets instead of exact state counts.",
-    "hometownAreaPolicy": "Top hometown areas are city-level aggregate public source entries only, require at least 3 public source records, and do not expose athlete names, profiles, images, or individual records.",
+    "hometownAreaPolicy": "Top hometown areas are city-level aggregate public source entries only, require at least 1 public source records, and do not expose athlete names, profiles, images, or individual records.",
     "bucketPolicy": "Combined state bucket: insufficient data = 0 sourced roster rows, low = 1-4, medium = 5-19, high = 20+. Program panel details and top sport tags require at least 3 sourced roster rows; lower-volume panels stay generalized.",
     "coverageNote": "Only TeamUSA.com roster rows with a U.S. state or supported U.S. territory abbreviation in the public hometown state field are used for cards. Unsupported or blank geography values are excluded from card output.",
     "excludedStateCodes": [],
@@ -81,6 +81,24 @@
           "olympic": 1,
           "paralympic": 2,
           "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Huntsville",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Mobile",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
         }
       ],
       "allHometownSignals": [
@@ -91,6 +109,24 @@
           "total": 3,
           "olympic": 1,
           "paralympic": 2,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Huntsville",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Mobile",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
           "countLabel": "public hometown entries"
         }
       ],
@@ -244,8 +280,46 @@
         "paralympic": 0,
         "total": 2
       },
-      "topHometownSignals": [],
-      "allHometownSignals": [],
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Eagle River",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Homer",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Eagle River",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Homer",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "low",
       "olympicPanel": {
         "program": "olympic",
@@ -372,6 +446,15 @@
           "olympic": 2,
           "paralympic": 2,
           "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Avondale",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
         }
       ],
       "allHometownSignals": [
@@ -391,6 +474,69 @@
           "total": 4,
           "olympic": 2,
           "paralympic": 2,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Avondale",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 4,
+          "areaType": "city",
+          "label": "Flagstaff",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 5,
+          "areaType": "city",
+          "label": "Gilbert",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 6,
+          "areaType": "city",
+          "label": "Mesa",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 7,
+          "areaType": "city",
+          "label": "Tempe",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 8,
+          "areaType": "city",
+          "label": "Glendale",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 9,
+          "areaType": "city",
+          "label": "Surprise",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
           "countLabel": "public hometown entries"
         }
       ],
@@ -642,8 +788,64 @@
         "paralympic": 4,
         "total": 4
       },
-      "topHometownSignals": [],
-      "allHometownSignals": [],
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Little Rock",
+          "total": 2,
+          "olympic": 0,
+          "paralympic": 2,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Mayflower",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Russellville",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Little Rock",
+          "total": 2,
+          "olympic": 0,
+          "paralympic": 2,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Mayflower",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Russellville",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "low",
       "olympicPanel": {
         "program": "olympic",
@@ -946,6 +1148,780 @@
           "label": "Hayward",
           "total": 3,
           "olympic": 2,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 14,
+          "areaType": "city",
+          "label": "Milpitas",
+          "total": 2,
+          "olympic": 2,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 15,
+          "areaType": "city",
+          "label": "Santa Cruz",
+          "total": 2,
+          "olympic": 2,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 16,
+          "areaType": "city",
+          "label": "Claremont",
+          "total": 2,
+          "olympic": 1,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 17,
+          "areaType": "city",
+          "label": "Folsom",
+          "total": 2,
+          "olympic": 1,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 18,
+          "areaType": "city",
+          "label": "Irvine",
+          "total": 2,
+          "olympic": 1,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 19,
+          "areaType": "city",
+          "label": "Malibu",
+          "total": 2,
+          "olympic": 1,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 20,
+          "areaType": "city",
+          "label": "Menlo Park",
+          "total": 2,
+          "olympic": 1,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 21,
+          "areaType": "city",
+          "label": "Sacramento",
+          "total": 2,
+          "olympic": 1,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 22,
+          "areaType": "city",
+          "label": "Agoura Hills",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 23,
+          "areaType": "city",
+          "label": "Aliso Viejo",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 24,
+          "areaType": "city",
+          "label": "Bakersfield",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 25,
+          "areaType": "city",
+          "label": "Beijing",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 26,
+          "areaType": "city",
+          "label": "Brentwood",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 27,
+          "areaType": "city",
+          "label": "Calgary",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 28,
+          "areaType": "city",
+          "label": "Camarillo",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 29,
+          "areaType": "city",
+          "label": "Carson",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 30,
+          "areaType": "city",
+          "label": "Chino",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 31,
+          "areaType": "city",
+          "label": "Chula Vista",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 32,
+          "areaType": "city",
+          "label": "Clayton",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 33,
+          "areaType": "city",
+          "label": "Costa Mesa",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 34,
+          "areaType": "city",
+          "label": "Cypress",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 35,
+          "areaType": "city",
+          "label": "Danville",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 36,
+          "areaType": "city",
+          "label": "Fallbrook",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 37,
+          "areaType": "city",
+          "label": "Fountain Valley",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 38,
+          "areaType": "city",
+          "label": "Fremont",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 39,
+          "areaType": "city",
+          "label": "Fresno",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 40,
+          "areaType": "city",
+          "label": "Fullerton",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 41,
+          "areaType": "city",
+          "label": "Glendora",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 42,
+          "areaType": "city",
+          "label": "Goleta",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 43,
+          "areaType": "city",
+          "label": "Groveland",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 44,
+          "areaType": "city",
+          "label": "Hawaiian Gardens",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 45,
+          "areaType": "city",
+          "label": "Hong Kong",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 46,
+          "areaType": "city",
+          "label": "La Canada",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 47,
+          "areaType": "city",
+          "label": "Lafayette",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 48,
+          "areaType": "city",
+          "label": "Loomis",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 49,
+          "areaType": "city",
+          "label": "Los Gatos",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 50,
+          "areaType": "city",
+          "label": "Manhattan Beach",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 51,
+          "areaType": "city",
+          "label": "Marina",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 52,
+          "areaType": "city",
+          "label": "Martinez",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 53,
+          "areaType": "city",
+          "label": "Milipitas",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 54,
+          "areaType": "city",
+          "label": "Modesto",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 55,
+          "areaType": "city",
+          "label": "Moorpark",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 56,
+          "areaType": "city",
+          "label": "Murrieta",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 57,
+          "areaType": "city",
+          "label": "North Hollywood",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 58,
+          "areaType": "city",
+          "label": "Oakland",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 59,
+          "areaType": "city",
+          "label": "Ontario",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 60,
+          "areaType": "city",
+          "label": "Orange County",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 61,
+          "areaType": "city",
+          "label": "Orinda",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 62,
+          "areaType": "city",
+          "label": "Pacific Palisades",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 63,
+          "areaType": "city",
+          "label": "Palm Desert",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 64,
+          "areaType": "city",
+          "label": "Palo Alto",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 65,
+          "areaType": "city",
+          "label": "Petaluma",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 66,
+          "areaType": "city",
+          "label": "Poway",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 67,
+          "areaType": "city",
+          "label": "Rancho Sante Fe",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 68,
+          "areaType": "city",
+          "label": "Redondo Beach",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 69,
+          "areaType": "city",
+          "label": "Richmond",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 70,
+          "areaType": "city",
+          "label": "Riverside",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 71,
+          "areaType": "city",
+          "label": "San Anselmo",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 72,
+          "areaType": "city",
+          "label": "San Clemente",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 73,
+          "areaType": "city",
+          "label": "San Mateo",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 74,
+          "areaType": "city",
+          "label": "Santa Barbara",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 75,
+          "areaType": "city",
+          "label": "Santa Clarita",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 76,
+          "areaType": "city",
+          "label": "Santa Margherita",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 77,
+          "areaType": "city",
+          "label": "Santa Rosa",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 78,
+          "areaType": "city",
+          "label": "Santa RosaC",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 79,
+          "areaType": "city",
+          "label": "Santee",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 80,
+          "areaType": "city",
+          "label": "Saugus",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 81,
+          "areaType": "city",
+          "label": "Scotts Valley",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 82,
+          "areaType": "city",
+          "label": "Seal Beach",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 83,
+          "areaType": "city",
+          "label": "Studio City",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 84,
+          "areaType": "city",
+          "label": "Temecula",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 85,
+          "areaType": "city",
+          "label": "Thousand Oaks",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 86,
+          "areaType": "city",
+          "label": "Vista",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 87,
+          "areaType": "city",
+          "label": "Carlsbad",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 88,
+          "areaType": "city",
+          "label": "Colton",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 89,
+          "areaType": "city",
+          "label": "Delano",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 90,
+          "areaType": "city",
+          "label": "Dublin",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 91,
+          "areaType": "city",
+          "label": "El Cerrito",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 92,
+          "areaType": "city",
+          "label": "Inglewood",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 93,
+          "areaType": "city",
+          "label": "Rancho Cucamonga",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 94,
+          "areaType": "city",
+          "label": "San Juan Capistrano",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 95,
+          "areaType": "city",
+          "label": "Somerset",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 96,
+          "areaType": "city",
+          "label": "Stockton",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 97,
+          "areaType": "city",
+          "label": "Westminster",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 98,
+          "areaType": "city",
+          "label": "Windsor",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 99,
+          "areaType": "city",
+          "label": "Yuba City",
+          "total": 1,
+          "olympic": 0,
           "paralympic": 1,
           "countLabel": "public hometown entries"
         }
@@ -1325,6 +2301,132 @@
           "olympic": 2,
           "paralympic": 1,
           "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 4,
+          "areaType": "city",
+          "label": "Littleton",
+          "total": 2,
+          "olympic": 2,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 5,
+          "areaType": "city",
+          "label": "Aurora",
+          "total": 2,
+          "olympic": 1,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 6,
+          "areaType": "city",
+          "label": "Broomfield",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 7,
+          "areaType": "city",
+          "label": "Durango",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 8,
+          "areaType": "city",
+          "label": "Edwards",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 9,
+          "areaType": "city",
+          "label": "Fort Collins",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 10,
+          "areaType": "city",
+          "label": "Golden",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 11,
+          "areaType": "city",
+          "label": "Greenwood Village",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 12,
+          "areaType": "city",
+          "label": "Highlands Ranch",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 13,
+          "areaType": "city",
+          "label": "Longmont",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 14,
+          "areaType": "city",
+          "label": "Parker",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 15,
+          "areaType": "city",
+          "label": "Windsor",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 16,
+          "areaType": "city",
+          "label": "Carbondale",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 17,
+          "areaType": "city",
+          "label": "Lakewood",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
         }
       ],
       "hometownPresenceBucket": "high",
@@ -1609,8 +2711,145 @@
         "paralympic": 4,
         "total": 12
       },
-      "topHometownSignals": [],
-      "allHometownSignals": [],
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Bethlehem",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Brookfield",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Cheshire",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Bethlehem",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Brookfield",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Cheshire",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 4,
+          "areaType": "city",
+          "label": "Greenwich",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 5,
+          "areaType": "city",
+          "label": "Old Lyme",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 6,
+          "areaType": "city",
+          "label": "Ridgefield",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 7,
+          "areaType": "city",
+          "label": "Stratford",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 8,
+          "areaType": "city",
+          "label": "Westport",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 9,
+          "areaType": "city",
+          "label": "Ansonia",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 10,
+          "areaType": "city",
+          "label": "Darien",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 11,
+          "areaType": "city",
+          "label": "Madison",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 12,
+          "areaType": "city",
+          "label": "Windsor, Connecticut",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "medium",
       "olympicPanel": {
         "program": "olympic",
@@ -1845,8 +3084,46 @@
         "paralympic": 0,
         "total": 2
       },
-      "topHometownSignals": [],
-      "allHometownSignals": [],
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Newark",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Wilmington",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Newark",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Wilmington",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "low",
       "olympicPanel": {
         "program": "olympic",
@@ -2027,6 +3304,276 @@
           "label": "Fort Lauderdale",
           "total": 3,
           "olympic": 2,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 6,
+          "areaType": "city",
+          "label": "Clearwater",
+          "total": 2,
+          "olympic": 2,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 7,
+          "areaType": "city",
+          "label": "Jacksonville",
+          "total": 2,
+          "olympic": 2,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 8,
+          "areaType": "city",
+          "label": "Kissimmee",
+          "total": 2,
+          "olympic": 1,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 9,
+          "areaType": "city",
+          "label": "Apopka",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 10,
+          "areaType": "city",
+          "label": "Bradenton",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 11,
+          "areaType": "city",
+          "label": "Brandon",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 12,
+          "areaType": "city",
+          "label": "Daytona Beach",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 13,
+          "areaType": "city",
+          "label": "Delray Beach",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 14,
+          "areaType": "city",
+          "label": "Fernandina Beach",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 15,
+          "areaType": "city",
+          "label": "Gainesville",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 16,
+          "areaType": "city",
+          "label": "Green Cove Springs",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 17,
+          "areaType": "city",
+          "label": "Inverness",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 18,
+          "areaType": "city",
+          "label": "Lakeland",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 19,
+          "areaType": "city",
+          "label": "Lehigh Acres",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 20,
+          "areaType": "city",
+          "label": "Loxahatchee",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 21,
+          "areaType": "city",
+          "label": "Melbourne Beach",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 22,
+          "areaType": "city",
+          "label": "Monteverde",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 23,
+          "areaType": "city",
+          "label": "Oldsmarf",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 24,
+          "areaType": "city",
+          "label": "Orlando",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 25,
+          "areaType": "city",
+          "label": "Palm Bay",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 26,
+          "areaType": "city",
+          "label": "St. Petersburg",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 27,
+          "areaType": "city",
+          "label": "Tallahassee",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 28,
+          "areaType": "city",
+          "label": "West Palm Beach",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 29,
+          "areaType": "city",
+          "label": "Windmere",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 30,
+          "areaType": "city",
+          "label": "Belleair Beach",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 31,
+          "areaType": "city",
+          "label": "Orange Park",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 32,
+          "areaType": "city",
+          "label": "Pensacola",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 33,
+          "areaType": "city",
+          "label": "Plant City",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 34,
+          "areaType": "city",
+          "label": "St. Augustine",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 35,
+          "areaType": "city",
+          "label": "St. Augustine Beach",
+          "total": 1,
+          "olympic": 0,
           "paralympic": 1,
           "countLabel": "public hometown entries"
         }
@@ -2355,6 +3902,15 @@
           "olympic": 4,
           "paralympic": 0,
           "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Athens",
+          "total": 2,
+          "olympic": 1,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
         }
       ],
       "allHometownSignals": [
@@ -2374,6 +3930,132 @@
           "total": 4,
           "olympic": 4,
           "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Athens",
+          "total": 2,
+          "olympic": 1,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 4,
+          "areaType": "city",
+          "label": "Bainbridge",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 5,
+          "areaType": "city",
+          "label": "Dacula",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 6,
+          "areaType": "city",
+          "label": "Douglasville",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 7,
+          "areaType": "city",
+          "label": "Dunwoody",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 8,
+          "areaType": "city",
+          "label": "Eatonton",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 9,
+          "areaType": "city",
+          "label": "Hampton",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 10,
+          "areaType": "city",
+          "label": "Lawrenceville",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 11,
+          "areaType": "city",
+          "label": "Moultrie",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 12,
+          "areaType": "city",
+          "label": "Summerville",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 13,
+          "areaType": "city",
+          "label": "Woodstock",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 14,
+          "areaType": "city",
+          "label": "Alpharetta",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 15,
+          "areaType": "city",
+          "label": "Clarkesville",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 16,
+          "areaType": "city",
+          "label": "Savannah",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
           "countLabel": "public hometown entries"
         }
       ],
@@ -2649,6 +4331,24 @@
           "olympic": 3,
           "paralympic": 0,
           "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Haleiwa",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Kaneohe",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
         }
       ],
       "allHometownSignals": [
@@ -2659,6 +4359,33 @@
           "total": 3,
           "olympic": 3,
           "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Haleiwa",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Kaneohe",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 4,
+          "areaType": "city",
+          "label": "Oahu",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
           "countLabel": "public hometown entries"
         }
       ],
@@ -2803,8 +4530,73 @@
         "paralympic": 2,
         "total": 4
       },
-      "topHometownSignals": [],
-      "allHometownSignals": [],
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Caldwell",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Rexburg",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Boise",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Caldwell",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Rexburg",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Boise",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 4,
+          "areaType": "city",
+          "label": "Eagle",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "low",
       "olympicPanel": {
         "program": "olympic",
@@ -2923,6 +4715,24 @@
           "olympic": 6,
           "paralympic": 2,
           "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Wheaton",
+          "total": 2,
+          "olympic": 2,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Naperville",
+          "total": 2,
+          "olympic": 1,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
         }
       ],
       "allHometownSignals": [
@@ -2933,6 +4743,276 @@
           "total": 8,
           "olympic": 6,
           "paralympic": 2,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Wheaton",
+          "total": 2,
+          "olympic": 2,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Naperville",
+          "total": 2,
+          "olympic": 1,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 4,
+          "areaType": "city",
+          "label": "Addison",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 5,
+          "areaType": "city",
+          "label": "Aurora",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 6,
+          "areaType": "city",
+          "label": "Bartlett",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 7,
+          "areaType": "city",
+          "label": "Bellwood",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 8,
+          "areaType": "city",
+          "label": "Boody",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 9,
+          "areaType": "city",
+          "label": "Deerfield",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 10,
+          "areaType": "city",
+          "label": "East Alton",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 11,
+          "areaType": "city",
+          "label": "Germantown Hills",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 12,
+          "areaType": "city",
+          "label": "Grayslake",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 13,
+          "areaType": "city",
+          "label": "Itasca",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 14,
+          "areaType": "city",
+          "label": "Lincolnwood",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 15,
+          "areaType": "city",
+          "label": "Mt. Prospect",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 16,
+          "areaType": "city",
+          "label": "Northfield",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 17,
+          "areaType": "city",
+          "label": "Orland Park",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 18,
+          "areaType": "city",
+          "label": "Riverside",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 19,
+          "areaType": "city",
+          "label": "Rock Island",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 20,
+          "areaType": "city",
+          "label": "Springfield",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 21,
+          "areaType": "city",
+          "label": "Wilmette",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 22,
+          "areaType": "city",
+          "label": "Winnetka",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 23,
+          "areaType": "city",
+          "label": "Algonquin",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 24,
+          "areaType": "city",
+          "label": "Champaign",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 25,
+          "areaType": "city",
+          "label": "Decatur",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 26,
+          "areaType": "city",
+          "label": "Downers Grove",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 27,
+          "areaType": "city",
+          "label": "Evanston",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 28,
+          "areaType": "city",
+          "label": "Glen Ellyn",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 29,
+          "areaType": "city",
+          "label": "Lake Villa",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 30,
+          "areaType": "city",
+          "label": "Nashville",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 31,
+          "areaType": "city",
+          "label": "Richview",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
           "countLabel": "public hometown entries"
         }
       ],
@@ -3314,6 +5394,132 @@
           "olympic": 1,
           "paralympic": 3,
           "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 4,
+          "areaType": "city",
+          "label": "Bloomington",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 5,
+          "areaType": "city",
+          "label": "Brownsburg",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 6,
+          "areaType": "city",
+          "label": "Chesterton",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 7,
+          "areaType": "city",
+          "label": "Elkhart",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 8,
+          "areaType": "city",
+          "label": "Evansville",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 9,
+          "areaType": "city",
+          "label": "Granger",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 10,
+          "areaType": "city",
+          "label": "Lawrenceburg",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 11,
+          "areaType": "city",
+          "label": "Noblesville",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 12,
+          "areaType": "city",
+          "label": "Plainfield",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 13,
+          "areaType": "city",
+          "label": "Princeton",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 14,
+          "areaType": "city",
+          "label": "Fishers",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 15,
+          "areaType": "city",
+          "label": "Middlebury",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 16,
+          "areaType": "city",
+          "label": "Muncie",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 17,
+          "areaType": "city",
+          "label": "Terre Haute",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
         }
       ],
       "hometownPresenceBucket": "high",
@@ -3578,8 +5784,100 @@
         "paralympic": 5,
         "total": 7
       },
-      "topHometownSignals": [],
-      "allHometownSignals": [],
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Davenport",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Urbandale",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Cedar Rapids",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Davenport",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Urbandale",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Cedar Rapids",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 4,
+          "areaType": "city",
+          "label": "Coralville",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 5,
+          "areaType": "city",
+          "label": "Des Moines",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 6,
+          "areaType": "city",
+          "label": "Swisher",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 7,
+          "areaType": "city",
+          "label": "Woodbine",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "medium",
       "olympicPanel": {
         "program": "olympic",
@@ -3724,8 +6022,82 @@
         "paralympic": 4,
         "total": 5
       },
-      "topHometownSignals": [],
-      "allHometownSignals": [],
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Paola",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Kansas City",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Overland Park",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Paola",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Kansas City",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Overland Park",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 4,
+          "areaType": "city",
+          "label": "Stilwell",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 5,
+          "areaType": "city",
+          "label": "Wichita, Kan.",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "medium",
       "olympicPanel": {
         "program": "olympic",
@@ -3892,8 +6264,64 @@
         "paralympic": 1,
         "total": 4
       },
-      "topHometownSignals": [],
-      "allHometownSignals": [],
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Louisville",
+          "total": 2,
+          "olympic": 1,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Lexington",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Walton",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Louisville",
+          "total": 2,
+          "olympic": 1,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Lexington",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Walton",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "low",
       "olympicPanel": {
         "program": "olympic",
@@ -4055,6 +6483,15 @@
           "olympic": 3,
           "paralympic": 0,
           "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Lafayette",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
         }
       ],
       "allHometownSignals": [
@@ -4064,6 +6501,15 @@
           "label": "New Orleans",
           "total": 3,
           "olympic": 3,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Lafayette",
+          "total": 1,
+          "olympic": 1,
           "paralympic": 0,
           "countLabel": "public hometown entries"
         }
@@ -4231,8 +6677,28 @@
         "paralympic": 1,
         "total": 1
       },
-      "topHometownSignals": [],
-      "allHometownSignals": [],
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Falmouth",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Falmouth",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "low",
       "olympicPanel": {
         "program": "olympic",
@@ -4360,6 +6826,15 @@
           "olympic": 2,
           "paralympic": 1,
           "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Baltimore",
+          "total": 2,
+          "olympic": 0,
+          "paralympic": 2,
+          "countLabel": "public hometown entries"
         }
       ],
       "allHometownSignals": [
@@ -4378,6 +6853,159 @@
           "label": "Ellicott City",
           "total": 3,
           "olympic": 2,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Baltimore",
+          "total": 2,
+          "olympic": 0,
+          "paralympic": 2,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 4,
+          "areaType": "city",
+          "label": "Bel Air",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 5,
+          "areaType": "city",
+          "label": "Chevy Chase",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 6,
+          "areaType": "city",
+          "label": "Gaithersburg",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 7,
+          "areaType": "city",
+          "label": "Hagerstown",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 8,
+          "areaType": "city",
+          "label": "Laurel",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 9,
+          "areaType": "city",
+          "label": "Oxon Hill",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 10,
+          "areaType": "city",
+          "label": "Potomac",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 11,
+          "areaType": "city",
+          "label": "Rockville",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 12,
+          "areaType": "city",
+          "label": "Silver Spring",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 13,
+          "areaType": "city",
+          "label": "Washington D.C.",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 14,
+          "areaType": "city",
+          "label": "Washington, D.C.",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 15,
+          "areaType": "city",
+          "label": "Adamstown",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 16,
+          "areaType": "city",
+          "label": "Huntingtown",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 17,
+          "areaType": "city",
+          "label": "Mount Airy",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 18,
+          "areaType": "city",
+          "label": "Mt. Airy",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 19,
+          "areaType": "city",
+          "label": "Waldorf",
+          "total": 1,
+          "olympic": 0,
           "paralympic": 1,
           "countLabel": "public hometown entries"
         }
@@ -4659,6 +7287,24 @@
           "olympic": 2,
           "paralympic": 2,
           "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Andover",
+          "total": 2,
+          "olympic": 1,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Arlington",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
         }
       ],
       "allHometownSignals": [
@@ -4669,6 +7315,159 @@
           "total": 4,
           "olympic": 2,
           "paralympic": 2,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Andover",
+          "total": 2,
+          "olympic": 1,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Arlington",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 4,
+          "areaType": "city",
+          "label": "Brookline",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 5,
+          "areaType": "city",
+          "label": "Concord",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 6,
+          "areaType": "city",
+          "label": "Dover",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 7,
+          "areaType": "city",
+          "label": "Duxbury",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 8,
+          "areaType": "city",
+          "label": "Franklin",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 9,
+          "areaType": "city",
+          "label": "Lancaster",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 10,
+          "areaType": "city",
+          "label": "Methuen",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 11,
+          "areaType": "city",
+          "label": "North Andover",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 12,
+          "areaType": "city",
+          "label": "Stoughton",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 13,
+          "areaType": "city",
+          "label": "Wellesley",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 14,
+          "areaType": "city",
+          "label": "Weston",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 15,
+          "areaType": "city",
+          "label": "Worcester",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 16,
+          "areaType": "city",
+          "label": "Easthampton",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 17,
+          "areaType": "city",
+          "label": "Salem",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 18,
+          "areaType": "city",
+          "label": "Wilmington",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
           "countLabel": "public hometown entries"
         }
       ],
@@ -4953,6 +7752,24 @@
           "olympic": 2,
           "paralympic": 1,
           "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Buchanan",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Caledonia",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
         }
       ],
       "allHometownSignals": [
@@ -4962,6 +7779,150 @@
           "label": "Ann Arbor",
           "total": 3,
           "olympic": 2,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Buchanan",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Caledonia",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 4,
+          "areaType": "city",
+          "label": "Dexter",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 5,
+          "areaType": "city",
+          "label": "Fowlerville",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 6,
+          "areaType": "city",
+          "label": "Grand Blanc",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 7,
+          "areaType": "city",
+          "label": "Grand Rapids",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 8,
+          "areaType": "city",
+          "label": "Grosse Pointe Park",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 9,
+          "areaType": "city",
+          "label": "Kalamazoo",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 10,
+          "areaType": "city",
+          "label": "Muskegon",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 11,
+          "areaType": "city",
+          "label": "Portage",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 12,
+          "areaType": "city",
+          "label": "White Lake",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 13,
+          "areaType": "city",
+          "label": "Eaton Rapids",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 14,
+          "areaType": "city",
+          "label": "Grand Haven",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 15,
+          "areaType": "city",
+          "label": "Lowell",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 16,
+          "areaType": "city",
+          "label": "Oak Park",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 17,
+          "areaType": "city",
+          "label": "St. Johns",
+          "total": 1,
+          "olympic": 0,
           "paralympic": 1,
           "countLabel": "public hometown entries"
         }
@@ -5259,8 +8220,181 @@
         "paralympic": 11,
         "total": 19
       },
-      "topHometownSignals": [],
-      "allHometownSignals": [],
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Edina",
+          "total": 2,
+          "olympic": 1,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Lakeville",
+          "total": 2,
+          "olympic": 1,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Minneapolis",
+          "total": 2,
+          "olympic": 0,
+          "paralympic": 2,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Edina",
+          "total": 2,
+          "olympic": 1,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Lakeville",
+          "total": 2,
+          "olympic": 1,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Minneapolis",
+          "total": 2,
+          "olympic": 0,
+          "paralympic": 2,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 4,
+          "areaType": "city",
+          "label": "Greenwood",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 5,
+          "areaType": "city",
+          "label": "Rosemount",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 6,
+          "areaType": "city",
+          "label": "Saint Paul",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 7,
+          "areaType": "city",
+          "label": "Shoreview",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 8,
+          "areaType": "city",
+          "label": "St. Cloud",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 9,
+          "areaType": "city",
+          "label": "St. Francis",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 10,
+          "areaType": "city",
+          "label": "Eagan",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 11,
+          "areaType": "city",
+          "label": "Elysian",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 12,
+          "areaType": "city",
+          "label": "Jordan",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 13,
+          "areaType": "city",
+          "label": "Park Rapids",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 14,
+          "areaType": "city",
+          "label": "Savage",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 15,
+          "areaType": "city",
+          "label": "Stillwater",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 16,
+          "areaType": "city",
+          "label": "Waseca",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "medium",
       "olympicPanel": {
         "program": "olympic",
@@ -5559,8 +8693,46 @@
         "paralympic": 0,
         "total": 2
       },
-      "topHometownSignals": [],
-      "allHometownSignals": [],
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Abbeville",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Oxford",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Abbeville",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Oxford",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "low",
       "olympicPanel": {
         "program": "olympic",
@@ -5677,6 +8849,24 @@
           "olympic": 2,
           "paralympic": 2,
           "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Kansas City",
+          "total": 2,
+          "olympic": 2,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "St. Charles",
+          "total": 2,
+          "olympic": 2,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
         }
       ],
       "allHometownSignals": [
@@ -5687,6 +8877,69 @@
           "total": 4,
           "olympic": 2,
           "paralympic": 2,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Kansas City",
+          "total": 2,
+          "olympic": 2,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "St. Charles",
+          "total": 2,
+          "olympic": 2,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 4,
+          "areaType": "city",
+          "label": "Ballwin",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 5,
+          "areaType": "city",
+          "label": "Old Monroe/Troy, Missouri",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 6,
+          "areaType": "city",
+          "label": "Pattonsburg",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 7,
+          "areaType": "city",
+          "label": "St. Louis, Mo.",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 8,
+          "areaType": "city",
+          "label": "St. Joseph",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
           "countLabel": "public hometown entries"
         }
       ],
@@ -5915,8 +9168,64 @@
         "paralympic": 0,
         "total": 3
       },
-      "topHometownSignals": [],
-      "allHometownSignals": [],
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Billings",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Manhattan",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Missoula",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Billings",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Manhattan",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Missoula",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "low",
       "olympicPanel": {
         "program": "olympic",
@@ -6077,6 +9386,24 @@
           "olympic": 2,
           "paralympic": 1,
           "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Geneva",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Hooper",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
         }
       ],
       "allHometownSignals": [
@@ -6086,6 +9413,42 @@
           "label": "Omaha",
           "total": 3,
           "olympic": 2,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Geneva",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Hooper",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 4,
+          "areaType": "city",
+          "label": "Norfolk",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 5,
+          "areaType": "city",
+          "label": "Ord",
+          "total": 1,
+          "olympic": 0,
           "paralympic": 1,
           "countLabel": "public hometown entries"
         }
@@ -6306,6 +9669,15 @@
           "olympic": 3,
           "paralympic": 0,
           "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Boulder City",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
         }
       ],
       "allHometownSignals": [
@@ -6324,6 +9696,15 @@
           "label": "Reno",
           "total": 3,
           "olympic": 3,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Boulder City",
+          "total": 1,
+          "olympic": 1,
           "paralympic": 0,
           "countLabel": "public hometown entries"
         }
@@ -6522,8 +9903,73 @@
         "paralympic": 2,
         "total": 4
       },
-      "topHometownSignals": [],
-      "allHometownSignals": [],
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Bedford",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Dover",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Manchester",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Bedford",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Dover",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Manchester",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 4,
+          "areaType": "city",
+          "label": "Newmarket",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "low",
       "olympicPanel": {
         "program": "olympic",
@@ -6633,8 +10079,235 @@
         "paralympic": 2,
         "total": 24
       },
-      "topHometownSignals": [],
-      "allHometownSignals": [],
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Morristown",
+          "total": 2,
+          "olympic": 2,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Ridgewood",
+          "total": 2,
+          "olympic": 2,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Bridgewater",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Morristown",
+          "total": 2,
+          "olympic": 2,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Ridgewood",
+          "total": 2,
+          "olympic": 2,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Bridgewater",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 4,
+          "areaType": "city",
+          "label": "Chatham",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 5,
+          "areaType": "city",
+          "label": "Dunellen",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 6,
+          "areaType": "city",
+          "label": "East Brunswick",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 7,
+          "areaType": "city",
+          "label": "Florence",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 8,
+          "areaType": "city",
+          "label": "Livingston",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 9,
+          "areaType": "city",
+          "label": "Medford",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 10,
+          "areaType": "city",
+          "label": "Mount Olive",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 11,
+          "areaType": "city",
+          "label": "New Vernon",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 12,
+          "areaType": "city",
+          "label": "Newark",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 13,
+          "areaType": "city",
+          "label": "Oradell",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 14,
+          "areaType": "city",
+          "label": "Randolph",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 15,
+          "areaType": "city",
+          "label": "Riverdale",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 16,
+          "areaType": "city",
+          "label": "Sewell",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 17,
+          "areaType": "city",
+          "label": "Short Hills",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 18,
+          "areaType": "city",
+          "label": "Upper Montclair",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 19,
+          "areaType": "city",
+          "label": "Warren",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 20,
+          "areaType": "city",
+          "label": "West Long Branch",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 21,
+          "areaType": "city",
+          "label": "Cranford",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 22,
+          "areaType": "city",
+          "label": "Toms River",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "high",
       "olympicPanel": {
         "program": "olympic",
@@ -6840,8 +10513,46 @@
         "paralympic": 0,
         "total": 2
       },
-      "topHometownSignals": [],
-      "allHometownSignals": [],
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Albuquerque",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Los Alamos",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Albuquerque",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Los Alamos",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "low",
       "olympicPanel": {
         "program": "olympic",
@@ -6950,8 +10661,289 @@
         "paralympic": 8,
         "total": 31
       },
-      "topHometownSignals": [],
-      "allHometownSignals": [],
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Buffalo",
+          "total": 2,
+          "olympic": 2,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "New York City",
+          "total": 2,
+          "olympic": 2,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Queens",
+          "total": 2,
+          "olympic": 2,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Buffalo",
+          "total": 2,
+          "olympic": 2,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "New York City",
+          "total": 2,
+          "olympic": 2,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Queens",
+          "total": 2,
+          "olympic": 2,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 4,
+          "areaType": "city",
+          "label": "Brewster",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 5,
+          "areaType": "city",
+          "label": "Bronx",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 6,
+          "areaType": "city",
+          "label": "Brooklyn",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 7,
+          "areaType": "city",
+          "label": "Cornell University",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 8,
+          "areaType": "city",
+          "label": "Endicott",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 9,
+          "areaType": "city",
+          "label": "Glens Falls",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 10,
+          "areaType": "city",
+          "label": "Middle Village",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 11,
+          "areaType": "city",
+          "label": "Mount Vernon",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 12,
+          "areaType": "city",
+          "label": "Naples",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 13,
+          "areaType": "city",
+          "label": "North Syracuse",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 14,
+          "areaType": "city",
+          "label": "Nyack",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 15,
+          "areaType": "city",
+          "label": "Pelham",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 16,
+          "areaType": "city",
+          "label": "Pittsford",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 17,
+          "areaType": "city",
+          "label": "Rockville Centre",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 18,
+          "areaType": "city",
+          "label": "Sand Lake",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 19,
+          "areaType": "city",
+          "label": "Watkins Glen",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 20,
+          "areaType": "city",
+          "label": "West Seneca",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 21,
+          "areaType": "city",
+          "label": "East Moriches",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 22,
+          "areaType": "city",
+          "label": "Jamestown",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 23,
+          "areaType": "city",
+          "label": "Long Island",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 24,
+          "areaType": "city",
+          "label": "Northport",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 25,
+          "areaType": "city",
+          "label": "Ozone Park",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 26,
+          "areaType": "city",
+          "label": "Poughkeepsie",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 27,
+          "areaType": "city",
+          "label": "Rochester",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 28,
+          "areaType": "city",
+          "label": "Westbury",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "high",
       "olympicPanel": {
         "program": "olympic",
@@ -7279,6 +11271,15 @@
           "olympic": 1,
           "paralympic": 2,
           "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Fayetteville",
+          "total": 2,
+          "olympic": 1,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
         }
       ],
       "allHometownSignals": [
@@ -7298,6 +11299,105 @@
           "total": 3,
           "olympic": 1,
           "paralympic": 2,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Fayetteville",
+          "total": 2,
+          "olympic": 1,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 4,
+          "areaType": "city",
+          "label": "Beaufort",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 5,
+          "areaType": "city",
+          "label": "Bryson City",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 6,
+          "areaType": "city",
+          "label": "Greensboro",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 7,
+          "areaType": "city",
+          "label": "Greenville",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 8,
+          "areaType": "city",
+          "label": "Holly Springs",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 9,
+          "areaType": "city",
+          "label": "Cary",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 10,
+          "areaType": "city",
+          "label": "Durham",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 11,
+          "areaType": "city",
+          "label": "Rutherfordton",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 12,
+          "areaType": "city",
+          "label": "Statesville",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 13,
+          "areaType": "city",
+          "label": "Wake Forest",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
           "countLabel": "public hometown entries"
         }
       ],
@@ -7702,6 +11802,24 @@
           "olympic": 4,
           "paralympic": 0,
           "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Akron",
+          "total": 2,
+          "olympic": 2,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Cleveland",
+          "total": 2,
+          "olympic": 1,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
         }
       ],
       "allHometownSignals": [
@@ -7712,6 +11830,132 @@
           "total": 4,
           "olympic": 4,
           "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Akron",
+          "total": 2,
+          "olympic": 2,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Cleveland",
+          "total": 2,
+          "olympic": 1,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 4,
+          "areaType": "city",
+          "label": "Bluffton",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 5,
+          "areaType": "city",
+          "label": "Canton",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 6,
+          "areaType": "city",
+          "label": "Dayton",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 7,
+          "areaType": "city",
+          "label": "Dover",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 8,
+          "areaType": "city",
+          "label": "Ironton",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 9,
+          "areaType": "city",
+          "label": "Olmsted Falls",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 10,
+          "areaType": "city",
+          "label": "Pickerington",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 11,
+          "areaType": "city",
+          "label": "Attica",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 12,
+          "areaType": "city",
+          "label": "Bellbrook",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 13,
+          "areaType": "city",
+          "label": "Columbus",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 14,
+          "areaType": "city",
+          "label": "Jamestown",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 15,
+          "areaType": "city",
+          "label": "Ravenna",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
           "countLabel": "public hometown entries"
         }
       ],
@@ -7978,8 +12222,82 @@
         "paralympic": 4,
         "total": 5
       },
-      "topHometownSignals": [],
-      "allHometownSignals": [],
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Yuton",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Ardmore",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Oklahoma City",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Yuton",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Ardmore",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Oklahoma City",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 4,
+          "areaType": "city",
+          "label": "Skiatook",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 5,
+          "areaType": "city",
+          "label": "Warner",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "medium",
       "olympicPanel": {
         "program": "olympic",
@@ -8133,6 +12451,24 @@
           "olympic": 3,
           "paralympic": 2,
           "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Beaverton",
+          "total": 2,
+          "olympic": 1,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Boring",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
         }
       ],
       "allHometownSignals": [
@@ -8143,6 +12479,33 @@
           "total": 5,
           "olympic": 3,
           "paralympic": 2,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Beaverton",
+          "total": 2,
+          "olympic": 1,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Boring",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 4,
+          "areaType": "city",
+          "label": "Medford",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
           "countLabel": "public hometown entries"
         }
       ],
@@ -8428,6 +12791,249 @@
           "total": 3,
           "olympic": 1,
           "paralympic": 2,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 4,
+          "areaType": "city",
+          "label": "Millersville",
+          "total": 2,
+          "olympic": 2,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 5,
+          "areaType": "city",
+          "label": "Harrisburg",
+          "total": 2,
+          "olympic": 1,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 6,
+          "areaType": "city",
+          "label": "Alburtis",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 7,
+          "areaType": "city",
+          "label": "Benton",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 8,
+          "areaType": "city",
+          "label": "Bethlehem",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 9,
+          "areaType": "city",
+          "label": "Cochranville",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 10,
+          "areaType": "city",
+          "label": "Douglassville",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 11,
+          "areaType": "city",
+          "label": "Drums",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 12,
+          "areaType": "city",
+          "label": "Greensburg",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 13,
+          "areaType": "city",
+          "label": "Hamburg",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 14,
+          "areaType": "city",
+          "label": "Haverford",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 15,
+          "areaType": "city",
+          "label": "Honey Brook",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 16,
+          "areaType": "city",
+          "label": "Kennett Square",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 17,
+          "areaType": "city",
+          "label": "Lancaster",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 18,
+          "areaType": "city",
+          "label": "Mohnton",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 19,
+          "areaType": "city",
+          "label": "Murrysville",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 20,
+          "areaType": "city",
+          "label": "Oley",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 21,
+          "areaType": "city",
+          "label": "Philladelphia",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 22,
+          "areaType": "city",
+          "label": "Schwenksville",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 23,
+          "areaType": "city",
+          "label": "Strafford",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 24,
+          "areaType": "city",
+          "label": "West Chester",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 25,
+          "areaType": "city",
+          "label": "Carmichaels",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 26,
+          "areaType": "city",
+          "label": "Erie",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 27,
+          "areaType": "city",
+          "label": "Havertown",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 28,
+          "areaType": "city",
+          "label": "Irwin",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 29,
+          "areaType": "city",
+          "label": "Meadville",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 30,
+          "areaType": "city",
+          "label": "Mechanicsburg",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
           "countLabel": "public hometown entries"
         }
       ],
@@ -8738,8 +13344,46 @@
         "paralympic": 0,
         "total": 2
       },
-      "topHometownSignals": [],
-      "allHometownSignals": [],
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Jamestown",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Providence",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Jamestown",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Providence",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "low",
       "olympicPanel": {
         "program": "olympic",
@@ -8848,8 +13492,82 @@
         "paralympic": 1,
         "total": 6
       },
-      "topHometownSignals": [],
-      "allHometownSignals": [],
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Charleston",
+          "total": 2,
+          "olympic": 2,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Columbia",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Dillon",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Charleston",
+          "total": 2,
+          "olympic": 2,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Columbia",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Dillon",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 4,
+          "areaType": "city",
+          "label": "Hemingway",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 5,
+          "areaType": "city",
+          "label": "Aiken",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "medium",
       "olympicPanel": {
         "program": "olympic",
@@ -9003,8 +13721,46 @@
         "paralympic": 1,
         "total": 2
       },
-      "topHometownSignals": [],
-      "allHometownSignals": [],
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Sioux Falls",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Yankton",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Sioux Falls",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Yankton",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "low",
       "olympicPanel": {
         "program": "olympic",
@@ -9114,8 +13870,100 @@
         "paralympic": 1,
         "total": 8
       },
-      "topHometownSignals": [],
-      "allHometownSignals": [],
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Nashville",
+          "total": 2,
+          "olympic": 2,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Cleveland",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Germantown",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Nashville",
+          "total": 2,
+          "olympic": 2,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Cleveland",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Germantown",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 4,
+          "areaType": "city",
+          "label": "Hixson",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 5,
+          "areaType": "city",
+          "label": "Knoxville",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 6,
+          "areaType": "city",
+          "label": "Memphis",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 7,
+          "areaType": "city",
+          "label": "Kingsport",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "medium",
       "olympicPanel": {
         "program": "olympic",
@@ -9354,6 +14202,249 @@
           "total": 3,
           "olympic": 3,
           "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 5,
+          "areaType": "city",
+          "label": "Austin",
+          "total": 2,
+          "olympic": 2,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 6,
+          "areaType": "city",
+          "label": "Katy",
+          "total": 2,
+          "olympic": 1,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 7,
+          "areaType": "city",
+          "label": "Southlake",
+          "total": 2,
+          "olympic": 1,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 8,
+          "areaType": "city",
+          "label": "Burleson",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 9,
+          "areaType": "city",
+          "label": "Coppell",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 10,
+          "areaType": "city",
+          "label": "Frisco",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 11,
+          "areaType": "city",
+          "label": "Gail",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 12,
+          "areaType": "city",
+          "label": "Grand Prairie",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 13,
+          "areaType": "city",
+          "label": "Keller",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 14,
+          "areaType": "city",
+          "label": "Laredo",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 15,
+          "areaType": "city",
+          "label": "Mansfield",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 16,
+          "areaType": "city",
+          "label": "McAllen",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 17,
+          "areaType": "city",
+          "label": "Midland",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 18,
+          "areaType": "city",
+          "label": "Missouri City",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 19,
+          "areaType": "city",
+          "label": "Plano",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 20,
+          "areaType": "city",
+          "label": "San Antonio",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 21,
+          "areaType": "city",
+          "label": "Springs",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 22,
+          "areaType": "city",
+          "label": "Sugar Land",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 23,
+          "areaType": "city",
+          "label": "Taylor",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 24,
+          "areaType": "city",
+          "label": "Texarkana",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 25,
+          "areaType": "city",
+          "label": "Tomball",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 26,
+          "areaType": "city",
+          "label": "Wichita Falls",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 27,
+          "areaType": "city",
+          "label": "Wylie",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 28,
+          "areaType": "city",
+          "label": "Brownsville",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 29,
+          "areaType": "city",
+          "label": "Cedar Park",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 30,
+          "areaType": "city",
+          "label": "Corsicana",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 31,
+          "areaType": "city",
+          "label": "Perryton",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
           "countLabel": "public hometown entries"
         }
       ],
@@ -9638,8 +14729,136 @@
         "paralympic": 4,
         "total": 11
       },
-      "topHometownSignals": [],
-      "allHometownSignals": [],
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "American Fork",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Eden",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Herriman",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "American Fork",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Eden",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Herriman",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 4,
+          "areaType": "city",
+          "label": "Layton",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 5,
+          "areaType": "city",
+          "label": "Logan",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 6,
+          "areaType": "city",
+          "label": "Panguitch",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 7,
+          "areaType": "city",
+          "label": "Provo",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 8,
+          "areaType": "city",
+          "label": "Eagle Mountain",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 9,
+          "areaType": "city",
+          "label": "Murray",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 10,
+          "areaType": "city",
+          "label": "Sandy",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 11,
+          "areaType": "city",
+          "label": "Syracuse",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "medium",
       "olympicPanel": {
         "program": "olympic",
@@ -9842,8 +15061,64 @@
         "paralympic": 0,
         "total": 3
       },
-      "topHometownSignals": [],
-      "allHometownSignals": [],
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Burlington",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Montgomery",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Norwich",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Burlington",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Montgomery",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Norwich",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "low",
       "olympicPanel": {
         "program": "olympic",
@@ -10000,8 +15275,28 @@
         "paralympic": 0,
         "total": 1
       },
-      "topHometownSignals": [],
-      "allHometownSignals": [],
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "St. Thomas",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "St. Thomas",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "low",
       "olympicPanel": {
         "program": "olympic",
@@ -10119,6 +15414,24 @@
           "olympic": 2,
           "paralympic": 1,
           "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Alexandria",
+          "total": 2,
+          "olympic": 2,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Oakton",
+          "total": 2,
+          "olympic": 2,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
         }
       ],
       "allHometownSignals": [
@@ -10128,6 +15441,114 @@
           "label": "Virginia Beach",
           "total": 3,
           "olympic": 2,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Alexandria",
+          "total": 2,
+          "olympic": 2,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Oakton",
+          "total": 2,
+          "olympic": 2,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 4,
+          "areaType": "city",
+          "label": "Arlington",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 5,
+          "areaType": "city",
+          "label": "Ashburn",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 6,
+          "areaType": "city",
+          "label": "Chesapeake",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 7,
+          "areaType": "city",
+          "label": "Cliffton",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 8,
+          "areaType": "city",
+          "label": "Crozet",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 9,
+          "areaType": "city",
+          "label": "Gordonsville",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 10,
+          "areaType": "city",
+          "label": "McLean",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 11,
+          "areaType": "city",
+          "label": "Richmond",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 12,
+          "areaType": "city",
+          "label": "South Riding",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 13,
+          "areaType": "city",
+          "label": "Manassas",
+          "total": 1,
+          "olympic": 0,
           "paralympic": 1,
           "countLabel": "public hometown entries"
         }
@@ -10349,6 +15770,24 @@
           "olympic": 5,
           "paralympic": 0,
           "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Spokane",
+          "total": 2,
+          "olympic": 0,
+          "paralympic": 2,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Bellingham",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
         }
       ],
       "allHometownSignals": [
@@ -10359,6 +15798,177 @@
           "total": 5,
           "olympic": 5,
           "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Spokane",
+          "total": 2,
+          "olympic": 0,
+          "paralympic": 2,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Bellingham",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 4,
+          "areaType": "city",
+          "label": "College Place",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 5,
+          "areaType": "city",
+          "label": "Pasco, Wash.",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 6,
+          "areaType": "city",
+          "label": "Pullman",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 7,
+          "areaType": "city",
+          "label": "Vancouver",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 8,
+          "areaType": "city",
+          "label": "Vashon Island",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 9,
+          "areaType": "city",
+          "label": "Wenatchee",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 10,
+          "areaType": "city",
+          "label": "Woodinville",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 11,
+          "areaType": "city",
+          "label": "Acme",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 12,
+          "areaType": "city",
+          "label": "Arlington",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 13,
+          "areaType": "city",
+          "label": "Burien",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 14,
+          "areaType": "city",
+          "label": "Kent",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 15,
+          "areaType": "city",
+          "label": "Lake Stevens",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 16,
+          "areaType": "city",
+          "label": "Mead",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 17,
+          "areaType": "city",
+          "label": "Richland",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 18,
+          "areaType": "city",
+          "label": "Spokane Valley",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 19,
+          "areaType": "city",
+          "label": "Tekoa",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 20,
+          "areaType": "city",
+          "label": "Walla Walla",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
           "countLabel": "public hometown entries"
         }
       ],
@@ -10637,8 +16247,46 @@
         "paralympic": 2,
         "total": 2
       },
-      "topHometownSignals": [],
-      "allHometownSignals": [],
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Elkins",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Fayetteville",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Elkins",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Fayetteville",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "low",
       "olympicPanel": {
         "program": "olympic",
@@ -10747,8 +16395,190 @@
         "paralympic": 6,
         "total": 18
       },
-      "topHometownSignals": [],
-      "allHometownSignals": [],
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Milwaukee",
+          "total": 2,
+          "olympic": 1,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Belleville",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "East Troy",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Milwaukee",
+          "total": 2,
+          "olympic": 1,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Belleville",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "East Troy",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 4,
+          "areaType": "city",
+          "label": "Eau Claire",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 5,
+          "areaType": "city",
+          "label": "Elkhorn",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 6,
+          "areaType": "city",
+          "label": "Franklin",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 7,
+          "areaType": "city",
+          "label": "Hartland",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 8,
+          "areaType": "city",
+          "label": "Kenosha",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 9,
+          "areaType": "city",
+          "label": "Neenah",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 10,
+          "areaType": "city",
+          "label": "Oshkosh",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 11,
+          "areaType": "city",
+          "label": "Rice Lake",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 12,
+          "areaType": "city",
+          "label": "West Bend",
+          "total": 1,
+          "olympic": 1,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 13,
+          "areaType": "city",
+          "label": "Cedar Grove",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 14,
+          "areaType": "city",
+          "label": "Chicago",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 15,
+          "areaType": "city",
+          "label": "Deerfield",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 16,
+          "areaType": "city",
+          "label": "Germantown",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 17,
+          "areaType": "city",
+          "label": "Milton",
+          "total": 1,
+          "olympic": 0,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "medium",
       "olympicPanel": {
         "program": "olympic",

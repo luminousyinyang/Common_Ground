@@ -103,7 +103,7 @@ const TRAITS = [
 
 const SPORT_CANDIDATE_LIMIT = 8;
 const HOMETOWN_SIGNAL_LIMIT = 3;
-const HOMETOWN_SIGNAL_MINIMUM = 3;
+const HOMETOWN_SIGNAL_MINIMUM = 1;
 
 const args = parseArgs(process.argv.slice(2));
 const retrievedAt = args.retrievedAt || new Date().toISOString().slice(0, 10);

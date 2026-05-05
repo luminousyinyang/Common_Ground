@@ -1645,7 +1645,7 @@ function SportPanel({ panel }) {
       </div>
       <div className="panel-body">
         <h4>{visualCue}</h4>
-        {copy.subtitle && <p className="panel-subtitle">{copy.subtitle}</p>}
+
         <div className="panel-qa-list">
           {qaRows.map(([key, label, value]) => (
             <div className="panel-qa-row" key={key}>
