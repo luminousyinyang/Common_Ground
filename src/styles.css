@@ -1286,8 +1286,8 @@ html[data-surface="blacktop"] .ghost-button:focus-visible {
 
 html[data-surface="blacktop"] .primary-button:hover,
 html[data-surface="blacktop"] .primary-button:focus-visible {
-  background: color-mix(in srgb, var(--cta) 80%, white);
-  border-color: color-mix(in srgb, var(--cta) 80%, white);
+  background: color-mix(in srgb, var(--cta) 55%, white);
+  border-color: color-mix(in srgb, var(--cta) 55%, white);
   box-shadow: 4px 4px 0 #9D4D32;
   transform: translateY(-3px);
 }
@@ -3810,7 +3810,11 @@ html[data-surface="blacktop"] .game-board.has-game-background .focus-readout {
   border: 1px solid var(--line);
   border-radius: 999px;
   padding: 4px;
-  background: var(--glass);
+  background: rgba(0, 0, 0, 0.05);
+}
+
+html[data-surface="blacktop"] .top-nav-center {
+  background: rgba(0, 0, 0, 0.25);
 }
 
 .nav-sliding-pill {
@@ -4078,8 +4082,8 @@ html[data-surface="blacktop"] .top-nav-login-btn:hover {
 }
 
 html[data-surface="blacktop"] .landing-hero-content .ghost-button:hover {
-  background: rgba(255, 255, 255, 0.35);
-  box-shadow: 4px 4px 0 #CFA14D;
+  background: rgba(255, 255, 255, 0.45);
+  box-shadow: 4px 4px 0 #9D4D32;
 }
 
 html[data-surface="blacktop"] .landing-hero-content .primary-button {
@@ -4088,15 +4092,20 @@ html[data-surface="blacktop"] .landing-hero-content .primary-button {
   border-color: #1c2e50;
 }
 
+html[data-surface="blacktop"] .landing-hero-content .primary-button:hover,
+html[data-surface="blacktop"] .landing-hero-content .primary-button:focus-visible {
+  background: #152340;
+  border-color: #152340;
+  box-shadow: 4px 4px 0 #CFA14D;
+  transform: translateY(-3px);
+}
+
 html[data-surface="blacktop"] .landing-hero-content .ghost-button {
   background: transparent;
   color: #131a1a;
   border-color: rgba(19, 26, 26, 0.55);
 }
 
-html[data-surface="blacktop"] .landing-hero-content .ghost-button:hover {
-  background: rgba(118, 96, 64, 0.1);
-}
 
 @media (max-width: 1100px) {
   .landing-hero-content {
