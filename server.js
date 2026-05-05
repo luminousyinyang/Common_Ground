@@ -143,7 +143,7 @@ function safeFallbackBriefing(card, reason = "No live Gemini response was availa
 function formatHometownAreas(signals = []) {
   return (signals || []).slice(0, 3).map((area) => ({
     area: area.label,
-    detail: `${area.total} ${area.countLabel || "public hometown entries"} in the public source view, with ${area.olympic} Olympic-side and ${area.paralympic} Paralympic-side entries.`
+    detail: `${area.total} public Team USA athlete records list ${area.label} as their hometown (${area.olympic} Olympic-side, ${area.paralympic} Paralympic-side).`
   }));
 }
 
@@ -259,6 +259,16 @@ function collectStrings(value) {
   return [];
 }
 
+function stripRecordCounts(value) {
+  if (Array.isArray(value)) return value.map(stripRecordCounts);
+  if (!value || typeof value !== "object") return value;
+  return Object.fromEntries(
+    Object.entries(value)
+      .filter(([key]) => key !== "recordCount" && key !== "featuredSportRecordCount")
+      .map(([key, entry]) => [key, stripRecordCounts(entry)])
+  );
+}
+
 function pickCardFromPayload(dataset, payload) {
   const code = String(payload.stateCode || payload.stateSyncCardJson?.stateCode || "").toUpperCase();
   const incomingCard = payload.stateSyncCardJson;
@@ -268,7 +278,7 @@ function pickCardFromPayload(dataset, payload) {
 
 function buildStatePrompt(card) {
   const normalizeCandidate = (candidate) => candidate
-    ? { ...candidate, sportTag: displaySportName(candidate.sportTag) }
+    ? { ...stripRecordCounts(candidate), sportTag: displaySportName(candidate.sportTag) }
     : candidate;
   return `You are generating a compliant state insight for a Team USA x Google Cloud Hackathon project.
 
@@ -276,7 +286,7 @@ Use only the provided aggregate data and geography notes.
 Do not mention individual athlete names.
 Do not use athlete likeness.
 Do not mention finish times or specific scoring results.
-Do not mention exact counts except the provided topHometownSignals city entries, and label those as public hometown entries, not a complete athlete census.
+Do not mention exact counts except the provided topHometownSignals city entries, and label those as public Team USA athlete hometown records, not a complete athlete census.
 Do not imply geography causes success.
 Do not claim that terrain, climate, or training access guarantees outcomes.
 Use conditional language: "may suggest", "could help fans understand", "appears associated with", "could show how".
@@ -300,7 +310,7 @@ Return valid JSON with these fields:
   - detail: 1 sentence grouping multiple sports by theme. Use sports from both Olympic and Paralympic lists when possible.
 - hometownAreas: array of up to 3 objects. If topHometownSignals are provided, each object has:
   - area: the city/area label from the provided data.
-  - detail: 1 sentence with its provided total public hometown entries plus Olympic-side and Paralympic-side entries. Use "public hometown entries", not "athletes".
+  - detail: 1 sentence with its provided total public Team USA athlete records listing that area as hometown plus Olympic-side and Paralympic-side entries. Say "records", not "athletes", and do not imply this is a complete athlete census.
 - geographyLens: 1-2 sentences connecting geography/climate/terrain to fan context with conditional language.
 - whatToNotice: 2-3 sentences with concrete fan viewing observations across the broader sport mix.
 - surprisingConnection: 1-2 sentences. Choose one surprising connection across the broader state sport mix. Prefer one Olympic-side sport and one Paralympic-side sport, but do not force the featured card pair if another connection is more interesting.
@@ -326,7 +336,7 @@ ${JSON.stringify({
   terrainSignals: card.terrainSignals,
   hometownPresenceBucket: card.hometownPresenceBucket,
   topHometownSignals: card.topHometownSignals || [],
-  cardStory: card.cardStory,
+  cardStory: stripRecordCounts(card.cardStory),
   sharedTrait: card.sharedTrait,
   olympicPanel: {
     sportFamily: card.olympicPanel?.sportFamily,

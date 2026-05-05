@@ -684,6 +684,18 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
   line-height: 1.45;
 }
 
+.compact-metrics .metric {
+  min-width: 148px;
+}
+
+.metric-row-note {
+  margin: 8px 0 0 !important;
+  color: var(--muted) !important;
+  font-size: 0.78rem;
+  font-weight: 720;
+  line-height: 1.45;
+}
+
 .panel {
   display: grid;
   grid-template-columns: minmax(0, 1fr);

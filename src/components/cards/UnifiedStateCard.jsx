@@ -135,8 +135,8 @@ function HometownAreasDialog({ stateName, areas, onClose }) {
       <section className="hometown-area-dialog-panel">
         <div className="hometown-area-dialog-heading">
           <div>
-            <p className="eyebrow">Public hometown entries</p>
-            <h3>{stateName} Hometown Areas</h3>
+            <p className="eyebrow">Team USA roster view</p>
+            <h3>{stateName} Athlete Hometowns</h3>
           </div>
           <button className="modal-close-button" type="button" onClick={onClose} aria-label="Close hometown areas" />
         </div>
@@ -145,7 +145,7 @@ function HometownAreasDialog({ stateName, areas, onClose }) {
             <HometownAreaRow key={`${area.rank}-${area.label}`} area={area} />
           ))}
         </div>
-        <p className="hometown-area-note">Only aggregate city labels and counts from the public source view are shown.</p>
+        <p className="hometown-area-note">Only aggregate city labels and public Team USA athlete records by hometown are shown.</p>
       </section>
     </div>,
     document.body
@@ -167,8 +167,8 @@ function HometownAreasCard({ card, payload, compact = false }) {
     <section className={`hometown-areas-card ${compact ? "is-compact" : ""}`}>
       <div className="panel-heading-row hometown-areas-heading">
         <div>
-          <p className="eyebrow">Public source view</p>
-          <h3>Top Hometown Areas</h3>
+          <p className="eyebrow">Team USA roster view</p>
+          <h3>Top Athlete Hometowns</h3>
         </div>
         <button className="ghost-button small hometown-see-all-button" type="button" onClick={() => setShowAll(true)}>
           <Icon name="list" size={14} strokeWidth={2} />
@@ -180,7 +180,7 @@ function HometownAreasCard({ card, payload, compact = false }) {
           <HometownAreaRow key={`${area.rank}-${area.label}`} area={area} />
         ))}
       </div>
-      <p className="hometown-area-note">City-level aggregate public hometown entries, not a complete athlete census.</p>
+      <p className="hometown-area-note">City-level aggregate public Team USA athlete records by hometown, not a complete athlete census.</p>
       {showAll && (
         <HometownAreasDialog
           stateName={card.stateName}
@@ -393,10 +393,11 @@ function UnifiedStateCard({
                     <h3>{card.stateName}</h3>
                     <p>{card.geographySnapshot}</p>
                     <div className="metric-row compact-metrics">
-                      <span className="metric">State total <strong>{counts.total}</strong></span>
-                      <span className="metric">Olympic count <strong>{counts.olympic}</strong></span>
-                      <span className="metric">Paralympic count <strong>{counts.paralympic}</strong></span>
+                      <span className="metric">State athlete records <strong>{counts.total}</strong></span>
+                      <span className="metric">Olympic athlete records <strong>{counts.olympic}</strong></span>
+                      <span className="metric">Paralympic athlete records <strong>{counts.paralympic}</strong></span>
                     </div>
+                    <p className="metric-row-note">Public Team USA roster records by hometown state, not a complete athlete census.</p>
                   </div>
                   <HometownAreasCard card={card} payload={briefing} compact />
                   <div className="program-panel-grid">

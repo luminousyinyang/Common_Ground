@@ -741,7 +741,7 @@ function buildCardBackCopyPrompt(card, program) {
       geographySignal: card.cardStory?.geographySignal,
       sharedTrait: card.cardStory?.sharedTrait,
       fanChallengeName: card.cardStory?.fanChallengeName,
-      featuredSportForThisProgram: storyFeatured || null
+      featuredSportForThisProgram: stripRecordCounts(storyFeatured) || null
     },
     panel: {
       label: panel.label,
@@ -759,7 +759,8 @@ function buildCardBackCopyPrompt(card, program) {
   return `You are Gemini writing the back of one collectible Common Ground state card panel.
 
 Use only the provided aggregate public Team USA and geography data.
-Do not mention individual athlete names, athlete profiles, photos, biographies, specific team names, rankings, medals, actual finish times, actual scores, scoring results, or exact roster counts.
+Do not mention individual athlete names, athlete profiles, photos, biographies, specific team names, rankings, medals, actual finish times, actual scores, or scoring results.
+Do not mention exact athlete-record counts.
 Sport education is allowed: you may explain how scoring works, how winning works, rule clocks, field-of-play numbers, event distances, and whether the fastest total race time wins.
 Do not say geography causes, creates, produces, predicts, or guarantees athletic results.
 Use conditional fan-discovery language such as "may suggest", "could help fans understand", "appears associated with", or "could show how".
@@ -830,6 +831,7 @@ Example Olympic panel style:
   "factChips": ["7 per team: 6 field + goalkeeper", "4 quarters", "28-second possessions", "One-hand control"],
   "complianceWarnings": []
 }
+
 Example Paralympic panel style:
 {
   "featuredCue": "Para triathlon",
@@ -847,6 +849,16 @@ Example Paralympic panel style:
 
 Panel data:
 ${JSON.stringify(payload, null, 2)}`;
+}
+
+function stripRecordCounts(value) {
+  if (Array.isArray(value)) return value.map(stripRecordCounts);
+  if (!value || typeof value !== "object") return value;
+  return Object.fromEntries(
+    Object.entries(value)
+      .filter(([key]) => key !== "recordCount" && key !== "featuredSportRecordCount")
+      .map(([key, entry]) => [key, stripRecordCounts(entry)])
+  );
 }
 
 async function generateGeminiJsonWithRetry({ token, prompt, modelName, label, timeoutMs }) {

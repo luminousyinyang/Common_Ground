@@ -358,7 +358,7 @@ function buildDataset({ aggregate, retrievedAt, olympicTotal, paralympicTotal, e
         paralympic: paralympicTotal || null
       },
       stateCodedRecordTotals,
-      aggregationPolicy: "The build script strips athlete names, profile URLs, images, biographies, medals, finish placements, and other individual-level fields before writing frontend data. State cards display signal buckets instead of exact state counts.",
+      aggregationPolicy: "The build script strips athlete names, profile URLs, images, biographies, medals, finish placements, and other individual-level fields before writing frontend data. State cards display aggregate public Team USA athlete-record counts only where needed for fan context.",
       hometownAreaPolicy: `Top hometown areas are city-level aggregate public source entries only, require at least ${HOMETOWN_SIGNAL_MINIMUM} public source records, and do not expose athlete names, profiles, images, or individual records.`,
       bucketPolicy: "Combined state bucket: insufficient data = 0 sourced roster rows, low = 1-4, medium = 5-19, high = 20+. Program panel details and top sport tags require at least 3 sourced roster rows; lower-volume panels stay generalized.",
       coverageNote: "Only TeamUSA.com roster rows with a U.S. state or supported U.S. territory abbreviation in the public hometown state field are used for cards. Unsupported or blank geography values are excluded from card output.",
@@ -463,6 +463,7 @@ function sportCandidates(map, program) {
       const sportFamily = sportFamilyFor(sportTag);
       return {
         sportTag,
+        recordCount: count,
         rank: index + 1,
         bucket: sportTagBucket(count, program),
         sportFamily,
@@ -623,6 +624,7 @@ function serializeFeaturedCandidate(candidate, program) {
       program,
       sportTag: null,
       sportFamily: "Generalized sport-family",
+      recordCount: null,
       rank: null,
       bucket: "insufficient_data",
       themeTags: []
@@ -632,6 +634,7 @@ function serializeFeaturedCandidate(candidate, program) {
     program,
     sportTag: candidate.sportTag,
     sportFamily: candidate.sportFamily,
+    recordCount: candidate.recordCount,
     rank: candidate.rank,
     bucket: candidate.bucket,
     themeTags: candidate.themeTags
@@ -644,6 +647,7 @@ function applyFeaturedSport(panel, featured) {
     ...panel,
     primarySportTag: featured.sportTag,
     sportFamily: featured.sportFamily,
+    featuredSportRecordCount: featured.recordCount,
     featuredSportRank: featured.rank,
     featuredSportBucket: featured.bucket
   };

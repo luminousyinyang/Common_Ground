@@ -230,20 +230,36 @@ ${JSON.stringify({
   climateSignal: card.climateSignal,
   terrainSignals: card.terrainSignals,
   sharedTrait: card.sharedTrait,
-  cardStory: card.cardStory,
+  cardStory: stripRecordCounts(card.cardStory),
   olympicPanel: {
     sportFamily: card.olympicPanel?.sportFamily,
     primarySportTag: displaySportName(card.olympicPanel?.primarySportTag),
     topSportTags: (card.olympicPanel?.topSportTags || []).map(displaySportName),
-    sportTagCandidates: (card.olympicPanel?.sportTagCandidates || []).slice(0, 6)
+    sportTagCandidates: (card.olympicPanel?.sportTagCandidates || []).slice(0, 6).map(sanitizeSportCandidate)
   },
   paralympicPanel: {
     sportFamily: card.paralympicPanel?.sportFamily,
     primarySportTag: displaySportName(card.paralympicPanel?.primarySportTag),
     topSportTags: (card.paralympicPanel?.topSportTags || []).map(displaySportName),
-    sportTagCandidates: (card.paralympicPanel?.sportTagCandidates || []).slice(0, 6)
+    sportTagCandidates: (card.paralympicPanel?.sportTagCandidates || []).slice(0, 6).map(sanitizeSportCandidate)
   }
 }, null, 2)}`;
+}
+
+function sanitizeSportCandidate(candidate) {
+  if (!candidate) return candidate;
+  const { recordCount, ...rest } = candidate;
+  return rest;
+}
+
+function stripRecordCounts(value) {
+  if (Array.isArray(value)) return value.map(stripRecordCounts);
+  if (!value || typeof value !== "object") return value;
+  return Object.fromEntries(
+    Object.entries(value)
+      .filter(([key]) => key !== "recordCount" && key !== "featuredSportRecordCount")
+      .map(([key, entry]) => [key, stripRecordCounts(entry)])
+  );
 }
 
 function validateGameAssignment(raw) {
