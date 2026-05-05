@@ -273,14 +273,14 @@ html[data-theme="midnight-sand"] {
   --paper-2: #f4efe9;
   --surface: #f4efe9;
   --surface-soft: #e4ddd7;
-  --navy: #1f1b16;
-  --navy-2: #171310;
+  --navy: #1c2e50;
+  --navy-2: #152340;
   --line: rgba(31, 27, 22, 0.16);
   --line-strong: rgba(31, 27, 22, 0.30);
   --olympic-tint: #dde3dc;
   --paralympic-tint: #e8ddd6;
-  --cta: #201b18;
-  --blue: #1f1b16;
+  --cta: #1c2e50;
+  --blue: #1c2e50;
   --coral: #a7653e;
   --gold: #8f6d35;
   --paper-accent-a: rgba(220, 212, 200, 0.40);
@@ -1242,12 +1242,21 @@ main {
   color: var(--navy);
   background: var(--glass);
   border-color: var(--line-strong);
+  transition: background 140ms ease, border-color 140ms ease, transform 160ms ease, box-shadow 160ms ease;
 }
 
 .ghost-button:hover,
 .ghost-button:focus-visible {
+  background: rgba(255, 255, 255, 0.45);
   border-color: var(--blue);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ink) 12%, transparent);
+  box-shadow: 4px 4px 0 #9D4D32;
+  transform: translateY(-3px);
+}
+
+html[data-surface="blacktop"] .ghost-button:hover,
+html[data-surface="blacktop"] .ghost-button:focus-visible {
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 4px 4px 0 #CFA14D;
 }
 
 .ghost-button.small {
@@ -1260,13 +1269,23 @@ main {
   color: var(--cta-text);
   background: var(--cta);
   border-color: var(--cta);
-  box-shadow: 0 10px 22px color-mix(in srgb, var(--ink) 18%, transparent);
+  transition: background 140ms ease, border-color 140ms ease, transform 160ms ease, box-shadow 160ms ease;
 }
 
 .primary-button:hover,
 .primary-button:focus-visible {
   background: var(--navy-2);
   border-color: var(--navy-2);
+  box-shadow: 4px 4px 0 #CFA14D;
+  transform: translateY(-3px);
+}
+
+html[data-surface="blacktop"] .primary-button:hover,
+html[data-surface="blacktop"] .primary-button:focus-visible {
+  background: color-mix(in srgb, var(--cta) 80%, white);
+  border-color: color-mix(in srgb, var(--cta) 80%, white);
+  box-shadow: 4px 4px 0 #9D4D32;
+  transform: translateY(-3px);
 }
 
 .primary-button.wide {
@@ -3867,26 +3886,43 @@ html[data-surface="blacktop"] .game-board.has-game-background .focus-readout {
 }
 
 .top-nav-icon-btn:hover {
-  background: var(--glass-strong);
-  border-color: var(--line-strong);
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
 }
 
 .top-nav-login-btn {
-  border: 1px solid var(--line-strong);
+  border: 1px solid #1c2e50;
   border-radius: 999px;
   padding: 7px 18px;
-  color: var(--ink);
-  background: var(--glass-strong);
+  color: #ffffff;
+  background: #1c2e50;
   font-size: 0.88rem;
   font-weight: 800;
   cursor: pointer;
-  transition: background 140ms ease;
+  transition: background 140ms ease, border-color 140ms ease, color 140ms ease, transform 160ms ease, box-shadow 160ms ease;
 }
 
 .top-nav-login-btn:hover {
-  color: var(--ink-contrast);
-  background: var(--ink);
-  border-color: var(--ink);
+  background: #152340;
+  border-color: #152340;
+  color: #ffffff;
+  box-shadow: 4px 4px 0 #CFA14D;
+  transform: translateY(-3px);
+}
+
+html[data-surface="blacktop"] .top-nav-login-btn {
+  background: var(--cta);
+  border-color: var(--cta);
+  color: var(--cta-text);
+}
+
+html[data-surface="blacktop"] .top-nav-login-btn:hover {
+  background: color-mix(in srgb, var(--cta) 85%, white);
+  border-color: color-mix(in srgb, var(--cta) 85%, white);
+  color: var(--cta-text);
+  box-shadow: 4px 4px 0 #9D4D32;
+  transform: translateY(-3px);
 }
 
 /* ─── App Frame v2 (top-nav layout) ──────────────── */
@@ -4019,6 +4055,7 @@ html[data-surface="blacktop"] .game-board.has-game-background .focus-readout {
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  transition: background 140ms ease, border-color 140ms ease, transform 160ms ease, box-shadow 160ms ease;
 }
 
 .landing-hero-content .ghost-button:hover svg {
@@ -4026,15 +4063,21 @@ html[data-surface="blacktop"] .game-board.has-game-background .focus-readout {
 }
 
 .landing-hero-content .ghost-button:hover {
-  background: rgba(147, 122, 84, 0.1);
+  background: rgba(255, 255, 255, 0.45);
   border-color: rgba(19, 26, 26, 0.45);
-  box-shadow: none;
+  box-shadow: 4px 4px 0 #9D4D32;
+  transform: translateY(-3px);
+}
+
+html[data-surface="blacktop"] .landing-hero-content .ghost-button:hover {
+  background: rgba(255, 255, 255, 0.35);
+  box-shadow: 4px 4px 0 #CFA14D;
 }
 
 html[data-surface="blacktop"] .landing-hero-content .primary-button {
-  background: #131a1a;
-  color: #E5DED9;
-  border-color: #131a1a;
+  background: #1c2e50;
+  color: #ffffff;
+  border-color: #1c2e50;
 }
 
 html[data-surface="blacktop"] .landing-hero-content .ghost-button {
