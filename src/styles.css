@@ -748,6 +748,7 @@ h4 {
   gap: 8px;
 }
 
+
 .state-pill,
 .chip,
 .source-chip,
@@ -1350,7 +1351,7 @@ html[data-surface="blacktop"] .primary-button:focus-visible {
   border: 1px solid var(--line-strong);
   border-radius: 18px;
   background: var(--paper-2);
-  box-shadow: var(--shadow);
+  box-shadow: none;
 }
 
 .sports-card-face.face-hidden {
@@ -1367,6 +1368,33 @@ html[data-surface="blacktop"] .primary-button:focus-visible {
 .sports-card-front:focus-visible {
   outline: 2px solid var(--olympic-tint, #4a90d9);
   outline-offset: -3px;
+}
+
+.sports-card-front.is-locked .card-art {
+  filter: grayscale(1) brightness(0.55);
+}
+
+.sports-card-front.is-locked::after {
+  display: none;
+}
+
+.card-locked-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border-radius: inherit;
+  background: rgba(0, 0, 0, 0.35);
+  color: #ffffff;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-align: center;
+  pointer-events: none;
 }
 
 .sports-card-front::before {
@@ -2506,9 +2534,7 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
 }
 
 .card-modal-panel.card-layout-tabletop .sports-card-face {
-  box-shadow:
-    0 34px 80px color-mix(in srgb, #000000 34%, transparent),
-    -10px 10px 0 color-mix(in srgb, var(--surface-soft) 18%, transparent);
+  box-shadow: none;
 }
 
 .card-modal-panel.card-layout-ticket {
@@ -2944,6 +2970,70 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
 .card-modal-panel .card-action-row .primary-button {
   flex: 1;
   min-height: 44px;
+}
+
+@media (max-width: 600px) {
+  .card-modal-backdrop {
+    padding: 0;
+    background: var(--paper);
+    backdrop-filter: none;
+  }
+
+  .modal-scrim {
+    display: none;
+  }
+
+  .card-modal-panel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto;
+    min-height: 100vh;
+    border-radius: 0;
+    border: none;
+    padding: 12px 14px 24px;
+    box-shadow: none;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    z-index: 101;
+  }
+
+  .card-modal-panel .modal-close-row {
+    flex-shrink: 0;
+  }
+
+  .card-modal-panel .sports-card-shell {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .card-modal-panel .card-action-row {
+    flex-direction: column;
+  }
+
+  .card-modal-panel .card-action-row .ghost-button,
+  .card-modal-panel .card-action-row .primary-button {
+    width: 100%;
+  }
+
+  .sports-card {
+    height: clamp(260px, calc(100svh - 280px), 480px);
+  }
+
+  .card-modal-panel.is-back-expanded .sports-card {
+    max-height: calc(100svh - 280px);
+  }
+
+  .card-modal-panel.is-back-expanded .card-back-scroll {
+    max-height: calc(100svh - 290px);
+  }
 }
 
 .briefing-panel {
@@ -4093,7 +4183,7 @@ html[data-surface="blacktop"] .game-board.has-game-background .focus-readout {
   color: var(--ink);
   background: transparent;
   font-family: var(--display-font);
-  font-size: clamp(1.1rem, 2vw, 1.45rem);
+  font-size: 1.6rem;
   font-weight: 700;
   letter-spacing: var(--display-letter-spacing);
   text-transform: var(--display-transform);
@@ -5021,7 +5111,7 @@ html[data-surface="blacktop"] .login-google:focus-visible {
   color: var(--copy-strong);
   background: transparent;
   font-family: var(--display-font);
-  font-size: 2.4rem;
+  font-size: 2rem;
   font-weight: 900;
   line-height: 1;
   text-transform: var(--display-transform);
@@ -5164,7 +5254,7 @@ html[data-surface="blacktop"] .login-google:focus-visible {
 
 @media (max-width: 600px) {
   .top-nav-brand {
-    font-size: 1rem;
+    font-size: 1.6rem;
   }
 
   .top-nav-login-btn {
@@ -5187,7 +5277,7 @@ html[data-surface="blacktop"] .login-google:focus-visible {
   }
 
   .top-nav-brand {
-    font-size: 0.88rem;
+    font-size: 1.6rem;
     letter-spacing: 0.01em;
   }
 

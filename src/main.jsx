@@ -1756,7 +1756,7 @@ function UnifiedStateCard({
   onOpenChallenge,
   isBackExpanded,
   onBackExpandedChange,
-  panelManifest
+  panelManifest, isUnlocked = false
 }) {
   const [flipped, setFlipped] = useState(false);
   const [displayBack, setDisplayBack] = useState(false);
@@ -1819,6 +1819,7 @@ function UnifiedStateCard({
 
   const frontClass = [
     "sports-card-face sports-card-front",
+    !isUnlocked ? "is-locked" : "",
     displayBack ? "face-hidden" : "",
     !displayBack && flipPhase === "out" ? "flip-out" : "",
     !displayBack && flipPhase === "in" ? "flip-in" : "",
@@ -1855,6 +1856,15 @@ function UnifiedStateCard({
               onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggleFlip(); } }}
             >
               <CardArt card={card} panelManifest={panelManifest} />
+              {!isUnlocked && (
+                <div className="card-locked-overlay">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                  </svg>
+                  <span>Play challenge to unlock</span>
+                </div>
+              )}
             </article>
 
             <article className={backClass} aria-label={`${card.stateName} state card data`}>
@@ -1904,7 +1914,13 @@ function UnifiedStateCard({
         <button className="ghost-button" type="button" onClick={toggleFlip}>
           {flipped ? "Flip to art" : "Flip to data"}
         </button>
-        <button className="primary-button" type="button" onClick={onOpenChallenge}>Try the State Sync Challenge</button>
+        {isUnlocked ? (
+          <button className="primary-button" type="button" onClick={onOpenChallenge}>Try the State Sync Challenge</button>
+        ) : (
+          <button className="primary-button card-unlock-btn" type="button" onClick={onOpenChallenge}>
+            Play Challenge to Unlock
+          </button>
+        )}
       </div>
     </section>
   );
@@ -1918,7 +1934,8 @@ function CardModal({
   onRefreshBriefing,
   onOpenChallenge,
   onClose,
-  panelManifest
+  panelManifest,
+  isUnlocked
 }) {
   const [isBackExpanded, setIsBackExpanded] = useState(false);
   const { openAnimation, interaction, cardLayout } = ACTIVE_CARD_EXPERIENCE;
@@ -1952,6 +1969,7 @@ function CardModal({
           isBackExpanded={isBackExpanded}
           onBackExpandedChange={setIsBackExpanded}
           panelManifest={panelManifest}
+          isUnlocked={isUnlocked}
         />
       </div>
     </div>
@@ -2591,7 +2609,7 @@ function ChallengeGame({ challengeType, card, onResult, gameExperience }) {
   return <ReactionGrid card={card} onResult={onResult} gameExperience={gameExperience} />;
 }
 
-function ChallengeView({ card, briefing, onReturn, panelManifest }) {
+function ChallengeView({ card, briefing, onReturn, panelManifest, onGameComplete }) {
   const [started, setStarted] = useState(false);
   const [result, setResult] = useState(null);
   const [reflection, setReflection] = useState(null);
@@ -2601,6 +2619,7 @@ function ChallengeView({ card, briefing, onReturn, panelManifest }) {
   const onResult = React.useCallback(async (nextResult) => {
     setResult(nextResult);
     setStarted(false);
+    onGameComplete?.();
     try {
       const payload = await getJson("/api/gemini/game-reflection", {
         method: "POST",
@@ -2911,6 +2930,7 @@ function App() {
   const [loadError, setLoadError] = useState(null);
   const [isCardModalOpen, setIsCardModalOpen] = useState(false);
   const [discoveredCodes, setDiscoveredCodes] = useState(() => new Set(["CO"]));
+  const [playedCodes, setPlayedCodes] = useState(() => new Set());
   const [panelManifest, setPanelManifest] = useState(EMPTY_CARD_PANEL_MANIFEST);
 
   /*
@@ -2939,6 +2959,19 @@ function App() {
       // Local storage is optional for the guest collection.
     }
   }, [discoveredCodes]);
+
+  useEffect(() => {
+    try {
+      const saved = JSON.parse(window.localStorage.getItem("common-ground-played") || "[]");
+      if (Array.isArray(saved) && saved.length) setPlayedCodes(new Set(saved));
+    } catch {}
+  }, []);
+
+  useEffect(() => {
+    try {
+      window.localStorage.setItem("common-ground-played", JSON.stringify([...playedCodes]));
+    } catch {}
+  }, [playedCodes]);
 
   useEffect(() => {
     const html = document.documentElement;
@@ -3050,6 +3083,14 @@ function App() {
     });
   }
 
+  function markPlayed(code) {
+    setPlayedCodes((current) => {
+      const next = new Set(current);
+      next.add(code);
+      return next;
+    });
+  }
+
   function selectState(code, nextView = "explorer", openCard = true) {
     setSelectedCode(code);
     markDiscovered(code);
@@ -3131,7 +3172,7 @@ function App() {
       )}
 
       {view === "challenge" && (
-        <ChallengeView card={selectedCard} briefing={briefing} onReturn={() => setView("explorer")} panelManifest={panelManifest} />
+        <ChallengeView card={selectedCard} briefing={briefing} onReturn={() => setView("explorer")} panelManifest={panelManifest} onGameComplete={() => markPlayed(selectedCode)} />
       )}
 
       {view === "methodology" && <MethodologyView refs={dataset.meta.sourceRefs || []} meta={dataset.meta} states={dataset.states} />}
@@ -3149,6 +3190,7 @@ function App() {
           }}
           onClose={() => setIsCardModalOpen(false)}
           panelManifest={panelManifest}
+          isUnlocked={playedCodes.has(selectedCode)}
         />
       )}
     </AppShell>
