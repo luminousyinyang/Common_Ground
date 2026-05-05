@@ -3880,7 +3880,7 @@ html[data-surface="blacktop"] .game-board.has-game-background .focus-readout {
   color: var(--ink);
   background: transparent;
   font-family: var(--display-font);
-  font-size: clamp(1.1rem, 2vw, 1.45rem);
+  font-size: 1.6rem;
   font-weight: 700;
   letter-spacing: var(--display-letter-spacing);
   text-transform: var(--display-transform);
@@ -4808,7 +4808,7 @@ html[data-surface="blacktop"] .login-google:focus-visible {
   color: var(--copy-strong);
   background: transparent;
   font-family: var(--display-font);
-  font-size: 2.4rem;
+  font-size: 2rem;
   font-weight: 900;
   line-height: 1;
   text-transform: var(--display-transform);
@@ -4951,7 +4951,7 @@ html[data-surface="blacktop"] .login-google:focus-visible {
 
 @media (max-width: 600px) {
   .top-nav-brand {
-    font-size: 1rem;
+    font-size: 1.6rem;
   }
 
   .top-nav-login-btn {
@@ -4974,7 +4974,7 @@ html[data-surface="blacktop"] .login-google:focus-visible {
   }
 
   .top-nav-brand {
-    font-size: 0.88rem;
+    font-size: 1.6rem;
     letter-spacing: 0.01em;
   }
 
