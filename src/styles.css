@@ -1827,6 +1827,9 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
 .panel {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
+  grid-auto-rows: max-content;
+  align-content: start;
+  align-items: start;
   gap: 12px;
   flex: 1;
   min-height: 0;
@@ -2691,6 +2694,9 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
 .card-modal-panel.is-back-expanded .program-panel-grid > .panel {
   display: grid;
   grid-template-columns: 1fr;
+  grid-auto-rows: max-content;
+  align-content: start;
+  align-items: start;
   gap: 12px;
   flex: 1 1 0;
   align-self: stretch;
