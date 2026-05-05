@@ -303,12 +303,21 @@
   font: inherit;
   font-size: 0.82rem;
   font-weight: 900;
+  transition: background 140ms ease, border-color 140ms ease, color 140ms ease, transform 160ms ease, box-shadow 160ms ease;
 }
 
 .compact-read-more:hover,
 .compact-read-more:focus-visible {
-  color: var(--ink-contrast);
-  background: var(--ink);
+  background: rgba(255, 255, 255, 0.45);
+  border-color: var(--blue);
+  box-shadow: 4px 4px 0 #9D4D32;
+  transform: translateY(-3px);
+}
+
+html[data-surface="blacktop"] .compact-read-more:hover,
+html[data-surface="blacktop"] .compact-read-more:focus-visible {
+  background: transparent;
+  box-shadow: 4px 4px 0 #CFA14D;
 }
 
 /* Flip animation — two-phase rotateY avoids preserve-3d (backdrop-filter breaks it) */
