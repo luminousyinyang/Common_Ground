@@ -12,6 +12,7 @@
     "preview": "vite preview --host 127.0.0.1 --port 5174",
     "start": "node server.js",
     "ingest:teamusa": "node scripts/ingest-teamusa-paris2024.mjs",
+    "enrich:hometown-signals": "node scripts/enrich-hometown-signals.mjs",
     "generate:card-art": "node scripts/generate-card-art.mjs",
     "generate:card-panels": "node scripts/generate-vertex-card-panels.mjs",
     "generate:card-panels:firebase": "node scripts/generate-vertex-card-panels.mjs --firebase --no-local",

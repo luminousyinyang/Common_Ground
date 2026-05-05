@@ -15,6 +15,8 @@ The ingest script lives at `scripts/ingest-teamusa-paris2024.mjs`.
 
 It filters public roster records to U.S. hometown-state or supported U.S. territory abbreviations, aggregates by geography and sport family, and strips individual-level fields before writing frontend data.
 
+The expanded card briefing can also show top city-level hometown areas when the public TeamUSA.com hometown city field has at least three source records for that state. These are labeled as public hometown entries, not a complete athlete census.
+
 Excluded from frontend output:
 
 - Athlete names
@@ -36,3 +38,5 @@ State cards display signal buckets for the main card experience:
 - `high`: 20+ sourced roster rows
 
 Panel-level sport-family details require at least 3 sourced roster rows. Lower-volume panels stay generalized to avoid over-specificity.
+
+Top hometown areas also require at least 3 public source records before display. The app stores only aggregate city labels and counts, plus Olympic-side and Paralympic-side entry totals; it does not store athlete names, profile links, images, bios, or individual records.

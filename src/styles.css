@@ -1219,6 +1219,10 @@ main {
 .state-button,
 .ghost-button,
 .primary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   border: 1px solid transparent;
   border-radius: 999px;
   min-height: 46px;
@@ -2831,6 +2835,7 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
 .card-modal-panel.is-back-expanded .program-panel-grid > .panel,
 .card-modal-panel.is-back-expanded .card-back-scroll > .trait-band,
 .card-modal-panel.is-back-expanded .card-back-scroll > .briefing-panel,
+.card-modal-panel.is-back-expanded .card-back-scroll > .hometown-areas-card,
 .card-modal-panel.is-back-expanded .card-back-scroll > .card-footer {
   border: 1px solid var(--line);
   border-radius: 14px;
@@ -2910,6 +2915,10 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
   margin: 0;
 }
 
+.card-modal-panel.is-back-expanded .card-back-scroll > .hometown-areas-card {
+  margin: 0;
+}
+
 .card-modal-panel.is-back-expanded .card-back-scroll > .card-footer {
   border-top: 1px solid var(--line);
 }
@@ -2972,6 +2981,147 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
   font-size: 1.45rem;
   line-height: 0.95;
   font-weight: 700;
+}
+
+.hometown-areas-card {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 16px;
+  background: var(--glass-faint);
+}
+
+.hometown-areas-card.is-compact {
+  padding: 14px;
+}
+
+.hometown-areas-heading {
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.hometown-areas-heading .eyebrow {
+  margin: 0 0 4px;
+}
+
+.hometown-areas-card h3,
+.hometown-area-dialog-panel h3 {
+  margin: 0;
+  font-size: 1.45rem;
+  line-height: 0.95;
+  font-weight: 700;
+}
+
+.hometown-see-all-button {
+  flex: 0 0 auto;
+}
+
+.hometown-area-list,
+.hometown-area-dialog-list {
+  display: grid;
+  gap: 8px;
+}
+
+.hometown-area-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: 10px;
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
+}
+
+.hometown-area-row:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.hometown-area-rank {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  color: var(--ink);
+  background: var(--glass);
+  font-size: 0.78rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.hometown-area-copy {
+  min-width: 0;
+}
+
+.hometown-area-copy strong {
+  display: block;
+  color: var(--ink);
+  font-size: 0.96rem;
+  line-height: 1.2;
+}
+
+.hometown-area-copy p {
+  margin: 3px 0 0;
+  color: var(--copy);
+  font-size: 0.86rem;
+  font-weight: 720;
+  line-height: 1.45;
+}
+
+.hometown-area-note {
+  margin: 12px 0 0 !important;
+  color: var(--muted) !important;
+  font-size: 0.78rem;
+  font-weight: 720;
+  line-height: 1.45;
+}
+
+.hometown-area-dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 160;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: color-mix(in srgb, var(--ink) 48%, transparent);
+  backdrop-filter: blur(12px) saturate(0.9);
+}
+
+.hometown-area-dialog-scrim {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  padding: 0;
+  background: transparent;
+}
+
+.hometown-area-dialog-panel {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 14px;
+  width: min(620px, calc(100vw - 36px));
+  max-height: min(72vh, 620px);
+  max-height: min(72svh, 620px);
+  overflow: auto;
+  border: 1px solid var(--line-strong);
+  border-radius: 18px;
+  padding: 16px;
+  background:
+    radial-gradient(circle at 12% 2%, var(--paper-accent-a), transparent 20rem),
+    linear-gradient(180deg, var(--glass-strong), color-mix(in srgb, var(--paper) 98%, transparent));
+  box-shadow: 0 26px 80px color-mix(in srgb, var(--ink) 26%, transparent);
+}
+
+.hometown-area-dialog-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.hometown-area-dialog-heading .eyebrow {
+  margin: 0 0 5px;
 }
 
 .briefing-section-grid {
@@ -3835,6 +3985,15 @@ html[data-surface="blacktop"] .game-board.has-game-background .focus-readout {
 
   .card-modal-panel.is-back-expanded .card-back-scroll > .trait-band {
     grid-template-columns: 1fr;
+  }
+
+  .hometown-areas-heading {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .hometown-see-all-button {
+    width: 100%;
   }
 
   .sports-card {
