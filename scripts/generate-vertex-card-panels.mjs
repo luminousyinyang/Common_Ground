@@ -26,7 +26,7 @@ const imageMaxAttempts = positiveInteger(process.env.CARD_IMAGE_MAX_ATTEMPTS, 3)
 const imageRetryDelayMs = positiveInteger(process.env.CARD_IMAGE_RETRY_DELAY_MS, 5000);
 const imageRequestTimeoutMs = positiveInteger(process.env.CARD_IMAGE_REQUEST_TIMEOUT_MS, 900000);
 const textRequestTimeoutMs = positiveInteger(process.env.CARD_COPY_REQUEST_TIMEOUT_MS, 120000);
-const PROMPT_VERSION = "common-ground-card-panel-v5-rough-atlas-no-people";
+const PROMPT_VERSION = "common-ground-card-panel-v13-track-surface-logic";
 const CARD_BACK_COPY_VERSION = "common-ground-card-back-v14-basic-rules";
 
 let firebaseClientsPromise;
@@ -179,11 +179,19 @@ const ROUGH_FAN_ATLAS_STYLE = [
   "Soft rounded organic hills, waves, courts, tracks, roads, and equipment shapes with fuzzy painted borders.",
   "Flat layered shapes with gentle depth, not glossy 3D, not photoreal, not clean corporate vector art.",
   "Palette language: powder blue, cornflower, deep denim, forest green, olive, sage, cream paper, coral red-orange, sun gold, muted teal, rust, and charcoal ink.",
-  "Use sports equipment, field markings, water lanes, balls, racquets, wheels, roads, waves, pools, tracks, or terrain as the subject.",
-  "No people, no athletes, no human figures, no silhouettes, no hands, no faces, no bodies, and no riders; tell the sport story through equipment, surfaces, routes, terrain, and motion marks only.",
+  "Use sports equipment, field markings, water lanes, balls, racquets, wheels, roads, waves, pools, tracks, terrain, and generic faceless sport figures as the subject.",
+  "Generic illustrated people are allowed only when they are clearly fictional, faceless, non-identifiable, and stylized as simple geometric paper-cut silhouettes. Use blank heads, no facial features, no hair detail, no skin-detail rendering, no realistic anatomy, no celebrity likeness, no athlete likeness, no official uniforms, no jersey numbers, no names, and no personal detail.",
   "Compositions should feel hand-made and collectible, with playful sport-object placement and state geography woven into the background.",
   "The app overlays all labels and card framing, so the image itself must be pure artwork: no words, letters, numbers, symbols, logos, badges, borders, or UI."
 ].join("\n- ");
+
+const STYLE_REFERENCE_IMAGE_PATHS = [
+  path.join(rootDir, "public", "assets", "graphics", "Fan Challenges.png"),
+  path.join(rootDir, "public", "assets", "graphics", "Interactive Map.png"),
+  path.join(rootDir, "public", "assets", "graphics", "State Cards.png"),
+  path.join(rootDir, "public", "assets", "graphics", "Hero Graphic.png"),
+  path.join(rootDir, "public", "assets", "graphics", "Login Graphic.png")
+];
 
 if (!project) {
   throw new Error("GOOGLE_CLOUD_PROJECT is required. Add it to .env or export it before running this script.");
@@ -206,7 +214,7 @@ await mkdir(outputDir, { recursive: true });
 
 if (args.dryRun) {
   for (const card of selectedCards) {
-    for (const program of ["olympic", "paralympic"]) {
+    for (const program of args.programs) {
       console.log(`\n--- ${card.stateName} ${program} image prompt ---\n${buildPrompt(card, program)}\n`);
       console.log(`\n--- ${card.stateName} ${program} Gemini card-back copy prompt ---\n${buildCardBackCopyPrompt(card, program)}\n`);
     }
@@ -225,7 +233,7 @@ manifest.states ||= {};
 for (const card of selectedCards) {
   manifest.states[card.stateCode] ||= {};
 
-  for (const program of ["olympic", "paralympic"]) {
+  for (const program of args.programs) {
     const filename = `${card.stateCode.toLowerCase()}-${program}.png`;
     const outPath = path.join(outputDir, filename);
     const localUrl = `/assets/card-panels/${filename}`;
@@ -313,6 +321,7 @@ function parseArgs(argv) {
     firebase: false,
     force: false,
     noLocal: false,
+    programs: ["olympic", "paralympic"],
     states: ["CO"]
   };
 
@@ -323,6 +332,9 @@ function parseArgs(argv) {
     else if (arg === "--firebase") parsed.firebase = true;
     else if (arg === "--force") parsed.force = true;
     else if (arg === "--no-local") parsed.noLocal = true;
+    else if (arg === "--program" || arg === "--programs") parsed.programs = parseProgramList(argv[index += 1]);
+    else if (arg.startsWith("--program=")) parsed.programs = parseProgramList(arg.slice("--program=".length));
+    else if (arg.startsWith("--programs=")) parsed.programs = parseProgramList(arg.slice("--programs=".length));
     else if (arg === "--states") parsed.states = String(argv[index += 1] || "").split(",");
     else if (arg.startsWith("--states=")) parsed.states = arg.slice("--states=".length).split(",");
     else throw new Error(`Unknown argument: ${arg}`);
@@ -330,6 +342,16 @@ function parseArgs(argv) {
 
   parsed.states = parsed.states.map((code) => code.trim().toUpperCase()).filter(Boolean);
   return parsed;
+}
+
+function parseProgramList(value) {
+  const allowed = new Set(["olympic", "paralympic"]);
+  const programs = String(value || "")
+    .split(",")
+    .map((program) => program.trim().toLowerCase())
+    .filter((program) => allowed.has(program));
+
+  return programs.length ? [...new Set(programs)] : ["olympic", "paralympic"];
 }
 
 function selectCards(states, parsedArgs) {
@@ -444,9 +466,14 @@ function paletteStoryForCard(card) {
 function buildPrompt(card, program) {
   const panel = programPanel(card, program);
   const imageSubject = imageSubjectForPanel(panel);
+  const visualSubject = imageSubjectForPrompt({ imageSubject, program });
   const topSportContext = topSportContextForPanel(panel);
   const paletteStory = paletteStoryForCard(card);
   const palette = paletteStory[program] || paletteStory.olympic;
+  const sportLogic = sportVisualLogicForPrompt({ card, panel, program, imageSubject });
+  const programSpecificVisualRule = program === "paralympic"
+    ? "Paralympic visual clarity: this panel must clearly read as a Paralympic/adaptive sport scene through respectful equipment, classification, guide, transition, or adaptive movement cues. Do not draw a generic Olympic-style athlete scene and merely label it Paralympic. Every visible land-sport figure or vehicle must look adaptive, not like a standard non-adaptive cyclist or runner."
+    : "Olympic visual clarity: this panel should read as the featured Olympic sport cue without protected Olympic marks or official branding.";
   const programPhrase = program === "paralympic"
     ? "a Paralympic sport-family scene led by abstract equipment, playing surface, transition, or route cues"
     : "an Olympic sport-family scene led by abstract equipment, playing surface, ball, water, route, or terrain cues";
@@ -456,7 +483,7 @@ function buildPrompt(card, program) {
 Artwork role: ${program === "paralympic" ? "Paralympic" : "Olympic"} image artwork for one half of the front of a state discovery card.
 State: ${card.stateName}
 Sport family: ${panel.sportFamily}
-Primary visual sport cue: ${imageSubject}
+Primary visual sport cue: ${visualSubject}
 Aggregate sport-tag context: ${topSportContext}
 Shared trait: ${card.sharedTrait.name} — ${card.sharedTrait.description}
 Geography context: ${card.geographySnapshot}
@@ -465,8 +492,13 @@ Visual direction:
 - Match a premium rough collectible fan-atlas style, not the previous glossy low-poly card style.
 - Style extraction target:
 - ${ROUGH_FAN_ATLAS_STYLE}
+- Attached style references are for visual style only. Extract the rough grain, muted green/blue/coral palette, rounded organic fields, fuzzy ink edges, simple sport-object collage, and soft editorial composition. Do not copy words, letters, "USA" text, exact layouts, card shapes, map shapes, logos, symbols, or any specific graphic element.
+- Human figure style: if a figure appears, make it a flat anonymous paper-cut silhouette with a blank face/head, no eyes, no mouth, no hair detail, no skin-detail rendering, no realistic muscle/anatomy, no uniform detail, and no identifying marks.
+- ${programSpecificVisualRule}
 - Use ${programPhrase}, led by the primary visual sport cue when one is available.
-- If a primary sport cue is available, show abstract equipment, setting, motion trails, terrain, field-of-play markings, or object language for that sport cue without portraying any person.
+- If a primary sport cue is available, show abstract equipment, setting, motion trails, terrain, field-of-play markings, object language, or generic faceless sport figures for that sport cue without portraying any real or identifiable person.
+- Sport logic rules:
+- ${sportLogic}
 - If the sport cue is generalized because the source sport-tag count is limited or missing, use broad sport-family motion cues only.
 - Use the state geography as the environment inspiration, not as a performance claim.
 - Full-bleed artwork only: the illustration must fill the entire image canvas edge to edge.
@@ -480,9 +512,10 @@ Visual direction:
 - Do not default to Olympic-as-blue and Paralympic-as-orange. Let the state palette drive the colors, and avoid a political campaign or national-flag color composition.
 - Composition: 16:9 landscape artwork, readable at card size, with strong sport-object silhouette or environment cue and generous clean negative space in the upper-left for an overlaid app label, but no visible label box.
 - Include the slight roughness/grain as a real visible texture, especially along color edges and in large flat fields. The artwork should not look too smooth or AI-glossy.
+- Prefer a graphic collage like the attached reference graphics over a scenic panorama. Use larger simplified equipment and surface shapes, fewer tiny details, and no confusing physical action.
 
 Compliance constraints:
-- No people, no athlete likeness, no recognizable face, no athlete names, no jersey numbers, no official uniforms. Use abstract equipment and geography only.
+- No athlete likeness, no recognizable face, no athlete names, no jersey numbers, no official uniforms, and no realistic real-person generated media. Any human figure must be fictional, blank-faced, faceless, geometric, generic, and non-identifiable, with no hair or skin-detail rendering.
 - No Olympic rings, Paralympic Agitos, torches, medals, podiums, flags, Team USA logos, LA28 logos, NGB logos, sponsor logos, or brand marks.
 - No embedded text, letters, labels, UI chrome, borders, or icons inside the image; the app will overlay labels separately.
 - Do not imply geography creates, produces, guarantees, predicts, or proves athletic results.
@@ -495,10 +528,20 @@ function imageSubjectForPanel(panel) {
   return displaySportName(panel.primarySportTag || panel.topSportTags?.[0] || panel.sportFamily || "general sport-family theme");
 }
 
+function imageSubjectForPrompt({ imageSubject, program }) {
+  if (program === "paralympic" && /para\s*triathlon|paratriathlon/i.test(imageSubject)) {
+    return "Para triathlon adaptive equipment sequence: swim cue, transition zone, handcycle, racing wheelchair or guide/prosthetic cue. Do not show standard upright bicycles, ordinary road cyclists, standalone runners, full-body standing land figures, or normal legs as the main land cue.";
+  }
+  if (/track and field|para track/i.test(imageSubject)) {
+    return `${displaySportName(imageSubject)} competition surface: marked track lanes with any runner placed inside a lane, plus field-event geometry only inside the infield/throwing sector.`;
+  }
+  return imageSubject;
+}
+
 function topSportContextForPanel(panel) {
   const broaderTags = (panel.topSportTags || []).filter((tag) => tag !== panel.primarySportTag);
   if (panel.primarySportTag && broaderTags.length) {
-    return `Lead with ${displaySportName(panel.primarySportTag)}. Broader aggregate public sport tags for this state/program include ${joinList(broaderTags.map(displaySportName))}; use them only as secondary context and do not display counts.`;
+    return `Lead only with ${displaySportName(panel.primarySportTag)} as the visual subject. Broader aggregate public sport tags for this state/program include ${joinList(broaderTags.map(displaySportName))}, but do not depict those secondary sports as objects, people, venues, or equipment in this image; they belong in the state briefing, not this featured-sport artwork. Do not display counts.`;
   }
   if (panel.primarySportTag) {
     return `Lead with ${displaySportName(panel.primarySportTag)}. This is the sourced featured sport tag for this state/program and should guide the illustration without displaying counts.`;
@@ -507,6 +550,116 @@ function topSportContextForPanel(panel) {
     return `${joinList(panel.topSportTags.map(displaySportName))}. These are aggregate public sport tags for this state/program and should guide the illustration without displaying counts.`;
   }
   return "No top sport tag is exposed for this panel because the public roster signal is low-volume or unavailable; keep the artwork generalized.";
+}
+
+function sportVisualLogicForPrompt({ card, panel, program, imageSubject }) {
+  const sport = String(imageSubject || "").toLowerCase();
+  const stateContext = `Use ${card.stateName}'s geography as abstract setting texture only; do not imply the terrain causes sport results.`;
+
+  if (/water polo/.test(sport)) {
+    return [
+      "Water polo logic: show a pool/water setting, a floating water-polo ball, a goal/cage, ripples, pool markings, and passing arcs.",
+      "If generic figures appear, they must be simplified paper-cut silhouettes, partially submerged and treading water, with only shoulders/blank heads above water and no visible feet planted on the surface.",
+      "Avoid hair shapes and realistic skin tones; use flat silhouette colors or swim-cap-like simplified heads.",
+      "Do not show anyone standing, walking, skating, running, biking, or playing on top of water.",
+      "Do not include skateboard ramps, track lanes, road cycling, open-ocean racing, or unrelated secondary sports in this panel.",
+      "The sport story should read as pool spacing and passing pressure, not beach recreation or a land sport.",
+      stateContext
+    ].join("\n- ");
+  }
+
+  if (/para\s*triathlon|paratriathlon/.test(sport)) {
+    return [
+      "Para triathlon logic: this must be an adaptive-equipment-first scene, not a generic triathlon scene.",
+      "Show three respectful cues only: a swim cue in water, a transition zone, and adaptive land equipment such as a handcycle plus racing wheelchair, guide tether, or simplified prosthetic/blade cue.",
+      "The clearest composition is: water/swim cue on the left, transition gear in the middle, handcycle and racing wheelchair/guide/prosthetic cue moving together on one land route to the right.",
+      "Hard ban: no standard upright bicycles, no standard road bikes, no ordinary road cyclists, no standalone runners, no jogging silhouettes, no full-body standing land figures, no generic non-adaptive triathlon figures, and no normal legs as the primary land cue.",
+      "Do not draw a solo upright bike even in the background. Do not draw an ordinary runner or ordinary standing person even in the background. Use adaptive equipment or omit the land figure.",
+      "If a cycling cue appears, it must read clearly as a handcycle, recumbent adaptive cycle, or tandem/guide-support setup. Prefer handcycle over tandem.",
+      "If a run cue appears, it must read clearly as a racing wheelchair, guide tether/guide support, or simplified prosthetic/blade cue. Do not depict a lone standard runner.",
+      "All handcycles, racing wheelchairs, route arrows, and road curves must move in the same direction. Do not depict opposing riders, head-on traffic, intersecting paths, or near-collision composition.",
+      "Do not show riders, handcycles, wheelchairs, bikes, or route lines entering the ocean. Do not show the swim happening after the land segments.",
+      "If generic figures appear on land, they must be using or guiding adaptive equipment: handcycle, racing wheelchair, guide tether, or simplified prosthetic/blade cue. Do not show generic standing spectators, generic runners, or generic cyclists.",
+      "If generic figures appear, keep them blank-faced and geometric, with the adaptive equipment doing the storytelling. No race numbers, uniforms, logos, official marks, or athlete likeness.",
+      "Make the panel instantly read as Para triathlon through adaptive equipment, transition control, and water-to-road sequencing.",
+      stateContext
+    ].join("\n- ");
+  }
+
+  if (/swimming|para swimming/.test(sport)) {
+    return [
+      "Swimming logic: show pool lanes, water surface, lane ropes, goggles, swim cap shapes, ripples, and lane rhythm.",
+      "If generic figures appear, they must be in water, not standing on top of it or on land.",
+      "Do not show open-road, bike, court, or unrelated secondary sport equipment.",
+      stateContext
+    ].join("\n- ");
+  }
+
+  if (/surfing/.test(sport)) {
+    return [
+      "Surfing logic: show surfboard, wave face, ocean swell, shoreline rhythm, and balance cues.",
+      "If generic figures appear, they must be faceless and positioned on/near a board in a stylized wave context.",
+      "Do not show pool lanes, bicycle paths, courts, or unrelated secondary sport equipment.",
+      stateContext
+    ].join("\n- ");
+  }
+
+  if (/cycling|para-cycling|para cycling/.test(sport)) {
+    return [
+      "Cycling logic: show wheels, road curves, route lines, bike/handcycle equipment, surface rhythm, and terrain contours.",
+      "If generic figures appear, they must be faceless and placed on land roads only, never in water.",
+      "Do not show swimming order, pool play, or unrelated secondary sports.",
+      stateContext
+    ].join("\n- ");
+  }
+
+  if (/track and field|para track/.test(sport)) {
+    return [
+      "Track and field logic: the competition surface must make physical sense. Build the scene around one clear oval or curved track with visible lanes.",
+      "If a runner appears, the runner's feet must be inside one marked lane and visibly touching the track surface. The lane lines should pass under/around the runner, not behind them as scenery.",
+      "Do not place a runner on grass, water, mountain shapes, abstract circular rings, floating paths, or outside the marked track lanes.",
+      "If field-event equipment appears, place it in the infield or a clear throwing/jumping sector inside or next to the track. Do not make javelins, discus, shot, or jumping marks float randomly over the landscape.",
+      "Use mountains, snow, trees, or state geography only as background beyond the stadium/track surface, not as the surface the athlete runs on.",
+      "Avoid disconnected motion rings that look like a second track under the runner. One readable track surface is better than a decorative collage.",
+      "If generic figures appear, they must be faceless and stylized; no bibs, lane numbers, uniforms, or recognizable athletes.",
+      "Do not show finish times, rankings, scoreboards, medals, or unrelated secondary sport equipment.",
+      stateContext
+    ].join("\n- ");
+  }
+
+  if (/shooting|archery/.test(sport)) {
+    return [
+      "Precision sport logic: show target rings as abstract non-medal geometry, focus lines, bow/equipment silhouettes, calm spacing, and stillness cues.",
+      "Avoid realistic weapons detail; keep equipment simplified and editorial.",
+      "Do not show scores, rankings, bullseye results, official marks, or athlete likeness.",
+      stateContext
+    ].join("\n- ");
+  }
+
+  if (/volleyball|soccer|basketball|rugby|water polo/.test(sport)) {
+    return [
+      "Team-sport logic: show the featured ball, court/field/pool markings, passing lanes, spacing arcs, and team movement cues.",
+      "If generic figures appear, make them faceless geometric paper-cut figures with no uniform detail or numbers.",
+      "Do not show unrelated secondary sports from the state mix.",
+      stateContext
+    ].join("\n- ");
+  }
+
+  if (/skateboarding/.test(sport)) {
+    return [
+      "Skateboarding logic: show board, rails, ramps, plaza shapes, balance arcs, and urban surface cues.",
+      "If generic figures appear, make them faceless and geometric with no identifiable clothing or logos.",
+      "Do not show aquatic, cycling, or unrelated secondary sport equipment.",
+      stateContext
+    ].join("\n- ");
+  }
+
+  return [
+    `${program === "paralympic" ? "Paralympic" : "Olympic"} featured-sport logic: visualize only the featured sport cue and its sport-family theme.`,
+    "Do not mix in secondary sports, unrelated equipment, or confusing physical actions.",
+    "If generic figures appear, keep them fictional, faceless, geometric, and non-identifiable.",
+    stateContext
+  ].join("\n- ");
 }
 
 function currentPanelMetadata({ card, program, prompt, copyPrompt, cardBackCopy }) {
@@ -925,10 +1078,14 @@ async function generateGeminiImageWithRetry({ token, prompt, label }) {
 
 async function generateGeminiImage({ token, prompt }) {
   const endpoint = vertexEndpoint();
+  const styleReferenceParts = loadStyleReferenceParts();
   const requestBody = {
     contents: {
       role: "USER",
-      parts: [{ text: prompt }]
+      parts: [
+        { text: prompt },
+        ...styleReferenceParts
+      ]
     },
     generationConfig: {
       responseModalities: ["TEXT", "IMAGE"],
@@ -976,6 +1133,36 @@ async function generateGeminiImage({ token, prompt }) {
     mimeType: inlineData.mimeType || inlineData.mime_type || "image/png",
     textParts
   };
+}
+
+function loadStyleReferenceParts() {
+  if (String(process.env.CARD_STYLE_REFERENCES || "1").trim() === "0") return [];
+
+  const parts = [{
+    text: "Style reference images follow. Use them only for art direction: rough grain, muted colors, rounded organic sports collage, fuzzy edges, and editorial composition. Do not copy text, letters, exact map/card layouts, logos, or specific content from the references."
+  }];
+
+  for (const referencePath of STYLE_REFERENCE_IMAGE_PATHS) {
+    try {
+      parts.push({
+        inlineData: {
+          mimeType: mimeTypeForImage(referencePath),
+          data: readFileSync(referencePath).toString("base64")
+        }
+      });
+    } catch {
+      // References are optional; the text prompt still carries the style direction.
+    }
+  }
+
+  return parts;
+}
+
+function mimeTypeForImage(filePath) {
+  const ext = path.extname(filePath).toLowerCase();
+  if (ext === ".jpg" || ext === ".jpeg") return "image/jpeg";
+  if (ext === ".webp") return "image/webp";
+  return "image/png";
 }
 
 async function postVertexJson(endpoint, { headers, body, timeoutMs }) {
