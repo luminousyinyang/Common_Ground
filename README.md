@@ -79,6 +79,7 @@ If no key is present, the server returns compliance-safe fallback copy.
 - Hover tooltip showing Olympic, Paralympic, and total public hometown geography roster row counts before clicking.
 - Map controls for wheel/trackpad zoom, drag panning, reset, and browser-local state matching.
 - Unified sports-card view with abstract generated bitmap art on the front and aggregate sourced data on the back.
+- Expanded card briefing includes top city-level hometown areas when at least three public source entries support the aggregate.
 - Guest "My Sport Cards" collection of discovered states, with no forced login.
 - Gemini state briefing and game reflection endpoints with local validation and fallback copy.
 - Reaction Grid and Cadence Keeper fan challenges.
@@ -100,6 +101,7 @@ The ingest pipeline:
 - Uses public TeamUSA.com Paris 2024 roster source rows.
 - Filters to records with U.S. hometown-state or supported U.S. territory abbreviations.
 - Aggregates by geography and sport family.
+- Optionally aggregates top city-level hometown areas with a minimum threshold of three public source entries.
 - Strips athlete names, images, profile URLs, biographies, medals, rankings, finish times, and individual-level fields.
 - Converts exact state counts into low, medium, high, or insufficient-data buckets for the main card panels.
 

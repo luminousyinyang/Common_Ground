@@ -1,4 +1,5 @@
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { createRoot } from "react-dom/client";
 import { geoContains, geoMercator, geoPath } from "d3-geo";
 import { feature, mesh } from "topojson-client";
@@ -194,6 +195,7 @@ function fallbackBriefing(card, reason = "The Gemini backend is not available fr
         }
       ],
       geographyLens: `${card.geographySnapshot} could help fans understand why varied sport environments appear in this aggregate state view.`,
+      hometownAreas: formatHometownAreas(card.topHometownSignals),
       whatToNotice: "The useful fan read is contrast: some sports emphasize spacing and quick decisions, while others emphasize rhythm, stillness, pacing, equipment, or transitions.",
       surprisingConnection: `${olympicCue} and ${paralympicCue} do not need to look alike to share a viewing idea; both can point fans toward control when timing, surface, or spacing changes.`,
       sharedStateSignal: `${card.sharedTrait.name}: ${card.sharedTrait.description}`,
@@ -202,6 +204,13 @@ function fallbackBriefing(card, reason = "The Gemini backend is not available fr
     },
     complianceWarnings: [reason]
   };
+}
+
+function formatHometownAreas(signals = []) {
+  return (signals || []).slice(0, 3).map((area) => ({
+    area: area.label,
+    detail: `${area.total} ${area.countLabel || "public hometown entries"} in the public source view, with ${area.olympic} Olympic-side and ${area.paralympic} Paralympic-side entries.`
+  }));
 }
 
 function fallbackGameReflection(card, result, reason = "The Gemini backend is not available from this dev server.") {
@@ -561,6 +570,7 @@ const ICON_PATHS = {
   cards: <><rect x="2" y="5" width="15" height="14" rx="2" /><path d="M6 5V3a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-2" /></>,
   game: <><circle cx="12" cy="12" r="10" /><circle cx="12" cy="12" r="4" /><line x1="21.17" y1="8" x2="12" y2="8" /><line x1="3.95" y1="6.06" x2="8" y2="14" /><line x1="10.88" y1="21.94" x2="15" y2="14" /></>,
   method: <><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /></>,
+  list: <><line x1="8" y1="6" x2="21" y2="6" /><line x1="8" y1="12" x2="21" y2="12" /><line x1="8" y1="18" x2="21" y2="18" /><circle cx="4" cy="6" r="1" /><circle cx="4" cy="12" r="1" /><circle cx="4" cy="18" r="1" /></>,
   locate: <polygon points="3 11 22 2 13 21 11 13 3 11" />,
   reset: <><polyline points="23 4 23 10 17 10" /><path d="M20.49 15a9 9 0 1 1-.39-4.67" /></>,
   moon: <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />,
@@ -1537,6 +1547,89 @@ const PANEL_QA_ROWS = [
   ["cardTrait", "Card trait"]
 ];
 
+function compactSentences(value, maxSentences = 2) {
+  const text = String(value || "").replace(/\s+/g, " ").trim();
+  if (!text) return "";
+  const sentences = text.match(/[^.!?]+[.!?]+|[^.!?]+$/g)?.map((item) => item.trim()).filter(Boolean) || [text];
+  return sentences.slice(0, maxSentences).join(" ");
+}
+
+function compactSnippet(value, maxLength = 205) {
+  const text = compactSentences(value, 1);
+  if (text.length <= maxLength) return text;
+  const trimmed = text.slice(0, maxLength).replace(/\s+\S*$/, "").replace(/[,:;]+$/, "");
+  return `${trimmed}.`;
+}
+
+function compactPanelCopy(panel) {
+  const copy = getPanelBackCopyForDisplay(panel);
+  const visualCue = copy.featuredCue || getPanelVisualCue(panel);
+  const factChips = Array.isArray(copy.factChips) ? copy.factChips.filter(Boolean).slice(0, 2) : [];
+  return {
+    visualCue,
+    summary: compactSnippet(copy.qaFacts?.howItWorks || copy.qaFacts?.watchValue || panel.geographyConnection),
+    chips: factChips
+  };
+}
+
+function compactStateConnection(card, briefing) {
+  const generatedLens = briefing?.briefing?.geographyLens;
+  if (String(generatedLens || "").trim()) return compactSnippet(generatedLens, 132);
+  return compactSnippet(`${card.geographySnapshot} could help fans understand why this state card connects these sport environments.`, 132);
+}
+
+function CompactSportLens({ panel }) {
+  const copy = compactPanelCopy(panel);
+  return (
+    <section className={`compact-sport-lens ${panel.program}`}>
+      <span className="compact-lens-label">{panel.program === "paralympic" ? "Paralympic Lens" : "Olympic Lens"}</span>
+      <h4>{copy.visualCue}</h4>
+      <p>{copy.summary}</p>
+      {copy.chips.length > 0 && (
+        <div className="compact-fact-line">
+          {copy.chips.map((chip) => <span key={chip}>{chip}</span>)}
+        </div>
+      )}
+    </section>
+  );
+}
+
+function CompactCardBack({ card, briefing, onReadFullBriefing }) {
+  const themeName = getCardThemeName(card);
+  const olympicCue = getPanelVisualCue(card.olympicPanel);
+  const paralympicCue = getPanelVisualCue(card.paralympicPanel);
+
+  return (
+    <div className="compact-card-back">
+      <header className="compact-back-header">
+        <span>Common Ground State Card</span>
+        <h3>{card.stateName}</h3>
+        <p>{themeName}</p>
+      </header>
+
+      <div className="compact-lens-grid">
+        <CompactSportLens panel={card.olympicPanel} />
+        <CompactSportLens panel={card.paralympicPanel} />
+      </div>
+
+      <section className="compact-shared-block">
+        <span>Shared signal</span>
+        <strong>{card.sharedTrait.name}</strong>
+        <p>Olympic <b>{olympicCue}</b> and Paralympic <b>{paralympicCue}</b> connect through {card.sharedTrait.description.toLowerCase()}</p>
+      </section>
+
+      <section className="compact-connection-block">
+        <span>{card.stateName} connection</span>
+        <p>{compactStateConnection(card, briefing)}</p>
+      </section>
+
+      <button className="compact-read-more" type="button" onClick={onReadFullBriefing}>
+        Read full state briefing
+      </button>
+    </div>
+  );
+}
+
 function SportPanel({ panel }) {
   const copy = getPanelBackCopyForDisplay(panel);
   const visualCue = copy.featuredCue || getPanelVisualCue(panel);
@@ -1643,7 +1736,17 @@ function CardArt({ card, compact = false, panelManifest = EMPTY_CARD_PANEL_MANIF
   );
 }
 
-function UnifiedStateCard({ card, sourceRefs, briefing, briefingLoading, onRefreshBriefing, onOpenChallenge, onFlipChange, panelManifest, isUnlocked = false }) {
+function UnifiedStateCard({
+  card,
+  sourceRefs,
+  briefing,
+  briefingLoading,
+  onRefreshBriefing,
+  onOpenChallenge,
+  isBackExpanded,
+  onBackExpandedChange,
+  panelManifest, isUnlocked = false
+}) {
   const [flipped, setFlipped] = useState(false);
   const [displayBack, setDisplayBack] = useState(false);
   const [flipPhase, setFlipPhase] = useState(null); // null | "out" | "in"
@@ -1664,7 +1767,7 @@ function UnifiedStateCard({ card, sourceRefs, briefing, briefingLoading, onRefre
     setDisplayBack(false);
     setFlipPhase(null);
     setTilt({ x: 0, y: 0 });
-    onFlipChange?.(false);
+    onBackExpandedChange?.(false);
   }, [card.stateCode]);
 
   function toggleFlip() {
@@ -1674,10 +1777,10 @@ function UnifiedStateCard({ card, sourceRefs, briefing, briefingLoading, onRefre
 
     const t1 = setTimeout(() => {
       const next = !flipped;
+      if (!next) onBackExpandedChange?.(false);
       setFlipped(next);
       setDisplayBack(next);
       setFlipPhase("in");
-      onFlipChange?.(next);
     }, 150);
 
     const t2 = setTimeout(() => {
@@ -1754,34 +1857,43 @@ function UnifiedStateCard({ card, sourceRefs, briefing, briefingLoading, onRefre
             </article>
 
             <article className={backClass} aria-label={`${card.stateName} state card data`}>
-              <div className="card-back-scroll">
-                <div className="card-header">
-                  <p className="eyebrow">Shared geography view</p>
-                  <h3>{card.stateName}</h3>
-                  <p>{card.geographySnapshot}</p>
-                  <div className="metric-row compact-metrics">
-                    <span className="metric">State total <strong>{counts.total}</strong></span>
-                    <span className="metric">Olympic count <strong>{counts.olympic}</strong></span>
-                    <span className="metric">Paralympic count <strong>{counts.paralympic}</strong></span>
+              {isBackExpanded ? (
+                <div className="card-back-scroll">
+                  <div className="card-header">
+                    <p className="eyebrow">Shared geography view</p>
+                    <h3>{card.stateName}</h3>
+                    <p>{card.geographySnapshot}</p>
+                    <div className="metric-row compact-metrics">
+                      <span className="metric">State total <strong>{counts.total}</strong></span>
+                      <span className="metric">Olympic count <strong>{counts.olympic}</strong></span>
+                      <span className="metric">Paralympic count <strong>{counts.paralympic}</strong></span>
+                    </div>
+                  </div>
+                  <HometownAreasCard card={card} payload={briefing} compact />
+                  <div className="program-panel-grid">
+                    <SportPanel panel={card.olympicPanel} />
+                    <SportPanel panel={card.paralympicPanel} />
+                  </div>
+                  <section className="trait-band">
+                    <div className="trait-badge">
+                      <span>Shared trait across both featured sports</span>
+                      <strong>{card.sharedTrait.name}</strong>
+                    </div>
+                    <p>This trait connects Olympic <strong>{olympicCue}</strong> and Paralympic <strong>{paralympicCue}</strong>: {card.sharedTrait.description}</p>
+                  </section>
+                  <BriefingPanel payload={briefing} loading={briefingLoading} onRefresh={onRefreshBriefing} compact />
+                  <div className="card-footer">
+                    <SourceList refs={sourceRefs} />
+                    <button className="primary-button" type="button" onClick={onOpenChallenge}>Try the State Sync Challenge</button>
                   </div>
                 </div>
-                <div className="program-panel-grid">
-                  <SportPanel panel={card.olympicPanel} />
-                  <SportPanel panel={card.paralympicPanel} />
-                </div>
-                <section className="trait-band">
-                  <div className="trait-badge">
-                    <span>Shared trait across both featured sports</span>
-                    <strong>{card.sharedTrait.name}</strong>
-                  </div>
-                  <p>This trait connects Olympic <strong>{olympicCue}</strong> and Paralympic <strong>{paralympicCue}</strong>: {card.sharedTrait.description}</p>
-                </section>
-                <BriefingPanel payload={briefing} loading={briefingLoading} onRefresh={onRefreshBriefing} compact />
-                <div className="card-footer">
-                  <SourceList refs={sourceRefs} />
-                  <button className="primary-button" type="button" onClick={onOpenChallenge}>Try the State Sync Challenge</button>
-                </div>
-              </div>
+              ) : (
+                <CompactCardBack
+                  card={card}
+                  briefing={briefing}
+                  onReadFullBriefing={() => onBackExpandedChange?.(true)}
+                />
+              )}
             </article>
           </div>
         </div>
@@ -1843,7 +1955,8 @@ function CardModal({
           briefingLoading={briefingLoading}
           onRefreshBriefing={onRefreshBriefing}
           onOpenChallenge={onOpenChallenge}
-          onFlipChange={setIsBackExpanded}
+          isBackExpanded={isBackExpanded}
+          onBackExpandedChange={setIsBackExpanded}
           panelManifest={panelManifest}
           isUnlocked={isUnlocked}
         />
@@ -1913,7 +2026,7 @@ function BriefingPanel({ payload, loading, onRefresh, compact = false }) {
               <div className="briefing-list">
                 {value.map((item) => (
                   typeof item === "object" && item !== null
-                    ? <p key={`${item.theme}-${item.detail}`}><strong>{item.theme}:</strong> {item.detail}</p>
+                    ? <p key={`${item.theme || item.area}-${item.detail}`}><strong>{item.theme || item.area}:</strong> {item.detail}</p>
                     : <p key={item}>{item}</p>
                 ))}
               </div>
@@ -1924,6 +2037,135 @@ function BriefingPanel({ payload, loading, onRefresh, compact = false }) {
         ))}
       </div>
     </section>
+  );
+}
+
+function normalizeHometownAreaRows(card, briefing = {}) {
+  const sourceRows = Array.isArray(card?.hometownAreaSignals) && card.hometownAreaSignals.length
+    ? card.hometownAreaSignals
+    : Array.isArray(card?.allHometownSignals) && card.allHometownSignals.length
+      ? card.allHometownSignals
+      : Array.isArray(card?.topHometownSignals)
+        ? card.topHometownSignals
+        : [];
+
+  const rows = sourceRows
+    .map((area, index) => normalizeHometownAreaRow(area, index))
+    .filter(Boolean);
+
+  if (rows.length) return rows;
+
+  return (Array.isArray(briefing?.hometownAreas) ? briefing.hometownAreas : [])
+    .map((area, index) => normalizeHometownAreaRow(area, index))
+    .filter(Boolean);
+}
+
+function normalizeHometownAreaRow(area, index) {
+  if (!area || typeof area !== "object") return null;
+  const label = String(area.label || area.area || area.city || "").trim();
+  if (!label) return null;
+  const total = Number.isFinite(Number(area.total)) ? Number(area.total) : null;
+  const olympic = Number.isFinite(Number(area.olympic)) ? Number(area.olympic) : null;
+  const paralympic = Number.isFinite(Number(area.paralympic)) ? Number(area.paralympic) : null;
+  const countLabel = area.countLabel || "public hometown entries";
+  const detail = area.detail || (
+    total !== null && olympic !== null && paralympic !== null
+      ? `${total} ${countLabel} in the public source view, with ${olympic} Olympic-side and ${paralympic} Paralympic-side entries.`
+      : "Public aggregate hometown area in the state source view."
+  );
+
+  return {
+    rank: area.rank || index + 1,
+    label,
+    total,
+    olympic,
+    paralympic,
+    countLabel,
+    detail
+  };
+}
+
+function HometownAreasCard({ card, payload, compact = false }) {
+  const [showAll, setShowAll] = useState(false);
+  const rows = normalizeHometownAreaRows(card, payload?.briefing);
+  const previewRows = rows.slice(0, 3);
+
+  useEffect(() => {
+    setShowAll(false);
+  }, [card?.stateCode]);
+
+  if (!previewRows.length) return null;
+
+  return (
+    <section className={`hometown-areas-card ${compact ? "is-compact" : ""}`}>
+      <div className="panel-heading-row hometown-areas-heading">
+        <div>
+          <p className="eyebrow">Public source view</p>
+          <h3>Top Hometown Areas</h3>
+        </div>
+        <button className="ghost-button small hometown-see-all-button" type="button" onClick={() => setShowAll(true)}>
+          <Icon name="list" size={14} strokeWidth={2} />
+          <span>See all</span>
+        </button>
+      </div>
+      <div className="hometown-area-list">
+        {previewRows.map((area) => (
+          <HometownAreaRow key={`${area.rank}-${area.label}`} area={area} />
+        ))}
+      </div>
+      <p className="hometown-area-note">City-level aggregate public hometown entries, not a complete athlete census.</p>
+      {showAll && (
+        <HometownAreasDialog
+          stateName={card.stateName}
+          areas={rows}
+          onClose={() => setShowAll(false)}
+        />
+      )}
+    </section>
+  );
+}
+
+function HometownAreaRow({ area }) {
+  return (
+    <article className="hometown-area-row">
+      <span className="hometown-area-rank">{area.rank}</span>
+      <div className="hometown-area-copy">
+        <strong>{area.label}</strong>
+        <p>{area.detail}</p>
+      </div>
+    </article>
+  );
+}
+
+function HometownAreasDialog({ stateName, areas, onClose }) {
+  useEffect(() => {
+    function onKey(event) {
+      if (event.key === "Escape") onClose();
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  return createPortal(
+    <div className="hometown-area-dialog-backdrop" role="dialog" aria-modal="true" aria-label={`${stateName} hometown areas`}>
+      <button className="hometown-area-dialog-scrim" type="button" aria-label="Close hometown areas" onClick={onClose} />
+      <section className="hometown-area-dialog-panel">
+        <div className="hometown-area-dialog-heading">
+          <div>
+            <p className="eyebrow">Public hometown entries</p>
+            <h3>{stateName} Hometown Areas</h3>
+          </div>
+          <button className="modal-close-button" type="button" onClick={onClose} aria-label="Close hometown areas" />
+        </div>
+        <div className="hometown-area-dialog-list">
+          {areas.map((area) => (
+            <HometownAreaRow key={`${area.rank}-${area.label}`} area={area} />
+          ))}
+        </div>
+        <p className="hometown-area-note">Only aggregate city labels and counts from the public source view are shown.</p>
+      </section>
+    </div>,
+    document.body
   );
 }
 

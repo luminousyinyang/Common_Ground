@@ -1,17 +1,17 @@
 {
   "model": "gemini-3-pro-image-preview",
   "location": "global",
-  "updatedAt": "2026-05-04T20:44:18.069Z",
+  "updatedAt": "2026-05-05T00:08:32.423Z",
   "states": {
     "CO": {
       "olympic": {
-        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v3-top-sport-cue%2Fco%2Fco-olympic.png?alt=media&token=94c85d64-65ef-4f6b-b68a-88b22401a188",
+        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fco%2Fco-olympic.png?alt=media&token=8ce45d90-fb0c-4471-9838-8224d3029a39",
         "localUrl": null,
         "model": "gemini-3-pro-image-preview",
         "location": "global",
         "mimeType": "image/png",
-        "generatedAt": "2026-05-04T13:37:10.702Z",
-        "promptVersion": "common-ground-card-panel-v3-top-sport-cue",
+        "generatedAt": "2026-05-05T00:09:29.158Z",
+        "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
         "promptSummary": "Colorado olympic Track and Field",
         "primarySportTag": "Track and Field",
         "topSportTags": [
@@ -22,22 +22,22 @@
         "cardBackCopy": {
           "featuredCue": "Track and Field",
           "moduleMix": [
-            "Watch Hook",
+            "Rules Snapshot",
             "Pace Shift",
             "Terrain/Environment Lens"
           ],
-          "subtitle": "Track and road events · pace strategy · distance control",
+          "subtitle": "Running events · field disciplines · pace control · fastest time wins",
           "qaFacts": {
-            "howItWorks": "Track and field features a variety of running, jumping, and throwing events, but on the oval, the objective is to cross the finish line first. Competitors race across set distances, from quick sprints to long-distance runs, where the fastest overall time secures the win.",
-            "watchValue": "Distance races get easier to read when you watch the pack positioning rather than just the leader. Notice how runners tuck in behind others to save energy, waiting for the perfect moment to shift their pace and break away.",
-            "stateConnection": "Colorado's high elevation, mountain terrain, and widespread outdoor access could help fans see why endurance and pace-focused sport stories appear associated with this state.",
-            "cardTrait": "Track and field links to Waterline Control through the precise cadence adjustments athletes make when navigating traffic and changing speeds on the track."
+            "howItWorks": "Track and field encompasses running, jumping, and throwing events held on a stadium oval, infield, or road course. In race events, the competitor with the fastest total time wins, while field events score the longest distance or highest clearance. A key mechanic for new viewers is lane discipline: short sprints keep athletes in assigned lanes, while longer races allow the pack to merge.",
+            "watchValue": "Notice how runners adjust their stride and positioning over multiple laps or distances. The excitement comes from watching the pack shift formations, revealing exactly when a competitor decides to break the group's rhythm and make a move.",
+            "stateConnection": "Colorado's high elevation, mountain trails, and expansive outdoor access could help fans understand why endurance and pace-control stories fit this state card.",
+            "cardTrait": "Track and field connects to Waterline Control through the precise timing, stride cadence, and spacing decisions athletes use to manage a race."
           },
           "factChips": [
-            "Sprints to long-distance events",
-            "Pack positioning",
-            "Pace strategy",
-            "Fastest time wins"
+            "Fastest total time wins",
+            "Lane assignments for sprints",
+            "Pace and stride rhythm",
+            "Track and road courses"
           ],
           "relatedTags": [
             "Cycling",
@@ -50,23 +50,23 @@
         "cardBackCopyModel": "gemini-3.1-pro-preview",
         "cardBackCopyPromptHash": "bbac1c155eb3c42f90eb8a3f114116bcde3b48b24e9e2cb72d3f2dfe85fea93c",
         "paletteTheme": "Alpine Signal",
-        "promptHash": "784df761a6c7ab69d4382bcefa52205bd435fe1b5bcdc3f6b86446cabcaa2b7b",
+        "promptHash": "72a729d88a3bfff21cf8a0e50b762af786706ba5ef01a20b70810fb31fc6aae1",
         "notes": "",
-        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v3-top-sport-cue%2Fco%2Fco-olympic.png?alt=media&token=94c85d64-65ef-4f6b-b68a-88b22401a188",
+        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fco%2Fco-olympic.png?alt=media&token=8ce45d90-fb0c-4471-9838-8224d3029a39",
         "storageBucket": "common-ground-tests.firebasestorage.app",
         "firebaseProjectId": "common-ground-tests",
-        "storagePath": "card-panels/common-ground-card-panel-v3-top-sport-cue/co/co-olympic.png",
-        "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v3-top-sport-cue/co/co-olympic.png",
+        "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/co/co-olympic.png",
+        "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/co/co-olympic.png",
         "firebaseCollection": "cardPanels"
       },
       "paralympic": {
-        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v3-top-sport-cue%2Fco%2Fco-paralympic.png?alt=media&token=efce1ec8-d28a-4c58-bd34-48bf338ee389",
+        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v12-para-tri-no-generic-land-figures%2Fco%2Fco-paralympic.png?alt=media&token=57c3d805-1abb-4b2c-8395-60eb3f6c1a89",
         "localUrl": null,
         "model": "gemini-3-pro-image-preview",
         "location": "global",
         "mimeType": "image/png",
-        "generatedAt": "2026-05-04T13:40:53.858Z",
-        "promptVersion": "common-ground-card-panel-v3-top-sport-cue",
+        "generatedAt": "2026-05-04T23:58:08.580Z",
+        "promptVersion": "common-ground-card-panel-v12-para-tri-no-generic-land-figures",
         "promptSummary": "Colorado paralympic Para triathlon",
         "primarySportTag": "Paratriathlon",
         "topSportTags": [
@@ -78,21 +78,21 @@
           "featuredCue": "Para triathlon",
           "moduleMix": [
             "Pace Shift",
-            "Watch Hook",
-            "Gear/Setup"
+            "Gear/Setup",
+            "Terrain/Environment Lens"
           ],
-          "subtitle": "750m swim · 20km bike · 5km run · transition timing",
+          "subtitle": "750m swim · 20km bike · 5km run · transition control",
           "qaFacts": {
-            "howItWorks": "Para triathlon is a continuous three-stage event featuring a 750m swim, a 20km bike segment, and a 5km run. The competitor with the fastest total race time in their classification wins. Because the clock never stops, the time spent swapping equipment in the transition zone is a critical part of the race.",
-            "watchValue": "Watch how the rhythm of the event completely resets twice. The tension spikes when competitors exit the water to quickly change gear—such as moving to a handcycle, tandem bicycle, or racing wheelchair—because a smooth transition can erase a rival's lead in seconds.",
-            "stateConnection": "Colorado's high elevation, mountain terrain, and deep culture of outdoor access could help fans understand why endurance pacing stories fit this state card.",
-            "cardTrait": "Para triathlon connects to Waterline Control through the constant need to adjust cadence and rhythm as the race surface shifts from open water to pavement."
+            "howItWorks": "Para triathlon is a continuous race across a 750m swim, a 20km bike segment, and a 5km run. The competitor with the fastest total time wins, meaning the clock keeps ticking even during equipment transitions between stages.",
+            "watchValue": "The event shifts entirely as athletes move from the water to the road. Watching how competitors manage their rhythm and equipment across three different racing surfaces is where the tension peaks.",
+            "stateConnection": "Colorado's high elevation, mountain terrain, and seasonal outdoor access could help fans understand why endurance stories fit this state card.",
+            "cardTrait": "Para triathlon connects to Waterline Control through pacing and adaptation, as athletes must find a steady cadence across changing surfaces."
           },
           "factChips": [
-            "750m swim, 20km bike, 5km run",
-            "Fastest total time wins",
-            "Continuous transition clock",
-            "Adaptive equipment shifts"
+            "750m swim",
+            "20km bike segment",
+            "5km run",
+            "Fastest total time wins"
           ],
           "relatedTags": [
             "Para Swimming",
@@ -105,25 +105,25 @@
         "cardBackCopyModel": "gemini-3.1-pro-preview",
         "cardBackCopyPromptHash": "dae9a5ab2c7b3a9c53728048d33d133a491e297fca2b8952f89b8f7fc3d9d01c",
         "paletteTheme": "Alpine Signal",
-        "promptHash": "8b80f7cd2d6e7c8e3604f6f856b1b75ca629d04a84ebfc0d12c745cf69a5aee0",
+        "promptHash": "e7d9128c7fa98cfe0175ed9af3898886161b5ff1edbdcfba9e3929f5f44bd7d9",
         "notes": "",
-        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v3-top-sport-cue%2Fco%2Fco-paralympic.png?alt=media&token=efce1ec8-d28a-4c58-bd34-48bf338ee389",
+        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v12-para-tri-no-generic-land-figures%2Fco%2Fco-paralympic.png?alt=media&token=57c3d805-1abb-4b2c-8395-60eb3f6c1a89",
         "storageBucket": "common-ground-tests.firebasestorage.app",
         "firebaseProjectId": "common-ground-tests",
-        "storagePath": "card-panels/common-ground-card-panel-v3-top-sport-cue/co/co-paralympic.png",
-        "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v3-top-sport-cue/co/co-paralympic.png",
+        "storagePath": "card-panels/common-ground-card-panel-v12-para-tri-no-generic-land-figures/co/co-paralympic.png",
+        "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v12-para-tri-no-generic-land-figures/co/co-paralympic.png",
         "firebaseCollection": "cardPanels"
       }
     },
     "CA": {
       "olympic": {
-        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v4-rough-fan-atlas%2Fca%2Fca-olympic.png?alt=media&token=2ef3fa28-74eb-4fc8-8beb-5f75f182ee88",
+        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v11-para-tri-equipment-first%2Fca%2Fca-olympic.png?alt=media&token=85afeb69-0bca-46b6-af09-f26629fe2e28",
         "localUrl": null,
         "model": "gemini-3-pro-image-preview",
         "location": "global",
         "mimeType": "image/png",
-        "generatedAt": "2026-05-04T20:45:02.120Z",
-        "promptVersion": "common-ground-card-panel-v4-rough-fan-atlas",
+        "generatedAt": "2026-05-04T23:12:51.519Z",
+        "promptVersion": "common-ground-card-panel-v11-para-tri-equipment-first",
         "promptSummary": "California olympic Water Polo",
         "primarySportTag": "Water Polo",
         "topSportTags": [
@@ -135,21 +135,21 @@
           "featuredCue": "Water Polo",
           "moduleMix": [
             "Rules Snapshot",
-            "Pace Shift",
-            "Watch Hook"
+            "Watch Hook",
+            "Pace Shift"
           ],
-          "subtitle": "Aquatic team sport · four 8-minute quarters · 28-second possessions",
+          "subtitle": "Seven-player teams · 28-second possessions · aquatic spacing",
           "qaFacts": {
-            "howItWorks": "Matches unfold across four eight-minute quarters where two teams of seven try to outscore each other. The objective is to throw the ball into the opponent's net, and field players may only touch the ball with one hand to control it.",
-            "watchValue": "Notice how the rhythm of the game shifts as the 28-second possession clock ticks down. The excitement comes from watching teams coordinate their spacing and set up a scoring angle while constantly treading water.",
-            "stateConnection": "Year-round outdoor access and a long Pacific coastline could help fans understand why aquatic team events appear so naturally connected to California's sport culture.",
-            "cardTrait": "Water polo demonstrates Waterline Control as athletes manage their passing cadence and spatial rhythm, keeping the ball moving smoothly despite the shifting aquatic surface."
+            "howItWorks": "Two teams of seven compete in the water, aiming to throw the ball into the opponent's net to win by scoring the most goals. Matches unfold across four eight-minute quarters, and field players are only allowed to touch the ball with one hand.",
+            "watchValue": "Watch how the 28-second shot clock shapes the rhythm of the game. The tension builds when players tread water to set up a play, suddenly shifting pace to find an open throwing lane before time runs out.",
+            "stateConnection": "California's extensive Pacific coast, outdoor aquatic access, and large urban sport communities could help fans understand why water-based team environments fit this state card.",
+            "cardTrait": "Water polo connects to Waterline Control through the constant need to manage passing cadence and spatial awareness in a fluid environment."
           },
           "factChips": [
             "7 per team: 6 field + goalkeeper",
             "Four 8-minute quarters",
-            "28-second possession clock",
-            "One-hand touch rule"
+            "28-second possessions",
+            "One-hand ball control"
           ],
           "relatedTags": [
             "Track and Field",
@@ -162,23 +162,23 @@
         "cardBackCopyModel": "gemini-3.1-pro-preview",
         "cardBackCopyPromptHash": "be5abcd3a78d57da86fff2a64defd8442f2405a0db0f8e7458979c36e0ec38b3",
         "paletteTheme": "Pacific Heat",
-        "promptHash": "0d2bf038e56f37af3b84ce7384b5444e87d767322be855c164d4e4ab7f13fca6",
+        "promptHash": "b9ccde41c41273d36cce47b6c56071e3d96cca1ffcec5b587ceab07fac1f6419",
         "notes": "",
-        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v4-rough-fan-atlas%2Fca%2Fca-olympic.png?alt=media&token=2ef3fa28-74eb-4fc8-8beb-5f75f182ee88",
+        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v11-para-tri-equipment-first%2Fca%2Fca-olympic.png?alt=media&token=85afeb69-0bca-46b6-af09-f26629fe2e28",
         "storageBucket": "common-ground-tests.firebasestorage.app",
         "firebaseProjectId": "common-ground-tests",
-        "storagePath": "card-panels/common-ground-card-panel-v4-rough-fan-atlas/ca/ca-olympic.png",
-        "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v4-rough-fan-atlas/ca/ca-olympic.png",
+        "storagePath": "card-panels/common-ground-card-panel-v11-para-tri-equipment-first/ca/ca-olympic.png",
+        "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v11-para-tri-equipment-first/ca/ca-olympic.png",
         "firebaseCollection": "cardPanels"
       },
       "paralympic": {
-        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v4-rough-fan-atlas%2Fca%2Fca-paralympic.png?alt=media&token=2982b059-d9ff-4e64-9620-3fe02fa42c22",
+        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v11-para-tri-equipment-first%2Fca%2Fca-paralympic.png?alt=media&token=7fc82cce-cbfd-41dd-bb6b-4bfa8d49bedd",
         "localUrl": null,
         "model": "gemini-3-pro-image-preview",
         "location": "global",
         "mimeType": "image/png",
-        "generatedAt": "2026-05-04T20:54:05.388Z",
-        "promptVersion": "common-ground-card-panel-v4-rough-fan-atlas",
+        "generatedAt": "2026-05-04T23:21:48.756Z",
+        "promptVersion": "common-ground-card-panel-v11-para-tri-equipment-first",
         "promptSummary": "California paralympic Para triathlon",
         "primarySportTag": "Paratriathlon",
         "topSportTags": [
@@ -189,22 +189,22 @@
         "cardBackCopy": {
           "featuredCue": "Para triathlon",
           "moduleMix": [
-            "Watch Hook",
             "Pace Shift",
+            "Gear/Setup",
             "Terrain/Environment Lens"
           ],
-          "subtitle": "Three-stage race · transition timing · changing race rhythm",
+          "subtitle": "750m swim · 20km bike · 5km run · fastest total time",
           "qaFacts": {
-            "howItWorks": "Para triathlon is a continuous three-stage race featuring a 750m swim, a 20km bike segment, and a 5km run. The competitor with the fastest total time across all stages wins the event. Because the clock never stops, the time spent swapping equipment in the transition zones is just as critical as the race itself.",
-            "watchValue": "Look for the moment competitors exit the water and move into the first transition. The tension spikes as they switch gear—like moving to a handcycle or tandem bicycle—and immediately try to establish a new rhythm on the road.",
-            "stateConnection": "California's Pacific coast, mountain roads, and year-round outdoor access could help fans see why multi-surface endurance events naturally align with this state card.",
-            "cardTrait": "Para triathlon connects to Waterline Control through the constant adjustments to pacing and cadence needed when shifting from water to wheels to the final run."
+            "howItWorks": "Para triathlon is a continuous three-stage race consisting of a 750m swim, a 20km bike segment, and a 5km run. The competitor with the fastest total race time wins, and because the clock never stops, the transition time spent switching gear between stages is a crucial part of the event.",
+            "watchValue": "Notice how the rhythm of the race completely transforms at the transition zones. The fun is watching athletes switch from water to wheels to the road, adapting their speed and equipment setups on the fly.",
+            "stateConnection": "California's Pacific coast, varied mountain terrain, and year-round outdoor access could help fans understand why multi-stage endurance events fit the environment of this state card.",
+            "cardTrait": "Managing pace across changing surfaces connects this event directly to Waterline Control. Finding a steady cadence through the water, on the bike, and during the final run mirrors the rhythm mechanics of the mini-game."
           },
           "factChips": [
             "750m swim, 20km bike, 5km run",
             "Fastest total race time wins",
-            "Clock runs through transitions",
-            "Handcycles, tandems, or racing wheelchairs"
+            "Active clock during transitions",
+            "Adaptive cycling and racing wheelchairs"
           ],
           "relatedTags": [
             "Para Track and Field",
@@ -218,13 +218,13 @@
         "cardBackCopyModel": "gemini-3.1-pro-preview",
         "cardBackCopyPromptHash": "d02abdd3c1638ba213b284e3c609efbc741c28ee15c0fad04a61d1eb21fe1f99",
         "paletteTheme": "Pacific Heat",
-        "promptHash": "0d75c0fc06c2ef0bbbbeafc3dcc579fa9dce6a4bee2e2ad1d972caa9a1beaf6d",
+        "promptHash": "9f7d14b03124be16fbef5849569ea7d185e2269fbf13ea37997442aa240bd895",
         "notes": "",
-        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v4-rough-fan-atlas%2Fca%2Fca-paralympic.png?alt=media&token=2982b059-d9ff-4e64-9620-3fe02fa42c22",
+        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v11-para-tri-equipment-first%2Fca%2Fca-paralympic.png?alt=media&token=7fc82cce-cbfd-41dd-bb6b-4bfa8d49bedd",
         "storageBucket": "common-ground-tests.firebasestorage.app",
         "firebaseProjectId": "common-ground-tests",
-        "storagePath": "card-panels/common-ground-card-panel-v4-rough-fan-atlas/ca/ca-paralympic.png",
-        "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v4-rough-fan-atlas/ca/ca-paralympic.png",
+        "storagePath": "card-panels/common-ground-card-panel-v11-para-tri-equipment-first/ca/ca-paralympic.png",
+        "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v11-para-tri-equipment-first/ca/ca-paralympic.png",
         "firebaseCollection": "cardPanels"
       },
       "gameExperience": {

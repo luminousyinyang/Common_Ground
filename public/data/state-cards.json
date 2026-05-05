@@ -2,7 +2,7 @@
   "meta": {
     "appName": "Common Ground",
     "datasetLabel": "Official TeamUSA.com Paris 2024 public roster aggregate by hometown state and sport family.",
-    "updatedAt": "2026-05-02",
+    "updatedAt": "2026-05-05",
     "sourceProgramRecordTotals": {
       "olympic": 595,
       "paralympic": 225
@@ -13,6 +13,7 @@
       "total": 814
     },
     "aggregationPolicy": "The build script strips athlete names, profile URLs, images, biographies, medals, finish placements, and other individual-level fields before writing frontend data. State cards display signal buckets instead of exact state counts.",
+    "hometownAreaPolicy": "Top hometown areas are city-level aggregate public source entries only, require at least 3 public source records, and do not expose athlete names, profiles, images, or individual records.",
     "bucketPolicy": "Combined state bucket: insufficient data = 0 sourced roster rows, low = 1-4, medium = 5-19, high = 20+. Program panel details and top sport tags require at least 3 sourced roster rows; lower-volume panels stay generalized.",
     "coverageNote": "Only TeamUSA.com roster rows with a U.S. state or supported U.S. territory abbreviation in the public hometown state field are used for cards. Unsupported or blank geography values are excluded from card output.",
     "excludedStateCodes": [],
@@ -33,25 +34,25 @@
         "label": "TeamUSA.com Paris 2024 Olympic roster",
         "url": "https://www.teamusa.com/paris-2024/olympics/roster",
         "sourceType": "teamusa",
-        "retrievedAt": "2026-05-02"
+        "retrievedAt": "2026-05-05"
       },
       {
         "label": "TeamUSA.com Paris 2024 Paralympic roster",
         "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
         "sourceType": "teamusa",
-        "retrievedAt": "2026-05-02"
+        "retrievedAt": "2026-05-05"
       },
       {
         "label": "NOAA public climate context",
         "url": "https://www.noaa.gov/climate",
         "sourceType": "noaa",
-        "retrievedAt": "2026-05-02"
+        "retrievedAt": "2026-05-05"
       },
       {
         "label": "us-atlas TopoJSON derived from U.S. Census cartographic state and territory boundaries",
         "url": "https://github.com/topojson/us-atlas",
         "sourceType": "geography",
-        "retrievedAt": "2026-05-02"
+        "retrievedAt": "2026-05-05"
       }
     ]
   },
@@ -71,6 +72,28 @@
         "paralympic": 2,
         "total": 5
       },
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Birmingham",
+          "total": 3,
+          "olympic": 1,
+          "paralympic": 2,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Birmingham",
+          "total": 3,
+          "olympic": 1,
+          "paralympic": 2,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "medium",
       "olympicPanel": {
         "program": "olympic",
@@ -124,7 +147,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 1,
@@ -145,7 +168,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ]
       },
@@ -196,13 +219,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -221,6 +244,8 @@
         "paralympic": 0,
         "total": 2
       },
+      "topHometownSignals": [],
+      "allHometownSignals": [],
       "hometownPresenceBucket": "low",
       "olympicPanel": {
         "program": "olympic",
@@ -237,7 +262,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ]
       },
@@ -256,7 +281,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ]
       },
@@ -304,13 +329,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -329,6 +354,46 @@
         "paralympic": 5,
         "total": 15
       },
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Phoenix",
+          "total": 4,
+          "olympic": 3,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Tucson",
+          "total": 4,
+          "olympic": 2,
+          "paralympic": 2,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Phoenix",
+          "total": 4,
+          "olympic": 3,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Tucson",
+          "total": 4,
+          "olympic": 2,
+          "paralympic": 2,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "medium",
       "olympicPanel": {
         "program": "olympic",
@@ -416,7 +481,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 1,
@@ -489,7 +554,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 3,
@@ -552,13 +617,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -577,6 +642,8 @@
         "paralympic": 4,
         "total": 4
       },
+      "topHometownSignals": [],
+      "allHometownSignals": [],
       "hometownPresenceBucket": "low",
       "olympicPanel": {
         "program": "olympic",
@@ -593,7 +660,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ]
       },
@@ -655,7 +722,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 1,
@@ -709,13 +776,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -735,6 +802,154 @@
         "paralympic": 27,
         "total": 152
       },
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "San Diego",
+          "total": 12,
+          "olympic": 9,
+          "paralympic": 3,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Los Angeles",
+          "total": 9,
+          "olympic": 7,
+          "paralympic": 2,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Long Beach",
+          "total": 5,
+          "olympic": 5,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "San Diego",
+          "total": 12,
+          "olympic": 9,
+          "paralympic": 3,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Los Angeles",
+          "total": 9,
+          "olympic": 7,
+          "paralympic": 2,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Long Beach",
+          "total": 5,
+          "olympic": 5,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 4,
+          "areaType": "city",
+          "label": "San Jose",
+          "total": 5,
+          "olympic": 5,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 5,
+          "areaType": "city",
+          "label": "Huntington Beach",
+          "total": 3,
+          "olympic": 3,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 6,
+          "areaType": "city",
+          "label": "Newport Beach",
+          "total": 3,
+          "olympic": 3,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 7,
+          "areaType": "city",
+          "label": "Oceanside",
+          "total": 3,
+          "olympic": 3,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 8,
+          "areaType": "city",
+          "label": "Rancho Palos Verdes",
+          "total": 3,
+          "olympic": 3,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 9,
+          "areaType": "city",
+          "label": "San Francisco",
+          "total": 3,
+          "olympic": 3,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 10,
+          "areaType": "city",
+          "label": "Walnut Creek",
+          "total": 3,
+          "olympic": 3,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 11,
+          "areaType": "city",
+          "label": "Davis",
+          "total": 3,
+          "olympic": 2,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 12,
+          "areaType": "city",
+          "label": "Encinitas",
+          "total": 3,
+          "olympic": 2,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 13,
+          "areaType": "city",
+          "label": "Hayward",
+          "total": 3,
+          "olympic": 2,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "high",
       "olympicPanel": {
         "program": "olympic",
@@ -843,7 +1058,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 1,
@@ -965,7 +1180,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 5,
@@ -1029,13 +1244,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -1054,6 +1269,64 @@
         "paralympic": 9,
         "total": 29
       },
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Colorado Springs",
+          "total": 7,
+          "olympic": 2,
+          "paralympic": 5,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Boulder",
+          "total": 3,
+          "olympic": 3,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Denver",
+          "total": 3,
+          "olympic": 2,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Colorado Springs",
+          "total": 7,
+          "olympic": 2,
+          "paralympic": 5,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Boulder",
+          "total": 3,
+          "olympic": 3,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Denver",
+          "total": 3,
+          "olympic": 2,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "high",
       "olympicPanel": {
         "program": "olympic",
@@ -1162,7 +1435,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 1,
@@ -1249,7 +1522,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 1,
@@ -1311,13 +1584,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -1336,6 +1609,8 @@
         "paralympic": 4,
         "total": 12
       },
+      "topHometownSignals": [],
+      "allHometownSignals": [],
       "hometownPresenceBucket": "medium",
       "olympicPanel": {
         "program": "olympic",
@@ -1421,7 +1696,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 1,
@@ -1482,7 +1757,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 2,
@@ -1545,13 +1820,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -1570,6 +1845,8 @@
         "paralympic": 0,
         "total": 2
       },
+      "topHometownSignals": [],
+      "allHometownSignals": [],
       "hometownPresenceBucket": "low",
       "olympicPanel": {
         "program": "olympic",
@@ -1586,7 +1863,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ]
       },
@@ -1605,7 +1882,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ]
       },
@@ -1653,13 +1930,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -1678,6 +1955,82 @@
         "paralympic": 8,
         "total": 52
       },
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Miami",
+          "total": 7,
+          "olympic": 7,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Sarasota",
+          "total": 3,
+          "olympic": 3,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Tampa",
+          "total": 3,
+          "olympic": 3,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Miami",
+          "total": 7,
+          "olympic": 7,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Sarasota",
+          "total": 3,
+          "olympic": 3,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Tampa",
+          "total": 3,
+          "olympic": 3,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 4,
+          "areaType": "city",
+          "label": "Wellington",
+          "total": 3,
+          "olympic": 3,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 5,
+          "areaType": "city",
+          "label": "Fort Lauderdale",
+          "total": 3,
+          "olympic": 2,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "high",
       "olympicPanel": {
         "program": "olympic",
@@ -1788,7 +2141,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 1,
@@ -1897,7 +2250,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 5,
@@ -1959,13 +2312,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -1984,6 +2337,46 @@
         "paralympic": 6,
         "total": 29
       },
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Atlanta",
+          "total": 10,
+          "olympic": 8,
+          "paralympic": 2,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Marietta",
+          "total": 4,
+          "olympic": 4,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Atlanta",
+          "total": 10,
+          "olympic": 8,
+          "paralympic": 2,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Marietta",
+          "total": 4,
+          "olympic": 4,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "high",
       "olympicPanel": {
         "program": "olympic",
@@ -2090,7 +2483,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 1,
@@ -2161,7 +2554,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 2,
@@ -2222,13 +2615,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -2247,6 +2640,28 @@
         "paralympic": 1,
         "total": 6
       },
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Honolulu",
+          "total": 3,
+          "olympic": 3,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Honolulu",
+          "total": 3,
+          "olympic": 3,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "medium",
       "olympicPanel": {
         "program": "olympic",
@@ -2291,7 +2706,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 1,
@@ -2312,7 +2727,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ]
       },
@@ -2363,13 +2778,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -2388,6 +2803,8 @@
         "paralympic": 2,
         "total": 4
       },
+      "topHometownSignals": [],
+      "allHometownSignals": [],
       "hometownPresenceBucket": "low",
       "olympicPanel": {
         "program": "olympic",
@@ -2404,7 +2821,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ]
       },
@@ -2423,7 +2840,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ]
       },
@@ -2472,13 +2889,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -2497,6 +2914,28 @@
         "paralympic": 12,
         "total": 40
       },
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Chicago",
+          "total": 8,
+          "olympic": 6,
+          "paralympic": 2,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Chicago",
+          "total": 8,
+          "olympic": 6,
+          "paralympic": 2,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "high",
       "olympicPanel": {
         "program": "olympic",
@@ -2604,7 +3043,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 1,
@@ -2732,7 +3171,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 4,
@@ -2794,13 +3233,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -2819,6 +3258,64 @@
         "paralympic": 8,
         "total": 27
       },
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Indianapolis",
+          "total": 5,
+          "olympic": 4,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Carmel",
+          "total": 4,
+          "olympic": 4,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Fort Wayne",
+          "total": 4,
+          "olympic": 1,
+          "paralympic": 3,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Indianapolis",
+          "total": 5,
+          "olympic": 4,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Carmel",
+          "total": 4,
+          "olympic": 4,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Fort Wayne",
+          "total": 4,
+          "olympic": 1,
+          "paralympic": 3,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "high",
       "olympicPanel": {
         "program": "olympic",
@@ -2924,7 +3421,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 3,
@@ -2995,7 +3492,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 3,
@@ -3056,13 +3553,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -3081,6 +3578,8 @@
         "paralympic": 5,
         "total": 7
       },
+      "topHometownSignals": [],
+      "allHometownSignals": [],
       "hometownPresenceBucket": "medium",
       "olympicPanel": {
         "program": "olympic",
@@ -3097,7 +3596,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ]
       },
@@ -3144,7 +3643,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 1,
@@ -3200,13 +3699,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -3225,6 +3724,8 @@
         "paralympic": 4,
         "total": 5
       },
+      "topHometownSignals": [],
+      "allHometownSignals": [],
       "hometownPresenceBucket": "medium",
       "olympicPanel": {
         "program": "olympic",
@@ -3241,7 +3742,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ]
       },
@@ -3311,7 +3812,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 1,
@@ -3366,13 +3867,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -3391,6 +3892,8 @@
         "paralympic": 1,
         "total": 4
       },
+      "topHometownSignals": [],
+      "allHometownSignals": [],
       "hometownPresenceBucket": "low",
       "olympicPanel": {
         "program": "olympic",
@@ -3445,7 +3948,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 1,
@@ -3466,7 +3969,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ]
       },
@@ -3518,13 +4021,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -3543,6 +4046,28 @@
         "paralympic": 0,
         "total": 4
       },
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "New Orleans",
+          "total": 3,
+          "olympic": 3,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "New Orleans",
+          "total": 3,
+          "olympic": 3,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "low",
       "olympicPanel": {
         "program": "olympic",
@@ -3607,7 +4132,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 1,
@@ -3628,7 +4153,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ]
       },
@@ -3681,13 +4206,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -3706,6 +4231,8 @@
         "paralympic": 1,
         "total": 1
       },
+      "topHometownSignals": [],
+      "allHometownSignals": [],
       "hometownPresenceBucket": "low",
       "olympicPanel": {
         "program": "olympic",
@@ -3722,7 +4249,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ]
       },
@@ -3741,7 +4268,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ]
       },
@@ -3790,13 +4317,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -3815,6 +4342,46 @@
         "paralympic": 8,
         "total": 24
       },
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Bethesda",
+          "total": 3,
+          "olympic": 3,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Ellicott City",
+          "total": 3,
+          "olympic": 2,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Bethesda",
+          "total": 3,
+          "olympic": 3,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Ellicott City",
+          "total": 3,
+          "olympic": 2,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "high",
       "olympicPanel": {
         "program": "olympic",
@@ -3923,7 +4490,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 8,
@@ -3996,7 +4563,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 2,
@@ -4058,13 +4625,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -4083,6 +4650,28 @@
         "paralympic": 6,
         "total": 22
       },
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Boston",
+          "total": 4,
+          "olympic": 2,
+          "paralympic": 2,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Boston",
+          "total": 4,
+          "olympic": 2,
+          "paralympic": 2,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "high",
       "olympicPanel": {
         "program": "olympic",
@@ -4191,7 +4780,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 1,
@@ -4267,7 +4856,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 1,
@@ -4330,13 +4919,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -4355,6 +4944,28 @@
         "paralympic": 6,
         "total": 19
       },
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Ann Arbor",
+          "total": 3,
+          "olympic": 2,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Ann Arbor",
+          "total": 3,
+          "olympic": 2,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "medium",
       "olympicPanel": {
         "program": "olympic",
@@ -4464,7 +5075,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 6,
@@ -4561,7 +5172,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 4,
@@ -4623,13 +5234,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -4648,6 +5259,8 @@
         "paralympic": 11,
         "total": 19
       },
+      "topHometownSignals": [],
+      "allHometownSignals": [],
       "hometownPresenceBucket": "medium",
       "olympicPanel": {
         "program": "olympic",
@@ -4735,7 +5348,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 1,
@@ -4858,7 +5471,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 3,
@@ -4921,13 +5534,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -4946,6 +5559,8 @@
         "paralympic": 0,
         "total": 2
       },
+      "topHometownSignals": [],
+      "allHometownSignals": [],
       "hometownPresenceBucket": "low",
       "olympicPanel": {
         "program": "olympic",
@@ -4962,7 +5577,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ]
       },
@@ -4981,7 +5596,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ]
       },
@@ -5028,13 +5643,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -5053,6 +5668,28 @@
         "paralympic": 3,
         "total": 13
       },
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "St. Louis",
+          "total": 4,
+          "olympic": 2,
+          "paralympic": 2,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "St. Louis",
+          "total": 4,
+          "olympic": 2,
+          "paralympic": 2,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "medium",
       "olympicPanel": {
         "program": "olympic",
@@ -5127,7 +5764,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 1,
@@ -5191,7 +5828,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 3,
@@ -5253,13 +5890,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -5278,6 +5915,8 @@
         "paralympic": 0,
         "total": 3
       },
+      "topHometownSignals": [],
+      "allHometownSignals": [],
       "hometownPresenceBucket": "low",
       "olympicPanel": {
         "program": "olympic",
@@ -5331,7 +5970,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 1,
@@ -5352,7 +5991,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ]
       },
@@ -5404,13 +6043,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -5429,6 +6068,28 @@
         "paralympic": 3,
         "total": 7
       },
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Omaha",
+          "total": 3,
+          "olympic": 2,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Omaha",
+          "total": 3,
+          "olympic": 2,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "medium",
       "olympicPanel": {
         "program": "olympic",
@@ -5492,7 +6153,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 3,
@@ -5541,7 +6202,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 1,
@@ -5602,13 +6263,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -5627,6 +6288,46 @@
         "paralympic": 0,
         "total": 9
       },
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Las Vegas",
+          "total": 5,
+          "olympic": 5,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Reno",
+          "total": 3,
+          "olympic": 3,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Las Vegas",
+          "total": 5,
+          "olympic": 5,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Reno",
+          "total": 3,
+          "olympic": 3,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "medium",
       "olympicPanel": {
         "program": "olympic",
@@ -5724,7 +6425,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 1,
@@ -5745,7 +6446,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ]
       },
@@ -5796,13 +6497,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -5821,6 +6522,8 @@
         "paralympic": 2,
         "total": 4
       },
+      "topHometownSignals": [],
+      "allHometownSignals": [],
       "hometownPresenceBucket": "low",
       "olympicPanel": {
         "program": "olympic",
@@ -5837,7 +6540,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ]
       },
@@ -5856,7 +6559,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ]
       },
@@ -5905,13 +6608,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -5930,6 +6633,8 @@
         "paralympic": 2,
         "total": 24
       },
+      "topHometownSignals": [],
+      "allHometownSignals": [],
       "hometownPresenceBucket": "high",
       "olympicPanel": {
         "program": "olympic",
@@ -6036,7 +6741,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 1,
@@ -6057,7 +6762,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ]
       },
@@ -6110,13 +6815,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -6135,6 +6840,8 @@
         "paralympic": 0,
         "total": 2
       },
+      "topHometownSignals": [],
+      "allHometownSignals": [],
       "hometownPresenceBucket": "low",
       "olympicPanel": {
         "program": "olympic",
@@ -6151,7 +6858,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ]
       },
@@ -6170,7 +6877,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ]
       },
@@ -6218,13 +6925,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -6243,6 +6950,8 @@
         "paralympic": 8,
         "total": 31
       },
+      "topHometownSignals": [],
+      "allHometownSignals": [],
       "hometownPresenceBucket": "high",
       "olympicPanel": {
         "program": "olympic",
@@ -6353,7 +7062,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 3,
@@ -6463,7 +7172,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 4,
@@ -6527,13 +7236,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -6552,6 +7261,46 @@
         "paralympic": 9,
         "total": 19
       },
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Charlotte",
+          "total": 4,
+          "olympic": 3,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Raleigh",
+          "total": 3,
+          "olympic": 1,
+          "paralympic": 2,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Charlotte",
+          "total": 4,
+          "olympic": 3,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Raleigh",
+          "total": 3,
+          "olympic": 1,
+          "paralympic": 2,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "medium",
       "olympicPanel": {
         "program": "olympic",
@@ -6649,7 +7398,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 4,
@@ -6746,7 +7495,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 5,
@@ -6809,13 +7558,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -6834,6 +7583,8 @@
         "paralympic": 0,
         "total": 0
       },
+      "topHometownSignals": [],
+      "allHometownSignals": [],
       "hometownPresenceBucket": "insufficient_data",
       "olympicPanel": {
         "program": "olympic",
@@ -6850,7 +7601,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ]
       },
@@ -6869,7 +7620,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ]
       },
@@ -6917,13 +7668,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -6942,6 +7693,28 @@
         "paralympic": 6,
         "total": 20
       },
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Cincinnati",
+          "total": 4,
+          "olympic": 4,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Cincinnati",
+          "total": 4,
+          "olympic": 4,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "high",
       "olympicPanel": {
         "program": "olympic",
@@ -7038,7 +7811,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 3,
@@ -7117,7 +7890,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 2,
@@ -7180,13 +7953,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -7205,6 +7978,8 @@
         "paralympic": 4,
         "total": 5
       },
+      "topHometownSignals": [],
+      "allHometownSignals": [],
       "hometownPresenceBucket": "medium",
       "olympicPanel": {
         "program": "olympic",
@@ -7221,7 +7996,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ]
       },
@@ -7267,7 +8042,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 1,
@@ -7324,13 +8099,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -7349,6 +8124,28 @@
         "paralympic": 3,
         "total": 9
       },
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Portland",
+          "total": 5,
+          "olympic": 3,
+          "paralympic": 2,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Portland",
+          "total": 5,
+          "olympic": 3,
+          "paralympic": 2,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "medium",
       "olympicPanel": {
         "program": "olympic",
@@ -7426,7 +8223,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 4,
@@ -7488,7 +8285,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 1,
@@ -7551,13 +8348,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -7576,6 +8373,64 @@
         "paralympic": 11,
         "total": 38
       },
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Philadelphia",
+          "total": 3,
+          "olympic": 2,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Pittsburgh",
+          "total": 3,
+          "olympic": 2,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Hershey",
+          "total": 3,
+          "olympic": 1,
+          "paralympic": 2,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Philadelphia",
+          "total": 3,
+          "olympic": 2,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Pittsburgh",
+          "total": 3,
+          "olympic": 2,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Hershey",
+          "total": 3,
+          "olympic": 1,
+          "paralympic": 2,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "high",
       "olympicPanel": {
         "program": "olympic",
@@ -7686,7 +8541,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 2,
@@ -7795,7 +8650,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 3,
@@ -7858,13 +8713,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -7883,6 +8738,8 @@
         "paralympic": 0,
         "total": 2
       },
+      "topHometownSignals": [],
+      "allHometownSignals": [],
       "hometownPresenceBucket": "low",
       "olympicPanel": {
         "program": "olympic",
@@ -7899,7 +8756,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ]
       },
@@ -7918,7 +8775,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ]
       },
@@ -7966,13 +8823,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -7991,6 +8848,8 @@
         "paralympic": 1,
         "total": 6
       },
+      "topHometownSignals": [],
+      "allHometownSignals": [],
       "hometownPresenceBucket": "medium",
       "olympicPanel": {
         "program": "olympic",
@@ -8045,7 +8904,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 1,
@@ -8066,7 +8925,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ]
       },
@@ -8119,13 +8978,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -8144,6 +9003,8 @@
         "paralympic": 1,
         "total": 2
       },
+      "topHometownSignals": [],
+      "allHometownSignals": [],
       "hometownPresenceBucket": "low",
       "olympicPanel": {
         "program": "olympic",
@@ -8160,7 +9021,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ]
       },
@@ -8179,7 +9040,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ]
       },
@@ -8228,13 +9089,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -8253,6 +9114,8 @@
         "paralympic": 1,
         "total": 8
       },
+      "topHometownSignals": [],
+      "allHometownSignals": [],
       "hometownPresenceBucket": "medium",
       "olympicPanel": {
         "program": "olympic",
@@ -8329,7 +9192,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 1,
@@ -8350,7 +9213,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ]
       },
@@ -8401,13 +9264,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -8427,6 +9290,73 @@
         "paralympic": 10,
         "total": 49
       },
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Houston",
+          "total": 9,
+          "olympic": 6,
+          "paralympic": 3,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Spring",
+          "total": 4,
+          "olympic": 3,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Dallas",
+          "total": 3,
+          "olympic": 3,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Houston",
+          "total": 9,
+          "olympic": 6,
+          "paralympic": 3,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 2,
+          "areaType": "city",
+          "label": "Spring",
+          "total": 4,
+          "olympic": 3,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 3,
+          "areaType": "city",
+          "label": "Dallas",
+          "total": 3,
+          "olympic": 3,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        },
+        {
+          "rank": 4,
+          "areaType": "city",
+          "label": "The Woodlands",
+          "total": 3,
+          "olympic": 3,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "high",
       "olympicPanel": {
         "program": "olympic",
@@ -8535,7 +9465,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 7,
@@ -8620,7 +9550,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 1,
@@ -8683,13 +9613,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -8708,6 +9638,8 @@
         "paralympic": 4,
         "total": 11
       },
+      "topHometownSignals": [],
+      "allHometownSignals": [],
       "hometownPresenceBucket": "medium",
       "olympicPanel": {
         "program": "olympic",
@@ -8761,7 +9693,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 1,
@@ -8823,7 +9755,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 1,
@@ -8885,13 +9817,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -8910,6 +9842,8 @@
         "paralympic": 0,
         "total": 3
       },
+      "topHometownSignals": [],
+      "allHometownSignals": [],
       "hometownPresenceBucket": "low",
       "olympicPanel": {
         "program": "olympic",
@@ -8966,7 +9900,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 1,
@@ -8987,7 +9921,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ]
       },
@@ -9041,13 +9975,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -9066,6 +10000,8 @@
         "paralympic": 0,
         "total": 1
       },
+      "topHometownSignals": [],
+      "allHometownSignals": [],
       "hometownPresenceBucket": "low",
       "olympicPanel": {
         "program": "olympic",
@@ -9082,7 +10018,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ]
       },
@@ -9101,7 +10037,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ]
       },
@@ -9149,13 +10085,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -9174,6 +10110,28 @@
         "paralympic": 2,
         "total": 17
       },
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Virginia Beach",
+          "total": 3,
+          "olympic": 2,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Virginia Beach",
+          "total": 3,
+          "olympic": 2,
+          "paralympic": 1,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "medium",
       "olympicPanel": {
         "program": "olympic",
@@ -9284,7 +10242,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 1,
@@ -9305,7 +10263,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ]
       },
@@ -9357,13 +10315,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -9382,6 +10340,28 @@
         "paralympic": 12,
         "total": 25
       },
+      "topHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Seattle",
+          "total": 5,
+          "olympic": 5,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        }
+      ],
+      "allHometownSignals": [
+        {
+          "rank": 1,
+          "areaType": "city",
+          "label": "Seattle",
+          "total": 5,
+          "olympic": 5,
+          "paralympic": 0,
+          "countLabel": "public hometown entries"
+        }
+      ],
       "hometownPresenceBucket": "high",
       "olympicPanel": {
         "program": "olympic",
@@ -9472,7 +10452,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 1,
@@ -9570,7 +10550,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 1,
@@ -9632,13 +10612,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -9657,6 +10637,8 @@
         "paralympic": 2,
         "total": 2
       },
+      "topHometownSignals": [],
+      "allHometownSignals": [],
       "hometownPresenceBucket": "low",
       "olympicPanel": {
         "program": "olympic",
@@ -9673,7 +10655,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ]
       },
@@ -9692,7 +10674,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ]
       },
@@ -9740,13 +10722,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -9765,6 +10747,8 @@
         "paralympic": 6,
         "total": 18
       },
+      "topHometownSignals": [],
+      "allHometownSignals": [],
       "hometownPresenceBucket": "medium",
       "olympicPanel": {
         "program": "olympic",
@@ -9873,7 +10857,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 1,
@@ -9908,7 +10892,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ],
         "featuredSportRank": 1,
@@ -9968,13 +10952,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     },
@@ -9993,6 +10977,8 @@
         "paralympic": 0,
         "total": 0
       },
+      "topHometownSignals": [],
+      "allHometownSignals": [],
       "hometownPresenceBucket": "insufficient_data",
       "olympicPanel": {
         "program": "olympic",
@@ -10009,7 +10995,7 @@
             "label": "TeamUSA.com Paris 2024 Olympic roster",
             "url": "https://www.teamusa.com/paris-2024/olympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ]
       },
@@ -10028,7 +11014,7 @@
             "label": "TeamUSA.com Paris 2024 Paralympic roster",
             "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
             "sourceType": "teamusa",
-            "retrievedAt": "2026-05-02"
+            "retrievedAt": "2026-05-05"
           }
         ]
       },
@@ -10077,13 +11063,13 @@
           "label": "TeamUSA.com Paris 2024 Olympic roster",
           "url": "https://www.teamusa.com/paris-2024/olympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         },
         {
           "label": "TeamUSA.com Paris 2024 Paralympic roster",
           "url": "https://www.teamusa.com/paris-2024/paralympics/roster",
           "sourceType": "teamusa",
-          "retrievedAt": "2026-05-02"
+          "retrievedAt": "2026-05-05"
         }
       ]
     }
