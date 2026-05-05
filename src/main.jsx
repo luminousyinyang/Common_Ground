@@ -1537,6 +1537,89 @@ const PANEL_QA_ROWS = [
   ["cardTrait", "Card trait"]
 ];
 
+function compactSentences(value, maxSentences = 2) {
+  const text = String(value || "").replace(/\s+/g, " ").trim();
+  if (!text) return "";
+  const sentences = text.match(/[^.!?]+[.!?]+|[^.!?]+$/g)?.map((item) => item.trim()).filter(Boolean) || [text];
+  return sentences.slice(0, maxSentences).join(" ");
+}
+
+function compactSnippet(value, maxLength = 205) {
+  const text = compactSentences(value, 1);
+  if (text.length <= maxLength) return text;
+  const trimmed = text.slice(0, maxLength).replace(/\s+\S*$/, "").replace(/[,:;]+$/, "");
+  return `${trimmed}.`;
+}
+
+function compactPanelCopy(panel) {
+  const copy = getPanelBackCopyForDisplay(panel);
+  const visualCue = copy.featuredCue || getPanelVisualCue(panel);
+  const factChips = Array.isArray(copy.factChips) ? copy.factChips.filter(Boolean).slice(0, 2) : [];
+  return {
+    visualCue,
+    summary: compactSnippet(copy.qaFacts?.howItWorks || copy.qaFacts?.watchValue || panel.geographyConnection),
+    chips: factChips
+  };
+}
+
+function compactStateConnection(card, briefing) {
+  const generatedLens = briefing?.briefing?.geographyLens;
+  if (String(generatedLens || "").trim()) return compactSnippet(generatedLens, 132);
+  return compactSnippet(`${card.geographySnapshot} could help fans understand why this state card connects these sport environments.`, 132);
+}
+
+function CompactSportLens({ panel }) {
+  const copy = compactPanelCopy(panel);
+  return (
+    <section className={`compact-sport-lens ${panel.program}`}>
+      <span className="compact-lens-label">{panel.program === "paralympic" ? "Paralympic Lens" : "Olympic Lens"}</span>
+      <h4>{copy.visualCue}</h4>
+      <p>{copy.summary}</p>
+      {copy.chips.length > 0 && (
+        <div className="compact-fact-line">
+          {copy.chips.map((chip) => <span key={chip}>{chip}</span>)}
+        </div>
+      )}
+    </section>
+  );
+}
+
+function CompactCardBack({ card, briefing, onReadFullBriefing }) {
+  const themeName = getCardThemeName(card);
+  const olympicCue = getPanelVisualCue(card.olympicPanel);
+  const paralympicCue = getPanelVisualCue(card.paralympicPanel);
+
+  return (
+    <div className="compact-card-back">
+      <header className="compact-back-header">
+        <span>Common Ground State Card</span>
+        <h3>{card.stateName}</h3>
+        <p>{themeName}</p>
+      </header>
+
+      <div className="compact-lens-grid">
+        <CompactSportLens panel={card.olympicPanel} />
+        <CompactSportLens panel={card.paralympicPanel} />
+      </div>
+
+      <section className="compact-shared-block">
+        <span>Shared signal</span>
+        <strong>{card.sharedTrait.name}</strong>
+        <p>Olympic <b>{olympicCue}</b> and Paralympic <b>{paralympicCue}</b> connect through {card.sharedTrait.description.toLowerCase()}</p>
+      </section>
+
+      <section className="compact-connection-block">
+        <span>{card.stateName} connection</span>
+        <p>{compactStateConnection(card, briefing)}</p>
+      </section>
+
+      <button className="compact-read-more" type="button" onClick={onReadFullBriefing}>
+        Read full state briefing
+      </button>
+    </div>
+  );
+}
+
 function SportPanel({ panel }) {
   const copy = getPanelBackCopyForDisplay(panel);
   const visualCue = copy.featuredCue || getPanelVisualCue(panel);
@@ -1643,7 +1726,17 @@ function CardArt({ card, compact = false, panelManifest = EMPTY_CARD_PANEL_MANIF
   );
 }
 
-function UnifiedStateCard({ card, sourceRefs, briefing, briefingLoading, onRefreshBriefing, onOpenChallenge, onFlipChange, panelManifest }) {
+function UnifiedStateCard({
+  card,
+  sourceRefs,
+  briefing,
+  briefingLoading,
+  onRefreshBriefing,
+  onOpenChallenge,
+  isBackExpanded,
+  onBackExpandedChange,
+  panelManifest
+}) {
   const [flipped, setFlipped] = useState(false);
   const [displayBack, setDisplayBack] = useState(false);
   const [flipPhase, setFlipPhase] = useState(null); // null | "out" | "in"
@@ -1664,7 +1757,7 @@ function UnifiedStateCard({ card, sourceRefs, briefing, briefingLoading, onRefre
     setDisplayBack(false);
     setFlipPhase(null);
     setTilt({ x: 0, y: 0 });
-    onFlipChange?.(false);
+    onBackExpandedChange?.(false);
   }, [card.stateCode]);
 
   function toggleFlip() {
@@ -1674,10 +1767,10 @@ function UnifiedStateCard({ card, sourceRefs, briefing, briefingLoading, onRefre
 
     const t1 = setTimeout(() => {
       const next = !flipped;
+      if (!next) onBackExpandedChange?.(false);
       setFlipped(next);
       setDisplayBack(next);
       setFlipPhase("in");
-      onFlipChange?.(next);
     }, 150);
 
     const t2 = setTimeout(() => {
@@ -1744,34 +1837,42 @@ function UnifiedStateCard({ card, sourceRefs, briefing, briefingLoading, onRefre
             </article>
 
             <article className={backClass} aria-label={`${card.stateName} state card data`}>
-              <div className="card-back-scroll">
-                <div className="card-header">
-                  <p className="eyebrow">Shared geography view</p>
-                  <h3>{card.stateName}</h3>
-                  <p>{card.geographySnapshot}</p>
-                  <div className="metric-row compact-metrics">
-                    <span className="metric">State total <strong>{counts.total}</strong></span>
-                    <span className="metric">Olympic count <strong>{counts.olympic}</strong></span>
-                    <span className="metric">Paralympic count <strong>{counts.paralympic}</strong></span>
+              {isBackExpanded ? (
+                <div className="card-back-scroll">
+                  <div className="card-header">
+                    <p className="eyebrow">Shared geography view</p>
+                    <h3>{card.stateName}</h3>
+                    <p>{card.geographySnapshot}</p>
+                    <div className="metric-row compact-metrics">
+                      <span className="metric">State total <strong>{counts.total}</strong></span>
+                      <span className="metric">Olympic count <strong>{counts.olympic}</strong></span>
+                      <span className="metric">Paralympic count <strong>{counts.paralympic}</strong></span>
+                    </div>
+                  </div>
+                  <div className="program-panel-grid">
+                    <SportPanel panel={card.olympicPanel} />
+                    <SportPanel panel={card.paralympicPanel} />
+                  </div>
+                  <section className="trait-band">
+                    <div className="trait-badge">
+                      <span>Shared trait across both featured sports</span>
+                      <strong>{card.sharedTrait.name}</strong>
+                    </div>
+                    <p>This trait connects Olympic <strong>{olympicCue}</strong> and Paralympic <strong>{paralympicCue}</strong>: {card.sharedTrait.description}</p>
+                  </section>
+                  <BriefingPanel payload={briefing} loading={briefingLoading} onRefresh={onRefreshBriefing} compact />
+                  <div className="card-footer">
+                    <SourceList refs={sourceRefs} />
+                    <button className="primary-button" type="button" onClick={onOpenChallenge}>Try the State Sync Challenge</button>
                   </div>
                 </div>
-                <div className="program-panel-grid">
-                  <SportPanel panel={card.olympicPanel} />
-                  <SportPanel panel={card.paralympicPanel} />
-                </div>
-                <section className="trait-band">
-                  <div className="trait-badge">
-                    <span>Shared trait across both featured sports</span>
-                    <strong>{card.sharedTrait.name}</strong>
-                  </div>
-                  <p>This trait connects Olympic <strong>{olympicCue}</strong> and Paralympic <strong>{paralympicCue}</strong>: {card.sharedTrait.description}</p>
-                </section>
-                <BriefingPanel payload={briefing} loading={briefingLoading} onRefresh={onRefreshBriefing} compact />
-                <div className="card-footer">
-                  <SourceList refs={sourceRefs} />
-                  <button className="primary-button" type="button" onClick={onOpenChallenge}>Try the State Sync Challenge</button>
-                </div>
-              </div>
+              ) : (
+                <CompactCardBack
+                  card={card}
+                  briefing={briefing}
+                  onReadFullBriefing={() => onBackExpandedChange?.(true)}
+                />
+              )}
             </article>
           </div>
         </div>
@@ -1826,7 +1927,8 @@ function CardModal({
           briefingLoading={briefingLoading}
           onRefreshBriefing={onRefreshBriefing}
           onOpenChallenge={onOpenChallenge}
-          onFlipChange={setIsBackExpanded}
+          isBackExpanded={isBackExpanded}
+          onBackExpandedChange={setIsBackExpanded}
           panelManifest={panelManifest}
         />
       </div>
