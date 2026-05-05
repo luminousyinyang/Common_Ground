@@ -343,7 +343,7 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
                     data-state-code={code}
                     role={card ? "button" : "img"}
                     tabIndex={card ? 0 : -1}
-                    aria-label={card ? `${card.stateName}, Olympic count ${counts.olympic}, Paralympic count ${counts.paralympic}, total ${counts.total}` : `${item.properties.name}, no state card loaded`}
+                    aria-label={card ? `${card.stateName}, Olympic athlete records ${counts.olympic}, Paralympic athlete records ${counts.paralympic}, state athlete records ${counts.total}` : `${item.properties.name}, no state card loaded`}
                     onMouseEnter={(event) => describeFeature(item, event)}
                     onMouseMove={(event) => describeFeature(item, event)}
                     onFocus={() => describeFeature(item)}

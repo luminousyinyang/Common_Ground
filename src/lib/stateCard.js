@@ -4,7 +4,7 @@ import {
   CARD_ART,
   FRAMED_CARD_PANEL_PROMPT_VERSIONS,
   CURRENT_CARD_BACK_COPY_VERSION,
-  CURRENT_GAME_EXPERIENCE_VERSION,
+  SUPPORTED_GAME_EXPERIENCE_VERSIONS,
   GAME_TYPE_LABELS,
   PANEL_QA_ROWS
 } from "./constants.js";
@@ -62,7 +62,7 @@ export function fallbackBriefing(card, reason = "The Gemini backend is not avail
 export function formatHometownAreas(signals = []) {
   return (signals || []).slice(0, 3).map((area) => ({
     area: area.label,
-    detail: `${area.total} ${area.countLabel || "public hometown entries"} in the public source view, with ${area.olympic} Olympic-side and ${area.paralympic} Paralympic-side entries.`
+    detail: formatHometownAreaDetail(area)
   }));
 }
 
@@ -96,7 +96,7 @@ export function getRosterCounts(card) {
 
 export function formatMapHint(card) {
   const counts = getRosterCounts(card);
-  return `${card.stateName}: ${counts.olympic} Olympic, ${counts.paralympic} Paralympic, ${counts.total} total public roster records.`;
+  return `${card.stateName}: ${counts.olympic} Olympic athlete records, ${counts.paralympic} Paralympic athlete records, ${counts.total} total public Team USA roster records.`;
 }
 
 export function getCardStory(card) {
@@ -349,7 +349,7 @@ export function getPanelArtUrl(card, program, manifest) {
 
 export function getGeneratedGameExperience(statePanels = {}) {
   const experience = statePanels.gameExperience || statePanels.game;
-  if (!experience || experience.version !== CURRENT_GAME_EXPERIENCE_VERSION) return null;
+  if (!experience || !SUPPORTED_GAME_EXPERIENCE_VERSIONS.has(experience.version)) return null;
   if (!GAME_TYPE_LABELS[experience.challengeType]) return null;
   return experience;
 }
@@ -461,8 +461,18 @@ export function compactSentences(value, maxSentences = 2) {
 export function compactSnippet(value, maxLength = 205) {
   const text = compactSentences(value, 1);
   if (text.length <= maxLength) return text;
-  const trimmed = text.slice(0, maxLength).replace(/\s+\S*$/, "").replace(/[,:;]+$/, "");
-  return `${trimmed}.`;
+  const trimmed = trimDanglingSnippetEnding(text.slice(0, maxLength).replace(/\s+\S*$/, ""));
+  const snippet = trimmed || text.slice(0, maxLength).trim();
+  return /[.!?]$/.test(snippet) ? snippet : `${snippet}.`;
+}
+
+function trimDanglingSnippetEnding(value) {
+  let text = String(value || "").trim().replace(/[,:;]+$/, "");
+  const danglingEnding = /\b(?:a|an|the|and|or|of|for|to|with|by|in|on|at|from|why|how|that|this|these|those|their|its|could|may|can|help|helps|helping|fans|understand|explain|explore|read|show|connect|suggest|because)$/i;
+  while (danglingEnding.test(text)) {
+    text = text.replace(/\s+\S+$/i, "").trim().replace(/[,:;]+$/, "");
+  }
+  return text;
 }
 
 export function compactPanelCopy(panel) {
@@ -477,9 +487,57 @@ export function compactPanelCopy(panel) {
 }
 
 export function compactStateConnection(card, briefing) {
-  const generatedLens = briefing?.briefing?.geographyLens;
-  if (String(generatedLens || "").trim()) return compactSnippet(generatedLens, 132);
-  return compactSnippet(`${card.geographySnapshot} could help fans understand why this state card connects these sport environments.`, 132);
+  const snapshotSignals = String(card?.geographySnapshot || "")
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
+  const signals = snapshotSignals.length ? snapshotSignals : getGeographySignals(card);
+  const featuredSignals = signals.length > 3 ? [signals[0], signals[1], signals.at(-1)] : signals.slice(0, 3);
+  const readableGeography = joinReadableList(featuredSignals.map(sentenceCaseGeographySignal)) || card.geographySnapshot || "geography";
+  return compactSnippet(`${possessiveStateName(card.stateName)} ${readableGeography} could help fans understand why varied sport environments appear in this state.`, 165);
+}
+
+function possessiveStateName(stateName) {
+  const name = String(stateName || "This state").trim();
+  return /s$/i.test(name) ? `${name}'` : `${name}'s`;
+}
+
+function sentenceCaseGeographySignal(value, index) {
+  const text = String(value || "").trim();
+  if (!text || index !== 0) return text;
+  const firstWord = text.split(/\s+/)[0].replace(/[^A-Za-z.]/g, "");
+  const properOpeners = new Set([
+    "Pacific",
+    "Atlantic",
+    "Gulf",
+    "Great",
+    "Blue",
+    "Rocky",
+    "Green",
+    "Appalachian",
+    "Ozark",
+    "Ouachita",
+    "Wasatch",
+    "Chesapeake",
+    "Puget",
+    "Mississippi",
+    "Midwest",
+    "Northeast"
+  ]);
+  if (properOpeners.has(firstWord)) return text;
+  return `${text.charAt(0).toLowerCase()}${text.slice(1)}`;
+}
+
+export function formatHometownAreaDetail(area = {}) {
+  const total = Number(area.total);
+  const olympic = Number(area.olympic);
+  const paralympic = Number(area.paralympic);
+  const label = String(area.label || area.area || "").trim();
+  const hometownPhrase = label ? ` list ${label} as their hometown` : "";
+  if (Number.isFinite(total) && Number.isFinite(olympic) && Number.isFinite(paralympic)) {
+    return `${total} public Team USA athlete records${hometownPhrase} (${olympic} Olympic-side, ${paralympic} Paralympic-side).`;
+  }
+  return "Public aggregate Team USA athlete hometown area in the source view.";
 }
 
 export function normalizeHometownAreaRows(card, briefing = {}) {
@@ -510,11 +568,7 @@ export function normalizeHometownAreaRow(area, index) {
   const olympic = Number.isFinite(Number(area.olympic)) ? Number(area.olympic) : null;
   const paralympic = Number.isFinite(Number(area.paralympic)) ? Number(area.paralympic) : null;
   const countLabel = area.countLabel || "public hometown entries";
-  const detail = area.detail || (
-    total !== null && olympic !== null && paralympic !== null
-      ? `${total} ${countLabel} in the public source view, with ${olympic} Olympic-side and ${paralympic} Paralympic-side entries.`
-      : "Public aggregate hometown area in the state source view."
-  );
+  const detail = area.detail || formatHometownAreaDetail({ label, total, olympic, paralympic, countLabel });
 
   return {
     rank: area.rank || index + 1,

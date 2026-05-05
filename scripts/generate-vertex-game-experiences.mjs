@@ -26,7 +26,7 @@ const imageMaxAttempts = positiveInteger(process.env.GAME_IMAGE_MAX_ATTEMPTS, 3)
 const imageRetryDelayMs = positiveInteger(process.env.GAME_IMAGE_RETRY_DELAY_MS, 5000);
 const imageRequestTimeoutMs = positiveInteger(process.env.GAME_IMAGE_REQUEST_TIMEOUT_MS, 900000);
 const textRequestTimeoutMs = positiveInteger(process.env.GAME_COPY_REQUEST_TIMEOUT_MS, 120000);
-const GAME_EXPERIENCE_VERSION = "common-ground-game-experience-v1";
+const GAME_EXPERIENCE_VERSION = "common-ground-game-experience-v2-style-references";
 
 let firebaseClientsPromise;
 
@@ -37,6 +37,25 @@ const GAME_TYPES = {
   focus_hold: "Staying inside a moving zone while conditions shift.",
   pattern_scout: "Watching, remembering, and replaying a short visual route."
 };
+
+const STYLE_REFERENCE_IMAGE_PATHS = [
+  path.join(rootDir, "public", "assets", "graphics", "Fan Challenges.png"),
+  path.join(rootDir, "public", "assets", "graphics", "Interactive Map.png"),
+  path.join(rootDir, "public", "assets", "graphics", "State Cards.png"),
+  path.join(rootDir, "public", "assets", "graphics", "Hero Graphic.png"),
+  path.join(rootDir, "public", "assets", "graphics", "Login Graphic.png")
+];
+
+const GAME_BACKGROUND_STYLE = [
+  "Rough printed fan-atlas illustration style, like a screen-printed editorial sports graphic.",
+  "Visible paper grain, speckled risograph noise, dry-brush edges, and slightly imperfect ink coverage across every color block.",
+  "Soft rounded organic hills, waves, courts, tracks, roads, equipment shapes, and route cues with fuzzy painted borders.",
+  "Flat layered shapes with gentle depth, not glossy 3D, not photoreal, not clean corporate vector art, and not a literal city-map screenshot.",
+  "Palette language: powder blue, cornflower, deep denim, forest green, olive, sage, cream paper, coral red-orange, sun gold, muted teal, rust, and charcoal ink.",
+  "Compositions should feel hand-made and collectible, with large simplified sport-object and geography shapes, not tiny dense wallpaper detail.",
+  "The app overlays gameplay UI on top, so keep the central play area softer and lower contrast while letting richer detail live near the edges.",
+  "The image itself must be pure artwork: no words, letters, numbers, symbols, logos, badges, borders, map labels, or UI."
+].join("\n- ");
 
 if (!project) {
   throw new Error("GOOGLE_CLOUD_PROJECT is required. Add it to .env or export it before running this script.");
@@ -69,23 +88,34 @@ for (const card of selectedCards) {
     continue;
   }
 
+  let assignment;
   const assignmentPrompt = buildGameAssignmentPrompt(card, [...assignedTypes]);
-  if (args.dryRun) {
-    console.log(`\n--- ${card.stateName} Gemini game assignment prompt ---\n${assignmentPrompt}\n`);
-    continue;
-  }
+  if (args.reuseAssignment && existing?.challengeType) {
+    assignment = assignmentFromExistingGameExperience(existing, card);
+    console.log(`Reusing existing ${card.stateName} ${assignment.challengeType} game assignment.`);
+  } else {
+    if (args.dryRun) {
+      console.log(`\n--- ${card.stateName} Gemini game assignment prompt ---\n${assignmentPrompt}\n`);
+      continue;
+    }
 
-  console.log(`Generating ${card.stateName} game assignment with ${textModel}...`);
-  const assignment = validateGameAssignment(await generateGeminiJsonWithRetry({
-    token,
-    prompt: assignmentPrompt,
-    modelName: textModel,
-    label: `${card.stateName} game assignment`,
-    timeoutMs: textRequestTimeoutMs
-  }));
+    console.log(`Generating ${card.stateName} game assignment with ${textModel}...`);
+    assignment = validateGameAssignment(await generateGeminiJsonWithRetry({
+      token,
+      prompt: assignmentPrompt,
+      modelName: textModel,
+      label: `${card.stateName} game assignment`,
+      timeoutMs: textRequestTimeoutMs
+    }));
+  }
   assignedTypes.add(assignment.challengeType);
 
   const prompt = buildGameBackgroundPrompt(card, assignment);
+  if (args.dryRun) {
+    console.log(`\n--- ${card.stateName} Gemini game background prompt ---\n${prompt}\n`);
+    continue;
+  }
+
   if (args.metadataOnly) {
     const record = gameExperienceRecord({ card, assignment, prompt, background: null });
     manifest.states[card.stateCode].gameExperience = record;
@@ -133,6 +163,7 @@ function parseArgs(argv) {
     force: false,
     metadataOnly: false,
     noLocal: false,
+    reuseAssignment: false,
     states: ["CA", "AL", "KS", "MT", "HI"]
   };
 
@@ -144,6 +175,7 @@ function parseArgs(argv) {
     else if (arg === "--force") parsed.force = true;
     else if (arg === "--metadata-only") parsed.metadataOnly = true;
     else if (arg === "--no-local") parsed.noLocal = true;
+    else if (arg === "--reuse-assignment") parsed.reuseAssignment = true;
     else if (arg === "--states") parsed.states = String(argv[index += 1] || "").split(",");
     else if (arg.startsWith("--states=")) parsed.states = arg.slice("--states=".length).split(",");
     else throw new Error(`Unknown argument: ${arg}`);
@@ -198,20 +230,36 @@ ${JSON.stringify({
   climateSignal: card.climateSignal,
   terrainSignals: card.terrainSignals,
   sharedTrait: card.sharedTrait,
-  cardStory: card.cardStory,
+  cardStory: stripRecordCounts(card.cardStory),
   olympicPanel: {
     sportFamily: card.olympicPanel?.sportFamily,
     primarySportTag: displaySportName(card.olympicPanel?.primarySportTag),
     topSportTags: (card.olympicPanel?.topSportTags || []).map(displaySportName),
-    sportTagCandidates: (card.olympicPanel?.sportTagCandidates || []).slice(0, 6)
+    sportTagCandidates: (card.olympicPanel?.sportTagCandidates || []).slice(0, 6).map(sanitizeSportCandidate)
   },
   paralympicPanel: {
     sportFamily: card.paralympicPanel?.sportFamily,
     primarySportTag: displaySportName(card.paralympicPanel?.primarySportTag),
     topSportTags: (card.paralympicPanel?.topSportTags || []).map(displaySportName),
-    sportTagCandidates: (card.paralympicPanel?.sportTagCandidates || []).slice(0, 6)
+    sportTagCandidates: (card.paralympicPanel?.sportTagCandidates || []).slice(0, 6).map(sanitizeSportCandidate)
   }
 }, null, 2)}`;
+}
+
+function sanitizeSportCandidate(candidate) {
+  if (!candidate) return candidate;
+  const { recordCount, ...rest } = candidate;
+  return rest;
+}
+
+function stripRecordCounts(value) {
+  if (Array.isArray(value)) return value.map(stripRecordCounts);
+  if (!value || typeof value !== "object") return value;
+  return Object.fromEntries(
+    Object.entries(value)
+      .filter(([key]) => key !== "recordCount" && key !== "featuredSportRecordCount")
+      .map(([key, entry]) => [key, stripRecordCounts(entry)])
+  );
 }
 
 function validateGameAssignment(raw) {
@@ -248,7 +296,25 @@ function validateGameAssignment(raw) {
   };
 }
 
+function assignmentFromExistingGameExperience(existing, card) {
+  return validateGameAssignment({
+    challengeType: existing.challengeType,
+    sharedTraitName: existing.sharedTraitName || card.sharedTrait?.name,
+    sharedTraitDescription: existing.sharedTraitDescription || card.sharedTrait?.description,
+    gameName: existing.gameName || card.cardStory?.fanChallengeName,
+    gameIntro: existing.gameIntro || `Try a short fan challenge inspired by ${String(existing.sharedTraitName || card.sharedTrait?.name || "state sync").toLowerCase()}.`,
+    visualTheme: existing.theme || card.cardStory?.themeName || card.sharedTrait?.name || "State game surface",
+    backgroundPromptBrief: existing.backgroundPromptBrief || `A rough fan-atlas mini-game backdrop built around ${existing.theme || card.cardStory?.themeName || card.sharedTrait?.name || "the state card theme"}.`,
+    darkModeNotes: existing.darkModeNotes || "",
+    lightModeNotes: existing.lightModeNotes || "",
+    whyThisGame: existing.whyThisGame || "This mini-game matches the shared trait and state card story.",
+    complianceWarnings: existing.complianceWarnings || []
+  });
+}
+
 function buildGameBackgroundPrompt(card, assignment) {
+  const gameSpecificDirection = gameBackgroundDirectionForAssignment(assignment);
+
   return `Create one polished 16:9 background illustration for a Common Ground mini-game surface.
 
 State: ${card.stateName}
@@ -261,9 +327,15 @@ Featured Olympic sport context: ${displaySportName(card.olympicPanel?.primarySpo
 Featured Paralympic sport context: ${displaySportName(card.paralympicPanel?.primarySportTag || card.paralympicPanel?.topSportTags?.[0] || card.paralympicPanel?.sportFamily)}
 
 Visual direction:
-- Premium collectible atlas sports-card style, suitable behind an interactive browser game.
+- Match the premium rough collectible fan-atlas style already used by the Common Ground state card panels, suitable behind an interactive browser game.
+- Style extraction target:
+- ${GAME_BACKGROUND_STYLE}
+- Attached style references are for visual style only. Extract the rough grain, muted green/blue/coral palette, rounded organic sports collage, fuzzy ink edges, and soft editorial composition. Do not copy words, letters, "USA" text, exact layouts, card shapes, map shapes, logos, symbols, or any specific graphic element.
 - Full-bleed 16:9 environmental background only.
-- Use abstract state geography, terrain, weather, water/road/court/path cues, and subtle game-mechanic motifs.
+- Use abstract state geography, terrain, weather, water/road/court/path cues, featured-sport surface language, and subtle game-mechanic motifs.
+- Prefer a graphic collage of large simplified shapes over scenic panorama, literal map tiles, street-grid rendering, or dense low-detail wallpaper.
+- Game-specific composition:
+- ${gameSpecificDirection}
 - It must work in both light and dark UI modes: keep the center playable, with rich detail at edges and soft contrast in the middle.
 - No text, no letters, no labels, no icons, no buttons, no UI panels, no map labels, no scoreboards.
 - No real people, faces, athlete likeness, official uniforms, jersey numbers, celebrity likeness, or individual-identifying features.
@@ -273,6 +345,55 @@ Visual direction:
 - Avoid a flat wallpaper look: include layered depth, subtle paper grain, and a clear visual rhythm that supports ${assignment.challengeType}.
 
 Return only the image.`;
+}
+
+function gameBackgroundDirectionForAssignment(assignment) {
+  if (assignment.challengeType === "cadence_keeper") {
+    return [
+      "Cadence Keeper background must be a rhythm-playing surface, not a general state landscape.",
+      "The rendered game places a large circular tap pad in the center and a horizontal progress meter near the lower part of the board. Compose around those overlays.",
+      "Keep the central 45% of the image quiet, low-contrast, and mostly open: a calm circular water basin or soft seafoam halo with subtle concentric ripple rings only.",
+      "Use repeated, evenly spaced wave crests, current bands, pool-lane curves, and soft pulse arcs to communicate steady tempo and timing.",
+      "For California Waterline Rhythm, make the core scene an abstract pool-meets-Pacific water surface: shallow coastal current bands, lane-rope rhythm, water-polo passing arcs, and a gentle shoreline curve.",
+      "Place richer sport and state cues only near the far edges: small abstract water-polo ball/goal shapes, distant coast/mountain/desert silhouettes, or transition-route curves. Keep them away from the tap pad and progress meter.",
+      "Avoid literal roads, city street grids, map tiles, scenic postcard mountains, busy swimmers, full people, and sports equipment directly under the progress meter.",
+      "The result should feel like the user is tapping on the steady pulse of water: readable rhythm first, California context second."
+    ].join("\n- ");
+  }
+
+  if (assignment.challengeType === "reaction_grid") {
+    return [
+      "Reaction Grid background should support quick target recognition.",
+      "Keep a calm center and arrange edge detail as broad field/court zones, peripheral motion cues, and clean contrast blocks.",
+      "Avoid tiny repeating texture or target-like decorations that could be confused with interactive cells."
+    ].join("\n- ");
+  }
+
+  if (assignment.challengeType === "precision_trace") {
+    return [
+      "Precision Trace background should support a clear path-following interaction.",
+      "Use one broad implied route, river line, court line, wind line, or contour path that flows across the board without competing with the actual trace path.",
+      "Keep intersections, sharp clutter, and high-contrast marks away from the center play route."
+    ].join("\n- ");
+  }
+
+  if (assignment.challengeType === "focus_hold") {
+    return [
+      "Focus Hold background should support sustained attention on a moving zone.",
+      "Use soft concentric fields, calm terrain bands, or target-range atmosphere around the edges while leaving the center spacious.",
+      "Avoid many bullseyes, dots, or small high-contrast objects that could compete with the focus zone."
+    ].join("\n- ");
+  }
+
+  if (assignment.challengeType === "pattern_scout") {
+    return [
+      "Pattern Scout background should support route memory.",
+      "Use broad landmark-like shapes at edges and subtle pathway rhythm, while keeping the cell grid area low contrast.",
+      "Avoid decorative symbols that look like clickable sequence cells."
+    ].join("\n- ");
+  }
+
+  return "Keep the board-specific playable area quiet and use richer state/story detail only at the edges.";
 }
 
 function gameExperienceRecord({ card, assignment, prompt, background }) {
@@ -287,6 +408,7 @@ function gameExperienceRecord({ card, assignment, prompt, background }) {
     gameName: assignment.gameName,
     gameIntro: assignment.gameIntro,
     theme: assignment.visualTheme,
+    backgroundPromptBrief: assignment.backgroundPromptBrief,
     whyThisGame: assignment.whyThisGame,
     darkModeNotes: assignment.darkModeNotes,
     lightModeNotes: assignment.lightModeNotes,
@@ -360,13 +482,20 @@ async function generateGeminiImageWithRetry({ token, prompt, label }) {
 }
 
 async function generateGeminiImage({ token, prompt }) {
+  const styleReferenceParts = loadStyleReferenceParts();
   const response = await postVertexJson(vertexEndpointForModel(imageModel), {
     headers: {
       "Authorization": `Bearer ${token}`,
       "Content-Type": "application/json"
     },
     body: {
-      contents: { role: "USER", parts: [{ text: prompt }] },
+      contents: {
+        role: "USER",
+        parts: [
+          { text: prompt },
+          ...styleReferenceParts
+        ]
+      },
       generationConfig: {
         responseModalities: ["TEXT", "IMAGE"],
         temperature: 0.72,
@@ -395,6 +524,36 @@ async function generateGeminiImage({ token, prompt }) {
     imageBuffer: Buffer.from(inlineData.data, "base64"),
     mimeType: inlineData.mimeType || inlineData.mime_type || "image/png"
   };
+}
+
+function loadStyleReferenceParts() {
+  if (String(process.env.GAME_STYLE_REFERENCES || "1").trim() === "0") return [];
+
+  const parts = [{
+    text: "Style reference images follow. Use them only for art direction: rough grain, muted colors, rounded organic sports collage, fuzzy edges, and editorial composition. Do not copy text, letters, exact map/card layouts, logos, or specific content from the references."
+  }];
+
+  for (const referencePath of STYLE_REFERENCE_IMAGE_PATHS) {
+    try {
+      parts.push({
+        inlineData: {
+          mimeType: mimeTypeForImage(referencePath),
+          data: readFileSync(referencePath).toString("base64")
+        }
+      });
+    } catch {
+      // References are optional; the text prompt still carries the style direction.
+    }
+  }
+
+  return parts;
+}
+
+function mimeTypeForImage(filePath) {
+  const ext = path.extname(filePath).toLowerCase();
+  if (ext === ".jpg" || ext === ".jpeg") return "image/jpeg";
+  if (ext === ".webp") return "image/webp";
+  return "image/png";
 }
 
 async function saveGameBackgroundToFirebase({ card, assignment, imageBuffer, mimeType, prompt, localBackground }) {

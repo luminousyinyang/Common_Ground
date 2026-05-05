@@ -1,7 +1,7 @@
 {
   "model": "gemini-3-pro-image-preview",
   "location": "global",
-  "updatedAt": "2026-05-05T00:08:32.423Z",
+  "updatedAt": "2026-05-05T16:11:40.083Z",
   "states": {
     "CO": {
       "olympic": {
@@ -113,6 +113,41 @@
         "storagePath": "card-panels/common-ground-card-panel-v12-para-tri-no-generic-land-figures/co/co-paralympic.png",
         "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v12-para-tri-no-generic-land-figures/co/co-paralympic.png",
         "firebaseCollection": "cardPanels"
+      },
+      "gameExperience": {
+        "version": "common-ground-game-experience-v2-style-references",
+        "source": "gemini",
+        "stateCode": "CO",
+        "stateName": "Colorado",
+        "challengeType": "cadence_keeper",
+        "sharedTraitName": "Steady Pace Control",
+        "sharedTraitDescription": "Finding and holding a consistent rhythm when navigating changing outdoor conditions.",
+        "gameName": "Pace Keeper Challenge",
+        "gameIntro": "Keep the rhythm steady by tapping to the beat, celebrating the pacing skills of endurance athletes.",
+        "theme": "Abstract mountain trail topography",
+        "backgroundPromptBrief": "A stylized, abstract background featuring gentle topographic lines and subtle mountain silhouettes to evoke outdoor trails.",
+        "whyThisGame": "The cadence keeper game highlights the steady rhythm and pacing that are central to endurance sports like track and field and paratriathlon.",
+        "darkModeNotes": "Highlight rhythm targets in bright teal against a dark slate background to ensure clear visibility.",
+        "lightModeNotes": "Use bold navy blue for rhythm targets on a soft white or light gray topographic background for high contrast.",
+        "background": {
+          "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/game-backgrounds%2Fcommon-ground-game-experience-v2-style-references%2Fco%2Fco-cadence_keeper.png?alt=media&token=5df858ce-2e43-4fe8-b92b-bee0f1d58617",
+          "localUrl": null,
+          "mimeType": "image/png",
+          "model": "gemini-3.1-flash-image-preview",
+          "location": "global",
+          "promptHash": "29bd2c6443d96d683206a60e447980f3b9a6eb4557d17b15346b9c8dfa1743ff",
+          "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/game-backgrounds%2Fcommon-ground-game-experience-v2-style-references%2Fco%2Fco-cadence_keeper.png?alt=media&token=5df858ce-2e43-4fe8-b92b-bee0f1d58617",
+          "storageBucket": "common-ground-tests.firebasestorage.app",
+          "firebaseProjectId": "common-ground-tests",
+          "storagePath": "game-backgrounds/common-ground-game-experience-v2-style-references/co/co-cadence_keeper.png",
+          "gsUri": "gs://common-ground-tests.firebasestorage.app/game-backgrounds/common-ground-game-experience-v2-style-references/co/co-cadence_keeper.png"
+        },
+        "assignmentModel": "gemini-3.1-pro-preview",
+        "backgroundModel": "gemini-3.1-flash-image-preview",
+        "location": "global",
+        "generatedAt": "2026-05-05T16:12:38.324Z",
+        "promptHash": "29bd2c6443d96d683206a60e447980f3b9a6eb4557d17b15346b9c8dfa1743ff",
+        "complianceWarnings": []
       }
     },
     "CA": {
@@ -228,7 +263,7 @@
         "firebaseCollection": "cardPanels"
       },
       "gameExperience": {
-        "version": "common-ground-game-experience-v1",
+        "version": "common-ground-game-experience-v2-style-references",
         "source": "gemini",
         "stateCode": "CA",
         "stateName": "California",
@@ -238,27 +273,28 @@
         "gameName": "Coastal Cadence Challenge",
         "gameIntro": "Tap to the steady rhythm of the waves and see if you can keep the pace as the current shifts!",
         "theme": "Abstract coastal waves",
+        "backgroundPromptBrief": "A rough fan-atlas mini-game backdrop built around Abstract coastal waves.",
         "whyThisGame": "The cadence_keeper game perfectly captures the steady pacing and rhythmic timing essential to both water polo and paratriathlon.",
         "darkModeNotes": "Use deep ocean blues and glowing teal accents to ensure the rhythm markers stand out.",
         "lightModeNotes": "Use bright aqua and soft sand tones with high-contrast navy markers for clear visibility.",
         "background": {
-          "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/game-backgrounds%2Fcommon-ground-game-experience-v1%2Fca%2Fca-cadence_keeper.png?alt=media&token=9baf411f-e008-401e-b08e-df3ebcce44b3",
+          "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/game-backgrounds%2Fcommon-ground-game-experience-v2-style-references%2Fca%2Fca-cadence_keeper.png?alt=media&token=d0b6a8fb-65ca-4936-bead-5a920f71fc8c",
           "localUrl": null,
           "mimeType": "image/png",
           "model": "gemini-3.1-flash-image-preview",
           "location": "global",
-          "promptHash": "38f629bda8899ffb9d6403262deaea93e5b3d1a0146dfdb18b09e9fadc46443c",
-          "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/game-backgrounds%2Fcommon-ground-game-experience-v1%2Fca%2Fca-cadence_keeper.png?alt=media&token=9baf411f-e008-401e-b08e-df3ebcce44b3",
+          "promptHash": "3dcb684e07893df7bcf55d344f97a89016c1460a13137e7e454dfc71f5d52b8e",
+          "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/game-backgrounds%2Fcommon-ground-game-experience-v2-style-references%2Fca%2Fca-cadence_keeper.png?alt=media&token=d0b6a8fb-65ca-4936-bead-5a920f71fc8c",
           "storageBucket": "common-ground-tests.firebasestorage.app",
           "firebaseProjectId": "common-ground-tests",
-          "storagePath": "game-backgrounds/common-ground-game-experience-v1/ca/ca-cadence_keeper.png",
-          "gsUri": "gs://common-ground-tests.firebasestorage.app/game-backgrounds/common-ground-game-experience-v1/ca/ca-cadence_keeper.png"
+          "storagePath": "game-backgrounds/common-ground-game-experience-v2-style-references/ca/ca-cadence_keeper.png",
+          "gsUri": "gs://common-ground-tests.firebasestorage.app/game-backgrounds/common-ground-game-experience-v2-style-references/ca/ca-cadence_keeper.png"
         },
         "assignmentModel": "gemini-3.1-pro-preview",
         "backgroundModel": "gemini-3.1-flash-image-preview",
         "location": "global",
-        "generatedAt": "2026-05-04T20:22:50.903Z",
-        "promptHash": "38f629bda8899ffb9d6403262deaea93e5b3d1a0146dfdb18b09e9fadc46443c",
+        "generatedAt": "2026-05-05T15:53:55.384Z",
+        "promptHash": "3dcb684e07893df7bcf55d344f97a89016c1460a13137e7e454dfc71f5d52b8e",
         "complianceWarnings": []
       }
     },
@@ -432,5 +468,5 @@
   "cardCopyModel": "gemini-3.1-pro-preview",
   "gameExperienceModel": "gemini-3.1-pro-preview",
   "gameBackgroundModel": "gemini-3.1-flash-image-preview",
-  "gameExperienceVersion": "common-ground-game-experience-v1"
+  "gameExperienceVersion": "common-ground-game-experience-v2-style-references"
 }
