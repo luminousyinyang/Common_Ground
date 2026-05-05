@@ -30,6 +30,34 @@ function SourceList({ refs }) {
   );
 }
 
+function SourceMethodPanel({ refs }) {
+  return (
+    <section className="source-method-panel" aria-label="Sources and method">
+      <span className="footer-panel-kicker">Sources & Method</span>
+      <SourceList refs={refs} />
+      <p>Public Team USA roster records are grouped by hometown state and city. Gemini turns aggregate state, sport, and geography inputs into the state briefing and sport-lens notes.</p>
+    </section>
+  );
+}
+
+function StateChallengePanel({ stateName, isUnlocked, onOpenChallenge }) {
+  return (
+    <section className="state-challenge-panel" aria-label={`${stateName} state challenge`}>
+      <div className="state-challenge-copy">
+        <span className="footer-panel-kicker">State Sync Challenge</span>
+        <p>
+          {isUnlocked
+            ? `${stateName} state card unlocked. Replay the mini-game anytime.`
+            : `Play the mini-game to unlock the ${stateName} state card.`}
+        </p>
+      </div>
+      <button className="primary-button state-challenge-button" type="button" onClick={onOpenChallenge}>
+        {isUnlocked ? "Replay Challenge" : "Play Challenge"}
+      </button>
+    </section>
+  );
+}
+
 function SportPanel({ panel }) {
   const copy = getPanelBackCopyForDisplay(panel);
   const visualCue = copy.featuredCue || getPanelVisualCue(panel);
@@ -81,7 +109,10 @@ function BriefingPanel({ payload, loading, onRefresh, compact = false }) {
     return (
       <section className={`briefing-panel ${compact ? "is-compact" : ""}`}>
         <div className="panel-heading-row">
-          <h3>Gemini State Briefing</h3>
+          <div className="briefing-heading-copy">
+            <h3>Gemini State Briefing</h3>
+            <p>Generated from aggregate public roster + geography inputs.</p>
+          </div>
           <button className="ghost-button small" type="button" onClick={onRefresh}>Refresh</button>
         </div>
         <p>Generating a safe, conditional briefing...</p>
@@ -93,7 +124,10 @@ function BriefingPanel({ payload, loading, onRefresh, compact = false }) {
   return (
     <section className={`briefing-panel ${compact ? "is-compact" : ""}`}>
       <div className="panel-heading-row">
-        <h3>Gemini State Briefing</h3>
+        <div className="briefing-heading-copy">
+          <h3>Gemini State Briefing</h3>
+          <p>Generated from aggregate public roster + geography inputs.</p>
+        </div>
         <button className="ghost-button small" type="button" onClick={onRefresh}>Refresh</button>
       </div>
       <div className="briefing-section-grid">
@@ -446,7 +480,7 @@ function UnifiedStateCard({
                     <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
                     <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
                   </svg>
-                  <span>Play challenge to unlock</span>
+                  <span>Play State Sync Challenge to unlock</span>
                 </div>
               )}
             </article>
@@ -479,10 +513,8 @@ function UnifiedStateCard({
                     <p>This trait connects Olympic <strong>{olympicCue}</strong> and Paralympic <strong>{paralympicCue}</strong>: {card.sharedTrait.description}</p>
                   </section>
                   <BriefingPanel payload={briefing} loading={briefingLoading} onRefresh={onRefreshBriefing} compact />
-                  <div className="card-footer">
-                    <SourceList refs={sourceRefs} />
-                    <button className="primary-button" type="button" onClick={onOpenChallenge}>Try the State Sync Challenge</button>
-                  </div>
+                  <SourceMethodPanel refs={sourceRefs} />
+                  <StateChallengePanel stateName={card.stateName} isUnlocked={isUnlocked} onOpenChallenge={onOpenChallenge} />
                 </div>
               ) : (
                 <CompactCardBack
@@ -501,10 +533,10 @@ function UnifiedStateCard({
           {flipped ? "Flip to art" : "Flip to data"}
         </button>
         {isUnlocked ? (
-          <button className="primary-button" type="button" onClick={onOpenChallenge}>Try the State Sync Challenge</button>
+          <button className="primary-button" type="button" onClick={onOpenChallenge}>Replay State Sync Challenge</button>
         ) : (
           <button className="primary-button card-unlock-btn" type="button" onClick={onOpenChallenge}>
-            Play Challenge to Unlock
+            Unlock State Card
           </button>
         )}
       </div>
@@ -512,5 +544,5 @@ function UnifiedStateCard({
   );
 }
 
-export { StateSummary, SportPanel, BriefingPanel, SourceList, HometownAreasCard, HometownAreaRow, HometownAreasDialog, CompactCardBack, CompactSportLens };
+export { StateSummary, SportPanel, BriefingPanel, SourceList, SourceMethodPanel, StateChallengePanel, HometownAreasCard, HometownAreaRow, HometownAreasDialog, CompactCardBack, CompactSportLens };
 export default UnifiedStateCard;

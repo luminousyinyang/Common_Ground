@@ -1074,6 +1074,73 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
   border-top: 1px solid var(--line);
 }
 
+.source-method-panel,
+.state-challenge-panel {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  min-width: 0;
+}
+
+.source-method-panel .source-list {
+  margin-top: 0;
+}
+
+.source-method-panel .source-chip {
+  max-width: 100%;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+.footer-panel-kicker,
+.briefing-heading-copy p {
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  line-height: 1.25;
+  text-transform: uppercase;
+}
+
+.source-method-panel p,
+.state-challenge-panel p {
+  margin: 0;
+  color: var(--copy);
+  font-size: 0.86rem;
+  font-weight: 740;
+  line-height: 1.45;
+}
+
+.state-challenge-panel {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 16px;
+}
+
+.state-challenge-copy {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+}
+
+.state-challenge-button {
+  min-height: 40px;
+  padding-inline: 20px;
+  white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  .state-challenge-panel {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .state-challenge-button {
+    width: 100%;
+  }
+}
+
 .card-action-row {
   align-items: center;
   justify-content: flex-end;
@@ -1114,6 +1181,19 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
   font-size: 1.45rem;
   line-height: 0.95;
   font-weight: 700;
+}
+
+.briefing-heading-copy {
+  display: grid;
+  gap: 5px;
+}
+
+.briefing-heading-copy h3 {
+  margin: 0;
+}
+
+.briefing-heading-copy p {
+  margin: 0;
 }
 
 .hometown-areas-card {
@@ -1864,6 +1944,8 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
 .card-modal-panel.is-back-expanded .card-back-scroll > .trait-band,
 .card-modal-panel.is-back-expanded .card-back-scroll > .briefing-panel,
 .card-modal-panel.is-back-expanded .card-back-scroll > .hometown-areas-card,
+.card-modal-panel.is-back-expanded .card-back-scroll > .source-method-panel,
+.card-modal-panel.is-back-expanded .card-back-scroll > .state-challenge-panel,
 .card-modal-panel.is-back-expanded .card-back-scroll > .card-footer {
   border: 1px solid var(--line);
   border-radius: 14px;
@@ -1947,15 +2029,20 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
   margin: 0;
 }
 
+.card-modal-panel.is-back-expanded .card-back-scroll > .source-method-panel,
+.card-modal-panel.is-back-expanded .card-back-scroll > .state-challenge-panel {
+  padding: 16px;
+}
+
 .card-modal-panel.is-back-expanded .card-back-scroll > .card-footer {
   border-top: 1px solid var(--line);
 }
 
 .card-modal-panel.is-back-expanded .card-footer {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: end;
-  gap: 14px;
+  grid-template-columns: 1fr;
+  align-items: stretch;
+  gap: 12px;
 }
 
 .card-modal-panel .card-action-row {
