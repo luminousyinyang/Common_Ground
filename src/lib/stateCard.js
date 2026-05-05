@@ -4,7 +4,7 @@ import {
   CARD_ART,
   FRAMED_CARD_PANEL_PROMPT_VERSIONS,
   CURRENT_CARD_BACK_COPY_VERSION,
-  CURRENT_GAME_EXPERIENCE_VERSION,
+  SUPPORTED_GAME_EXPERIENCE_VERSIONS,
   GAME_TYPE_LABELS,
   PANEL_QA_ROWS
 } from "./constants.js";
@@ -349,7 +349,7 @@ export function getPanelArtUrl(card, program, manifest) {
 
 export function getGeneratedGameExperience(statePanels = {}) {
   const experience = statePanels.gameExperience || statePanels.game;
-  if (!experience || experience.version !== CURRENT_GAME_EXPERIENCE_VERSION) return null;
+  if (!experience || !SUPPORTED_GAME_EXPERIENCE_VERSIONS.has(experience.version)) return null;
   if (!GAME_TYPE_LABELS[experience.challengeType]) return null;
   return experience;
 }

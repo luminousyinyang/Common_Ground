@@ -133,7 +133,11 @@ export const CARD_THEME_LABELS = {
 
 export const EMPTY_CARD_PANEL_MANIFEST = { states: {} };
 export const CURRENT_CARD_BACK_COPY_VERSION = "common-ground-card-back-v14-basic-rules";
-export const CURRENT_GAME_EXPERIENCE_VERSION = "common-ground-game-experience-v1";
+export const CURRENT_GAME_EXPERIENCE_VERSION = "common-ground-game-experience-v2-style-references";
+export const SUPPORTED_GAME_EXPERIENCE_VERSIONS = new Set([
+  CURRENT_GAME_EXPERIENCE_VERSION,
+  "common-ground-game-experience-v1"
+]);
 export const GAME_TYPE_LABELS = {
   reaction_grid: "Reaction Grid",
   cadence_keeper: "Cadence Keeper",
