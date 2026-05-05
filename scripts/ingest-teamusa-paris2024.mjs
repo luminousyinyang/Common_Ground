@@ -102,6 +102,8 @@ const TRAITS = [
 ];
 
 const SPORT_CANDIDATE_LIMIT = 8;
+const HOMETOWN_SIGNAL_LIMIT = 3;
+const HOMETOWN_SIGNAL_MINIMUM = 3;
 
 const args = parseArgs(process.argv.slice(2));
 const retrievedAt = args.retrievedAt || new Date().toISOString().slice(0, 10);
@@ -190,7 +192,8 @@ function emptyProgramAggregate() {
   return {
     records: 0,
     sports: new Map(),
-    families: new Map()
+    families: new Map(),
+    hometownAreas: new Map()
   };
 }
 
@@ -211,6 +214,9 @@ function ingestEntries(aggregate, entries, program, excludedStateCodes, blankSta
     const programAggregate = aggregate[stateCode][program];
     programAggregate.records += 1;
 
+    const city = normalizeCityName(athlete?.bio?.quick_facts?.hometown?.city);
+    if (city) incrementHometownArea(programAggregate.hometownAreas, city, program);
+
     const sportTitles = unique((athlete.sport || []).map((sport) => sport?.title).filter(Boolean));
     for (const title of sportTitles) {
       increment(programAggregate.sports, title);
@@ -228,8 +234,20 @@ function normalizeStateCode(value) {
   return value.trim().toUpperCase();
 }
 
+function normalizeCityName(value) {
+  if (!value || typeof value !== "string") return "";
+  return titleCase(value.replace(/\s+/g, " ").trim());
+}
+
 function increment(map, key) {
   map.set(key, (map.get(key) || 0) + 1);
+}
+
+function incrementHometownArea(map, city, program) {
+  const current = map.get(city) || { city, olympic: 0, paralympic: 0, total: 0 };
+  current[program] += 1;
+  current.total += 1;
+  map.set(city, current);
 }
 
 function sportFamilyFor(title) {
@@ -297,6 +315,7 @@ function buildDataset({ aggregate, retrievedAt, olympicTotal, paralympicTotal, e
     });
     const olympicPanel = applyFeaturedSport(baseOlympicPanel, cardStory.olympicFeatured);
     const paralympicPanel = applyFeaturedSport(baseParalympicPanel, cardStory.paralympicFeatured);
+    const hometownSignals = buildHometownSignals(stateAggregate);
 
     return {
       stateCode,
@@ -309,6 +328,8 @@ function buildDataset({ aggregate, retrievedAt, olympicTotal, paralympicTotal, e
         paralympic: stateAggregate.paralympic.records,
         total: totalRecords
       },
+      topHometownSignals: hometownSignals.top,
+      allHometownSignals: hometownSignals.all,
       hometownPresenceBucket: combinedBucket(totalRecords),
       olympicPanel,
       paralympicPanel,
@@ -338,6 +359,7 @@ function buildDataset({ aggregate, retrievedAt, olympicTotal, paralympicTotal, e
       },
       stateCodedRecordTotals,
       aggregationPolicy: "The build script strips athlete names, profile URLs, images, biographies, medals, finish placements, and other individual-level fields before writing frontend data. State cards display signal buckets instead of exact state counts.",
+      hometownAreaPolicy: `Top hometown areas are city-level aggregate public source entries only, require at least ${HOMETOWN_SIGNAL_MINIMUM} public source records, and do not expose athlete names, profiles, images, or individual records.`,
       bucketPolicy: "Combined state bucket: insufficient data = 0 sourced roster rows, low = 1-4, medium = 5-19, high = 20+. Program panel details and top sport tags require at least 3 sourced roster rows; lower-volume panels stay generalized.",
       coverageNote: "Only TeamUSA.com roster rows with a U.S. state or supported U.S. territory abbreviation in the public hometown state field are used for cards. Unsupported or blank geography values are excluded from card output.",
       excludedStateCodes,
@@ -346,6 +368,37 @@ function buildDataset({ aggregate, retrievedAt, olympicTotal, paralympicTotal, e
       sourceRefs
     },
     states
+  };
+}
+
+function buildHometownSignals(stateAggregate) {
+  const merged = new Map();
+  for (const program of ["olympic", "paralympic"]) {
+    for (const area of stateAggregate[program].hometownAreas.values()) {
+      const current = merged.get(area.city) || { city: area.city, olympic: 0, paralympic: 0, total: 0 };
+      current.olympic += area.olympic;
+      current.paralympic += area.paralympic;
+      current.total += area.total;
+      merged.set(area.city, current);
+    }
+  }
+
+  const all = [...merged.values()]
+    .filter((area) => area.total >= HOMETOWN_SIGNAL_MINIMUM)
+    .sort((a, b) => b.total - a.total || b.olympic - a.olympic || a.city.localeCompare(b.city))
+    .map((area, index) => ({
+      rank: index + 1,
+      areaType: "city",
+      label: area.city,
+      total: area.total,
+      olympic: area.olympic,
+      paralympic: area.paralympic,
+      countLabel: "public hometown entries"
+    }));
+
+  return {
+    top: all.slice(0, HOMETOWN_SIGNAL_LIMIT),
+    all
   };
 }
 

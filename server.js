@@ -131,12 +131,20 @@ function safeFallbackBriefing(card, reason = "No live Gemini response was availa
       }
     ],
     geographyLens: `${card.geographySnapshot} could help fans understand why varied sport environments appear in this aggregate state view.`,
+    hometownAreas: formatHometownAreas(card.topHometownSignals),
     whatToNotice: `The useful fan read is contrast: some sports emphasize spacing and quick decisions, while others emphasize rhythm, stillness, pacing, equipment, or transitions.`,
     surprisingConnection: `${olympicCue} and ${paralympicCue} do not need to look alike to share a viewing idea; both can point fans toward control when timing, surface, or spacing changes.`,
     sharedStateSignal: `${card.sharedTrait.name}: ${card.sharedTrait.description}`,
     gameIntro: `Try a short fan challenge that reflects ${card.sharedTrait.name.toLowerCase()} as a personal game interaction only.`,
     complianceWarnings: [reason, "Fallback copy used because live Gemini generation is unavailable or did not pass validation."]
   };
+}
+
+function formatHometownAreas(signals = []) {
+  return (signals || []).slice(0, 3).map((area) => ({
+    area: area.label,
+    detail: `${area.total} ${area.countLabel || "public hometown entries"} in the public source view, with ${area.olympic} Olympic-side and ${area.paralympic} Paralympic-side entries.`
+  }));
 }
 
 function safeFallbackGameReflection(card, result, reason = "No live Gemini response was available.") {
@@ -268,7 +276,7 @@ Use only the provided aggregate data and geography notes.
 Do not mention individual athlete names.
 Do not use athlete likeness.
 Do not mention finish times or specific scoring results.
-Do not mention exact counts in the fan-facing briefing.
+Do not mention exact counts except the provided topHometownSignals city entries, and label those as public hometown entries, not a complete athlete census.
 Do not imply geography causes success.
 Do not claim that terrain, climate, or training access guarantees outcomes.
 Use conditional language: "may suggest", "could help fans understand", "appears associated with", "could show how".
@@ -290,6 +298,9 @@ Return valid JSON with these fields:
 - sportMix: array of 3-5 objects. Each object has:
   - theme: a short label such as "Aquatic and transition", "Road and endurance", "Precision and control", "Urban and balance", "Team spacing".
   - detail: 1 sentence grouping multiple sports by theme. Use sports from both Olympic and Paralympic lists when possible.
+- hometownAreas: array of up to 3 objects. If topHometownSignals are provided, each object has:
+  - area: the city/area label from the provided data.
+  - detail: 1 sentence with its provided total public hometown entries plus Olympic-side and Paralympic-side entries. Use "public hometown entries", not "athletes".
 - geographyLens: 1-2 sentences connecting geography/climate/terrain to fan context with conditional language.
 - whatToNotice: 2-3 sentences with concrete fan viewing observations across the broader sport mix.
 - surprisingConnection: 1-2 sentences. Choose one surprising connection across the broader state sport mix. Prefer one Olympic-side sport and one Paralympic-side sport, but do not force the featured card pair if another connection is more interesting.
@@ -300,6 +311,7 @@ Return valid JSON with these fields:
 Style target:
 State Snapshot should feel like "In the public aggregate state data, California shows..." and should not sound guaranteed.
 Sport Mix should be concrete, grouped by theme, and name more sports than the two featured sports when available.
+Hometown Areas should only use provided topHometownSignals. Do not infer counties and do not create city names.
 What To Notice should answer "what did I actually learn?"
 Geography Lens should use conditional language such as "could help fans understand" or "may suggest".
 Surprising Connection should be dynamic, not always the two featured sports.
@@ -313,6 +325,7 @@ ${JSON.stringify({
   climateSignal: card.climateSignal,
   terrainSignals: card.terrainSignals,
   hometownPresenceBucket: card.hometownPresenceBucket,
+  topHometownSignals: card.topHometownSignals || [],
   cardStory: card.cardStory,
   sharedTrait: card.sharedTrait,
   olympicPanel: {
@@ -338,7 +351,8 @@ function buildBriefingRepairPrompt(card, briefing, validationWarnings) {
 
 Keep the same JSON schema and the same state/sport meaning.
 Use only the provided aggregate state data and the rejected briefing as context.
-Do not mention individual athlete names, athlete likeness, finish times, scores, rankings, medals, exact counts, or performance predictions.
+Do not mention individual athlete names, athlete likeness, finish times, scores, rankings, medals, exact state/program totals, or performance predictions.
+Exact counts are allowed only inside hometownAreas when copied from provided topHometownSignals, and must be called public hometown entries.
 Do not imply geography causes athletic outcomes.
 Use conditional wording such as "may suggest", "could help fans understand", "appears in the state view", and "could show how".
 Remove every word or phrase flagged by the validator. In particular, do not use any form of "guarantee", "frame", "framing", "backdrop", "signal", "row", "roster data", "athletic landscape", "dominant", "best", or "strong".
@@ -350,6 +364,7 @@ Return valid JSON with these exact fields:
 - stateSnapshot
 - sportMix: array of 3-5 objects with theme and detail
 - geographyLens
+- hometownAreas: array of up to 3 objects with area and detail
 - whatToNotice
 - surprisingConnection
 - sharedStateSignal
@@ -364,6 +379,7 @@ ${JSON.stringify({
   stateCode: card.stateCode,
   stateName: card.stateName,
   geographySnapshot: card.geographySnapshot,
+  topHometownSignals: card.topHometownSignals || [],
   olympicSports: (card.olympicPanel?.topSportTags || []).map(displaySportName),
   paralympicSports: (card.paralympicPanel?.topSportTags || []).map(displaySportName),
   sharedTrait: card.sharedTrait
