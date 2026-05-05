@@ -1259,7 +1259,7 @@ main {
 
 html[data-surface="blacktop"] .ghost-button:hover,
 html[data-surface="blacktop"] .ghost-button:focus-visible {
-  background: rgba(255, 255, 255, 0.1);
+  background: transparent;
   box-shadow: 4px 4px 0 #CFA14D;
 }
 
@@ -4545,6 +4545,11 @@ html[data-surface="blacktop"] .login-left-overlay {
   min-height: 48px;
   border-radius: 999px;
   font-size: 0.96rem;
+}
+
+html[data-surface="blacktop"] .login-google:hover,
+html[data-surface="blacktop"] .login-google:focus-visible {
+  border-color: #CFA14D;
 }
 
 .login-terms {
