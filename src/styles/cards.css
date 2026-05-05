@@ -105,14 +105,23 @@
   z-index: 1;
 }
 
-.compact-back-shell {
+.compact-back-shell,
+.expanded-back-shell {
   position: relative;
-  height: 100%;
   min-height: 0;
   overflow: hidden;
 }
 
-.compact-back-shell.has-more-scroll::after {
+.compact-back-shell {
+  height: 100%;
+}
+
+.expanded-back-shell {
+  border-radius: 18px;
+}
+
+.compact-back-shell.has-more-scroll::after,
+.expanded-back-shell.has-more-scroll::after {
   position: absolute;
   right: 0;
   bottom: 0;
@@ -146,7 +155,8 @@
   padding: 18px;
 }
 
-.compact-back-scroll-cue {
+.compact-back-scroll-cue,
+.expanded-back-scroll-cue {
   position: absolute;
   bottom: 12px;
   left: 50%;
@@ -167,12 +177,15 @@
   transition: background 140ms ease, border-color 140ms ease, color 140ms ease, transform 160ms ease, box-shadow 160ms ease;
 }
 
-.compact-back-scroll-cue svg {
+.compact-back-scroll-cue svg,
+.expanded-back-scroll-cue svg {
   animation: compact-bounce-down 900ms ease-in-out infinite;
 }
 
 .compact-back-scroll-cue:hover,
-.compact-back-scroll-cue:focus-visible {
+.compact-back-scroll-cue:focus-visible,
+.expanded-back-scroll-cue:hover,
+.expanded-back-scroll-cue:focus-visible {
   border-color: var(--ink);
   color: var(--ink-contrast);
   background: var(--ink);
@@ -180,7 +193,8 @@
   transform: translateX(-50%) translateY(-2px);
 }
 
-.compact-back-scroll-cue:focus-visible {
+.compact-back-scroll-cue:focus-visible,
+.expanded-back-scroll-cue:focus-visible {
   outline: 2px solid var(--olympic-tint);
   outline-offset: 3px;
 }

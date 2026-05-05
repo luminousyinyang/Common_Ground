@@ -384,7 +384,9 @@ function UnifiedStateCard({
   const [mousePos, setMousePos] = useState({ x: 50, y: 50, angle: 120 });
   const [isHovered, setIsHovered] = useState(false);
   const tiltRef = useRef(null);
+  const fullBackScrollRef = useRef(null);
   const flipTimers = useRef([]);
+  const [hasMoreFullBackScroll, setHasMoreFullBackScroll] = useState(false);
   const counts = getRosterCounts(card);
   const olympicCue = getPanelVisualCue(card.olympicPanel);
   const paralympicCue = getPanelVisualCue(card.paralympicPanel);
@@ -396,8 +398,45 @@ function UnifiedStateCard({
     setDisplayBack(false);
     setFlipPhase(null);
     setTilt({ x: 0, y: 0 });
+    setHasMoreFullBackScroll(false);
     onBackExpandedChange?.(false);
   }, [card.stateCode]);
+
+  useEffect(() => {
+    const el = fullBackScrollRef.current;
+    if (!isBackExpanded || !el) {
+      setHasMoreFullBackScroll(false);
+      return undefined;
+    }
+
+    let frame = 0;
+    const updateScrollCue = () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(() => {
+        frame = 0;
+        const remainingScroll = el.scrollHeight - el.clientHeight - el.scrollTop;
+        setHasMoreFullBackScroll(remainingScroll > 3);
+      });
+    };
+
+    updateScrollCue();
+    el.addEventListener("scroll", updateScrollCue, { passive: true });
+    window.addEventListener("resize", updateScrollCue);
+
+    let resizeObserver;
+    if ("ResizeObserver" in window) {
+      resizeObserver = new ResizeObserver(updateScrollCue);
+      resizeObserver.observe(el);
+      Array.from(el.children).forEach((child) => resizeObserver.observe(child));
+    }
+
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      el.removeEventListener("scroll", updateScrollCue);
+      window.removeEventListener("resize", updateScrollCue);
+      resizeObserver?.disconnect();
+    };
+  }, [card.stateCode, isBackExpanded, briefing, briefingLoading, isUnlocked]);
 
   function toggleFlip() {
     if (flipPhase !== null) return;
@@ -433,6 +472,12 @@ function UnifiedStateCard({
   function handleMouseLeave() {
     setTilt({ x: 0, y: 0 });
     setIsHovered(false);
+  }
+
+  function scrollFullBackBriefing() {
+    const el = fullBackScrollRef.current;
+    if (!el) return;
+    el.scrollBy({ top: Math.max(180, el.clientHeight * 0.58), behavior: "smooth" });
   }
 
   const frontClass = [
@@ -487,34 +532,42 @@ function UnifiedStateCard({
 
             <article className={backClass} aria-label={`${card.stateName} state card data`}>
               {isBackExpanded ? (
-                <div className="card-back-scroll">
-                  <div className="card-header">
-                    <p className="eyebrow">Shared geography view</p>
-                    <h3>{card.stateName}</h3>
-                    <p>{card.geographySnapshot}</p>
-                    <div className="metric-row compact-metrics">
-                      <span className="metric">State athlete records <strong>{counts.total}</strong></span>
-                      <span className="metric">Olympic athlete records <strong>{counts.olympic}</strong></span>
-                      <span className="metric">Paralympic athlete records <strong>{counts.paralympic}</strong></span>
+                <div className={`expanded-back-shell ${hasMoreFullBackScroll ? "has-more-scroll" : ""}`}>
+                  <div className="card-back-scroll" ref={fullBackScrollRef}>
+                    <div className="card-header">
+                      <p className="eyebrow">Shared geography view</p>
+                      <h3>{card.stateName}</h3>
+                      <p>{card.geographySnapshot}</p>
+                      <div className="metric-row compact-metrics">
+                        <span className="metric">State athlete records <strong>{counts.total}</strong></span>
+                        <span className="metric">Olympic athlete records <strong>{counts.olympic}</strong></span>
+                        <span className="metric">Paralympic athlete records <strong>{counts.paralympic}</strong></span>
+                      </div>
+                      <p className="metric-row-note">Public Team USA roster records by hometown state, not a complete athlete census.</p>
                     </div>
-                    <p className="metric-row-note">Public Team USA roster records by hometown state, not a complete athlete census.</p>
-                  </div>
-                  <HometownAreasCard card={card} payload={briefing} compact />
-                  <FeaturedSportsIntro card={card} />
-                  <div className="program-panel-grid">
-                    <SportPanel panel={card.olympicPanel} />
-                    <SportPanel panel={card.paralympicPanel} />
-                  </div>
-                  <section className="trait-band">
-                    <div className="trait-badge">
-                      <span>Shared trait across both featured sports</span>
-                      <strong>{card.sharedTrait.name}</strong>
+                    <HometownAreasCard card={card} payload={briefing} compact />
+                    <FeaturedSportsIntro card={card} />
+                    <div className="program-panel-grid">
+                      <SportPanel panel={card.olympicPanel} />
+                      <SportPanel panel={card.paralympicPanel} />
                     </div>
-                    <p>This trait connects Olympic <strong>{olympicCue}</strong> and Paralympic <strong>{paralympicCue}</strong>: {card.sharedTrait.description}</p>
-                  </section>
-                  <BriefingPanel payload={briefing} loading={briefingLoading} onRefresh={onRefreshBriefing} compact />
-                  <SourceMethodPanel refs={sourceRefs} />
-                  <StateChallengePanel stateName={card.stateName} isUnlocked={isUnlocked} onOpenChallenge={onOpenChallenge} />
+                    <section className="trait-band">
+                      <div className="trait-badge">
+                        <span>Shared trait across both featured sports</span>
+                        <strong>{card.sharedTrait.name}</strong>
+                      </div>
+                      <p>This trait connects Olympic <strong>{olympicCue}</strong> and Paralympic <strong>{paralympicCue}</strong>: {card.sharedTrait.description}</p>
+                    </section>
+                    <BriefingPanel payload={briefing} loading={briefingLoading} onRefresh={onRefreshBriefing} compact />
+                    <SourceMethodPanel refs={sourceRefs} />
+                    <StateChallengePanel stateName={card.stateName} isUnlocked={isUnlocked} onOpenChallenge={onOpenChallenge} />
+                  </div>
+
+                  {hasMoreFullBackScroll && (
+                    <button className="expanded-back-scroll-cue" type="button" aria-label="Scroll full state briefing" onClick={scrollFullBackBriefing}>
+                      <Icon name="arrow-down" size={17} strokeWidth={2} />
+                    </button>
+                  )}
                 </div>
               ) : (
                 <CompactCardBack
