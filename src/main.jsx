@@ -1349,8 +1349,13 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
     return clientX >= rect.left && clientX <= rect.right && clientY >= rect.top && clientY <= rect.bottom;
   }
 
+  function isInteractiveMapTarget(target) {
+    return target instanceof Element && Boolean(target.closest(".state-path.has-data, .territory-inset"));
+  }
+
   function handlePointerDown(event) {
     if (event.button !== 0) return;
+    if (isInteractiveMapTarget(event.target)) return;
     const started = startDrag(event.clientX, event.clientY);
     if (!started) return;
     event.currentTarget.setPointerCapture?.(event.pointerId);
@@ -1461,55 +1466,61 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
                 {selectedCode}
               </text>
             )}
-          </g>
-          {territoryPath && territoryFeatures.length > 0 && (
-            <g className="territory-inset-layer" transform="translate(846 510)">
-              {territoryFeatures.map((item, index) => {
-                const code = item.properties.stateCode;
-                const card = cardsByCode.get(code);
-                const counts = getRosterCounts(card);
-                const signal = card?.hometownPresenceBucket || "insufficient_data";
-                const className = [
-                  "territory-inset",
-                  signal,
-                  code === selectedCode ? "is-selected" : ""
-                ].filter(Boolean).join(" ");
+            {territoryPath && territoryFeatures.length > 0 && (
+              <g className="territory-inset-layer" transform="translate(846 510)">
+                {territoryFeatures.map((item, index) => {
+                  const code = item.properties.stateCode;
+                  const card = cardsByCode.get(code);
+                  const counts = getRosterCounts(card);
+                  const signal = card?.hometownPresenceBucket || "insufficient_data";
+                  const className = [
+                    "territory-inset",
+                    signal,
+                    code === selectedCode ? "is-selected" : ""
+                  ].filter(Boolean).join(" ");
 
-                return (
-                  <g
-                    key={code}
-                    className={className}
-                    data-state-code={code}
-                    transform={`translate(${index * 150} 0)`}
-                    role="button"
-                    tabIndex={0}
-                    aria-label={`${card.stateName}, Olympic ${counts.olympic}, Paralympic ${counts.paralympic}, total ${counts.total}`}
-                    onMouseEnter={(event) => describeFeature(item, event)}
-                    onMouseMove={(event) => describeFeature(item, event)}
-                    onFocus={() => describeFeature(item)}
-                    onMouseLeave={() => {
-                      setHoverTip(null);
-                      if (selectedCard) setHint(formatMapHint(selectedCard));
-                    }}
-                    onBlur={() => selectedCard && setHint(formatMapHint(selectedCard))}
-                    onClick={() => onSelect(card.stateCode)}
-                    onKeyDown={(event) => {
-                      if (event.key === "Enter" || event.key === " ") {
-                        event.preventDefault();
+                  return (
+                    <g
+                      key={code}
+                      className={className}
+                      data-state-code={code}
+                      transform={`translate(${index * 150} 0)`}
+                      role="button"
+                      tabIndex={0}
+                      aria-label={`${card.stateName}, Olympic ${counts.olympic}, Paralympic ${counts.paralympic}, total ${counts.total}`}
+                      onMouseEnter={(event) => describeFeature(item, event)}
+                      onMouseMove={(event) => describeFeature(item, event)}
+                      onFocus={() => describeFeature(item)}
+                      onMouseLeave={() => {
+                        setHoverTip(null);
+                        if (selectedCard) setHint(formatMapHint(selectedCard));
+                      }}
+                      onBlur={() => selectedCard && setHint(formatMapHint(selectedCard))}
+                      onClick={(event) => {
+                        if (suppressClickRef.current) {
+                          event.preventDefault();
+                          return;
+                        }
                         onSelect(card.stateCode);
-                      }
-                    }}
-                  >
-                    <rect className="territory-inset-hit" x="34" y="8" width="104" height="40" rx="6" />
-                    <path className="territory-inset-shape" d={territoryPath(item)} />
-                    {code === selectedCode && (
-                      <text className="territory-inset-code" x="15" y="34">{code}</text>
-                    )}
-                  </g>
-                );
-              })}
-            </g>
-          )}
+                      }}
+                      onKeyDown={(event) => {
+                        if (event.key === "Enter" || event.key === " ") {
+                          event.preventDefault();
+                          onSelect(card.stateCode);
+                        }
+                      }}
+                    >
+                      <rect className="territory-inset-hit" x="34" y="8" width="104" height="40" rx="6" />
+                      <path className="territory-inset-shape" d={territoryPath(item)} />
+                      {code === selectedCode && (
+                        <text className="territory-inset-code" x="15" y="34">{code}</text>
+                      )}
+                    </g>
+                  );
+                })}
+              </g>
+            )}
+          </g>
         </svg>
         <RosterTooltip card={hoverTip?.card} position={hoverTip?.position} />
       </div>
