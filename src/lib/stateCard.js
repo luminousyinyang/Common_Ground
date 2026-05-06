@@ -23,10 +23,6 @@ export async function getJson(url, options) {
 }
 
 export function fallbackBriefing(card, reason = "The Gemini backend is not available from this dev server.") {
-  const olympicTags = panelSportList(card.olympicPanel);
-  const paralympicTags = panelSportList(card.paralympicPanel);
-  const olympicMix = joinReadableList(olympicTags);
-  const paralympicMix = joinReadableList(paralympicTags);
   const olympicCue = getPanelVisualCue(card.olympicPanel);
   const paralympicCue = getPanelVisualCue(card.paralympicPanel);
   const geography = getGeographySignals(card).length ? joinReadableList(getGeographySignals(card)) : card.geographySnapshot;
@@ -34,15 +30,15 @@ export function fallbackBriefing(card, reason = "The Gemini backend is not avail
     source: "react-fallback",
     model: "safe-fallback",
     briefing: {
-      stateSnapshot: `In the public aggregate Team USA state data, ${card.stateName} shows Olympic-side and Paralympic-side sport lists for the current data view, with featured card examples from ${olympicCue} and ${paralympicCue}. That does not mean geography causes outcomes; it gives fans a safer way to explore why different sport environments appear in one state view.`,
+      stateSnapshot: `In the public aggregate Team USA state data, ${card.stateName} shows Olympic and Paralympic sport lists from the ${datasetLabelForCard(card)}, with featured card examples from ${olympicCue} and ${paralympicCue}. That does not mean geography causes outcomes; it gives fans a safer way to explore why different sport environments appear in one state view.`,
       sportMix: [
         {
-          theme: "Olympic-side sports",
-          detail: olympicMix ? `${olympicMix} appear in the Olympic side of this selected data view.` : `${card.olympicPanel.sportFamily} appears as the Olympic-side sport-family view.`
+          theme: "Olympic sports",
+          detail: sportMixPreviewDetail(card, card.olympicPanel, "Olympic")
         },
         {
-          theme: "Paralympic-side sports",
-          detail: paralympicMix ? `${paralympicMix} appear in the Paralympic side of this selected data view.` : `${card.paralympicPanel.sportFamily} appears as the Paralympic-side sport-family view.`
+          theme: "Paralympic sports",
+          detail: sportMixPreviewDetail(card, card.paralympicPanel, "Paralympic")
         },
         {
           theme: "Movement themes",
@@ -160,9 +156,34 @@ export function displaySportName(value) {
   return text;
 }
 
-function panelSportList(panel) {
+export function panelSportList(panel) {
   const sports = panel?.allSportTags?.length ? panel.allSportTags : panel?.topSportTags;
   return (sports || []).map(displaySportName);
+}
+
+export function panelFeaturedSportList(panel, limit = 3) {
+  const sports = panel?.topSportTags?.length ? panel.topSportTags : panelSportList(panel);
+  return (sports || []).slice(0, limit).map(displaySportName);
+}
+
+export function datasetLabelForCard(card) {
+  const scopeId = card?.dataScopeId || "both";
+  if (scopeId === "paris2024") return "Paris 2024 dataset";
+  if (scopeId === "milanoCortina2026") return "Milano Cortina 2026 dataset";
+  if (scopeId === "both") return "combined Paris 2024 and Milano Cortina 2026 dataset";
+  return "selected Team USA dataset";
+}
+
+export function sportMixPreviewDetail(card, panel, programLabel) {
+  const allSports = panelSportList(panel);
+  const featuredSports = panelFeaturedSportList(panel);
+  const stateName = card?.stateName || "This state";
+  const datasetLabel = datasetLabelForCard(card);
+  if (!allSports.length) return `${panel?.sportFamily || "No sourced sport-family view"} appears in the ${datasetLabel}.`;
+  if (allSports.length > featuredSports.length) {
+    return `${stateName} includes ${allSports.length} ${programLabel} sports from the ${datasetLabel}. Featured examples: ${joinReadableList(featuredSports)}.`;
+  }
+  return `${stateName} includes ${joinReadableList(allSports)} from the ${datasetLabel}.`;
 }
 
 export function hasSpecificSportCue(panel) {
