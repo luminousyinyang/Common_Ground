@@ -38,8 +38,8 @@ function RosterTooltip({ card, position }) {
       aria-hidden="true"
     >
       <strong>{card.stateName}</strong>
-      <span>Olympic hometown athletes: {counts.olympic}</span>
-      <span>Paralympic hometown athletes: {counts.paralympic}</span>
+      <span>Olympic athletes: {counts.olympic}</span>
+      <span>Paralympic athletes: {counts.paralympic}</span>
       <span>Total: {counts.total}</span>
       <span>{card.sharedTrait.name}</span>
     </div>
@@ -341,7 +341,7 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
                     data-state-code={code}
                     role={card ? "button" : "img"}
                     tabIndex={card ? 0 : -1}
-                    aria-label={card ? `View ${card.stateName} state insights — ${counts.olympic} Olympic, ${counts.paralympic} Paralympic hometown athletes` : `${item.properties.name} — no state data loaded`}
+                    aria-label={card ? `View ${card.stateName} state insights — ${counts.olympic} Olympic, ${counts.paralympic} Paralympic athletes` : `${item.properties.name} — no state data loaded`}
                     onMouseEnter={(event) => describeFeature(item, event)}
                     onMouseMove={(event) => describeFeature(item, event)}
                     onFocus={() => describeFeature(item)}
@@ -404,7 +404,7 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
                       transform={`translate(${index * 150} 0)`}
                       role="button"
                       tabIndex={0}
-                      aria-label={`View ${card.stateName} state insights — ${counts.olympic} Olympic, ${counts.paralympic} Paralympic hometown athletes`}
+                      aria-label={`View ${card.stateName} state insights — ${counts.olympic} Olympic, ${counts.paralympic} Paralympic athletes`}
                       onMouseEnter={(event) => describeFeature(item, event)}
                       onMouseMove={(event) => describeFeature(item, event)}
                       onFocus={() => describeFeature(item)}

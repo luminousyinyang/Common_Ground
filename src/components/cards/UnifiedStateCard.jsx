@@ -519,7 +519,7 @@ function UnifiedStateCard({
           >
             <article
               className={frontClass}
-              aria-label={`${card.stateName} state card front. Activate to view state details.`}
+              aria-label={`${card.stateName} state card front`}
               role="button"
               tabIndex={displayBack ? -1 : 0}
               onClick={toggleFlip}
@@ -537,7 +537,7 @@ function UnifiedStateCard({
               )}
             </article>
 
-            <article className={backClass} aria-label={`${card.stateName} state card details. Activate to return to card front.`}>
+            <article className={backClass} aria-label={`${card.stateName} state card details`}>
               {isBackExpanded ? (
                 <div className={`expanded-back-shell ${hasMoreFullBackScroll ? "has-more-scroll" : ""}`}>
                   <div className="card-back-scroll" ref={fullBackScrollRef}>
@@ -546,9 +546,9 @@ function UnifiedStateCard({
                       <h3>{card.stateName}</h3>
                       <p>{card.geographySnapshot}</p>
                       <div className="metric-row compact-metrics">
-                      <span className="metric">Hometown athletes <strong>{counts.total}</strong></span>
-                      <span className="metric">Olympic hometown <strong>{counts.olympic}</strong></span>
-                      <span className="metric">Paralympic hometown <strong>{counts.paralympic}</strong></span>
+                      <span className="metric">State athletes <strong>{counts.total}</strong></span>
+                      <span className="metric">Olympic athletes <strong>{counts.olympic}</strong></span>
+                      <span className="metric">Paralympic athletes <strong>{counts.paralympic}</strong></span>
                       </div>
                     <p className="metric-row-note">Public Team USA athletes by hometown state, deduplicated across imported rosters and not a complete athlete census.</p>
                     </div>
