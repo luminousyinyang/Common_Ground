@@ -6,11 +6,11 @@ import { getRosterCounts, formatMapHint } from "../../lib/stateCard.js";
 
 function SignalLegend() {
   return (
-    <div className="legend" aria-label="Participation signal legend">
-      <span className="legend-item"><i className="signal-dot high" /><span>High</span></span>
+    <div className="legend" aria-label="Athlete hometown representation legend">
+      <span className="legend-item"><i className="signal-dot high" /><span>High representation</span></span>
       <span className="legend-item"><i className="signal-dot medium" /><span>Medium</span></span>
       <span className="legend-item"><i className="signal-dot low" /><span>Low</span></span>
-      <span className="legend-item"><i className="signal-dot insufficient_data" /><span>Limited</span></span>
+      <span className="legend-item"><i className="signal-dot insufficient_data" /><span>Limited data</span></span>
     </div>
   );
 }
@@ -38,8 +38,8 @@ function RosterTooltip({ card, position }) {
       aria-hidden="true"
     >
       <strong>{card.stateName}</strong>
-      <span>Olympic: {counts.olympic}</span>
-      <span>Paralympic: {counts.paralympic}</span>
+      <span>Olympic hometown athletes: {counts.olympic}</span>
+      <span>Paralympic hometown athletes: {counts.paralympic}</span>
       <span>Total: {counts.total}</span>
       <span>{card.sharedTrait.name}</span>
     </div>
@@ -47,7 +47,7 @@ function RosterTooltip({ card, position }) {
 }
 
 function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCode, onSelect, discoveredCodes = new Set(), totalStates = 0 }) {
-  const [hint, setHint] = useState("Hover or focus a state to preview Olympic, Paralympic, and total counts.");
+  const [hint, setHint] = useState("Select or focus a state to preview Team USA athlete hometown counts and sport presence.");
   const [hoverTip, setHoverTip] = useState(null);
   const [viewport, setViewport] = useState({ scale: 1, x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
@@ -310,7 +310,7 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
           className={`state-map ${isDragging ? "is-dragging" : ""}`}
           viewBox="0 0 975 610"
           role="img"
-          aria-label="U.S. map with selectable state and territory cards"
+          aria-label="Interactive U.S. map. Select a state to explore Team USA athlete hometown patterns."
           onWheel={handleWheel}
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
@@ -341,7 +341,7 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
                     data-state-code={code}
                     role={card ? "button" : "img"}
                     tabIndex={card ? 0 : -1}
-                    aria-label={card ? `${card.stateName}, Olympic athletes ${counts.olympic}, Paralympic athletes ${counts.paralympic}, state athletes ${counts.total}` : `${item.properties.name}, no state card loaded`}
+                    aria-label={card ? `View ${card.stateName} state insights — ${counts.olympic} Olympic, ${counts.paralympic} Paralympic hometown athletes` : `${item.properties.name} — no state data loaded`}
                     onMouseEnter={(event) => describeFeature(item, event)}
                     onMouseMove={(event) => describeFeature(item, event)}
                     onFocus={() => describeFeature(item)}
@@ -404,7 +404,7 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
                       transform={`translate(${index * 150} 0)`}
                       role="button"
                       tabIndex={0}
-                      aria-label={`${card.stateName}, Olympic ${counts.olympic}, Paralympic ${counts.paralympic}, total ${counts.total}`}
+                      aria-label={`View ${card.stateName} state insights — ${counts.olympic} Olympic, ${counts.paralympic} Paralympic hometown athletes`}
                       onMouseEnter={(event) => describeFeature(item, event)}
                       onMouseMove={(event) => describeFeature(item, event)}
                       onFocus={() => describeFeature(item)}

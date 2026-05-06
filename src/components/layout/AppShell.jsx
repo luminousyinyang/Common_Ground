@@ -20,12 +20,12 @@ function AppShell({ onNavigate, onLogin, darkMode, onToggleDarkMode }) {
         <div className="landing-footer-inner">
           <div>
             <strong className="landing-footer-brand">Common Ground</strong>
-            <p>Geography-powered fan discovery</p>
+            <p>Team USA hometown discovery tool</p>
           </div>
           <nav className="landing-footer-nav" aria-label="Footer">
             <button className="landing-footer-link" type="button" onClick={() => onNavigate("/map")}>Map</button>
             <button className="landing-footer-link" type="button" onClick={() => onNavigate("/collection")}>Collection</button>
-            <button className="landing-footer-link" type="button" onClick={() => onNavigate("/methodology")}>Methodology</button>
+            <button className="landing-footer-link" type="button" onClick={() => onNavigate("/login")}>Login</button>
           </nav>
         </div>
       </footer>

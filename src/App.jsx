@@ -19,7 +19,6 @@ import ChallengeView from "./components/challenge/ChallengeView.jsx";
 import CollectionView from "./components/collection/CollectionView.jsx";
 import LandingPage from "./pages/LandingPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
-import MethodologyView from "./pages/MethodologyView.jsx";
 
 const FALLBACK_DATA_SCOPES = [
   {
@@ -62,14 +61,6 @@ function scopeOptionsForDataset(dataset) {
   return Array.isArray(options) && options.length ? options : FALLBACK_DATA_SCOPES;
 }
 
-function sourceRefsForScope(dataset, scopeId) {
-  const refs = dataset?.meta?.sourceRefs || [];
-  const globalRefs = refs.filter((ref) => ref.sourceType !== "teamusa");
-  const rosterRefs = scopeId === "both"
-    ? refs.filter((ref) => ref.sourceType === "teamusa")
-    : refs.filter((ref) => ref.sourceType === "teamusa" && ref.gamesScope === scopeId);
-  return uniqueSourceRefs([...rosterRefs, ...globalRefs]);
-}
 
 function App() {
   const routerNavigate = useNavigate();
@@ -167,9 +158,8 @@ function App() {
     () => selectedBaseCard ? mergeGeneratedPanelData(selectedBaseCard, activePanelManifest) : selectedBaseCard,
     [selectedBaseCard, activePanelManifest]
   );
-  const dataScopeSourceRefs = useMemo(() => sourceRefsForScope(dataset, activeDataScope), [dataset, activeDataScope]);
   const globalSourceRefs = useMemo(() => (dataset?.meta?.sourceRefs || []).filter((ref) => ref.sourceType !== "teamusa"), [dataset]);
-  const sourceRefs = selectedCard && dataset ? uniqueSourceRefs([...(selectedCard.sourceRefs || []), ...globalSourceRefs]) : dataScopeSourceRefs;
+  const sourceRefs = selectedCard && dataset ? uniqueSourceRefs([...(selectedCard.sourceRefs || []), ...globalSourceRefs]) : [];
   const features = useMemo(() => {
     if (!mapTopology) return [];
     return feature(mapTopology, mapTopology.objects.states).features.map((item) => ({
@@ -294,7 +284,7 @@ function App() {
                       </select>
                     </label>
                   </div>
-                  <p className="safe-note">Explore aggregate state signals from public Team USA and geography data. Current view: {selectedDataScope.label}. Patterns may suggest fan-discovery context and do not imply performance outcomes.</p>
+                  <p className="safe-note">Explore aggregate Team USA athlete hometown and geography data by state. Darker states indicate higher hometown representation in the selected dataset. Current view: {selectedDataScope.label}. Patterns are exploratory and do not imply performance outcomes.</p>
                   <StateMap
                     mapTopology={mapTopology}
                     features={features}
@@ -329,16 +319,6 @@ function App() {
                 onReturn={() => navigate("/map")}
                 panelManifest={activePanelManifest}
                 onGameComplete={() => markPlayed(selectedCode)}
-              />
-            )
-          } />
-          <Route path="/methodology" element={
-            appGuard || (
-              <MethodologyView
-                refs={dataScopeSourceRefs}
-                meta={dataset.meta}
-                states={scopedStates}
-                dataScope={selectedDataScope}
               />
             )
           } />

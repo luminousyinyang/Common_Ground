@@ -519,7 +519,7 @@ function UnifiedStateCard({
           >
             <article
               className={frontClass}
-              aria-label={`${card.stateName} state card front — click to flip`}
+              aria-label={`${card.stateName} state card front. Activate to view state details.`}
               role="button"
               tabIndex={displayBack ? -1 : 0}
               onClick={toggleFlip}
@@ -532,23 +532,23 @@ function UnifiedStateCard({
                     <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
                     <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
                   </svg>
-                  <span>Play State Sync Challenge to unlock</span>
+                  <span>Complete the Fan Challenge to unlock this state's insights</span>
                 </div>
               )}
             </article>
 
-            <article className={backClass} aria-label={`${card.stateName} state card data`}>
+            <article className={backClass} aria-label={`${card.stateName} state card details. Activate to return to card front.`}>
               {isBackExpanded ? (
                 <div className={`expanded-back-shell ${hasMoreFullBackScroll ? "has-more-scroll" : ""}`}>
                   <div className="card-back-scroll" ref={fullBackScrollRef}>
                     <div className="card-header">
-                      <p className="eyebrow">Shared geography view</p>
+                      <p className="eyebrow">State-level insights</p>
                       <h3>{card.stateName}</h3>
                       <p>{card.geographySnapshot}</p>
                       <div className="metric-row compact-metrics">
-                      <span className="metric">State athletes <strong>{counts.total}</strong></span>
-                      <span className="metric">Olympic athletes <strong>{counts.olympic}</strong></span>
-                      <span className="metric">Paralympic athletes <strong>{counts.paralympic}</strong></span>
+                      <span className="metric">Hometown athletes <strong>{counts.total}</strong></span>
+                      <span className="metric">Olympic hometown <strong>{counts.olympic}</strong></span>
+                      <span className="metric">Paralympic hometown <strong>{counts.paralympic}</strong></span>
                       </div>
                     <p className="metric-row-note">Public Team USA athletes by hometown state, deduplicated across imported rosters and not a complete athlete census.</p>
                     </div>

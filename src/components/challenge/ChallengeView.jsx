@@ -481,7 +481,7 @@ function ChallengeView({ card, briefing, onReturn, panelManifest, onGameComplete
           <h2>{gameExperience.gameName || `${card.stateName} State Sync Challenge`}</h2>
           <p>{gameExperience.sharedTraitName}: {gameExperience.sharedTraitDescription}</p>
         </div>
-        <button className="ghost-button" type="button" onClick={onReturn}>Return to State Card</button>
+        <button className="ghost-button" type="button" onClick={onReturn}>Return to State Insight Card</button>
       </div>
       <div className="challenge-grid">
         <section className="challenge-copy">
