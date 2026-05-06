@@ -9,6 +9,8 @@ import {
   PANEL_QA_ROWS
 } from "./constants.js";
 
+const GAME_BACKGROUNDS_ENABLED = false;
+
 export function titleBucket(bucket) {
   const normalized = String(bucket || "insufficient_data");
   return SIGNAL_LABELS[normalized] || normalized.replaceAll("_", " ");
@@ -533,13 +535,17 @@ export function getGameExperience(card) {
   };
 }
 
+function gameBackgroundUrl(gameExperience) {
+  return gameExperience?.background?.url || gameExperience?.backgroundUrl;
+}
+
 export function gameBoardStyle(gameExperience) {
-  const url = gameExperience?.background?.url || gameExperience?.backgroundUrl;
-  return url ? { "--game-bg-image": `url("${url}")` } : undefined;
+  const url = gameBackgroundUrl(gameExperience);
+  return GAME_BACKGROUNDS_ENABLED && url ? { "--game-bg-image": `url("${url}")` } : undefined;
 }
 
 export function gameBoardClass(baseClass, gameExperience) {
-  const hasBackground = Boolean(gameExperience?.background?.url || gameExperience?.backgroundUrl);
+  const hasBackground = GAME_BACKGROUNDS_ENABLED && Boolean(gameBackgroundUrl(gameExperience));
   return `game-board ${baseClass} ${hasBackground ? "has-game-background" : ""}`;
 }
 
