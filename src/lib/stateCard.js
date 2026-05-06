@@ -662,8 +662,7 @@ export function briefingSections(briefing = {}) {
       ["Sport Mix", briefing.sportMix],
       ["Geography Lens", briefing.geographyLens],
       ["What To Notice", briefing.whatToNotice],
-      ["Surprising Connection", briefing.surprisingConnection],
-      ["Why These Sports Connect", briefing.sharedStateSignal]
+      ["Surprising Connection", briefing.surprisingConnection]
     ].filter(([, value]) => Array.isArray(value) ? value.length : String(value || "").trim());
   }
 
@@ -673,8 +672,7 @@ export function briefingSections(briefing = {}) {
       ["Sport Mix", [briefing.sportMix?.olympic, briefing.sportMix?.paralympic].filter(Boolean)],
       ["Geography Lens", briefing.geographyLens],
       ["What To Notice", briefing.whyInteresting],
-      ["Surprising Connection", briefing.surprisingConnection],
-      ["Why These Sports Connect", briefing.sharedSignal]
+      ["Surprising Connection", briefing.surprisingConnection]
     ].filter(([, value]) => Array.isArray(value) ? value.length : String(value || "").trim());
   }
 
@@ -683,8 +681,7 @@ export function briefingSections(briefing = {}) {
     ["Sport Mix", [
       briefing.olympicNarrative ? `Olympic side: ${briefing.olympicNarrative}` : "",
       briefing.paralympicNarrative ? `Paralympic side: ${briefing.paralympicNarrative}` : ""
-    ].filter(Boolean)],
-    ["Why These Sports Connect", briefing.sharedTraitExplanation]
+    ].filter(Boolean)]
   ].filter(([, value]) => Array.isArray(value) ? value.length : String(value || "").trim());
 }
 

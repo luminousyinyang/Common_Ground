@@ -197,21 +197,17 @@ function SportMixSection({ card, value }) {
       <div className="sport-mix-preview-list">
         <SportMixSidePreview label="Olympic sports" card={card} panel={card.olympicPanel} />
         <SportMixSidePreview label="Paralympic sports" card={card} panel={card.paralympicPanel} />
+        {thematicItems.map((item) => (
+          typeof item === "object" && item !== null
+            ? <p key={`${item.theme || item.area}-${item.detail}`}><strong>{item.theme || item.area}:</strong> {item.detail}</p>
+            : <p key={item}>{item}</p>
+        ))}
       </div>
       {canShowAll && (
         <button className="ghost-button small sport-mix-see-all-button" type="button" onClick={() => setShowAll(true)}>
           <Icon name="list" size={14} strokeWidth={2} />
           <span>See all sports</span>
         </button>
-      )}
-      {thematicItems.length > 0 && (
-        <div className="briefing-list sport-mix-theme-list">
-          {thematicItems.map((item) => (
-            typeof item === "object" && item !== null
-              ? <p key={`${item.theme || item.area}-${item.detail}`}><strong>{item.theme || item.area}:</strong> {item.detail}</p>
-              : <p key={item}>{item}</p>
-          ))}
-        </div>
       )}
       {showAll && <SportMixDialog stateName={stateName} groups={groups} onClose={() => setShowAll(false)} />}
     </div>
@@ -668,11 +664,11 @@ function UnifiedStateCard({
                       <SportPanel panel={card.paralympicPanel} />
                     </div>
                     <section className="trait-band">
-                      <div className="trait-copy">
-                        <span>Why these sports connect</span>
-                        <strong>{plainTraitHeadline(card)}</strong>
-                        <p>{traitConnectionSentence(card, olympicCue, paralympicCue)}</p>
+                      <div className="trait-heading-copy">
+                        <h3>Why these sports connect</h3>
+                        <p>{plainTraitHeadline(card)}</p>
                       </div>
+                      <p className="trait-description">{traitConnectionSentence(card, olympicCue, paralympicCue)}</p>
                     </section>
                     <BriefingPanel payload={briefing} loading={briefingLoading} onRefresh={onRefreshBriefing} compact card={card} />
                     <SourceMethodPanel refs={sourceRefs} />
