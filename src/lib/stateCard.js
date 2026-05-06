@@ -415,9 +415,52 @@ export function getPanelBackCopyForDisplay(panel) {
   };
 }
 
+function normalizedSportTag(value) {
+  return String(value || "").replace(/\s+/g, " ").trim().toLowerCase();
+}
+
+export function generatedPanelMatchesCardProgram(card, program, generatedPanel) {
+  const currentSport = normalizedSportTag(card?.[`${program}Panel`]?.primarySportTag);
+  const generatedSport = normalizedSportTag(generatedPanel?.primarySportTag);
+  return Boolean(currentSport && generatedSport && currentSport === generatedSport);
+}
+
+function statePanelEntryForCard(card, manifest) {
+  return manifest?.states?.[card?.stateCode] || {};
+}
+
+function generatedPanelCandidates(card, program, manifest) {
+  const stateEntry = statePanelEntryForCard(card, manifest);
+  const scopeId = card?.dataScopeId || "both";
+  const exactScopePanel = stateEntry.scopes?.[scopeId]?.[program];
+  const legacyPanel = stateEntry[program];
+  const otherScopePanels = Object.entries(stateEntry.scopes || {})
+    .filter(([candidateScopeId]) => candidateScopeId !== scopeId)
+    .map(([, scopeEntry]) => scopeEntry?.[program])
+    .filter(Boolean);
+  return [exactScopePanel, legacyPanel, ...otherScopePanels].filter(Boolean);
+}
+
+function getGeneratedPanelForCardProgram(card, program, manifest) {
+  return generatedPanelCandidates(card, program, manifest).find((panel) =>
+    generatedPanelMatchesCardProgram(card, program, panel)
+  ) || null;
+}
+
+function generatedGameExperienceSourceForCard(card, manifest) {
+  const stateEntry = statePanelEntryForCard(card, manifest);
+  const scopeId = card?.dataScopeId || "both";
+  return stateEntry.scopes?.[scopeId] || (scopeId === "both" ? stateEntry : {});
+}
+
 export function getPanelArtUrl(card, program, manifest) {
-  const panel = manifest?.states?.[card.stateCode]?.[program];
-  if (panel?.url && !FRAMED_CARD_PANEL_PROMPT_VERSIONS.has(panel.promptVersion)) return panel.url;
+  const panel = getGeneratedPanelForCardProgram(card, program, manifest);
+  if (
+    panel?.url &&
+    !FRAMED_CARD_PANEL_PROMPT_VERSIONS.has(panel.promptVersion)
+  ) {
+    return panel.url;
+  }
   const theme = getCardTheme(card);
   return CARD_ART[theme] || CARD_ART.neutral;
 }
@@ -430,12 +473,19 @@ export function getGeneratedGameExperience(statePanels = {}) {
 }
 
 export function mergeGeneratedPanelData(card, manifest) {
-  const statePanels = manifest?.states?.[card?.stateCode] || {};
-  if (!card || (!statePanels.olympic && !statePanels.paralympic && !statePanels.gameExperience && !statePanels.game)) return card;
-  const gameExperience = getGeneratedGameExperience(statePanels);
+  const statePanels = statePanelEntryForCard(card, manifest);
+  const scopedGameExperienceSource = generatedGameExperienceSourceForCard(card, manifest);
+  if (!card || (!statePanels.olympic && !statePanels.paralympic && !statePanels.scopes && !statePanels.gameExperience && !statePanels.game)) return card;
+  const matchingPanels = {
+    olympic: getGeneratedPanelForCardProgram(card, "olympic", manifest),
+    paralympic: getGeneratedPanelForCardProgram(card, "paralympic", manifest)
+  };
+  const gameExperience = matchingPanels.olympic && matchingPanels.paralympic
+    ? getGeneratedGameExperience(scopedGameExperienceSource)
+    : null;
 
   function mergePanel(program, panel) {
-    const generated = statePanels[program] || {};
+    const generated = matchingPanels[program] || {};
     const hasCurrentCardCopy = generated.cardBackCopyVersion === CURRENT_CARD_BACK_COPY_VERSION && generated.cardBackCopy;
     return {
       ...panel,

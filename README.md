@@ -125,10 +125,13 @@ The sports-card front can also use Vertex AI Gemini image panels, with one Olymp
 ```bash
 npm run generate:card-panels -- --states CO
 npm run generate:card-panels -- --states CO,WA --force
+npm run generate:card-panels -- --states CA --data-scopes both,paris2024,milanoCortina2026
 npm run generate:card-panels -- --all
 ```
 
 This reads `GOOGLE_CLOUD_PROJECT` and `GOOGLE_CLOUD_LOCATION` from `.env`, defaults to `gemini-3-pro-image-preview` for images and `gemini-3.1-pro-preview` for panel copy, and writes images plus a manifest to `public/assets/card-panels`. If live Vertex images are not present, the UI falls back to the local abstract card art.
+
+Generated panels are scope-aware for `both`, `paris2024`, and `milanoCortina2026`. When two data views use the same generated panel inputs, the generator reuses the existing image and Gemini back-of-card copy instead of making another request. When only the featured sport matches, it can reuse the art while generating scoped back-of-card copy.
 
 The panel generator uses state-aware palette stories, so California, Florida, Texas, Colorado, and other geographies can produce distinct collectible-card color systems instead of always defaulting to blue Olympic panels and orange Paralympic panels. It also prompts for full-bleed artwork, since the React card supplies the actual frame and labels.
 
@@ -151,7 +154,7 @@ gcloud auth login
 Then run one state:
 
 ```bash
-npm run generate:card-panels:firebase -- --states CA
+npm run generate:card-panels:firebase -- --states CA --data-scopes both,paris2024,milanoCortina2026
 ```
 
 Or all supported geographies:

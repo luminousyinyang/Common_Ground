@@ -50,8 +50,11 @@ function stripNestedScopes(card) {
 
 function stateCardForScope(card, scopeId) {
   if (!card) return card;
-  if (scopeId === "both") return stripNestedScopes(card);
-  return stripNestedScopes(card.dataScopes?.[scopeId] || card);
+  const scopedCard = scopeId === "both" ? card : card.dataScopes?.[scopeId] || card;
+  return {
+    ...stripNestedScopes(scopedCard),
+    dataScopeId: scopeId
+  };
 }
 
 function scopeOptionsForDataset(dataset) {
@@ -188,7 +191,7 @@ function App() {
   );
   const cardsByCode = useMemo(() => new Map(scopedStates.map((card) => [card.stateCode, card])), [scopedStates]);
   const selectedBaseCard = cardsByCode.get(selectedCode) || scopedStates[0];
-  const activePanelManifest = activeDataScope === "both" ? panelManifest : EMPTY_CARD_PANEL_MANIFEST;
+  const activePanelManifest = panelManifest;
   const selectedCard = useMemo(
     () => selectedBaseCard ? mergeGeneratedPanelData(selectedBaseCard, activePanelManifest) : selectedBaseCard,
     [selectedBaseCard, activePanelManifest]
