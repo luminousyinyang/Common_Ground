@@ -369,19 +369,19 @@ html[data-surface="blacktop"] .compact-read-more:focus-visible {
   background:
     radial-gradient(
       circle at var(--holo-x, 50%) var(--holo-y, 50%),
-      rgba(255, 255, 255, 0.55) 0%,
-      rgba(200, 160, 255, 0.25) 25%,
+      rgba(255, 255, 255, 0.32) 0%,
+      rgba(200, 160, 255, 0.12) 25%,
       transparent 60%
     ),
     linear-gradient(
       var(--holo-angle, 120deg),
-      hsl(280deg 100% 72%) 0%,
-      hsl(220deg 100% 68%) 18%,
-      hsl(160deg 100% 62%) 34%,
-      hsl(80deg  100% 62%) 50%,
-      hsl(30deg  100% 65%) 66%,
-      hsl(0deg   100% 68%) 82%,
-      hsl(280deg 100% 72%) 100%
+      hsl(280deg 80% 72%) 0%,
+      hsl(220deg 80% 68%) 18%,
+      hsl(160deg 80% 62%) 34%,
+      hsl(80deg  80% 62%) 50%,
+      hsl(30deg  80% 65%) 66%,
+      hsl(0deg   80% 68%) 82%,
+      hsl(280deg 80% 72%) 100%
     );
   mix-blend-mode: color-dodge;
   opacity: 0;
@@ -389,7 +389,7 @@ html[data-surface="blacktop"] .compact-read-more:focus-visible {
 }
 
 .sports-card.is-hovered .sports-card-front::after {
-  opacity: 0.65;
+  opacity: 0.45;
 }
 
 .card-art {
@@ -1802,6 +1802,43 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
   66%, 100% {
     transform: translateX(45%) rotate(0.001deg);
     opacity: 0;
+  }
+}
+
+@keyframes cardAutoShine {
+  0% {
+    transform: translate(-90%, -90%);
+    opacity: 0;
+  }
+  6% {
+    opacity: 0.7;
+  }
+  28% {
+    opacity: 0.7;
+  }
+  38%, 100% {
+    transform: translate(90%, 90%);
+    opacity: 0;
+  }
+}
+
+@media (pointer: coarse) {
+  .sports-card-front::after {
+    inset: -30%;
+    background: linear-gradient(
+      135deg,
+      transparent 28%,
+      hsl(280deg 60% 72%) 36%,
+      hsl(220deg 60% 68%) 40%,
+      hsl(160deg 60% 62%) 44%,
+      hsl(80deg  60% 62%) 48%,
+      hsl(30deg  60% 65%) 52%,
+      hsl(0deg   60% 68%) 56%,
+      hsl(280deg 60% 72%) 60%,
+      transparent 68%
+    );
+    mix-blend-mode: color-dodge;
+    animation: cardAutoShine 5s ease-in-out infinite;
   }
 }
 

@@ -458,7 +458,8 @@ function UnifiedStateCard({
     flipTimers.current = [t1, t2];
   }
 
-  function handleMouseMove(e) {
+  function handlePointerMove(e) {
+    if (e.pointerType !== "mouse") return;
     if (displayBack || flipPhase !== null) return;
     const el = tiltRef.current;
     if (!el) return;
@@ -469,9 +470,15 @@ function UnifiedStateCard({
     setMousePos({ x: dx * 100, y: dy * 100, angle: dx * 180 + dy * 90 + 60 });
   }
 
-  function handleMouseLeave() {
+  function handlePointerLeave(e) {
+    if (e.pointerType !== "mouse") return;
     setTilt({ x: 0, y: 0 });
     setIsHovered(false);
+  }
+
+  function handlePointerEnter(e) {
+    if (e.pointerType !== "mouse") return;
+    setIsHovered(true);
   }
 
   function scrollFullBackBriefing() {
@@ -502,9 +509,9 @@ function UnifiedStateCard({
           ref={tiltRef}
           className="card-tilt-layer"
           style={{ transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)` }}
-          onMouseMove={handleMouseMove}
-          onMouseLeave={handleMouseLeave}
-          onMouseEnter={() => setIsHovered(true)}
+          onPointerMove={handlePointerMove}
+          onPointerLeave={handlePointerLeave}
+          onPointerEnter={handlePointerEnter}
         >
           <div
             className={`sports-card ${isHovered && !displayBack ? "is-hovered" : ""}`}
