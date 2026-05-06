@@ -21,6 +21,53 @@ import LandingPage from "./pages/LandingPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import MethodologyView from "./pages/MethodologyView.jsx";
 
+const FALLBACK_DATA_SCOPES = [
+  {
+    id: "both",
+    label: "Paris 2024 + Milano Cortina 2026",
+    shortLabel: "Both",
+    description: "Olympic Games Paris 2024, Paralympic Games Paris 2024, Olympic Winter Games Milano Cortina 2026, and Paralympic Winter Games Milano Cortina 2026 public rosters."
+  },
+  {
+    id: "paris2024",
+    label: "Paris 2024",
+    shortLabel: "Paris 2024",
+    description: "Olympic Games Paris 2024 and Paralympic Games Paris 2024 public rosters."
+  },
+  {
+    id: "milanoCortina2026",
+    label: "Milano Cortina 2026",
+    shortLabel: "Milano Cortina 2026",
+    description: "Olympic Winter Games Milano Cortina 2026 and Paralympic Winter Games Milano Cortina 2026 public rosters."
+  }
+];
+
+function stripNestedScopes(card) {
+  if (!card) return card;
+  const { dataScopes, ...safeCard } = card;
+  return safeCard;
+}
+
+function stateCardForScope(card, scopeId) {
+  if (!card) return card;
+  if (scopeId === "both") return stripNestedScopes(card);
+  return stripNestedScopes(card.dataScopes?.[scopeId] || card);
+}
+
+function scopeOptionsForDataset(dataset) {
+  const options = dataset?.meta?.dataScopes;
+  return Array.isArray(options) && options.length ? options : FALLBACK_DATA_SCOPES;
+}
+
+function sourceRefsForScope(dataset, scopeId) {
+  const refs = dataset?.meta?.sourceRefs || [];
+  const globalRefs = refs.filter((ref) => ref.sourceType !== "teamusa");
+  const rosterRefs = scopeId === "both"
+    ? refs.filter((ref) => ref.sourceType === "teamusa")
+    : refs.filter((ref) => ref.sourceType === "teamusa" && ref.gamesScope === scopeId);
+  return uniqueSourceRefs([...rosterRefs, ...globalRefs]);
+}
+
 function App() {
   const [page, setPage] = useState("landing");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -37,6 +84,7 @@ function App() {
   const [discoveredCodes, setDiscoveredCodes] = useState(() => new Set(["CO"]));
   const [playedCodes, setPlayedCodes] = useState(() => new Set());
   const [panelManifest, setPanelManifest] = useState(EMPTY_CARD_PANEL_MANIFEST);
+  const [dataScope, setDataScope] = useState("paris2024");
 
   /*
   Card lab state, parked while the selected experience is locked:
@@ -131,13 +179,23 @@ function App() {
       .catch((error) => setLoadError(error.message));
   }, []);
 
-  const cardsByCode = useMemo(() => new Map((dataset?.states || []).map((card) => [card.stateCode, card])), [dataset]);
-  const selectedBaseCard = cardsByCode.get(selectedCode) || dataset?.states?.[0];
-  const selectedCard = useMemo(
-    () => selectedBaseCard ? mergeGeneratedPanelData(selectedBaseCard, panelManifest) : selectedBaseCard,
-    [selectedBaseCard, panelManifest]
+  const dataScopeOptions = useMemo(() => scopeOptionsForDataset(dataset), [dataset]);
+  const activeDataScope = dataScopeOptions.some((option) => option.id === dataScope) ? dataScope : "both";
+  const selectedDataScope = dataScopeOptions.find((option) => option.id === activeDataScope) || FALLBACK_DATA_SCOPES[0];
+  const scopedStates = useMemo(
+    () => (dataset?.states || []).map((card) => stateCardForScope(card, activeDataScope)),
+    [dataset, activeDataScope]
   );
-  const sourceRefs = selectedCard && dataset ? uniqueSourceRefs([...(dataset.meta.sourceRefs || []), ...(selectedCard.sourceRefs || [])]) : [];
+  const cardsByCode = useMemo(() => new Map(scopedStates.map((card) => [card.stateCode, card])), [scopedStates]);
+  const selectedBaseCard = cardsByCode.get(selectedCode) || scopedStates[0];
+  const activePanelManifest = activeDataScope === "both" ? panelManifest : EMPTY_CARD_PANEL_MANIFEST;
+  const selectedCard = useMemo(
+    () => selectedBaseCard ? mergeGeneratedPanelData(selectedBaseCard, activePanelManifest) : selectedBaseCard,
+    [selectedBaseCard, activePanelManifest]
+  );
+  const dataScopeSourceRefs = useMemo(() => sourceRefsForScope(dataset, activeDataScope), [dataset, activeDataScope]);
+  const globalSourceRefs = useMemo(() => (dataset?.meta?.sourceRefs || []).filter((ref) => ref.sourceType !== "teamusa"), [dataset]);
+  const sourceRefs = selectedCard && dataset ? uniqueSourceRefs([...(selectedCard.sourceRefs || []), ...globalSourceRefs]) : dataScopeSourceRefs;
   const features = useMemo(() => {
     if (!mapTopology) return [];
     return feature(mapTopology, mapTopology.objects.states).features.map((item) => ({
@@ -162,6 +220,7 @@ function App() {
   async function refreshBriefing(card = selectedCard) {
     if (!card) return;
     setBriefingLoading(true);
+    setBriefing(null);
     try {
       const payload = await getJson("/api/gemini/state-briefing", {
         method: "POST",
@@ -178,7 +237,7 @@ function App() {
 
   useEffect(() => {
     if (selectedCard) refreshBriefing(selectedCard);
-  }, [selectedCode, dataset, panelManifest]);
+  }, [selectedCard]);
 
   function markDiscovered(code) {
     setDiscoveredCodes((current) => {
@@ -264,23 +323,35 @@ function App() {
                     <p className="eyebrow">Geography-powered fan discovery</p>
                     <h2 id="mapTitle">State Atlas</h2>
                   </div>
+                  <label className="data-scope-control" htmlFor="dataScopeSelect">
+                    <span>Data view</span>
+                    <select
+                      id="dataScopeSelect"
+                      value={activeDataScope}
+                      onChange={(event) => setDataScope(event.target.value)}
+                    >
+                      {dataScopeOptions.map((option) => (
+                        <option value={option.id} key={option.id}>{option.label}</option>
+                      ))}
+                    </select>
+                  </label>
                 </div>
-                <p className="safe-note">Explore aggregate state signals from public Team USA and geography data. Patterns may suggest fan-discovery context and do not imply performance outcomes.</p>
-                <StateMap mapTopology={mapTopology} features={features} geoFeatures={geoFeatures} cardsByCode={cardsByCode} selectedCode={selectedCode} onSelect={selectState} discoveredCodes={discoveredCodes} totalStates={dataset.states.length} />
+                <p className="safe-note">Explore aggregate state signals from public Team USA and geography data. Current view: {selectedDataScope.label}. Patterns may suggest fan-discovery context and do not imply performance outcomes.</p>
+                <StateMap mapTopology={mapTopology} features={features} geoFeatures={geoFeatures} cardsByCode={cardsByCode} selectedCode={selectedCode} onSelect={selectState} discoveredCodes={discoveredCodes} totalStates={scopedStates.length} />
               </section>
             </section>
           </div>
           <div className="view-slide">
-            <CollectionView states={dataset.states} discoveredCodes={discoveredCodes} onSelect={(code) => selectState(code, "collection")} panelManifest={panelManifest} isLoggedIn={isLoggedIn} onLogin={() => navigate("login")} />
+            <CollectionView states={scopedStates} discoveredCodes={discoveredCodes} onSelect={(code) => selectState(code, "collection")} panelManifest={activePanelManifest} isLoggedIn={isLoggedIn} onLogin={() => navigate("login")} />
           </div>
         </ViewSlider>
       )}
 
       {view === "challenge" && (
-        <ChallengeView card={selectedCard} briefing={briefing} onReturn={() => setView("explorer")} panelManifest={panelManifest} onGameComplete={() => markPlayed(selectedCode)} />
+        <ChallengeView card={selectedCard} briefing={briefing} onReturn={() => setView("explorer")} panelManifest={activePanelManifest} onGameComplete={() => markPlayed(selectedCode)} />
       )}
 
-      {view === "methodology" && <MethodologyView refs={dataset.meta.sourceRefs || []} meta={dataset.meta} states={dataset.states} />}
+      {view === "methodology" && <MethodologyView refs={dataScopeSourceRefs} meta={dataset.meta} states={scopedStates} dataScope={selectedDataScope} />}
 
       {isCardModalOpen && (
         <CardModal
@@ -294,7 +365,7 @@ function App() {
             setView("challenge");
           }}
           onClose={() => setIsCardModalOpen(false)}
-          panelManifest={panelManifest}
+          panelManifest={activePanelManifest}
           isUnlocked={playedCodes.has(selectedCode)}
         />
       )}

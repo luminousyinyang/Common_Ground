@@ -35,7 +35,7 @@ function SourceMethodPanel({ refs }) {
     <section className="source-method-panel" aria-label="Sources and method">
       <span className="footer-panel-kicker">Sources & Method</span>
       <SourceList refs={refs} />
-      <p>Public Team USA roster records are grouped by hometown state and city. Gemini turns aggregate state, sport, and geography inputs into the state briefing and sport-lens notes.</p>
+      <p>Public Team USA athletes are deduplicated across imported rosters and grouped by hometown state and city. Gemini turns aggregate state, sport, and geography inputs into the state briefing and sport-lens notes.</p>
     </section>
   );
 }
@@ -189,7 +189,7 @@ function HometownAreasDialog({ stateName, areas, onClose }) {
             <HometownAreaRow key={`${area.rank}-${area.label}`} area={area} />
           ))}
         </div>
-        <p className="hometown-area-note">Only aggregate city labels and public Team USA athlete records by hometown are shown.</p>
+        <p className="hometown-area-note">Only aggregate city labels and public Team USA athletes by hometown are shown.</p>
       </section>
     </div>,
     document.body
@@ -224,7 +224,7 @@ function HometownAreasCard({ card, payload, compact = false }) {
           <HometownAreaRow key={`${area.rank}-${area.label}`} area={area} />
         ))}
       </div>
-      <p className="hometown-area-note">City-level aggregate public Team USA athlete records by hometown, not a complete athlete census.</p>
+      <p className="hometown-area-note">City-level aggregate public Team USA athletes by hometown, not a complete athlete census.</p>
       {showAll && (
         <HometownAreasDialog
           stateName={card.stateName}
@@ -539,11 +539,11 @@ function UnifiedStateCard({
                       <h3>{card.stateName}</h3>
                       <p>{card.geographySnapshot}</p>
                       <div className="metric-row compact-metrics">
-                        <span className="metric">State athlete records <strong>{counts.total}</strong></span>
-                        <span className="metric">Olympic athlete records <strong>{counts.olympic}</strong></span>
-                        <span className="metric">Paralympic athlete records <strong>{counts.paralympic}</strong></span>
+                      <span className="metric">State athletes <strong>{counts.total}</strong></span>
+                      <span className="metric">Olympic athletes <strong>{counts.olympic}</strong></span>
+                      <span className="metric">Paralympic athletes <strong>{counts.paralympic}</strong></span>
                       </div>
-                      <p className="metric-row-note">Public Team USA roster records by hometown state, not a complete athlete census.</p>
+                    <p className="metric-row-note">Public Team USA athletes by hometown state, deduplicated across imported rosters and not a complete athlete census.</p>
                     </div>
                     <HometownAreasCard card={card} payload={briefing} compact />
                     <FeaturedSportsIntro card={card} />
