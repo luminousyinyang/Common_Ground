@@ -41,7 +41,6 @@ function RosterTooltip({ card, position }) {
       <span>Olympic: {counts.olympic}</span>
       <span>Paralympic: {counts.paralympic}</span>
       <span>Total: {counts.total}</span>
-      <span>{card.sharedTrait.name}</span>
     </div>
   );
 }
