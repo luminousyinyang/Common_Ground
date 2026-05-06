@@ -116,6 +116,11 @@
     flex-direction: column;
   }
 
+  .data-scope-control,
+  .data-scope-control select {
+    width: 100%;
+  }
+
   main {
     padding: 12px;
   }

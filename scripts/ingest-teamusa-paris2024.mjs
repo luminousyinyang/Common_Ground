@@ -17,6 +17,8 @@ const SOURCE_URLS = {
 const ROSTER_SOURCES = [
   {
     id: "paris2024Olympic",
+    gamesScope: "paris2024",
+    gamesLabel: "Paris 2024",
     program: "olympic",
     label: "TeamUSA.com Paris 2024 Olympic roster",
     url: SOURCE_URLS.paris2024Olympic,
@@ -25,6 +27,8 @@ const ROSTER_SOURCES = [
   },
   {
     id: "paris2024Paralympic",
+    gamesScope: "paris2024",
+    gamesLabel: "Paris 2024",
     program: "paralympic",
     label: "TeamUSA.com Paris 2024 Paralympic roster",
     url: SOURCE_URLS.paris2024Paralympic,
@@ -33,6 +37,8 @@ const ROSTER_SOURCES = [
   },
   {
     id: "milanoCortina2026Olympic",
+    gamesScope: "milanoCortina2026",
+    gamesLabel: "Milano Cortina 2026",
     program: "olympic",
     label: "TeamUSA.com Milano Cortina 2026 Olympic roster",
     url: SOURCE_URLS.milanoCortina2026Olympic,
@@ -41,11 +47,37 @@ const ROSTER_SOURCES = [
   },
   {
     id: "milanoCortina2026Paralympic",
+    gamesScope: "milanoCortina2026",
+    gamesLabel: "Milano Cortina 2026",
     program: "paralympic",
     label: "TeamUSA.com Milano Cortina 2026 Paralympic roster",
     url: SOURCE_URLS.milanoCortina2026Paralympic,
     contentTag: "Paralympic Winter Games Milano Cortina 2026, Qualified",
     limit: 150
+  }
+];
+
+const DATA_SCOPES = [
+  {
+    id: "both",
+    label: "Paris 2024 + Milano Cortina 2026",
+    shortLabel: "Both",
+    description: "Olympic Games Paris 2024, Paralympic Games Paris 2024, Olympic Winter Games Milano Cortina 2026, and Paralympic Winter Games Milano Cortina 2026 public rosters.",
+    rosterSourceIds: ROSTER_SOURCES.map((source) => source.id)
+  },
+  {
+    id: "paris2024",
+    label: "Paris 2024",
+    shortLabel: "Paris 2024",
+    description: "Olympic Games Paris 2024 and Paralympic Games Paris 2024 public rosters.",
+    rosterSourceIds: ROSTER_SOURCES.filter((source) => source.gamesScope === "paris2024").map((source) => source.id)
+  },
+  {
+    id: "milanoCortina2026",
+    label: "Milano Cortina 2026",
+    shortLabel: "Milano Cortina 2026",
+    description: "Olympic Winter Games Milano Cortina 2026 and Paralympic Winter Games Milano Cortina 2026 public rosters.",
+    rosterSourceIds: ROSTER_SOURCES.filter((source) => source.gamesScope === "milanoCortina2026").map((source) => source.id)
   }
 ];
 
@@ -152,19 +184,31 @@ async function main() {
   const rosterPayloads = await loadRosterPayloads();
 
   const aggregate = createEmptyAggregate();
+  const scopeAggregates = Object.fromEntries(
+    DATA_SCOPES.filter((scope) => scope.id !== "both").map((scope) => [scope.id, createEmptyAggregate()])
+  );
   const excludedStateCodes = new Set();
   const blankStateProgramBuckets = new Set();
-  const excludedRowsByProgram = {
-    olympic: {},
-    paralympic: {}
-  };
+  const excludedRowsByProgram = createExcludedRowsByProgram();
 
   for (const payload of rosterPayloads) {
     ingestEntries(aggregate, payload.data.entries || [], payload.source, excludedStateCodes, blankStateProgramBuckets, excludedRowsByProgram);
+    const scopedAggregate = scopeAggregates[payload.source.gamesScope];
+    if (scopedAggregate) {
+      ingestEntries(
+        scopedAggregate,
+        payload.data.entries || [],
+        payload.source,
+        new Set(),
+        new Set(),
+        createExcludedRowsByProgram()
+      );
+    }
   }
 
   const dataset = buildDataset({
     aggregate,
+    scopeAggregates,
     retrievedAt,
     rosterPayloads,
     excludedStateCodes: [...excludedStateCodes].sort(),
@@ -176,6 +220,13 @@ async function main() {
   await mkdir(path.dirname(outputPath), { recursive: true });
   await writeFile(outputPath, `${JSON.stringify(dataset, null, 2)}\n`, "utf8");
   console.log(`Wrote ${dataset.states.length} geography cards to ${outputPath}`);
+}
+
+function createExcludedRowsByProgram() {
+  return {
+    olympic: {},
+    paralympic: {}
+  };
 }
 
 function parseArgs(argv) {
@@ -336,20 +387,9 @@ function sportFamilyFor(title) {
   return match ? match[1] : "Mixed Sport Context";
 }
 
-function buildDataset({ aggregate, retrievedAt, rosterPayloads, excludedStateCodes, blankStateProgramBuckets, excludedRowsByProgram }) {
-  const rosterSourceRefs = ROSTER_SOURCES.map((source) => ({
-    label: source.label,
-    url: source.url,
-    sourceType: "teamusa",
-    program: source.program,
-    retrievedAt
-  }));
-  const sourceRefsByProgram = {
-    olympic: rosterSourceRefs.filter((source) => source.program === "olympic"),
-    paralympic: rosterSourceRefs.filter((source) => source.program === "paralympic")
-  };
-  const sourceRefs = [
-    ...rosterSourceRefs,
+function buildDataset({ aggregate, scopeAggregates = {}, retrievedAt, rosterPayloads, excludedStateCodes, blankStateProgramBuckets, excludedRowsByProgram }) {
+  const rosterSourceRefs = buildRosterSourceRefs(ROSTER_SOURCES, retrievedAt);
+  const globalSourceRefs = [
     {
       label: "NOAA public climate context",
       url: SOURCE_URLS.noaa,
@@ -363,8 +403,84 @@ function buildDataset({ aggregate, retrievedAt, rosterPayloads, excludedStateCod
       retrievedAt
     }
   ];
+  const sourceRefs = [...rosterSourceRefs, ...globalSourceRefs];
+  const states = buildStatesForAggregate({
+    aggregate,
+    rosterSourceRefs,
+    datasetScopeLabel: "combined Paris 2024 and Milano Cortina 2026 public roster view"
+  });
+  const scopedStateLists = Object.fromEntries(
+    DATA_SCOPES
+      .filter((scope) => scope.id !== "both")
+      .map((scope) => [
+        scope.id,
+        buildStatesForAggregate({
+          aggregate: scopeAggregates[scope.id] || createEmptyAggregate(),
+          rosterSourceRefs: rosterSourceRefs.filter((ref) => scope.rosterSourceIds.includes(ref.id)),
+          datasetScopeLabel: `${scope.label} public roster view`
+        })
+      ])
+  );
+  const scopedStateMaps = Object.fromEntries(
+    Object.entries(scopedStateLists).map(([scopeId, list]) => [scopeId, new Map(list.map((card) => [card.stateCode, card]))])
+  );
+  const statesWithScopes = states.map((state) => ({
+    ...state,
+    dataScopes: Object.fromEntries(
+      Object.entries(scopedStateMaps).map(([scopeId, stateMap]) => [scopeId, stateMap.get(state.stateCode)])
+    )
+  }));
+  const stateCodedRecordTotals = stateCodedRecordTotalsForAggregate(aggregate);
+  const scopedStateCodedRecordTotals = {
+    both: stateCodedRecordTotals,
+    ...Object.fromEntries(
+      Object.entries(scopeAggregates).map(([scopeId, scopedAggregate]) => [scopeId, stateCodedRecordTotalsForAggregate(scopedAggregate)])
+    )
+  };
 
-  const states = Object.entries(STATE_CONTEXT).map(([stateCode, context]) => {
+  return {
+    meta: {
+      appName: "Common Ground",
+      datasetLabel: "Official TeamUSA.com Paris 2024 and Milano Cortina 2026 public roster aggregate by hometown state and sport family.",
+      updatedAt: retrievedAt,
+      dataScopes: DATA_SCOPES,
+      sourceProgramRecordTotals: sourceProgramTotals(rosterPayloads),
+      sourceRosterTotals: sourceRosterTotals(rosterPayloads),
+      stateCodedRecordTotals,
+      scopedStateCodedRecordTotals,
+      aggregationPolicy: "The build script deduplicates athletes across imported TeamUSA.com roster sources in memory, then strips athlete names, profile URLs, images, biographies, medals, finish placements, and other individual-level fields before writing frontend data. State cards display aggregate public Team USA athlete counts only where needed for fan context.",
+      hometownAreaPolicy: `Top hometown areas are city-level aggregate public athlete counts only, require at least ${HOMETOWN_SIGNAL_MINIMUM} public athlete${HOMETOWN_SIGNAL_MINIMUM === 1 ? "" : "s"}, and do not expose athlete names, profiles, images, or individual records.`,
+      bucketPolicy: "Combined state bucket: insufficient data = 0 sourced public athletes, low = 1-4, medium = 5-19, high = 20+. Low-volume program panels may show a fallback sport cue when public athletes exist; stronger featured sport signals have 3+ sourced public athletes.",
+      coverageNote: "Only TeamUSA.com Paris 2024 and Milano Cortina 2026 roster records with a U.S. state or supported U.S. territory abbreviation in the public hometown state field are used for cards. Unsupported or blank geography values are excluded from card output.",
+      excludedStateCodes,
+      blankStateProgramBuckets,
+      excludedRowsByProgram,
+      sourceRefs
+    },
+    states: statesWithScopes
+  };
+}
+
+function buildRosterSourceRefs(sources, retrievedAt) {
+  return sources.map((source) => ({
+    id: source.id,
+    label: source.label,
+    url: source.url,
+    sourceType: "teamusa",
+    gamesScope: source.gamesScope,
+    gamesLabel: source.gamesLabel,
+    program: source.program,
+    retrievedAt
+  }));
+}
+
+function buildStatesForAggregate({ aggregate, rosterSourceRefs, datasetScopeLabel }) {
+  const sourceRefsByProgram = {
+    olympic: rosterSourceRefs.filter((source) => source.program === "olympic"),
+    paralympic: rosterSourceRefs.filter((source) => source.program === "paralympic")
+  };
+
+  return Object.entries(STATE_CONTEXT).map(([stateCode, context]) => {
     const [stateName, geographySnapshot, climateSignal, terrainSignals] = context;
     const stateAggregate = aggregate[stateCode];
     const baseOlympicPanel = buildPanel({
@@ -374,7 +490,8 @@ function buildDataset({ aggregate, retrievedAt, rosterPayloads, excludedStateCod
       label: "Olympic Sport Family",
       aggregate: stateAggregate.olympic,
       geographySnapshot,
-      sourceRefs: sourceRefsByProgram.olympic
+      sourceRefs: sourceRefsByProgram.olympic,
+      datasetScopeLabel
     });
     const baseParalympicPanel = buildPanel({
       stateName,
@@ -383,7 +500,8 @@ function buildDataset({ aggregate, retrievedAt, rosterPayloads, excludedStateCod
       label: "Paralympic Sport Family",
       aggregate: stateAggregate.paralympic,
       geographySnapshot,
-      sourceRefs: sourceRefsByProgram.paralympic
+      sourceRefs: sourceRefsByProgram.paralympic,
+      datasetScopeLabel
     });
     const totalRecords = stateAggregate.athleteKeys.size;
     const cardStory = buildCardStory({
@@ -420,34 +538,17 @@ function buildDataset({ aggregate, retrievedAt, rosterPayloads, excludedStateCod
       sourceRefs: rosterSourceRefs
     };
   });
-  const stateCodedRecordTotals = states.reduce(
-    (totals, state) => ({
-      olympic: totals.olympic + aggregate[state.stateCode].olympic.records,
-      paralympic: totals.paralympic + aggregate[state.stateCode].paralympic.records,
-      total: totals.total + aggregate[state.stateCode].athleteKeys.size
+}
+
+function stateCodedRecordTotalsForAggregate(aggregate) {
+  return Object.entries(aggregate).reduce(
+    (totals, [stateCode, stateAggregate]) => ({
+      olympic: totals.olympic + stateAggregate.olympic.records,
+      paralympic: totals.paralympic + stateAggregate.paralympic.records,
+      total: totals.total + aggregate[stateCode].athleteKeys.size
     }),
     { olympic: 0, paralympic: 0, total: 0 }
   );
-
-  return {
-    meta: {
-      appName: "Common Ground",
-      datasetLabel: "Official TeamUSA.com Paris 2024 and Milano Cortina 2026 public roster aggregate by hometown state and sport family.",
-      updatedAt: retrievedAt,
-      sourceProgramRecordTotals: sourceProgramTotals(rosterPayloads),
-      sourceRosterTotals: sourceRosterTotals(rosterPayloads),
-      stateCodedRecordTotals,
-      aggregationPolicy: "The build script deduplicates athletes across imported TeamUSA.com roster sources in memory, then strips athlete names, profile URLs, images, biographies, medals, finish placements, and other individual-level fields before writing frontend data. State cards display aggregate public Team USA athlete counts only where needed for fan context.",
-      hometownAreaPolicy: `Top hometown areas are city-level aggregate public athlete counts only, require at least ${HOMETOWN_SIGNAL_MINIMUM} public athlete${HOMETOWN_SIGNAL_MINIMUM === 1 ? "" : "s"}, and do not expose athlete names, profiles, images, or individual records.`,
-      bucketPolicy: "Combined state bucket: insufficient data = 0 sourced public athletes, low = 1-4, medium = 5-19, high = 20+. Low-volume program panels may show a fallback sport cue when public athletes exist; stronger featured sport signals have 3+ sourced public athletes.",
-      coverageNote: "Only TeamUSA.com Paris 2024 and Milano Cortina 2026 roster records with a U.S. state or supported U.S. territory abbreviation in the public hometown state field are used for cards. Unsupported or blank geography values are excluded from card output.",
-      excludedStateCodes,
-      blankStateProgramBuckets,
-      excludedRowsByProgram,
-      sourceRefs
-    },
-    states
-  };
 }
 
 function sourceProgramTotals(rosterPayloads = []) {
@@ -466,6 +567,8 @@ function sourceRosterTotals(rosterPayloads = []) {
     {
       label: payload.source.label,
       program: payload.source.program,
+      gamesScope: payload.source.gamesScope,
+      gamesLabel: payload.source.gamesLabel,
       total: payload.data.total || null
     }
   ]));
@@ -502,7 +605,7 @@ function buildHometownSignals(stateAggregate) {
   };
 }
 
-function buildPanel({ stateName, program, label, aggregate, geographySnapshot, sourceRefs }) {
+function buildPanel({ stateName, program, label, aggregate, geographySnapshot, sourceRefs, datasetScopeLabel = "selected public roster view" }) {
   const signal = panelBucket(aggregate.records, program);
   const sportTagCandidates = sportCandidates(aggregate.sports, program);
   const topSports = sportTagCandidates.slice(0, 3).map((candidate) => candidate.sportTag);
@@ -519,7 +622,7 @@ function buildPanel({ stateName, program, label, aggregate, geographySnapshot, s
       primarySportTag: null,
       topSportTags: [],
       sportTagCandidates: [],
-      geographyConnection: `${stateName} has no public ${programName} hometown geography roster signal in this TeamUSA.com Paris 2024 and Milano Cortina 2026 dataset.`,
+      geographyConnection: `${stateName} has no public ${programName} hometown geography roster signal in this ${datasetScopeLabel}.`,
       geminiNote: "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
       sourceRefs
     };
