@@ -1,7 +1,9 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
 import Icon from "../common/Icon.jsx";
 
-function TopNav({ page, view, onViewChange, onNavigate, onLogin, darkMode, onToggleDarkMode }) {
+function TopNav({ onNavigate, onLogin, darkMode, onToggleDarkMode }) {
+  const { pathname } = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
   const [menuMounted, setMenuMounted] = useState(false);
   const CLOSE_MS = 340;
@@ -11,16 +13,18 @@ function TopNav({ page, view, onViewChange, onNavigate, onLogin, darkMode, onTog
   const [dragDelta, setDragDelta] = useState(0);
   const dragRef = useRef({ active: false, startX: 0, startView: null });
 
+  const isAppPage = pathname === "/map" || pathname === "/collection" || pathname === "/challenge" || pathname === "/methodology";
+
   useLayoutEffect(() => {
-    const activeRef = (page === "app" && view === "collection") ? collTabRef : mapTabRef;
+    const activeRef = pathname === "/collection" ? collTabRef : mapTabRef;
     const el = activeRef.current;
     if (!el) return;
     setPillBase({ left: el.offsetLeft, width: el.offsetWidth });
-  }, [page, view]);
+  }, [pathname]);
 
   function handleNavPointerDown(e) {
-    if (page !== "app") return;
-    const startView = view === "collection" ? "collection" : "explorer";
+    if (!isAppPage) return;
+    const startView = pathname === "/collection" ? "collection" : "explorer";
     dragRef.current = { active: true, startX: e.clientX, startView, delta: 0 };
     setDragDelta(0);
   }
@@ -49,9 +53,9 @@ function TopNav({ page, view, onViewChange, onNavigate, onLogin, darkMode, onTog
     if (!mapEl || !collEl) { setDragDelta(0); return; }
     const span = collEl.offsetLeft - mapEl.offsetLeft;
     if (startView === "explorer" && delta > span / 2) {
-      onNavigate("app", "collection");
+      onNavigate("/collection");
     } else if (startView === "collection" && -delta > span / 2) {
-      onNavigate("app", "explorer");
+      onNavigate("/map");
     }
     setDragDelta(0);
   }
@@ -71,8 +75,8 @@ function TopNav({ page, view, onViewChange, onNavigate, onLogin, darkMode, onTog
     return () => { document.body.style.overflow = ""; };
   }, [menuOpen]);
 
-  function go(targetPage, targetView) {
-    onNavigate(targetPage, targetView);
+  function go(path) {
+    onNavigate(path);
     closeMenu();
   }
 
@@ -80,7 +84,7 @@ function TopNav({ page, view, onViewChange, onNavigate, onLogin, darkMode, onTog
     <>
       <header className={`top-nav${menuOpen ? " has-menu-open" : ""}`}>
         <div className="top-nav-inner">
-          <button className="top-nav-brand" type="button" onClick={() => go("landing")} aria-label="Common Ground home">
+          <button className="top-nav-brand" type="button" onClick={() => go("/")} aria-label="Common Ground home">
             Common Ground
           </button>
           <nav
@@ -92,7 +96,7 @@ function TopNav({ page, view, onViewChange, onNavigate, onLogin, darkMode, onTog
             onPointerCancel={handleNavPointerUp}
             style={{ touchAction: "none" }}
           >
-            {page === "app" && pillBase.width > 0 && (
+            {isAppPage && pillBase.width > 0 && (
               <div
                 className="nav-sliding-pill"
                 style={{
@@ -105,18 +109,18 @@ function TopNav({ page, view, onViewChange, onNavigate, onLogin, darkMode, onTog
             )}
             <button
               ref={mapTabRef}
-              className={`top-nav-tab ${page === "app" && view === "explorer" ? "is-active" : ""}`}
+              className={`top-nav-tab ${pathname === "/map" ? "is-active" : ""}`}
               type="button"
-              onClick={() => onNavigate("app", "explorer")}
+              onClick={() => onNavigate("/map")}
             >
               <Icon name="map" size={15} />
               <span className="nav-tab-label">Map</span>
             </button>
             <button
               ref={collTabRef}
-              className={`top-nav-tab ${page === "app" && view === "collection" ? "is-active" : ""}`}
+              className={`top-nav-tab ${pathname === "/collection" ? "is-active" : ""}`}
               type="button"
-              onClick={() => onNavigate("app", "collection")}
+              onClick={() => onNavigate("/collection")}
             >
               <Icon name="cards" size={15} />
               <span className="nav-tab-label">Collection</span>
@@ -152,7 +156,7 @@ function TopNav({ page, view, onViewChange, onNavigate, onLogin, darkMode, onTog
           aria-label="Navigation menu"
         >
           <div className="mobile-menu-header">
-            <button className="top-nav-brand" type="button" onClick={() => go("landing")}>
+            <button className="top-nav-brand" type="button" onClick={() => go("/")}>
               Common Ground
             </button>
             <button className="mobile-menu-close" type="button" onClick={closeMenu} aria-label="Close menu">
@@ -162,27 +166,27 @@ function TopNav({ page, view, onViewChange, onNavigate, onLogin, darkMode, onTog
 
           <nav className="mobile-menu-nav">
             <button
-              className={`mobile-menu-link${page === "landing" ? " is-active" : ""}`}
+              className={`mobile-menu-link${pathname === "/" ? " is-active" : ""}`}
               type="button"
-              onClick={() => go("landing")}
+              onClick={() => go("/")}
               style={{ "--i": 0 }}
             >
               <span className="mobile-menu-link-icon"><Icon name="home" size={26} strokeWidth={1.4} /></span>
               Home
             </button>
             <button
-              className={`mobile-menu-link${page === "app" && view === "explorer" ? " is-active" : ""}`}
+              className={`mobile-menu-link${pathname === "/map" ? " is-active" : ""}`}
               type="button"
-              onClick={() => go("app", "explorer")}
+              onClick={() => go("/map")}
               style={{ "--i": 1 }}
             >
               <span className="mobile-menu-link-icon"><Icon name="map" size={26} strokeWidth={1.4} /></span>
               Map
             </button>
             <button
-              className={`mobile-menu-link${page === "app" && view === "collection" ? " is-active" : ""}`}
+              className={`mobile-menu-link${pathname === "/collection" ? " is-active" : ""}`}
               type="button"
-              onClick={() => go("app", "collection")}
+              onClick={() => go("/collection")}
               style={{ "--i": 2 }}
             >
               <span className="mobile-menu-link-icon"><Icon name="cards" size={26} strokeWidth={1.4} /></span>

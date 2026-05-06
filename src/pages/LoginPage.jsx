@@ -23,7 +23,7 @@ function LoginPage({ onNavigate, onLogin, darkMode, onToggleDarkMode }) {
 
   return (
     <div className="login-page">
-      <TopNav page="login" view={null} onViewChange={() => {}} onNavigate={onNavigate} onLogin={onLogin} darkMode={darkMode} onToggleDarkMode={onToggleDarkMode} />
+      <TopNav onNavigate={onNavigate} onLogin={onLogin} darkMode={darkMode} onToggleDarkMode={onToggleDarkMode} />
 
       <div className="login-layout">
         <div className="login-left">
@@ -102,9 +102,9 @@ function LoginPage({ onNavigate, onLogin, darkMode, onToggleDarkMode }) {
             <p>Geography-powered fan discovery</p>
           </div>
           <nav className="landing-footer-nav" aria-label="Footer">
-            <button className="landing-footer-link" type="button" onClick={() => onNavigate("app", "explorer")}>Map</button>
-            <button className="landing-footer-link" type="button" onClick={() => onNavigate("app", "collection")}>Collection</button>
-            <button className="landing-footer-link" type="button" onClick={() => onNavigate("app", "methodology")}>Methodology</button>
+            <button className="landing-footer-link" type="button" onClick={() => onNavigate("/map")}>Map</button>
+            <button className="landing-footer-link" type="button" onClick={() => onNavigate("/collection")}>Collection</button>
+            <button className="landing-footer-link" type="button" onClick={() => onNavigate("/methodology")}>Methodology</button>
           </nav>
         </div>
       </footer>
