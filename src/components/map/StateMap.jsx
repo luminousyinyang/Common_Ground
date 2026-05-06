@@ -45,7 +45,7 @@ function RosterTooltip({ card, position }) {
   );
 }
 
-function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCode, onSelect, discoveredCodes = new Set(), totalStates = 0 }) {
+function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCode, onSelect, discoveredCodes = new Set(), totalStates = 0, showCompleted = false }) {
   const [hint, setHint] = useState("Select or focus a state to preview Team USA athlete hometown counts and sport presence.");
   const [hoverTip, setHoverTip] = useState(null);
   const [viewport, setViewport] = useState({ scale: 1, x: 0, y: 0 });
@@ -367,21 +367,23 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
               })}
             </g>
             {borderPath && <path className="state-borders" d={borderPath} />}
-            <g className="discovered-markers" aria-hidden="true">
-              {features.map((item) => {
-                const code = item.properties.stateCode;
-                if (!discoveredCodes.has(code)) return null;
-                const centroid = path.centroid(item);
-                if (!Number.isFinite(centroid[0]) || !Number.isFinite(centroid[1])) return null;
-                const s = 1 / viewport.scale;
-                return (
-                  <g key={`chk-${code}`} transform={`translate(${centroid[0]} ${centroid[1]}) scale(${s})`} pointerEvents="none">
-                    <circle className="check-bg" r="9" />
-                    <polyline className="check-tick" points="-3.5,0.8 -1,3.3 5,-3.8" />
-                  </g>
-                );
-              })}
-            </g>
+            {showCompleted && (
+              <g className="discovered-markers" aria-hidden="true">
+                {features.map((item) => {
+                  const code = item.properties.stateCode;
+                  if (!discoveredCodes.has(code)) return null;
+                  const centroid = path.centroid(item);
+                  if (!Number.isFinite(centroid[0]) || !Number.isFinite(centroid[1])) return null;
+                  const s = 1 / viewport.scale;
+                  return (
+                    <g key={`chk-${code}`} transform={`translate(${centroid[0]} ${centroid[1]}) scale(${s})`} pointerEvents="none">
+                      <circle className="check-bg" r="9" />
+                      <polyline className="check-tick" points="-3.5,0.8 -1,3.3 5,-3.8" />
+                    </g>
+                  );
+                })}
+              </g>
+            )}
             {territoryPath && territoryFeatures.length > 0 && (
               <g className="territory-inset-layer" transform="translate(846 510)">
                 {territoryFeatures.map((item, index) => {
