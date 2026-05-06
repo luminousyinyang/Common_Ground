@@ -608,6 +608,7 @@ function buildHometownSignals(stateAggregate) {
 function buildPanel({ stateName, program, label, aggregate, geographySnapshot, sourceRefs, datasetScopeLabel = "selected public roster view" }) {
   const signal = panelBucket(aggregate.records, program);
   const sportTagCandidates = sportCandidates(aggregate.sports, program);
+  const allSports = sportTagsByCount(aggregate.sports);
   const topSports = sportTagCandidates.slice(0, 3).map((candidate) => candidate.sportTag);
   const topFamilies = topKeys(aggregate.families, 2);
   const programName = program === "olympic" ? "Olympic" : "Paralympic";
@@ -621,6 +622,7 @@ function buildPanel({ stateName, program, label, aggregate, geographySnapshot, s
       aggregateSignal: "insufficient_data",
       primarySportTag: null,
       topSportTags: [],
+      allSportTags: [],
       sportTagCandidates: [],
       geographyConnection: `${stateName} has no public ${programName} hometown geography roster signal in this ${datasetScopeLabel}.`,
       geminiNote: "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -639,6 +641,7 @@ function buildPanel({ stateName, program, label, aggregate, geographySnapshot, s
       aggregateSignal: signal,
       primarySportTag: topSports[0] || null,
       topSportTags: topSports,
+      allSportTags: allSports,
       sportTagCandidates,
       geographyConnection: `${geographySnapshot} could help fans frame a low-volume ${programName} sport signal without treating geography as a performance cause.`,
       geminiNote: `Low-volume fallback: public roster tags in this panel include ${sportLabel}; this is a state-card cue, not an athlete-level claim.`,
@@ -656,11 +659,18 @@ function buildPanel({ stateName, program, label, aggregate, geographySnapshot, s
     aggregateSignal: signal,
     primarySportTag: topSports[0] || null,
     topSportTags: topSports,
+    allSportTags: allSports,
     sportTagCandidates,
     geographyConnection: `${geographySnapshot} could help fans frame the state's ${programName} sport-family presence without implying geography causes outcomes.`,
     geminiNote: `Public roster tags in this panel include ${sportLabel}; the state context may suggest a fan discovery lens, not a performance claim.`,
     sourceRefs
   };
+}
+
+function sportTagsByCount(map) {
+  return [...map.entries()]
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+    .map(([sportTag]) => sportTag);
 }
 
 function sportCandidates(map, program) {

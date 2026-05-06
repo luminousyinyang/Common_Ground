@@ -5,6 +5,7 @@ import {
   briefingSections,
   compactPanelCopy,
   compactStateConnection,
+  datasetLabelForCard,
   featuredSportsIntro,
   getCardThemeName,
   getGeographySignals,
@@ -12,7 +13,10 @@ import {
   getPanelVisualCue,
   getRosterCounts,
   normalizeHometownAreaRows,
+  panelFeaturedSportList,
   panelProgramLabel,
+  panelSportList,
+  sportMixPreviewDetail,
   titleBucket
 } from "../../lib/stateCard.js";
 import Icon from "../common/Icon.jsx";
@@ -104,7 +108,115 @@ function FeaturedSportsIntro({ card }) {
   );
 }
 
-function BriefingPanel({ payload, loading, onRefresh, compact = false }) {
+function SportMixSidePreview({ label, card, panel }) {
+  const allSports = panelSportList(panel);
+  const detail = sportMixPreviewDetail(card, panel, label.replace(/ sports$/i, ""));
+
+  if (!allSports.length) {
+    return (
+      <p><strong>{label}:</strong> {panel?.sportFamily || "No sourced sport-family view"} appears in the {datasetLabelForCard(card)}.</p>
+    );
+  }
+
+  return <p><strong>{label}:</strong> {detail}</p>;
+}
+
+function SportMixDialog({ stateName, groups, onClose }) {
+  useEffect(() => {
+    function onKey(event) {
+      if (event.key === "Escape") onClose();
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  return createPortal(
+    <div className="hometown-area-dialog-backdrop" role="dialog" aria-modal="true" aria-label={`${stateName} sport list`}>
+      <button className="hometown-area-dialog-scrim" type="button" aria-label="Close sport list" onClick={onClose} />
+      <section className="hometown-area-dialog-panel sport-mix-dialog-panel">
+        <div className="hometown-area-dialog-heading">
+          <div>
+            <p className="eyebrow">Sport Mix</p>
+            <h3>{stateName} Sports</h3>
+          </div>
+          <button className="modal-close-button" type="button" aria-label="Close sport list" onClick={onClose}>
+            <Icon name="close" size={18} strokeWidth={2} />
+          </button>
+        </div>
+        <div className="sport-mix-all-groups">
+          {groups.map((group) => (
+            <section className="sport-mix-all-group" key={group.label}>
+              <h4>{group.label}</h4>
+              <div className="sport-mix-chip-list">
+                {group.sports.map((sport) => <span key={`${group.label}-${sport}`}>{sport}</span>)}
+              </div>
+            </section>
+          ))}
+        </div>
+      </section>
+    </div>,
+    document.body
+  );
+}
+
+function SportMixSection({ card, value }) {
+  const [showAll, setShowAll] = useState(false);
+  const stateName = card?.stateName || "This state";
+  const olympicSports = panelSportList(card?.olympicPanel);
+  const paralympicSports = panelSportList(card?.paralympicPanel);
+  const olympicFeatured = panelFeaturedSportList(card?.olympicPanel);
+  const paralympicFeatured = panelFeaturedSportList(card?.paralympicPanel);
+  const canShowAll = olympicSports.length > olympicFeatured.length || paralympicSports.length > paralympicFeatured.length;
+  const thematicItems = (Array.isArray(value) ? value : [])
+    .filter((item) => !/^(Olympic|Paralympic)(-side)? sports$/i.test(String(item?.theme || "")));
+  const groups = [
+    { label: "Olympic sports", sports: olympicSports },
+    { label: "Paralympic sports", sports: paralympicSports }
+  ].filter((group) => group.sports.length);
+
+  useEffect(() => {
+    setShowAll(false);
+  }, [card?.stateCode, card?.dataScopeId]);
+
+  if (!card) {
+    return (
+      <div className="briefing-list">
+        {(Array.isArray(value) ? value : []).map((item) => (
+          typeof item === "object" && item !== null
+            ? <p key={`${item.theme || item.area}-${item.detail}`}><strong>{item.theme || item.area}:</strong> {item.detail}</p>
+            : <p key={item}>{item}</p>
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div className="sport-mix-block">
+      <div className="sport-mix-preview-list">
+        <SportMixSidePreview label="Olympic sports" card={card} panel={card.olympicPanel} />
+        <SportMixSidePreview label="Paralympic sports" card={card} panel={card.paralympicPanel} />
+      </div>
+      {canShowAll && (
+        <button className="ghost-button small sport-mix-see-all-button" type="button" onClick={() => setShowAll(true)}>
+          <Icon name="list" size={14} strokeWidth={2} />
+          <span>See all sports</span>
+        </button>
+      )}
+      {thematicItems.length > 0 && (
+        <div className="briefing-list sport-mix-theme-list">
+          {thematicItems.map((item) => (
+            typeof item === "object" && item !== null
+              ? <p key={`${item.theme || item.area}-${item.detail}`}><strong>{item.theme || item.area}:</strong> {item.detail}</p>
+              : <p key={item}>{item}</p>
+          ))}
+        </div>
+      )}
+      {showAll && <SportMixDialog stateName={stateName} groups={groups} onClose={() => setShowAll(false)} />}
+    </div>
+  );
+}
+
+function BriefingPanel({ payload, loading, onRefresh, compact = false, card }) {
   if (loading || !payload) {
     return (
       <section className={`briefing-panel ${compact ? "is-compact" : ""}`}>
@@ -134,7 +246,9 @@ function BriefingPanel({ payload, loading, onRefresh, compact = false }) {
         {sections.map(([label, value]) => (
           <article className="briefing-section" key={label}>
             <span>{label}</span>
-            {Array.isArray(value) ? (
+            {label === "Sport Mix" ? (
+              <SportMixSection card={card} value={value} />
+            ) : Array.isArray(value) ? (
               <div className="briefing-list">
                 {value.map((item) => (
                   typeof item === "object" && item !== null
@@ -565,7 +679,7 @@ function UnifiedStateCard({
                       </div>
                       <p>This trait connects Olympic <strong>{olympicCue}</strong> and Paralympic <strong>{paralympicCue}</strong>: {card.sharedTrait.description}</p>
                     </section>
-                    <BriefingPanel payload={briefing} loading={briefingLoading} onRefresh={onRefreshBriefing} compact />
+                    <BriefingPanel payload={briefing} loading={briefingLoading} onRefresh={onRefreshBriefing} compact card={card} />
                     <SourceMethodPanel refs={sourceRefs} />
                     <StateChallengePanel stateName={card.stateName} isUnlocked={isUnlocked} onOpenChallenge={onOpenChallenge} />
                   </div>

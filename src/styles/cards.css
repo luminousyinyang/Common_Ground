@@ -1381,6 +1381,65 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
   gap: var(--space-2);
 }
 
+.sport-mix-block {
+  display: grid;
+  gap: 10px;
+}
+
+.sport-mix-preview-list,
+.sport-mix-theme-list {
+  display: grid;
+  gap: 6px;
+}
+
+.sport-mix-theme-list {
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
+}
+
+.sport-mix-see-all-button {
+  justify-self: start;
+}
+
+.sport-mix-dialog-panel {
+  max-width: min(720px, calc(100vw - 28px));
+}
+
+.sport-mix-all-groups {
+  display: grid;
+  gap: 18px;
+}
+
+.sport-mix-all-group {
+  display: grid;
+  gap: 10px;
+}
+
+.sport-mix-all-group h4 {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--display-font);
+  font-size: 1.05rem;
+  line-height: 1.05;
+}
+
+.sport-mix-chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.sport-mix-chip-list span {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 7px 10px;
+  background: var(--glass-faint);
+  color: var(--copy);
+  font-size: 0.85rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
 .briefing-split {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
