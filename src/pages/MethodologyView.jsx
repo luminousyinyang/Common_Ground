@@ -46,20 +46,38 @@ function CountsTable({ states, compact = false }) {
   );
 }
 
-function MethodologyView({ refs, meta, states }) {
+function MethodologyView({ refs, meta, states, dataScope }) {
+  const activeScopeId = dataScope?.id || "both";
+  const scopedCounts = states.reduce(
+    (totals, card) => {
+      const counts = getRosterCounts(card);
+      totals.olympic += counts.olympic;
+      totals.paralympic += counts.paralympic;
+      totals.total += counts.total;
+      return totals;
+    },
+    { olympic: 0, paralympic: 0, total: 0 }
+  );
+  const rosterSourceTotals = Object.values(meta.sourceRosterTotals || {}).filter((source) =>
+    activeScopeId === "both" || source.gamesScope === activeScopeId
+  );
+  const rosterSourceSummary = rosterSourceTotals.length
+    ? rosterSourceTotals.map((source) => `${source.label}: ${source.total}`).join("; ")
+    : `Olympic ${meta.sourceProgramRecordTotals?.olympic}, Paralympic ${meta.sourceProgramRecordTotals?.paralympic}`;
+
   return (
     <section className="methodology-view page-panel">
       <div className="methodology-hero">
         <p className="eyebrow">Rules-aware build notes</p>
         <h2>Methodology and Compliance</h2>
-        <p>{meta.datasetLabel} The app keeps Olympic and Paralympic sport families in one shared state view, uses aggregate buckets, and avoids athlete-level output.</p>
+        <p>{dataScope?.description || meta.datasetLabel} The app keeps Olympic and Paralympic sport families in one shared state view, uses aggregate buckets, and avoids athlete-level output.</p>
       </div>
       <div className="method-grid">
         <section>
           <h3>Data Policy</h3>
           <ul>
-            <li>The aggregate dataset is derived from public TeamUSA.com Paris 2024 source records: Olympic {meta.sourceProgramRecordTotals?.olympic}, Paralympic {meta.sourceProgramRecordTotals?.paralympic}.</li>
-            <li>Records with U.S. hometown geography fields after excluding blank or unsupported values: Olympic {meta.stateCodedRecordTotals?.olympic}, Paralympic {meta.stateCodedRecordTotals?.paralympic}.</li>
+            <li>The aggregate dataset is derived from approved public TeamUSA.com roster sources: {rosterSourceSummary}.</li>
+            <li>Deduplicated public athletes with supported U.S. hometown geography fields in the current data view: Olympic {scopedCounts.olympic}, Paralympic {scopedCounts.paralympic}, total {scopedCounts.total}.</li>
             <li>No athlete names, images, finish times, individual cards, rankings, or protected marks are included.</li>
             <li>{meta.bucketPolicy}</li>
           </ul>
@@ -96,7 +114,7 @@ function MethodologyView({ refs, meta, states }) {
       </section>
       <section className="source-panel">
         <h3>Official Counts Breakdown</h3>
-        <p>Counts reflect sourced TeamUSA.com Paris 2024 public roster records with supported U.S. hometown geography fields, not a complete historical athlete census.</p>
+        <p>Counts reflect deduplicated public TeamUSA.com athletes from the selected imported rosters with supported U.S. hometown geography fields, not a complete historical athlete census. Current data view: {dataScope?.label || "selected roster view"}.</p>
         <CountsTable states={states} />
       </section>
       <section className="source-panel">

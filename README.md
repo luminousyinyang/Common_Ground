@@ -75,11 +75,11 @@ If no key is present, the server returns compliance-safe fallback copy.
 
 - React/Vite app promoted to the main repo root.
 - Actual U.S. state boundary map from `us-atlas` TopoJSON rendered with D3 and `topojson-client`, with a territory inset for supported U.S. territories.
-- 51 geography cards generated from public TeamUSA.com Paris 2024 Olympic and Paralympic roster source rows, currently 50 states plus U.S. Virgin Islands.
-- Hover tooltip showing Olympic, Paralympic, and total public hometown geography roster row counts before clicking.
+- 51 geography cards generated from public TeamUSA.com Paris 2024 and Milano Cortina 2026 Olympic and Paralympic roster sources, currently 50 states plus U.S. Virgin Islands.
+- Hover tooltip showing Olympic, Paralympic, and total public hometown geography athlete counts before clicking.
 - Map controls for wheel/trackpad zoom, drag panning, reset, and browser-local state matching.
 - Unified sports-card view with abstract generated bitmap art on the front and aggregate sourced data on the back.
-- Expanded card briefing includes top city-level hometown areas when at least three public source entries support the aggregate.
+- Expanded card briefing includes top city-level hometown areas when aggregate public athlete counts support the state view.
 - Guest "My Sport Cards" collection of discovered states, with no forced login.
 - Gemini state briefing and game reflection endpoints with local validation and fallback copy.
 - Reaction Grid and Cadence Keeper fan challenges.
@@ -98,14 +98,15 @@ Generated frontend data lives at `public/data/state-cards.json`.
 
 The ingest pipeline:
 
-- Uses public TeamUSA.com Paris 2024 roster source rows.
+- Uses public TeamUSA.com Paris 2024 and Milano Cortina 2026 roster sources.
 - Filters to records with U.S. hometown-state or supported U.S. territory abbreviations.
+- Deduplicates athletes across imported rosters in memory before writing aggregate counts.
 - Aggregates by geography and sport family.
-- Optionally aggregates top city-level hometown areas with a minimum threshold of three public source entries.
+- Aggregates top city-level hometown areas as public athlete counts.
 - Strips athlete names, images, profile URLs, biographies, medals, rankings, finish times, and individual-level fields.
 - Converts exact state counts into low, medium, high, or insufficient-data buckets for the main card panels.
 
-"Official counts" in this prototype means sourced TeamUSA.com Paris 2024 public roster rows with supported U.S. hometown geography fields. It is not a complete historical Team USA athlete census.
+"Official counts" in this prototype means deduplicated public TeamUSA.com athletes from the imported rosters with supported U.S. hometown geography fields. It is not a complete historical Team USA athlete census.
 
 See `docs/official-counts-breakdown.md` for the full state and supported territory table.
 
@@ -124,10 +125,13 @@ The sports-card front can also use Vertex AI Gemini image panels, with one Olymp
 ```bash
 npm run generate:card-panels -- --states CO
 npm run generate:card-panels -- --states CO,WA --force
+npm run generate:card-panels -- --states CA --data-scopes both,paris2024,milanoCortina2026
 npm run generate:card-panels -- --all
 ```
 
 This reads `GOOGLE_CLOUD_PROJECT` and `GOOGLE_CLOUD_LOCATION` from `.env`, defaults to `gemini-3-pro-image-preview` for images and `gemini-3.1-pro-preview` for panel copy, and writes images plus a manifest to `public/assets/card-panels`. If live Vertex images are not present, the UI falls back to the local abstract card art.
+
+Generated panels are scope-aware for `both`, `paris2024`, and `milanoCortina2026`. When two data views use the same generated panel inputs, the generator reuses the existing image and Gemini back-of-card copy instead of making another request. When only the featured sport matches, it can reuse the art while generating scoped back-of-card copy.
 
 The panel generator uses state-aware palette stories, so California, Florida, Texas, Colorado, and other geographies can produce distinct collectible-card color systems instead of always defaulting to blue Olympic panels and orange Paralympic panels. It also prompts for full-bleed artwork, since the React card supplies the actual frame and labels.
 
@@ -150,7 +154,7 @@ gcloud auth login
 Then run one state:
 
 ```bash
-npm run generate:card-panels:firebase -- --states CA
+npm run generate:card-panels:firebase -- --states CA --data-scopes both,paris2024,milanoCortina2026
 ```
 
 Or all supported geographies:

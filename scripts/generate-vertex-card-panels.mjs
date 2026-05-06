@@ -201,6 +201,7 @@ warnIfCredentialProjectDiffers();
 
 const dataset = JSON.parse(await readFile(dataPath, "utf8"));
 const selectedCards = selectCards(dataset.states, args);
+const selectedDataScopes = selectDataScopes(dataset, args);
 
 if (selectedCards.length === 0) {
   throw new Error("No matching states found. Use --states CO,WA or --all.");
@@ -214,9 +215,13 @@ await mkdir(outputDir, { recursive: true });
 
 if (args.dryRun) {
   for (const card of selectedCards) {
-    for (const program of args.programs) {
-      console.log(`\n--- ${card.stateName} ${program} image prompt ---\n${buildPrompt(card, program)}\n`);
-      console.log(`\n--- ${card.stateName} ${program} Gemini card-back copy prompt ---\n${buildCardBackCopyPrompt(card, program)}\n`);
+    for (const dataScope of selectedDataScopes) {
+      const scopedCard = cardForDataScope(card, dataScope);
+      if (!scopedCard) continue;
+      for (const program of args.programs) {
+        console.log(`\n--- ${scopedCard.stateName} ${dataScope.id} ${program} image prompt ---\n${buildPrompt(scopedCard, program)}\n`);
+        console.log(`\n--- ${scopedCard.stateName} ${dataScope.id} ${program} Gemini card-back copy prompt ---\n${buildCardBackCopyPrompt(scopedCard, program)}\n`);
+      }
     }
   }
   process.exit(0);
@@ -233,51 +238,107 @@ manifest.states ||= {};
 for (const card of selectedCards) {
   manifest.states[card.stateCode] ||= {};
 
-  for (const program of args.programs) {
-    const filename = `${card.stateCode.toLowerCase()}-${program}.png`;
+  for (const dataScope of selectedDataScopes) {
+    const scopedCard = cardForDataScope(card, dataScope);
+    if (!scopedCard) continue;
+    manifest.states[scopedCard.stateCode].scopes ||= {};
+    manifest.states[scopedCard.stateCode].scopes[dataScope.id] ||= {};
+
+    for (const program of args.programs) {
+    const filename = panelFilename(scopedCard, dataScope.id, program);
     const outPath = path.join(outputDir, filename);
     const localUrl = `/assets/card-panels/${filename}`;
-    const prompt = buildPrompt(card, program);
+    const prompt = buildPrompt(scopedCard, program);
+    const copyPrompt = buildCardBackCopyPrompt(scopedCard, program);
+    const copyPromptHash = hashText(copyPrompt);
 
-    const existingPanel = manifest.states[card.stateCode][program];
-    const copyPrompt = buildCardBackCopyPrompt(card, program);
-    const cardBackCopy = await getOrGenerateCardBackCopy({
-      token,
-      card,
-      program,
-      existingPanel,
-      copyPrompt
-    });
-    const panelMetadata = currentPanelMetadata({ card, program, prompt, copyPrompt, cardBackCopy });
-    const currentPrimarySport = panelMetadata.primarySportTag || null;
-    const existingPrimarySport = existingPanel?.primarySportTag || null;
-    const imageStillMatchesFeaturedSport = currentPrimarySport === existingPrimarySport;
-    const alreadyGenerated = imageStillMatchesFeaturedSport && (args.firebase
-      ? existingPanel?.storagePath && existingPanel.promptVersion === PROMPT_VERSION
-      : existingPanel?.url === localUrl && existingPanel.promptVersion === PROMPT_VERSION);
+    const existingPanel = manifestPanelForScope(manifest, scopedCard.stateCode, dataScope.id, program);
+    const panel = programPanel(scopedCard, program);
+    const currentPrimarySport = panel.primarySportTag || null;
+    const alreadyGenerated = panelCanProvideImage(existingPanel) &&
+      panelMatchesCardProgram(scopedCard, program, existingPanel) &&
+      panelHasCurrentCardBackCopy(existingPanel, copyPromptHash);
     if (!args.force && alreadyGenerated) {
       const syncedPanel = {
         ...existingPanel,
-        ...panelMetadata,
-        localUrl: existingPanel.localUrl ?? (args.noLocal ? null : localUrl),
-        mimeType: existingPanel.mimeType || "image/png",
-        url: existingPanel.url || localUrl,
-        notes: ""
+        dataScopeId: dataScope.id,
+        dataScopeLabel: dataScope.label,
+        notes: existingPanel.notes || ""
       };
-      manifest.states[card.stateCode][program] = syncedPanel;
+      setManifestPanelForScope(manifest, scopedCard.stateCode, dataScope.id, program, syncedPanel);
       await writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
       if (args.firebase) {
-        await writePanelMetadataToFirebase({ card, program, prompt, panelRecord: syncedPanel });
+        await writePanelMetadataToFirebase({ card: scopedCard, dataScope, program, prompt, panelRecord: syncedPanel });
       }
-      console.log(`Skipping ${card.stateCode} ${program}; manifest already has ${PROMPT_VERSION}. Use --force to regenerate.`);
+      console.log(`Skipping ${scopedCard.stateCode} ${dataScope.id} ${program}; manifest already has ${PROMPT_VERSION}. Use --force to regenerate.`);
       continue;
     }
 
-    console.log(`Generating ${card.stateName} ${program} panel with ${model}...`);
+    const reusablePanel = findReusablePanelForScope({
+      manifest,
+      card: scopedCard,
+      dataScopeId: dataScope.id,
+      program,
+      localUrl
+    });
+    const reusablePanelHasSameBackCopy = panelHasCurrentCardBackCopy(reusablePanel, copyPromptHash);
+    if (!args.force && reusablePanel?.url && reusablePanelHasSameBackCopy) {
+      const reusedPanel = {
+        ...reusablePanel,
+        dataScopeId: dataScope.id,
+        dataScopeLabel: dataScope.label,
+        reusedFromDataScopeId: reusablePanel.dataScopeId || "legacy",
+        notes: "Reused generated panel because this data view matches an existing panel."
+      };
+      setManifestPanelForScope(manifest, scopedCard.stateCode, dataScope.id, program, reusedPanel);
+      await writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
+      if (args.firebase) {
+        await writePanelMetadataToFirebase({ card: scopedCard, dataScope, program, prompt, panelRecord: reusedPanel });
+      }
+      console.log(`Reused ${scopedCard.stateCode} ${program} panel for ${dataScope.id}; featured sport is still ${currentPrimarySport}.`);
+      continue;
+    }
+
+    const imageSourcePanel = !args.force && reusablePanel?.url ? reusablePanel : null;
+    const cardBackCopy = await getOrGenerateCardBackCopy({
+      token,
+      card: scopedCard,
+      program,
+      existingPanel: existingPanel || reusablePanel,
+      copyPrompt
+    });
+    const panelMetadata = currentPanelMetadata({ card: scopedCard, dataScope, program, prompt, copyPrompt, cardBackCopy });
+
+    if (imageSourcePanel?.url) {
+      const reusedArtPanel = {
+        ...imageSourcePanel,
+        ...panelMetadata,
+        url: imageSourcePanel.url,
+        downloadUrl: imageSourcePanel.downloadUrl || imageSourcePanel.url,
+        storageBucket: imageSourcePanel.storageBucket,
+        firebaseProjectId: imageSourcePanel.firebaseProjectId,
+        storagePath: imageSourcePanel.storagePath,
+        gsUri: imageSourcePanel.gsUri,
+        firebaseCollection: imageSourcePanel.firebaseCollection,
+        localUrl: imageSourcePanel.localUrl ?? (args.noLocal ? null : localUrl),
+        promptHash: imageSourcePanel.promptHash || panelMetadata.promptHash,
+        reusedFromDataScopeId: imageSourcePanel.dataScopeId || "legacy",
+        notes: "Reused generated art because the featured sport matches; generated scoped card-back copy for this data view."
+      };
+      setManifestPanelForScope(manifest, scopedCard.stateCode, dataScope.id, program, reusedArtPanel);
+      await writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
+      if (args.firebase) {
+        await writePanelMetadataToFirebase({ card: scopedCard, dataScope, program, prompt, panelRecord: reusedArtPanel });
+      }
+      console.log(`Reused ${scopedCard.stateCode} ${program} art for ${dataScope.id}; generated card-back copy for this data view.`);
+      continue;
+    }
+
+    console.log(`Generating ${scopedCard.stateName} ${dataScope.id} ${program} panel with ${model}...`);
     const { imageBuffer, mimeType } = await generateGeminiImageWithRetry({
       token,
       prompt,
-      label: `${card.stateName} ${program}`
+      label: `${scopedCard.stateName} ${dataScope.id} ${program}`
     });
 
     if (!args.noLocal) {
@@ -298,7 +359,8 @@ for (const card of selectedCards) {
 
     const panelRecord = args.firebase
       ? await savePanelToFirebase({
-        card,
+        card: scopedCard,
+        dataScope,
         program,
         imageBuffer,
         mimeType,
@@ -307,8 +369,9 @@ for (const card of selectedCards) {
       })
       : basePanelRecord;
 
-    manifest.states[card.stateCode][program] = panelRecord;
+    setManifestPanelForScope(manifest, scopedCard.stateCode, dataScope.id, program, panelRecord);
     await writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
+    }
   }
 }
 
@@ -321,6 +384,7 @@ function parseArgs(argv) {
     firebase: false,
     force: false,
     noLocal: false,
+    dataScopes: ["both", "paris2024", "milanoCortina2026"],
     programs: ["olympic", "paralympic"],
     states: ["CO"]
   };
@@ -332,6 +396,9 @@ function parseArgs(argv) {
     else if (arg === "--firebase") parsed.firebase = true;
     else if (arg === "--force") parsed.force = true;
     else if (arg === "--no-local") parsed.noLocal = true;
+    else if (arg === "--data-scope" || arg === "--data-scopes") parsed.dataScopes = parseDataScopeList(argv[index += 1]);
+    else if (arg.startsWith("--data-scope=")) parsed.dataScopes = parseDataScopeList(arg.slice("--data-scope=".length));
+    else if (arg.startsWith("--data-scopes=")) parsed.dataScopes = parseDataScopeList(arg.slice("--data-scopes=".length));
     else if (arg === "--program" || arg === "--programs") parsed.programs = parseProgramList(argv[index += 1]);
     else if (arg.startsWith("--program=")) parsed.programs = parseProgramList(arg.slice("--program=".length));
     else if (arg.startsWith("--programs=")) parsed.programs = parseProgramList(arg.slice("--programs=".length));
@@ -342,6 +409,29 @@ function parseArgs(argv) {
 
   parsed.states = parsed.states.map((code) => code.trim().toUpperCase()).filter(Boolean);
   return parsed;
+}
+
+function parseDataScopeList(value) {
+  const aliases = {
+    all: ["both", "paris2024", "milanoCortina2026"],
+    combined: ["both"],
+    summer: ["paris2024"],
+    summer2024: ["paris2024"],
+    paris: ["paris2024"],
+    paris2024: ["paris2024"],
+    winter: ["milanoCortina2026"],
+    winter2026: ["milanoCortina2026"],
+    milan: ["milanoCortina2026"],
+    milano: ["milanoCortina2026"],
+    milano2026: ["milanoCortina2026"],
+    milanocortina2026: ["milanoCortina2026"],
+    both: ["both"]
+  };
+  const scopes = String(value || "all")
+    .split(",")
+    .flatMap((scope) => aliases[scope.trim().replace(/[\s_-]/g, "").toLowerCase()] || [])
+    .filter(Boolean);
+  return scopes.length ? [...new Set(scopes)] : ["both", "paris2024", "milanoCortina2026"];
 }
 
 function parseProgramList(value) {
@@ -358,6 +448,100 @@ function selectCards(states, parsedArgs) {
   if (parsedArgs.all) return states;
   const wanted = new Set(parsedArgs.states);
   return states.filter((state) => wanted.has(state.stateCode));
+}
+
+function selectDataScopes(dataset, parsedArgs) {
+  const availableScopes = new Map((dataset.meta?.dataScopes || []).map((scope) => [scope.id, scope]));
+  const fallbackScopes = [
+    { id: "both", label: "Paris 2024 + Milano Cortina 2026" },
+    { id: "paris2024", label: "Paris 2024" },
+    { id: "milanoCortina2026", label: "Milano Cortina 2026" }
+  ];
+  const scopes = parsedArgs.dataScopes
+    .map((scopeId) => availableScopes.get(scopeId) || fallbackScopes.find((scope) => scope.id === scopeId))
+    .filter(Boolean);
+  return scopes.length ? scopes : fallbackScopes;
+}
+
+function stripNestedScopes(card) {
+  if (!card) return card;
+  const { dataScopes, ...safeCard } = card;
+  return safeCard;
+}
+
+function cardForDataScope(baseCard, dataScope) {
+  const scopedCard = dataScope.id === "both" ? baseCard : baseCard.dataScopes?.[dataScope.id];
+  if (!scopedCard) return null;
+  return {
+    ...stripNestedScopes(scopedCard),
+    dataScopeId: dataScope.id,
+    dataScopeLabel: dataScope.label
+  };
+}
+
+function panelFilename(card, dataScopeId, program) {
+  const state = card.stateCode.toLowerCase();
+  return dataScopeId === "both"
+    ? `${state}-${program}.png`
+    : `${state}-${dataScopeId}-${program}.png`;
+}
+
+function manifestPanelForScope(manifest, stateCode, dataScopeId, program) {
+  const stateEntry = manifest.states?.[stateCode] || {};
+  return dataScopeId === "both"
+    ? stateEntry.scopes?.both?.[program] || stateEntry[program]
+    : stateEntry.scopes?.[dataScopeId]?.[program];
+}
+
+function setManifestPanelForScope(manifest, stateCode, dataScopeId, program, panelRecord) {
+  manifest.states[stateCode] ||= {};
+  manifest.states[stateCode].scopes ||= {};
+  manifest.states[stateCode].scopes[dataScopeId] ||= {};
+  manifest.states[stateCode].scopes[dataScopeId][program] = panelRecord;
+  if (dataScopeId === "both") {
+    manifest.states[stateCode][program] = panelRecord;
+  }
+}
+
+function normalizedSportTag(value) {
+  return String(value || "").replace(/\s+/g, " ").trim().toLowerCase();
+}
+
+function panelMatchesCardProgram(card, program, panel) {
+  const currentSport = normalizedSportTag(programPanel(card, program)?.primarySportTag);
+  const generatedSport = normalizedSportTag(panel?.primarySportTag);
+  return Boolean(currentSport && generatedSport && currentSport === generatedSport);
+}
+
+function panelCanProvideImage(panel) {
+  return Boolean(panel?.url && panel.promptVersion === PROMPT_VERSION);
+}
+
+function panelHasCurrentCardBackCopy(panel, copyPromptHash) {
+  return Boolean(
+    panel?.cardBackCopy &&
+    panel.cardBackCopySource === "gemini" &&
+    panel.cardBackCopyVersion === CARD_BACK_COPY_VERSION &&
+    panel.cardBackCopyModel === cardCopyModel &&
+    panel.cardBackCopyPromptHash === copyPromptHash
+  );
+}
+
+function findReusablePanelForScope({ manifest, card, dataScopeId, program }) {
+  const stateEntry = manifest.states?.[card.stateCode] || {};
+  const scopeEntries = Object.entries(stateEntry.scopes || {});
+  const candidates = [
+    stateEntry.scopes?.[dataScopeId]?.[program],
+    stateEntry[program],
+    ...scopeEntries
+      .filter(([scopeId]) => scopeId !== dataScopeId)
+      .map(([, scopeEntry]) => scopeEntry?.[program])
+  ].filter(Boolean);
+
+  return candidates.find((panel) =>
+    panelMatchesCardProgram(card, program, panel) &&
+    panelCanProvideImage(panel)
+  ) || null;
 }
 
 function warnIfCredentialProjectDiffers() {
@@ -662,9 +846,11 @@ function sportVisualLogicForPrompt({ card, panel, program, imageSubject }) {
   ].join("\n- ");
 }
 
-function currentPanelMetadata({ card, program, prompt, copyPrompt, cardBackCopy }) {
+function currentPanelMetadata({ card, dataScope, program, prompt, copyPrompt, cardBackCopy }) {
   const panel = programPanel(card, program);
   return {
+    dataScopeId: dataScope.id,
+    dataScopeLabel: dataScope.label,
     promptVersion: PROMPT_VERSION,
     promptSummary: `${card.stateName} ${program} ${imageSubjectForPanel(panel)}`,
     primarySportTag: panel.primarySportTag || null,
@@ -1292,10 +1478,11 @@ async function getFirebaseClients() {
   return firebaseClientsPromise;
 }
 
-async function savePanelToFirebase({ card, program, imageBuffer, mimeType, prompt, panelRecord }) {
+async function savePanelToFirebase({ card, dataScope, program, imageBuffer, mimeType, prompt, panelRecord }) {
   const { bucket, db, firebaseProjectId, FieldValue, storageBucket } = await getFirebaseClients();
-  const objectName = `${card.stateCode.toLowerCase()}-${program}.png`;
-  const storagePath = `card-panels/${PROMPT_VERSION}/${card.stateCode.toLowerCase()}/${objectName}`;
+  const objectName = panelFilename(card, dataScope.id, program);
+  const storageScopePath = dataScope.id === "both" ? "" : `${dataScope.id}/`;
+  const storagePath = `card-panels/${PROMPT_VERSION}/${card.stateCode.toLowerCase()}/${storageScopePath}${objectName}`;
   const downloadToken = randomUUID();
   const file = bucket.file(storagePath);
 
@@ -1307,6 +1494,7 @@ async function savePanelToFirebase({ card, program, imageBuffer, mimeType, promp
       metadata: {
         firebaseStorageDownloadTokens: downloadToken,
         commonGroundStateCode: card.stateCode,
+        commonGroundDataScope: dataScope.id,
         commonGroundProgram: program,
         commonGroundPromptVersion: PROMPT_VERSION,
         commonGroundPromptHash: hashText(prompt)
@@ -1331,66 +1519,144 @@ async function savePanelToFirebase({ card, program, imageBuffer, mimeType, promp
   await stateDoc.set({
     stateCode: card.stateCode,
     stateName: card.stateName,
-    sharedTrait: card.sharedTrait,
-    hometownPresenceBucket: card.hometownPresenceBucket,
-    hometownRosterCounts: card.hometownRosterCounts,
+    dataScopes: {
+      [dataScope.id]: {
+        label: dataScope.label,
+        sharedTrait: card.sharedTrait,
+        hometownPresenceBucket: card.hometownPresenceBucket,
+        hometownRosterCounts: card.hometownRosterCounts,
+        panels: {
+          [program]: firebaseRecord
+        }
+      }
+    },
     model,
     cardCopyModel,
     location,
     promptVersion: PROMPT_VERSION,
     paletteTheme: panelRecord.paletteTheme,
     updatedAt: FieldValue.serverTimestamp(),
-    panels: {
-      [program]: firebaseRecord
-    }
+    ...(dataScope.id === "both" ? {
+      sharedTrait: card.sharedTrait,
+      hometownPresenceBucket: card.hometownPresenceBucket,
+      hometownRosterCounts: card.hometownRosterCounts,
+      panels: {
+        [program]: firebaseRecord
+      }
+    } : {})
   }, { merge: true });
 
-  await stateDoc.collection("panels").doc(program).set({
+  if (dataScope.id === "both") {
+    await stateDoc.collection("panels").doc(program).set({
+      ...firebaseRecord,
+      stateCode: card.stateCode,
+      stateName: card.stateName,
+      dataScopeId: dataScope.id,
+      dataScopeLabel: dataScope.label,
+      program,
+      prompt,
+      updatedAt: FieldValue.serverTimestamp()
+    }, { merge: true });
+  }
+
+  await stateDoc.collection("scopes").doc(dataScope.id).set({
+    dataScopeId: dataScope.id,
+    dataScopeLabel: dataScope.label,
+    stateCode: card.stateCode,
+    stateName: card.stateName,
+    sharedTrait: card.sharedTrait,
+    hometownPresenceBucket: card.hometownPresenceBucket,
+    hometownRosterCounts: card.hometownRosterCounts,
+    updatedAt: FieldValue.serverTimestamp()
+  }, { merge: true });
+
+  await stateDoc.collection("scopes").doc(dataScope.id).collection("panels").doc(program).set({
     ...firebaseRecord,
     stateCode: card.stateCode,
     stateName: card.stateName,
+    dataScopeId: dataScope.id,
+    dataScopeLabel: dataScope.label,
     program,
     prompt,
     updatedAt: FieldValue.serverTimestamp()
   }, { merge: true });
 
   console.log(`Uploaded ${card.stateCode} ${program} to gs://${storageBucket}/${storagePath}`);
-  console.log(`Wrote Firestore cardPanels/${card.stateCode} and cardPanels/${card.stateCode}/panels/${program}`);
+  console.log(`Wrote Firestore cardPanels/${card.stateCode}/scopes/${dataScope.id}/panels/${program}`);
 
   return firebaseRecord;
 }
 
-async function writePanelMetadataToFirebase({ card, program, prompt, panelRecord }) {
+async function writePanelMetadataToFirebase({ card, dataScope, program, prompt, panelRecord }) {
   const { db, FieldValue } = await getFirebaseClients();
   const stateDoc = db.collection("cardPanels").doc(card.stateCode);
 
   await stateDoc.set({
     stateCode: card.stateCode,
     stateName: card.stateName,
-    sharedTrait: card.sharedTrait,
-    hometownPresenceBucket: card.hometownPresenceBucket,
-    hometownRosterCounts: card.hometownRosterCounts,
+    dataScopes: {
+      [dataScope.id]: {
+        label: dataScope.label,
+        sharedTrait: card.sharedTrait,
+        hometownPresenceBucket: card.hometownPresenceBucket,
+        hometownRosterCounts: card.hometownRosterCounts,
+        panels: {
+          [program]: panelRecord
+        }
+      }
+    },
     model,
     cardCopyModel,
     location,
     promptVersion: PROMPT_VERSION,
     paletteTheme: panelRecord.paletteTheme,
     updatedAt: FieldValue.serverTimestamp(),
-    panels: {
-      [program]: panelRecord
-    }
+    ...(dataScope.id === "both" ? {
+      sharedTrait: card.sharedTrait,
+      hometownPresenceBucket: card.hometownPresenceBucket,
+      hometownRosterCounts: card.hometownRosterCounts,
+      panels: {
+        [program]: panelRecord
+      }
+    } : {})
   }, { merge: true });
 
-  await stateDoc.collection("panels").doc(program).set({
+  if (dataScope.id === "both") {
+    await stateDoc.collection("panels").doc(program).set({
+      ...panelRecord,
+      stateCode: card.stateCode,
+      stateName: card.stateName,
+      dataScopeId: dataScope.id,
+      dataScopeLabel: dataScope.label,
+      program,
+      prompt,
+      updatedAt: FieldValue.serverTimestamp()
+    }, { merge: true });
+  }
+
+  await stateDoc.collection("scopes").doc(dataScope.id).set({
+    dataScopeId: dataScope.id,
+    dataScopeLabel: dataScope.label,
+    stateCode: card.stateCode,
+    stateName: card.stateName,
+    sharedTrait: card.sharedTrait,
+    hometownPresenceBucket: card.hometownPresenceBucket,
+    hometownRosterCounts: card.hometownRosterCounts,
+    updatedAt: FieldValue.serverTimestamp()
+  }, { merge: true });
+
+  await stateDoc.collection("scopes").doc(dataScope.id).collection("panels").doc(program).set({
     ...panelRecord,
     stateCode: card.stateCode,
     stateName: card.stateName,
+    dataScopeId: dataScope.id,
+    dataScopeLabel: dataScope.label,
     program,
     prompt,
     updatedAt: FieldValue.serverTimestamp()
   }, { merge: true });
 
-  console.log(`Synced Firestore metadata for cardPanels/${card.stateCode}/panels/${program}`);
+  console.log(`Synced Firestore metadata for cardPanels/${card.stateCode}/scopes/${dataScope.id}/panels/${program}`);
 }
 
 function firebaseDownloadUrl(bucketName, storagePath, token) {

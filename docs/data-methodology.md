@@ -1,11 +1,13 @@
 # Data Methodology
 
-The MVP dataset is generated from public TeamUSA.com Paris 2024 roster source rows and stored as aggregate state/territory-level JSON in `public/data/state-cards.json`.
+The MVP dataset is generated from approved public TeamUSA.com roster sources and stored as aggregate state/territory-level JSON in `public/data/state-cards.json`.
 
 ## Source Inputs
 
 - TeamUSA.com Paris 2024 Olympic roster
 - TeamUSA.com Paris 2024 Paralympic roster
+- TeamUSA.com Milano Cortina 2026 Olympic roster
+- TeamUSA.com Milano Cortina 2026 Paralympic roster
 - NOAA public climate context labels
 - `us-atlas` TopoJSON derived from U.S. Census cartographic state and territory boundaries
 
@@ -13,9 +15,9 @@ The MVP dataset is generated from public TeamUSA.com Paris 2024 roster source ro
 
 The ingest script lives at `scripts/ingest-teamusa-paris2024.mjs`.
 
-It filters public roster records to U.S. hometown-state or supported U.S. territory abbreviations, aggregates by geography and sport family, and strips individual-level fields before writing frontend data.
+It filters public roster records to U.S. hometown-state or supported U.S. territory abbreviations, deduplicates athletes across imported rosters in memory, aggregates by geography and sport family, and strips individual-level fields before writing frontend data.
 
-The expanded card briefing can also show top city-level hometown areas when the public TeamUSA.com hometown city field has at least three source records for that state. These are labeled as public hometown entries, not a complete athlete census.
+The expanded card briefing can also show top city-level hometown areas when the public TeamUSA.com hometown city field has enough aggregate support for that state. These are labeled as public athletes, not a complete athlete census.
 
 Excluded from frontend output:
 
@@ -28,15 +30,15 @@ Excluded from frontend output:
 
 ## Count Meaning
 
-"Official counts" in this prototype means sourced TeamUSA.com Paris 2024 public roster rows with a U.S. hometown-state or supported U.S. territory field. It is not a complete historical Team USA athlete census and should not be described that way.
+"Official counts" in this prototype means deduplicated public TeamUSA.com athletes from the imported rosters with a U.S. hometown-state or supported U.S. territory field. It is not a complete historical Team USA athlete census and should not be described that way.
 
 State cards display signal buckets for the main card experience:
 
-- `insufficient_data`: 0 sourced roster rows
-- `low`: 1-4 sourced roster rows
-- `medium`: 5-19 sourced roster rows
-- `high`: 20+ sourced roster rows
+- `insufficient_data`: 0 sourced public athletes
+- `low`: 1-4 sourced public athletes
+- `medium`: 5-19 sourced public athletes
+- `high`: 20+ sourced public athletes
 
-Panel-level sport-family details require at least 3 sourced roster rows. Lower-volume panels stay generalized to avoid over-specificity.
+Low-volume program panels may show a fallback sport cue when public athletes exist. Stronger featured sport signals have 3+ sourced public athletes.
 
-Top hometown areas also require at least 3 public source records before display. The app stores only aggregate city labels and counts, plus Olympic-side and Paralympic-side entry totals; it does not store athlete names, profile links, images, bios, or individual records.
+The app stores only aggregate city labels and counts, plus Olympic-side and Paralympic-side athlete totals; it does not store athlete names, profile links, images, bios, or individual records.

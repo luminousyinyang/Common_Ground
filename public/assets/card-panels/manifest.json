@@ -1,58 +1,60 @@
 {
   "model": "gemini-3-pro-image-preview",
   "location": "global",
-  "updatedAt": "2026-05-05T16:11:40.083Z",
+  "updatedAt": "2026-05-06T02:08:31.678Z",
   "states": {
     "CO": {
       "olympic": {
-        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fco%2Fco-olympic.png?alt=media&token=8ce45d90-fb0c-4471-9838-8224d3029a39",
+        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fco%2Fco-olympic.png?alt=media&token=05c0e5e2-2ba7-4bfc-a9dd-aebaa4e48312",
         "localUrl": null,
         "model": "gemini-3-pro-image-preview",
         "location": "global",
         "mimeType": "image/png",
-        "generatedAt": "2026-05-05T00:09:29.158Z",
+        "generatedAt": "2026-05-06T02:09:16.974Z",
+        "dataScopeId": "both",
+        "dataScopeLabel": "Paris 2024 + Milano Cortina 2026",
         "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
-        "promptSummary": "Colorado olympic Track and Field",
-        "primarySportTag": "Track and Field",
+        "promptSummary": "Colorado olympic Snowboarding",
+        "primarySportTag": "Snowboarding",
         "topSportTags": [
-          "Track and Field",
-          "Cycling",
-          "Soccer"
+          "Snowboarding",
+          "Freestyle Skiing",
+          "Track and Field"
         ],
         "cardBackCopy": {
-          "featuredCue": "Track and Field",
+          "featuredCue": "Snowboarding",
           "moduleMix": [
-            "Rules Snapshot",
-            "Pace Shift",
-            "Terrain/Environment Lens"
+            "Terrain/Environment Lens",
+            "Hidden Skill",
+            "Watch Hook"
           ],
-          "subtitle": "Running events · field disciplines · pace control · fastest time wins",
+          "subtitle": "Winter board sport · trick execution · terrain adaptation · edge control",
           "qaFacts": {
-            "howItWorks": "Track and field encompasses running, jumping, and throwing events held on a stadium oval, infield, or road course. In race events, the competitor with the fastest total time wins, while field events score the longest distance or highest clearance. A key mechanic for new viewers is lane discipline: short sprints keep athletes in assigned lanes, while longer races allow the pack to merge.",
-            "watchValue": "Notice how runners adjust their stride and positioning over multiple laps or distances. The excitement comes from watching the pack shift formations, revealing exactly when a competitor decides to break the group's rhythm and make a move.",
-            "stateConnection": "Colorado's high elevation, mountain trails, and expansive outdoor access could help fans understand why endurance and pace-control stories fit this state card.",
-            "cardTrait": "Track and field connects to Waterline Control through the precise timing, stride cadence, and spacing decisions athletes use to manage a race."
+            "howItWorks": "Snowboarding includes both timed races down a mountain course and judged competitions on halfpipes or terrain parks. In judged events, riders score points based on the difficulty, height, and clean execution of their tricks. In racing formats, competitors navigate gates, and the fastest time to cross the finish line wins. Across all formats, riders rely on edge control, shifting weight between their toes and heels to steer and carve through the snow.",
+            "watchValue": "The event gets easier to read when you watch the rider's shoulders and hips right before a jump. Notice how they set their rotation early, allowing the board to follow through the air before spotting the landing to ride away cleanly.",
+            "stateConnection": "Colorado's high elevation, mountain terrain, and seasonal snow could help fans understand why winter equipment sports appear associated with this state card.",
+            "cardTrait": "Snowboarding connects to Elevation Pace through the steady rhythm and controlled decisions a rider makes while navigating changing snow conditions and terrain features."
           },
           "factChips": [
-            "Fastest total time wins",
-            "Lane assignments for sprints",
-            "Pace and stride rhythm",
-            "Track and road courses"
+            "Judged tricks or timed races",
+            "Toe and heel edge control",
+            "Mountain terrain adaptation",
+            "Rotation and landing mechanics"
           ],
           "relatedTags": [
-            "Cycling",
-            "Soccer"
+            "Freestyle Skiing",
+            "Track and Field"
           ],
           "complianceWarnings": []
         },
         "cardBackCopySource": "gemini",
         "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
         "cardBackCopyModel": "gemini-3.1-pro-preview",
-        "cardBackCopyPromptHash": "bbac1c155eb3c42f90eb8a3f114116bcde3b48b24e9e2cb72d3f2dfe85fea93c",
+        "cardBackCopyPromptHash": "77165bcf014b1d10705916f9bd37f8aa993b7c6213abb46a729a173f0a37976d",
         "paletteTheme": "Alpine Signal",
-        "promptHash": "72a729d88a3bfff21cf8a0e50b762af786706ba5ef01a20b70810fb31fc6aae1",
+        "promptHash": "a4d5e63b406a44fab571e09d046db472afab8aaf76c68752396dec67ae149db2",
         "notes": "",
-        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fco%2Fco-olympic.png?alt=media&token=8ce45d90-fb0c-4471-9838-8224d3029a39",
+        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fco%2Fco-olympic.png?alt=media&token=05c0e5e2-2ba7-4bfc-a9dd-aebaa4e48312",
         "storageBucket": "common-ground-tests.firebasestorage.app",
         "firebaseProjectId": "common-ground-tests",
         "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/co/co-olympic.png",
@@ -60,58 +62,60 @@
         "firebaseCollection": "cardPanels"
       },
       "paralympic": {
-        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v12-para-tri-no-generic-land-figures%2Fco%2Fco-paralympic.png?alt=media&token=57c3d805-1abb-4b2c-8395-60eb3f6c1a89",
+        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fco%2Fco-paralympic.png?alt=media&token=847ccea6-9f7c-4192-8d85-a9c3548908c8",
         "localUrl": null,
         "model": "gemini-3-pro-image-preview",
         "location": "global",
         "mimeType": "image/png",
-        "generatedAt": "2026-05-04T23:58:08.580Z",
-        "promptVersion": "common-ground-card-panel-v12-para-tri-no-generic-land-figures",
-        "promptSummary": "Colorado paralympic Para triathlon",
-        "primarySportTag": "Paratriathlon",
+        "generatedAt": "2026-05-06T02:10:07.500Z",
+        "dataScopeId": "both",
+        "dataScopeLabel": "Paris 2024 + Milano Cortina 2026",
+        "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+        "promptSummary": "Colorado paralympic Para Alpine Skiing",
+        "primarySportTag": "Para Alpine Skiing",
         "topSportTags": [
+          "Para Alpine Skiing",
           "Paratriathlon",
-          "Para Swimming",
-          "Para Track and Field"
+          "Para Swimming"
         ],
         "cardBackCopy": {
-          "featuredCue": "Para triathlon",
+          "featuredCue": "Para Alpine Skiing",
           "moduleMix": [
-            "Pace Shift",
+            "Terrain/Environment Lens",
             "Gear/Setup",
-            "Terrain/Environment Lens"
+            "Watch Hook"
           ],
-          "subtitle": "750m swim · 20km bike · 5km run · transition control",
+          "subtitle": "Downhill speed · adaptive equipment · mountain terrain · race clock",
           "qaFacts": {
-            "howItWorks": "Para triathlon is a continuous race across a 750m swim, a 20km bike segment, and a 5km run. The competitor with the fastest total time wins, meaning the clock keeps ticking even during equipment transitions between stages.",
-            "watchValue": "The event shifts entirely as athletes move from the water to the road. Watching how competitors manage their rhythm and equipment across three different racing surfaces is where the tension peaks.",
-            "stateConnection": "Colorado's high elevation, mountain terrain, and seasonal outdoor access could help fans understand why endurance stories fit this state card.",
-            "cardTrait": "Para triathlon connects to Waterline Control through pacing and adaptation, as athletes must find a steady cadence across changing surfaces."
+            "howItWorks": "Competitors race down a snow-covered mountain course marked by a series of gates. The objective is to navigate the downhill path as quickly as possible, and the skier with the fastest total time wins. Athletes use specialized adaptive equipment like sit-skis or outriggers depending on their event class, and missing a single gate results in an incomplete run.",
+            "watchValue": "Para alpine skiing is a sport of precision at high speeds. Watch how skiers find the perfect line through the gates, using subtle shifts in body weight and equipment angles to carve tight turns without losing their downhill rhythm.",
+            "stateConnection": "Colorado's high elevation, seasonal snow, and extensive mountain terrain could help fans understand why winter-environment sports appear associated with this state card.",
+            "cardTrait": "Para alpine skiing connects to Elevation Pace through the rhythmic carving and controlled decisions needed to manage momentum across changing mountain conditions."
           },
           "factChips": [
-            "750m swim",
-            "20km bike segment",
-            "5km run",
-            "Fastest total time wins"
+            "Fastest total time wins",
+            "Adaptive sit-skis and outriggers",
+            "Navigating downhill gate patterns",
+            "Mountain terrain and seasonal snow"
           ],
           "relatedTags": [
-            "Para Swimming",
-            "Para Track and Field"
+            "Para triathlon",
+            "Para Swimming"
           ],
           "complianceWarnings": []
         },
         "cardBackCopySource": "gemini",
         "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
         "cardBackCopyModel": "gemini-3.1-pro-preview",
-        "cardBackCopyPromptHash": "dae9a5ab2c7b3a9c53728048d33d133a491e297fca2b8952f89b8f7fc3d9d01c",
+        "cardBackCopyPromptHash": "8f93697ac34fa5ef0ed2eced0ddfeeadf222598604d6c93b1a9fa22c3b2d98c5",
         "paletteTheme": "Alpine Signal",
-        "promptHash": "e7d9128c7fa98cfe0175ed9af3898886161b5ff1edbdcfba9e3929f5f44bd7d9",
+        "promptHash": "81c95ab4360244dbf6c1f21f2022cdb157bd24dd2254bf0504a9281101cde7e1",
         "notes": "",
-        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v12-para-tri-no-generic-land-figures%2Fco%2Fco-paralympic.png?alt=media&token=57c3d805-1abb-4b2c-8395-60eb3f6c1a89",
+        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fco%2Fco-paralympic.png?alt=media&token=847ccea6-9f7c-4192-8d85-a9c3548908c8",
         "storageBucket": "common-ground-tests.firebasestorage.app",
         "firebaseProjectId": "common-ground-tests",
-        "storagePath": "card-panels/common-ground-card-panel-v12-para-tri-no-generic-land-figures/co/co-paralympic.png",
-        "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v12-para-tri-no-generic-land-figures/co/co-paralympic.png",
+        "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/co/co-paralympic.png",
+        "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/co/co-paralympic.png",
         "firebaseCollection": "cardPanels"
       },
       "gameExperience": {
@@ -148,17 +152,369 @@
         "generatedAt": "2026-05-05T16:12:38.324Z",
         "promptHash": "29bd2c6443d96d683206a60e447980f3b9a6eb4557d17b15346b9c8dfa1743ff",
         "complianceWarnings": []
+      },
+      "scopes": {
+        "both": {
+          "olympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fco%2Fco-olympic.png?alt=media&token=05c0e5e2-2ba7-4bfc-a9dd-aebaa4e48312",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-06T02:09:16.974Z",
+            "dataScopeId": "both",
+            "dataScopeLabel": "Paris 2024 + Milano Cortina 2026",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "Colorado olympic Snowboarding",
+            "primarySportTag": "Snowboarding",
+            "topSportTags": [
+              "Snowboarding",
+              "Freestyle Skiing",
+              "Track and Field"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Snowboarding",
+              "moduleMix": [
+                "Terrain/Environment Lens",
+                "Hidden Skill",
+                "Watch Hook"
+              ],
+              "subtitle": "Winter board sport · trick execution · terrain adaptation · edge control",
+              "qaFacts": {
+                "howItWorks": "Snowboarding includes both timed races down a mountain course and judged competitions on halfpipes or terrain parks. In judged events, riders score points based on the difficulty, height, and clean execution of their tricks. In racing formats, competitors navigate gates, and the fastest time to cross the finish line wins. Across all formats, riders rely on edge control, shifting weight between their toes and heels to steer and carve through the snow.",
+                "watchValue": "The event gets easier to read when you watch the rider's shoulders and hips right before a jump. Notice how they set their rotation early, allowing the board to follow through the air before spotting the landing to ride away cleanly.",
+                "stateConnection": "Colorado's high elevation, mountain terrain, and seasonal snow could help fans understand why winter equipment sports appear associated with this state card.",
+                "cardTrait": "Snowboarding connects to Elevation Pace through the steady rhythm and controlled decisions a rider makes while navigating changing snow conditions and terrain features."
+              },
+              "factChips": [
+                "Judged tricks or timed races",
+                "Toe and heel edge control",
+                "Mountain terrain adaptation",
+                "Rotation and landing mechanics"
+              ],
+              "relatedTags": [
+                "Freestyle Skiing",
+                "Track and Field"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "77165bcf014b1d10705916f9bd37f8aa993b7c6213abb46a729a173f0a37976d",
+            "paletteTheme": "Alpine Signal",
+            "promptHash": "a4d5e63b406a44fab571e09d046db472afab8aaf76c68752396dec67ae149db2",
+            "notes": "",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fco%2Fco-olympic.png?alt=media&token=05c0e5e2-2ba7-4bfc-a9dd-aebaa4e48312",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/co/co-olympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/co/co-olympic.png",
+            "firebaseCollection": "cardPanels"
+          },
+          "paralympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fco%2Fco-paralympic.png?alt=media&token=847ccea6-9f7c-4192-8d85-a9c3548908c8",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-06T02:10:07.500Z",
+            "dataScopeId": "both",
+            "dataScopeLabel": "Paris 2024 + Milano Cortina 2026",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "Colorado paralympic Para Alpine Skiing",
+            "primarySportTag": "Para Alpine Skiing",
+            "topSportTags": [
+              "Para Alpine Skiing",
+              "Paratriathlon",
+              "Para Swimming"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Para Alpine Skiing",
+              "moduleMix": [
+                "Terrain/Environment Lens",
+                "Gear/Setup",
+                "Watch Hook"
+              ],
+              "subtitle": "Downhill speed · adaptive equipment · mountain terrain · race clock",
+              "qaFacts": {
+                "howItWorks": "Competitors race down a snow-covered mountain course marked by a series of gates. The objective is to navigate the downhill path as quickly as possible, and the skier with the fastest total time wins. Athletes use specialized adaptive equipment like sit-skis or outriggers depending on their event class, and missing a single gate results in an incomplete run.",
+                "watchValue": "Para alpine skiing is a sport of precision at high speeds. Watch how skiers find the perfect line through the gates, using subtle shifts in body weight and equipment angles to carve tight turns without losing their downhill rhythm.",
+                "stateConnection": "Colorado's high elevation, seasonal snow, and extensive mountain terrain could help fans understand why winter-environment sports appear associated with this state card.",
+                "cardTrait": "Para alpine skiing connects to Elevation Pace through the rhythmic carving and controlled decisions needed to manage momentum across changing mountain conditions."
+              },
+              "factChips": [
+                "Fastest total time wins",
+                "Adaptive sit-skis and outriggers",
+                "Navigating downhill gate patterns",
+                "Mountain terrain and seasonal snow"
+              ],
+              "relatedTags": [
+                "Para triathlon",
+                "Para Swimming"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "8f93697ac34fa5ef0ed2eced0ddfeeadf222598604d6c93b1a9fa22c3b2d98c5",
+            "paletteTheme": "Alpine Signal",
+            "promptHash": "81c95ab4360244dbf6c1f21f2022cdb157bd24dd2254bf0504a9281101cde7e1",
+            "notes": "",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fco%2Fco-paralympic.png?alt=media&token=847ccea6-9f7c-4192-8d85-a9c3548908c8",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/co/co-paralympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/co/co-paralympic.png",
+            "firebaseCollection": "cardPanels"
+          }
+        },
+        "paris2024": {
+          "olympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fco%2Fparis2024%2Fco-paris2024-olympic.png?alt=media&token=cf7bcac0-24e0-438d-a8a8-79979c36fbe7",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-06T02:10:59.878Z",
+            "dataScopeId": "paris2024",
+            "dataScopeLabel": "Paris 2024",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "Colorado olympic Track and Field",
+            "primarySportTag": "Track and Field",
+            "topSportTags": [
+              "Track and Field",
+              "Cycling",
+              "Soccer"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Track and Field",
+              "moduleMix": [
+                "Pace Shift",
+                "Terrain/Environment Lens",
+                "Hidden Skill"
+              ],
+              "subtitle": "Track and field events · pace control · varied distances",
+              "qaFacts": {
+                "howItWorks": "Track and field includes running, jumping, and throwing events across varying distances. The competitor with the fastest total race time or the furthest or highest mark wins their specific event. Races range from short sprints where athletes must stay in assigned lanes to longer multi-lap distances where runners merge into a single pack.",
+                "watchValue": "The broadcast constantly shifts between explosive, seconds-long sprints and strategic distance races. Notice how runners in the middle of a pack position themselves to avoid getting trapped before launching a final sprint to the finish line.",
+                "stateConnection": "Colorado's high elevation, mountain terrain, and extensive outdoor trail networks could help fans understand why endurance running stories appear associated with this state card.",
+                "cardTrait": "Track events connect to Waterline Control through the precise timing, stride rhythm, and cadence adjustments runners use to manage their pace across changing race conditions."
+              },
+              "factChips": [
+                "Sprints, distances, jumps, throws",
+                "Staggered starts in lanes",
+                "Pack positioning",
+                "Stride rhythm"
+              ],
+              "relatedTags": [
+                "Cycling",
+                "Soccer"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "9f93b9a52c8bbb0da5ca9f4bda1bba8a2546839b4ee9637fe2ae59679a80b4d6",
+            "paletteTheme": "Alpine Signal",
+            "promptHash": "72a729d88a3bfff21cf8a0e50b762af786706ba5ef01a20b70810fb31fc6aae1",
+            "notes": "",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fco%2Fparis2024%2Fco-paris2024-olympic.png?alt=media&token=cf7bcac0-24e0-438d-a8a8-79979c36fbe7",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/co/paris2024/co-paris2024-olympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/co/paris2024/co-paris2024-olympic.png",
+            "firebaseCollection": "cardPanels"
+          },
+          "paralympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fco%2Fparis2024%2Fco-paris2024-paralympic.png?alt=media&token=f45e69a6-02cf-4124-80e0-7163fa81bd8b",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-06T02:11:58.530Z",
+            "dataScopeId": "paris2024",
+            "dataScopeLabel": "Paris 2024",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "Colorado paralympic Para triathlon",
+            "primarySportTag": "Paratriathlon",
+            "topSportTags": [
+              "Paratriathlon",
+              "Para Swimming",
+              "Para Track and Field"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Para triathlon",
+              "moduleMix": [
+                "Rules Snapshot",
+                "Pace Shift",
+                "Terrain/Environment Lens"
+              ],
+              "subtitle": "Swim, bike, and run · transition control · fastest total time",
+              "qaFacts": {
+                "howItWorks": "Para triathlon is a continuous race across three stages: a 750m swim, a 20km bike segment, and a 5km run. The competitor with the fastest total time wins, and the clock keeps running even while athletes swap equipment during the transitions between stages.",
+                "watchValue": "Notice how the race rhythm changes completely at each transition point. The tension spikes when athletes shift from water to wheels to the final run, adjusting their pacing and equipment on the fly.",
+                "stateConnection": "Colorado's high elevation, mountain terrain, and deep culture of outdoor access could help fans understand why endurance and pace-focused stories fit this state card.",
+                "cardTrait": "Para triathlon connects to Waterline Control through the way athletes manage cadence and adapt rhythms as the race moves across water, roads, and transition zones."
+              },
+              "factChips": [
+                "750m swim, 20km bike, 5km run",
+                "Continuous race clock",
+                "Fastest total time wins",
+                "Adaptive equipment setups"
+              ],
+              "relatedTags": [
+                "Para Swimming",
+                "Para Track and Field"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "63ba039ff709d4f9fae5757975ba3b1e5f8e0566801689dfc649944864fb98cd",
+            "paletteTheme": "Alpine Signal",
+            "promptHash": "e7d9128c7fa98cfe0175ed9af3898886161b5ff1edbdcfba9e3929f5f44bd7d9",
+            "notes": "",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fco%2Fparis2024%2Fco-paris2024-paralympic.png?alt=media&token=f45e69a6-02cf-4124-80e0-7163fa81bd8b",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/co/paris2024/co-paris2024-paralympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/co/paris2024/co-paris2024-paralympic.png",
+            "firebaseCollection": "cardPanels"
+          }
+        },
+        "milanoCortina2026": {
+          "olympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fco%2Fco-olympic.png?alt=media&token=05c0e5e2-2ba7-4bfc-a9dd-aebaa4e48312",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-06T02:09:16.974Z",
+            "dataScopeId": "milanoCortina2026",
+            "dataScopeLabel": "Milano Cortina 2026",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "Colorado olympic Snowboarding",
+            "primarySportTag": "Snowboarding",
+            "topSportTags": [
+              "Snowboarding",
+              "Freestyle Skiing",
+              "Alpine Skiing"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Snowboarding",
+              "moduleMix": [
+                "Terrain/Environment Lens",
+                "Watch Hook",
+                "Pace Shift"
+              ],
+              "subtitle": "Winter equipment · mountain terrain · rhythm and amplitude",
+              "qaFacts": {
+                "howItWorks": "Snowboarders compete across disciplines like halfpipe, slopestyle, and snowboard cross. In judged events, riders link tricks for an overall score based on difficulty, execution, and amplitude, while snowboard cross is a direct race where the first rider across the finish line advances.",
+                "watchValue": "The viewing experience shifts depending on the event, from massive aerial rotations in the pipe to tight pack racing on the cross course. Look for how riders use the edges of the board to set up spins or absorb landings to keep their rhythm flowing down the mountain.",
+                "stateConnection": "Colorado's high elevation, seasonal snow, and extensive mountain terrain could show how winter equipment sports align with the environment of this state card.",
+                "cardTrait": "Snowboarding connects to Elevation Pace through the way riders control their cadence and decision-making across changing weather, terrain, and equipment variables."
+              },
+              "factChips": [
+                "Judged scores and timed races",
+                "Halfpipe, slopestyle, and cross",
+                "Edge control and amplitude",
+                "Mountain terrain adaptation"
+              ],
+              "relatedTags": [
+                "Freestyle Skiing",
+                "Alpine Skiing"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "c96966c8a9c13ef98b6126ae34313276868069e787b70ebf263e13d1e894af1d",
+            "paletteTheme": "Alpine Signal",
+            "promptHash": "a4d5e63b406a44fab571e09d046db472afab8aaf76c68752396dec67ae149db2",
+            "notes": "Reused generated art because the featured sport matches; generated scoped card-back copy for this data view.",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fco%2Fco-olympic.png?alt=media&token=05c0e5e2-2ba7-4bfc-a9dd-aebaa4e48312",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/co/co-olympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/co/co-olympic.png",
+            "firebaseCollection": "cardPanels",
+            "reusedFromDataScopeId": "both"
+          },
+          "paralympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fco%2Fco-paralympic.png?alt=media&token=847ccea6-9f7c-4192-8d85-a9c3548908c8",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-06T02:10:07.500Z",
+            "dataScopeId": "milanoCortina2026",
+            "dataScopeLabel": "Milano Cortina 2026",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "Colorado paralympic Para Alpine Skiing",
+            "primarySportTag": "Para Alpine Skiing",
+            "topSportTags": [
+              "Para Alpine Skiing",
+              "Para Snowboarding",
+              "Sled Hockey"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Para Alpine Skiing",
+              "moduleMix": [
+                "Gear/Setup",
+                "Watch Hook",
+                "Terrain/Environment Lens"
+              ],
+              "subtitle": "Downhill speed · adaptive equipment · mountain terrain · timed runs",
+              "qaFacts": {
+                "howItWorks": "Para alpine skiing is a race down a snow-covered mountain course marked by a series of gates. Athletes use specialized gear like sit-skis or outriggers, and the competitor who completes the run with the fastest total time wins the event.",
+                "watchValue": "Watch how athletes read the terrain ahead to find the quickest line through the gates. The viewing draw is seeing the precise edge control and weight shifts athletes use to carry momentum down steep, icy slopes.",
+                "stateConnection": "Colorado's high elevation, seasonal snow, and extensive mountain terrain could help fans understand why winter outdoor sports appear associated with this state card.",
+                "cardTrait": "Para alpine skiing connects to Elevation Pace through the steady rhythm of turns and controlled decisions athletes make while navigating changing mountain conditions."
+              },
+              "factChips": [
+                "Timed mountain runs",
+                "Adaptive winter equipment",
+                "Gate navigation",
+                "Fastest total time wins"
+              ],
+              "relatedTags": [
+                "Para Snowboarding",
+                "Sled Hockey"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "bd18886e7e2183c0de5a43b42c70ef2832d40eee74888af5c46e5f3a895b8e52",
+            "paletteTheme": "Alpine Signal",
+            "promptHash": "81c95ab4360244dbf6c1f21f2022cdb157bd24dd2254bf0504a9281101cde7e1",
+            "notes": "Reused generated art because the featured sport matches; generated scoped card-back copy for this data view.",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fco%2Fco-paralympic.png?alt=media&token=847ccea6-9f7c-4192-8d85-a9c3548908c8",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/co/co-paralympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/co/co-paralympic.png",
+            "firebaseCollection": "cardPanels",
+            "reusedFromDataScopeId": "both"
+          }
+        }
       }
     },
     "CA": {
       "olympic": {
-        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v11-para-tri-equipment-first%2Fca%2Fca-olympic.png?alt=media&token=85afeb69-0bca-46b6-af09-f26629fe2e28",
+        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fca%2Fca-olympic.png?alt=media&token=1ec18366-deb7-45e0-ad6f-9b31969be43e",
         "localUrl": null,
         "model": "gemini-3-pro-image-preview",
         "location": "global",
         "mimeType": "image/png",
-        "generatedAt": "2026-05-04T23:12:51.519Z",
-        "promptVersion": "common-ground-card-panel-v11-para-tri-equipment-first",
+        "generatedAt": "2026-05-06T01:28:57.117Z",
+        "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
         "promptSummary": "California olympic Water Polo",
         "primarySportTag": "Water Polo",
         "topSportTags": [
@@ -171,20 +527,20 @@
           "moduleMix": [
             "Rules Snapshot",
             "Watch Hook",
-            "Pace Shift"
+            "Hidden Skill"
           ],
-          "subtitle": "Seven-player teams · 28-second possessions · aquatic spacing",
+          "subtitle": "Aquatic team sport · four 8-minute quarters · one-handed control",
           "qaFacts": {
-            "howItWorks": "Two teams of seven compete in the water, aiming to throw the ball into the opponent's net to win by scoring the most goals. Matches unfold across four eight-minute quarters, and field players are only allowed to touch the ball with one hand.",
-            "watchValue": "Watch how the 28-second shot clock shapes the rhythm of the game. The tension builds when players tread water to set up a play, suddenly shifting pace to find an open throwing lane before time runs out.",
-            "stateConnection": "California's extensive Pacific coast, outdoor aquatic access, and large urban sport communities could help fans understand why water-based team environments fit this state card.",
-            "cardTrait": "Water polo connects to Waterline Control through the constant need to manage passing cadence and spatial awareness in a fluid environment."
+            "howItWorks": "Two teams of seven face off in the pool, aiming to throw the ball into the opponent's net. The team with the most goals after four eight-minute quarters wins the match, and field players are only allowed to touch the ball with one hand.",
+            "watchValue": "The tension builds as the 28-second possession clock ticks down. Watch how players constantly reposition themselves in the water to open up passing lanes before their time runs out.",
+            "stateConnection": "California's extensive Pacific coastline and large urban aquatic centers could help fans understand the environment surrounding water-based team sports in this state.",
+            "cardTrait": "Water polo connects to Waterline Control through the constant adjustments in spacing and passing rhythm players make while treading water."
           },
           "factChips": [
             "7 per team: 6 field + goalkeeper",
             "Four 8-minute quarters",
-            "28-second possessions",
-            "One-hand ball control"
+            "28-second possession clock",
+            "One-handed ball control"
           ],
           "relatedTags": [
             "Track and Field",
@@ -195,25 +551,27 @@
         "cardBackCopySource": "gemini",
         "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
         "cardBackCopyModel": "gemini-3.1-pro-preview",
-        "cardBackCopyPromptHash": "be5abcd3a78d57da86fff2a64defd8442f2405a0db0f8e7458979c36e0ec38b3",
+        "cardBackCopyPromptHash": "402b115f347527a280a681b07380556cf3a62e36408e4d06f9ae8ef7c139bb15",
         "paletteTheme": "Pacific Heat",
         "promptHash": "b9ccde41c41273d36cce47b6c56071e3d96cca1ffcec5b587ceab07fac1f6419",
         "notes": "",
-        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v11-para-tri-equipment-first%2Fca%2Fca-olympic.png?alt=media&token=85afeb69-0bca-46b6-af09-f26629fe2e28",
+        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fca%2Fca-olympic.png?alt=media&token=1ec18366-deb7-45e0-ad6f-9b31969be43e",
         "storageBucket": "common-ground-tests.firebasestorage.app",
         "firebaseProjectId": "common-ground-tests",
-        "storagePath": "card-panels/common-ground-card-panel-v11-para-tri-equipment-first/ca/ca-olympic.png",
-        "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v11-para-tri-equipment-first/ca/ca-olympic.png",
-        "firebaseCollection": "cardPanels"
+        "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/ca/ca-olympic.png",
+        "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/ca/ca-olympic.png",
+        "firebaseCollection": "cardPanels",
+        "dataScopeId": "both",
+        "dataScopeLabel": "Paris 2024 + Milano Cortina 2026"
       },
       "paralympic": {
-        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v11-para-tri-equipment-first%2Fca%2Fca-paralympic.png?alt=media&token=7fc82cce-cbfd-41dd-bb6b-4bfa8d49bedd",
+        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fca%2Fca-paralympic.png?alt=media&token=195bb37e-09cd-4461-a0aa-5b0a4fcaff82",
         "localUrl": null,
         "model": "gemini-3-pro-image-preview",
         "location": "global",
         "mimeType": "image/png",
-        "generatedAt": "2026-05-04T23:21:48.756Z",
-        "promptVersion": "common-ground-card-panel-v11-para-tri-equipment-first",
+        "generatedAt": "2026-05-06T01:30:30.954Z",
+        "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
         "promptSummary": "California paralympic Para triathlon",
         "primarySportTag": "Paratriathlon",
         "topSportTags": [
@@ -224,22 +582,22 @@
         "cardBackCopy": {
           "featuredCue": "Para triathlon",
           "moduleMix": [
-            "Pace Shift",
+            "Watch Hook",
             "Gear/Setup",
-            "Terrain/Environment Lens"
+            "Pace Shift"
           ],
-          "subtitle": "750m swim · 20km bike · 5km run · fastest total time",
+          "subtitle": "750m swim · 20km bike · 5km run · transition control",
           "qaFacts": {
-            "howItWorks": "Para triathlon is a continuous three-stage race consisting of a 750m swim, a 20km bike segment, and a 5km run. The competitor with the fastest total race time wins, and because the clock never stops, the transition time spent switching gear between stages is a crucial part of the event.",
-            "watchValue": "Notice how the rhythm of the race completely transforms at the transition zones. The fun is watching athletes switch from water to wheels to the road, adapting their speed and equipment setups on the fly.",
-            "stateConnection": "California's Pacific coast, varied mountain terrain, and year-round outdoor access could help fans understand why multi-stage endurance events fit the environment of this state card.",
-            "cardTrait": "Managing pace across changing surfaces connects this event directly to Waterline Control. Finding a steady cadence through the water, on the bike, and during the final run mirrors the rhythm mechanics of the mini-game."
+            "howItWorks": "Para triathlon is a continuous multi-stage race consisting of a 750m swim, a 20km bike segment, and a 5km run. The competitor who crosses the finish line with the fastest total time wins, meaning the clock never stops ticking while athletes switch gear between stages.",
+            "watchValue": "Watch how the pacing shifts completely when athletes exit the water to start the bike segment, and again for the final run. Tension spikes during these transition zones, where smooth equipment adjustments and quick resets are just as important as speed.",
+            "stateConnection": "California's Pacific coast, diverse road networks, and year-round outdoor access could help fans understand why multi-surface endurance stories fit this state card.",
+            "cardTrait": "Para triathlon connects to Waterline Control through the constant need to adapt pacing and cadence across water, wheels, and road surfaces."
           },
           "factChips": [
             "750m swim, 20km bike, 5km run",
             "Fastest total race time wins",
-            "Active clock during transitions",
-            "Adaptive cycling and racing wheelchairs"
+            "Clock runs during transitions",
+            "Handcycles, tandems, or racing wheelchairs"
           ],
           "relatedTags": [
             "Para Track and Field",
@@ -251,16 +609,18 @@
         "cardBackCopySource": "gemini",
         "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
         "cardBackCopyModel": "gemini-3.1-pro-preview",
-        "cardBackCopyPromptHash": "d02abdd3c1638ba213b284e3c609efbc741c28ee15c0fad04a61d1eb21fe1f99",
+        "cardBackCopyPromptHash": "c4cf663eb8c9702e75f412ac15d15daa074dd0678f97d947adba90d89a7f63a0",
         "paletteTheme": "Pacific Heat",
-        "promptHash": "9f7d14b03124be16fbef5849569ea7d185e2269fbf13ea37997442aa240bd895",
+        "promptHash": "a6d3ce2c25f0a2020fae55628a09e07d5272ae096fa78397a8fa3cc44226fdc1",
         "notes": "",
-        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v11-para-tri-equipment-first%2Fca%2Fca-paralympic.png?alt=media&token=7fc82cce-cbfd-41dd-bb6b-4bfa8d49bedd",
+        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fca%2Fca-paralympic.png?alt=media&token=195bb37e-09cd-4461-a0aa-5b0a4fcaff82",
         "storageBucket": "common-ground-tests.firebasestorage.app",
         "firebaseProjectId": "common-ground-tests",
-        "storagePath": "card-panels/common-ground-card-panel-v11-para-tri-equipment-first/ca/ca-paralympic.png",
-        "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v11-para-tri-equipment-first/ca/ca-paralympic.png",
-        "firebaseCollection": "cardPanels"
+        "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/ca/ca-paralympic.png",
+        "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/ca/ca-paralympic.png",
+        "firebaseCollection": "cardPanels",
+        "dataScopeId": "both",
+        "dataScopeLabel": "Paris 2024 + Milano Cortina 2026"
       },
       "gameExperience": {
         "version": "common-ground-game-experience-v2-style-references",
@@ -296,6 +656,360 @@
         "generatedAt": "2026-05-05T15:53:55.384Z",
         "promptHash": "3dcb684e07893df7bcf55d344f97a89016c1460a13137e7e454dfc71f5d52b8e",
         "complianceWarnings": []
+      },
+      "scopes": {
+        "both": {
+          "olympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fca%2Fca-olympic.png?alt=media&token=1ec18366-deb7-45e0-ad6f-9b31969be43e",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-06T01:28:57.117Z",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "California olympic Water Polo",
+            "primarySportTag": "Water Polo",
+            "topSportTags": [
+              "Water Polo",
+              "Track and Field",
+              "Skateboarding"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Water Polo",
+              "moduleMix": [
+                "Rules Snapshot",
+                "Watch Hook",
+                "Hidden Skill"
+              ],
+              "subtitle": "Aquatic team sport · four 8-minute quarters · one-handed control",
+              "qaFacts": {
+                "howItWorks": "Two teams of seven face off in the pool, aiming to throw the ball into the opponent's net. The team with the most goals after four eight-minute quarters wins the match, and field players are only allowed to touch the ball with one hand.",
+                "watchValue": "The tension builds as the 28-second possession clock ticks down. Watch how players constantly reposition themselves in the water to open up passing lanes before their time runs out.",
+                "stateConnection": "California's extensive Pacific coastline and large urban aquatic centers could help fans understand the environment surrounding water-based team sports in this state.",
+                "cardTrait": "Water polo connects to Waterline Control through the constant adjustments in spacing and passing rhythm players make while treading water."
+              },
+              "factChips": [
+                "7 per team: 6 field + goalkeeper",
+                "Four 8-minute quarters",
+                "28-second possession clock",
+                "One-handed ball control"
+              ],
+              "relatedTags": [
+                "Track and Field",
+                "Skateboarding"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "402b115f347527a280a681b07380556cf3a62e36408e4d06f9ae8ef7c139bb15",
+            "paletteTheme": "Pacific Heat",
+            "promptHash": "b9ccde41c41273d36cce47b6c56071e3d96cca1ffcec5b587ceab07fac1f6419",
+            "notes": "",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fca%2Fca-olympic.png?alt=media&token=1ec18366-deb7-45e0-ad6f-9b31969be43e",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/ca/ca-olympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/ca/ca-olympic.png",
+            "firebaseCollection": "cardPanels",
+            "dataScopeId": "both",
+            "dataScopeLabel": "Paris 2024 + Milano Cortina 2026"
+          },
+          "paralympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fca%2Fca-paralympic.png?alt=media&token=195bb37e-09cd-4461-a0aa-5b0a4fcaff82",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-06T01:30:30.954Z",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "California paralympic Para triathlon",
+            "primarySportTag": "Paratriathlon",
+            "topSportTags": [
+              "Para Track and Field",
+              "Para-Cycling",
+              "Para Shooting"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Para triathlon",
+              "moduleMix": [
+                "Watch Hook",
+                "Gear/Setup",
+                "Pace Shift"
+              ],
+              "subtitle": "750m swim · 20km bike · 5km run · transition control",
+              "qaFacts": {
+                "howItWorks": "Para triathlon is a continuous multi-stage race consisting of a 750m swim, a 20km bike segment, and a 5km run. The competitor who crosses the finish line with the fastest total time wins, meaning the clock never stops ticking while athletes switch gear between stages.",
+                "watchValue": "Watch how the pacing shifts completely when athletes exit the water to start the bike segment, and again for the final run. Tension spikes during these transition zones, where smooth equipment adjustments and quick resets are just as important as speed.",
+                "stateConnection": "California's Pacific coast, diverse road networks, and year-round outdoor access could help fans understand why multi-surface endurance stories fit this state card.",
+                "cardTrait": "Para triathlon connects to Waterline Control through the constant need to adapt pacing and cadence across water, wheels, and road surfaces."
+              },
+              "factChips": [
+                "750m swim, 20km bike, 5km run",
+                "Fastest total race time wins",
+                "Clock runs during transitions",
+                "Handcycles, tandems, or racing wheelchairs"
+              ],
+              "relatedTags": [
+                "Para Track and Field",
+                "Para-Cycling",
+                "Para Shooting"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "c4cf663eb8c9702e75f412ac15d15daa074dd0678f97d947adba90d89a7f63a0",
+            "paletteTheme": "Pacific Heat",
+            "promptHash": "a6d3ce2c25f0a2020fae55628a09e07d5272ae096fa78397a8fa3cc44226fdc1",
+            "notes": "",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fca%2Fca-paralympic.png?alt=media&token=195bb37e-09cd-4461-a0aa-5b0a4fcaff82",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/ca/ca-paralympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/ca/ca-paralympic.png",
+            "firebaseCollection": "cardPanels",
+            "dataScopeId": "both",
+            "dataScopeLabel": "Paris 2024 + Milano Cortina 2026"
+          }
+        },
+        "paris2024": {
+          "olympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fca%2Fca-olympic.png?alt=media&token=1ec18366-deb7-45e0-ad6f-9b31969be43e",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-06T01:28:57.117Z",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "California olympic Water Polo",
+            "primarySportTag": "Water Polo",
+            "topSportTags": [
+              "Water Polo",
+              "Track and Field",
+              "Skateboarding"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Water Polo",
+              "moduleMix": [
+                "Watch Hook",
+                "Pace Shift",
+                "State Culture"
+              ],
+              "subtitle": "Aquatic team sport · four 8-minute quarters · quick possession resets",
+              "qaFacts": {
+                "howItWorks": "Matches unfold across four 8-minute quarters where two teams of seven try to throw the ball into the opponent's net. The team that scores the most goals wins, and field players must pass and shoot using only one hand while navigating a 28-second possession clock.",
+                "watchValue": "Keep an eye on the spacing in the pool as the possession clock ticks down. The rhythm constantly shifts from a crowded setup to sudden, rapid passing sequences as teams try to find an open shot before time runs out.",
+                "stateConnection": "California's extensive Pacific coastline, year-round outdoor aquatic access, and large urban sport networks could help fans see how water-based team events fit into the state culture.",
+                "cardTrait": "The sport links to Waterline Control through the way players manage pacing, passing cadence, and spatial awareness while moving through a fluid, shifting environment."
+              },
+              "factChips": [
+                "7 per team: 6 field + goalkeeper",
+                "Four 8-minute quarters",
+                "28-second possession clock",
+                "One-handed ball control"
+              ],
+              "relatedTags": [
+                "Track and Field",
+                "Skateboarding"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "d9f8458b44a30142b6b9bcebdf57a6151624b581e3d77f116cd389fb7755e357",
+            "paletteTheme": "Pacific Heat",
+            "promptHash": "b9ccde41c41273d36cce47b6c56071e3d96cca1ffcec5b587ceab07fac1f6419",
+            "notes": "Reused generated art because the featured sport matches; generated scoped card-back copy for this data view.",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fca%2Fca-olympic.png?alt=media&token=1ec18366-deb7-45e0-ad6f-9b31969be43e",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/ca/ca-olympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/ca/ca-olympic.png",
+            "firebaseCollection": "cardPanels",
+            "dataScopeId": "paris2024",
+            "dataScopeLabel": "Paris 2024",
+            "reusedFromDataScopeId": "both"
+          },
+          "paralympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fca%2Fca-paralympic.png?alt=media&token=195bb37e-09cd-4461-a0aa-5b0a4fcaff82",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-06T01:30:30.954Z",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "California paralympic Para triathlon",
+            "primarySportTag": "Paratriathlon",
+            "topSportTags": [
+              "Para Track and Field",
+              "Para-Cycling",
+              "Para Shooting"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Para triathlon",
+              "moduleMix": [
+                "Watch Hook",
+                "Pace Shift",
+                "Terrain/Environment Lens"
+              ],
+              "subtitle": "Three-stage race · changing equipment · transition timing",
+              "qaFacts": {
+                "howItWorks": "Para triathlon is a continuous three-stage race covering a 750m swim, a 20km bike segment, and a 5km run. The competitor who crosses the finish line with the fastest total time wins, meaning the clock keeps ticking even while athletes swap gear between stages.",
+                "watchValue": "Watch how the race rhythm completely changes at the transition zones. The tension spikes when racers switch from water to a bike or handcycle, trying to lock into a new cadence without losing precious seconds.",
+                "stateConnection": "California's Pacific coast, expansive road networks, and year-round outdoor access could help fans see why multi-surface endurance events feel connected to this state.",
+                "cardTrait": "Para triathlon connects to Waterline Control through the constant adjustments racers make to find a steady pace across shifting surfaces and different types of equipment."
+              },
+              "factChips": [
+                "750m swim, 20km bike, 5km run",
+                "Fastest total race time wins",
+                "Clock runs during transitions",
+                "Handcycles, tandems, and racing wheelchairs"
+              ],
+              "relatedTags": [
+                "Para Track and Field",
+                "Para-Cycling",
+                "Para Shooting"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "444d5571fb24893efa843926da225234d813f6a6a4a81423a833c03e46bba176",
+            "paletteTheme": "Pacific Heat",
+            "promptHash": "a6d3ce2c25f0a2020fae55628a09e07d5272ae096fa78397a8fa3cc44226fdc1",
+            "notes": "Reused generated art because the featured sport matches; generated scoped card-back copy for this data view.",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fca%2Fca-paralympic.png?alt=media&token=195bb37e-09cd-4461-a0aa-5b0a4fcaff82",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/ca/ca-paralympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/ca/ca-paralympic.png",
+            "firebaseCollection": "cardPanels",
+            "dataScopeId": "paris2024",
+            "dataScopeLabel": "Paris 2024",
+            "reusedFromDataScopeId": "both"
+          }
+        },
+        "milanoCortina2026": {
+          "olympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fca%2FmilanoCortina2026%2Fca-milanoCortina2026-olympic.png?alt=media&token=3a49849b-09e1-46c8-995f-3766a7f39dbd",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-06T02:02:16.082Z",
+            "dataScopeId": "milanoCortina2026",
+            "dataScopeLabel": "Milano Cortina 2026",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "California olympic Snowboarding",
+            "primarySportTag": "Snowboarding",
+            "topSportTags": [
+              "Snowboarding",
+              "Alpine Skiing",
+              "Figure Skating"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Snowboarding",
+              "moduleMix": [
+                "Watch Hook",
+                "Terrain/Environment Lens",
+                "Hidden Skill"
+              ],
+              "subtitle": "Winter equipment sport · judged tricks and timed runs · board edge control",
+              "qaFacts": {
+                "howItWorks": "Snowboarding features multiple event styles, from timed downhill races to judged freestyle runs in a halfpipe or terrain park. In racing formats, the fastest rider to cross the finish line wins, while freestyle events score competitors on trick difficulty, execution, and height. A simple mechanic for new viewers to spot is edge control: riders are strapped onto a single board and steer by shifting their weight between the heel and toe edges.",
+                "watchValue": "The broadcast becomes easier to read when you watch how riders absorb the impact of the snow. Instead of just tracking the mid-air spins, notice how a competitor bends their knees to carry speed through transitions and keep their board flat upon landing.",
+                "stateConnection": "California's prominent mountain ranges and winter outdoor access could help fans understand why snow-sport stories fit naturally into this state card.",
+                "cardTrait": "Snowboarding connects to Elevation Pace through the steady rhythm and edge control riders use to navigate changing mountain terrain, mirroring the timing needed in the Pace Control Challenge."
+              },
+              "factChips": [
+                "Heel and toe edge control",
+                "Judged freestyle events",
+                "Timed downhill races",
+                "Stance: regular or goofy"
+              ],
+              "relatedTags": [
+                "Alpine Skiing",
+                "Figure Skating"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "13cedd5a80e5c2c721584d60074b60b614b8fdcd454a726abe9919e17f128285",
+            "paletteTheme": "Pacific Heat",
+            "promptHash": "1e73c7132f28f4d4de3becfb5f188703ac5776e1488e54034a05c97bc57607cb",
+            "notes": "",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fca%2FmilanoCortina2026%2Fca-milanoCortina2026-olympic.png?alt=media&token=3a49849b-09e1-46c8-995f-3766a7f39dbd",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/ca/milanoCortina2026/ca-milanoCortina2026-olympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/ca/milanoCortina2026/ca-milanoCortina2026-olympic.png",
+            "firebaseCollection": "cardPanels"
+          },
+          "paralympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fca%2FmilanoCortina2026%2Fca-milanoCortina2026-paralympic.png?alt=media&token=aa434751-d3b2-4ec2-b859-40b242c91860",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-06T02:03:35.658Z",
+            "dataScopeId": "milanoCortina2026",
+            "dataScopeLabel": "Milano Cortina 2026",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "California paralympic Para Alpine Skiing",
+            "primarySportTag": "Para Alpine Skiing",
+            "topSportTags": [
+              "Para Alpine Skiing",
+              "Para Snowboarding",
+              "Sled Hockey"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Para Alpine Skiing",
+              "moduleMix": [
+                "Rules Snapshot",
+                "Watch Hook",
+                "Terrain/Environment Lens"
+              ],
+              "subtitle": "Downhill speed · gate navigation · adaptive equipment · timed runs",
+              "qaFacts": {
+                "howItWorks": "Para Alpine Skiing involves racing down a snow-covered mountain course marked by red and blue gates. Athletes use adaptive equipment like sit-skis or outriggers depending on their classification category. The competitor with the fastest time down the slope wins the event, but missing a single gate along the way results in disqualification.",
+                "watchValue": "Watch how athletes carry their speed through tight turns on steep, icy pitches. The action gets easier to read when you notice how they shift their weight to carve the edges of their skis, balancing the risk of sliding out against the ticking clock.",
+                "stateConnection": "California's mountain ranges and access to high-altitude winter terrain could help fans understand how alpine sports fit into the state's broader outdoor environment.",
+                "cardTrait": "Para Alpine Skiing connects to Elevation Pace through the constant rhythm of linking turns and controlling downhill momentum across changing snow conditions."
+              },
+              "factChips": [
+                "Fastest total time wins",
+                "Adaptive sit-skis and outriggers",
+                "Gate navigation",
+                "Downhill speed control"
+              ],
+              "relatedTags": [
+                "Para Snowboarding",
+                "Sled Hockey"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "26d169c7e386faf05559d51e4231b288850a53492773a02ef9a5ce26f754a9bd",
+            "paletteTheme": "Pacific Heat",
+            "promptHash": "2ed41133204f8a3adc9206af63c618a2067996a618ac58678517d94cab58b713",
+            "notes": "",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fca%2FmilanoCortina2026%2Fca-milanoCortina2026-paralympic.png?alt=media&token=aa434751-d3b2-4ec2-b859-40b242c91860",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/ca/milanoCortina2026/ca-milanoCortina2026-paralympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/ca/milanoCortina2026/ca-milanoCortina2026-paralympic.png",
+            "firebaseCollection": "cardPanels"
+          }
+        }
       }
     },
     "WA": {
