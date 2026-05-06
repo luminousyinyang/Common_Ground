@@ -98,10 +98,35 @@ function joinReadableList(items = []) {
   return `${values.slice(0, -1).join(", ")}, and ${values.at(-1)}`;
 }
 
+function lowerFirst(value = "") {
+  const text = String(value || "").trim();
+  return text ? text.charAt(0).toLowerCase() + text.slice(1) : "";
+}
+
 function displaySportName(value) {
   const text = String(value || "").trim();
   if (/^paratriathlon$/i.test(text)) return "Para triathlon";
   return text;
+}
+
+function plainTraitDescription(cardOrTrait) {
+  const trait = cardOrTrait?.sharedTrait || cardOrTrait || {};
+  return String(trait.description || "The featured sports share a similar mix of timing, control, and adaptation.").trim();
+}
+
+function plainTraitHeadline(cardOrTrait) {
+  const trait = cardOrTrait?.sharedTrait || cardOrTrait || {};
+  const source = `${trait.name || ""} ${trait.description || ""}`.toLowerCase();
+  const hasChangingContext = /\b(conditions?|surfaces?|transitions?|water|roads?)\b/.test(source);
+  if (/\b(focus|precision)\b/.test(source)) return "Focus and precision";
+  if (/\b(elevation|mountain|terrain|weather|equipment)\b/.test(source) && /\b(pace|pacing|control|decisions?)\b/.test(source)) return "Pacing through terrain and equipment changes";
+  if (/\b(pace|pacing|cadence|rhythm|timing)\b/.test(source) && hasChangingContext) return "Adjusting rhythm as conditions change";
+  if (/\b(pace|pacing|cadence|rhythm)\b/.test(source)) return "Rhythm and pacing";
+  if (/\b(space|spacing|recognition)\b/.test(source)) return "Timing and space awareness";
+  if (/\b(pressure|power|body control|short window|well-timed)\b/.test(source)) return "Control under pressure";
+  if (/\b(signal|signals|source context)\b/.test(source)) return "Explore the available roster context";
+  if (/\b(timing)\b/.test(source)) return "Clean timing";
+  return plainTraitDescription(trait).replace(/[.!?]+$/, "");
 }
 
 function panelSportList(panel) {
@@ -160,8 +185,8 @@ function safeFallbackBriefing(card, reason = "No live Gemini response was availa
     hometownAreas: formatHometownAreas(card.topHometownSignals),
     whatToNotice: `The useful fan read is contrast: some sports emphasize spacing and quick decisions, while others emphasize rhythm, stillness, pacing, equipment, or transitions.`,
     surprisingConnection: `${olympicCue} and ${paralympicCue} do not need to look alike to share a viewing idea; both can point fans toward control when timing, surface, or spacing changes.`,
-    sharedStateSignal: `${card.sharedTrait.name}: ${card.sharedTrait.description}`,
-    gameIntro: `Try a short fan challenge that reflects ${card.sharedTrait.name.toLowerCase()} as a personal game interaction only.`,
+    sharedStateSignal: plainTraitDescription(card),
+    gameIntro: `Try a short fan challenge inspired by ${lowerFirst(plainTraitHeadline(card))}.`,
     complianceWarnings: [reason, "Fallback copy used because live Gemini generation is unavailable or did not pass validation."]
   };
 }
@@ -191,7 +216,8 @@ function briefingWithCompleteSportMix(briefing, card) {
     .slice(0, Math.max(1, 5 - completeItems.length));
   return {
     ...briefing,
-    sportMix: [...completeItems, ...thematicItems]
+    sportMix: [...completeItems, ...thematicItems],
+    sharedStateSignal: plainTraitDescription(card)
   };
 }
 
@@ -205,7 +231,7 @@ function formatHometownAreas(signals = []) {
 function safeFallbackGameReflection(card, result, reason = "No live Gemini response was available.") {
   const detail = result?.summary || "Your result is saved as a personal game result.";
   return {
-    reflection: `${detail} That could help you appreciate why ${card.sharedTrait.name.toLowerCase()} matters across several sport families. This is a fan challenge only and does not measure ability or compare you with anyone.`,
+    reflection: `${detail} That could help you appreciate how ${lowerFirst(plainTraitDescription(card))} can matter across several sport families. This is a fan challenge only and does not measure ability or compare you with anyone.`,
     model: "safe-fallback",
     warnings: [reason]
   };
@@ -370,7 +396,7 @@ Return valid JSON with these fields:
 - geographyLens: 1-2 sentences connecting geography/climate/terrain to fan context with conditional language.
 - whatToNotice: 2-3 sentences with concrete fan viewing observations across the broader sport mix.
 - surprisingConnection: 1-2 sentences. Choose one surprising connection across the broader state sport mix. Prefer one Olympic-side sport and one Paralympic-side sport, but do not force the featured card pair if another connection is more interesting.
-- sharedStateSignal: 1 sentence naming and explaining the shared card thread without using the phrase "state signal" or implying performance outcomes.
+- sharedStateSignal: 1 plain-English sentence explaining why the two featured sports connect. Lead with the description, not a coined trait name, and do not use the phrase "state signal" or imply performance outcomes.
 - gameIntro: 1 sentence safe challenge intro for the challenge screen.
 - complianceWarnings
 
@@ -393,7 +419,10 @@ ${JSON.stringify({
   hometownPresenceBucket: card.hometownPresenceBucket,
   topHometownSignals: card.topHometownSignals || [],
   cardStory: stripRecordCounts(card.cardStory),
-  sharedTrait: card.sharedTrait,
+  sportConnection: {
+    headline: plainTraitHeadline(card),
+    description: plainTraitDescription(card)
+  },
   olympicPanel: {
     sportFamily: card.olympicPanel?.sportFamily,
     primarySportTag: displaySportName(card.olympicPanel?.primarySportTag),
@@ -450,7 +479,10 @@ ${JSON.stringify({
   topHometownSignals: card.topHometownSignals || [],
   olympicSports: panelSportList(card.olympicPanel),
   paralympicSports: panelSportList(card.paralympicPanel),
-  sharedTrait: card.sharedTrait
+  sportConnection: {
+    headline: plainTraitHeadline(card),
+    description: plainTraitDescription(card)
+  }
 }, null, 2)}
 
 Rejected briefing:
@@ -460,7 +492,8 @@ ${JSON.stringify(briefing, null, 2)}`;
 function buildGamePrompt(card, result) {
   return `You are writing a safe fan-game reflection for a Team USA x Google Cloud Hackathon project.
 
-Use only the provided state trait and personal game result.
+Use only the provided plain sport connection and personal game result.
+Do not use coined trait names such as "Waterline Control"; explain the connection in plain language.
 Do not compare the user to athletes, Olympians, Paralympians, medalists, teams, training baselines, finish times, or competition scores.
 Do not call this a diagnostic, assessment, talent test, or athletic test.
 Use conditional fan-appreciation language.
@@ -468,8 +501,8 @@ Return valid JSON with fields:
 - reflection
 - warnings
 
-State trait:
-${JSON.stringify(card.sharedTrait, null, 2)}
+Plain sport connection:
+${plainTraitDescription(card)}
 
 Personal game result:
 ${JSON.stringify(result, null, 2)}`;

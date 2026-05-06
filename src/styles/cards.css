@@ -580,6 +580,12 @@ html[data-surface="blacktop"] .compact-read-more:focus-visible {
   border-top: 1px solid var(--line);
 }
 
+.art-state-lockup.is-simple {
+  align-content: center;
+  min-height: 70px;
+  padding: 12px 18px;
+}
+
 .art-state-lockup::after {
   position: absolute;
   inset: 0;
@@ -616,6 +622,10 @@ html[data-surface="blacktop"] .art-state-lockup::after {
   font-size: clamp(1.35rem, 3.3vw, 1.8rem);
   line-height: 0.9;
   text-transform: uppercase;
+}
+
+.art-state-lockup.is-simple strong {
+  font-size: clamp(1.45rem, 3.5vw, 2rem);
 }
 
 .art-state-lockup span {
@@ -1035,9 +1045,7 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
 
 .trait-band {
   display: grid;
-  grid-template-columns: 160px minmax(0, 1fr);
-  align-items: center;
-  gap: 16px;
+  gap: 8px;
   padding: 16px;
   color: var(--ink);
   background:
@@ -1045,26 +1053,23 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
   border-top: 1px solid var(--line);
 }
 
-.trait-badge {
+.trait-copy {
   display: grid;
-  gap: 4px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 10px;
-  background: var(--glass-faint);
+  gap: 7px;
 }
 
-.trait-badge span {
+.trait-copy span {
+  color: var(--muted);
   font-size: 0.72rem;
   font-weight: 900;
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
-.trait-badge strong {
+.trait-copy strong {
   font-family: var(--display-font);
-  font-size: 1.25rem;
-  line-height: 1;
+  font-size: 1.32rem;
+  line-height: 1.02;
 }
 
 .trait-band p {

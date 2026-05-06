@@ -16,7 +16,9 @@ import {
   panelFeaturedSportList,
   panelProgramLabel,
   panelSportList,
+  plainTraitHeadline,
   sportMixPreviewDetail,
+  traitConnectionSentence,
   titleBucket
 } from "../../lib/stateCard.js";
 import Icon from "../common/Icon.jsx";
@@ -48,7 +50,7 @@ function StateChallengePanel({ stateName, isUnlocked, onOpenChallenge }) {
   return (
     <section className="state-challenge-panel" aria-label={`${stateName} state challenge`}>
       <div className="state-challenge-copy">
-        <span className="footer-panel-kicker">State Sync Challenge</span>
+        <span className="footer-panel-kicker">Fan Challenge</span>
         <p>
           {isUnlocked
             ? `${stateName} state card unlocked. Replay the mini-game anytime.`
@@ -434,9 +436,9 @@ function CompactCardBack({ card, briefing, onReadFullBriefing }) {
         </div>
 
         <section className="compact-shared-block">
-          <span>Shared signal</span>
-          <strong>{card.sharedTrait.name}</strong>
-          <p>Olympic <b>{olympicCue}</b> and Paralympic <b>{paralympicCue}</b> connect through {card.sharedTrait.description.toLowerCase()}</p>
+          <span>Why these sports connect</span>
+          <strong>{plainTraitHeadline(card)}</strong>
+          <p>{traitConnectionSentence(card, olympicCue, paralympicCue)}</p>
         </section>
 
         <section className="compact-connection-block">
@@ -639,7 +641,7 @@ function UnifiedStateCard({
                     <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
                     <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
                   </svg>
-                  <span>Play State Sync Challenge to unlock</span>
+                  <span>Play fan challenge to unlock</span>
                 </div>
               )}
             </article>
@@ -666,11 +668,11 @@ function UnifiedStateCard({
                       <SportPanel panel={card.paralympicPanel} />
                     </div>
                     <section className="trait-band">
-                      <div className="trait-badge">
-                        <span>Shared trait across both featured sports</span>
-                        <strong>{card.sharedTrait.name}</strong>
+                      <div className="trait-copy">
+                        <span>Why these sports connect</span>
+                        <strong>{plainTraitHeadline(card)}</strong>
+                        <p>{traitConnectionSentence(card, olympicCue, paralympicCue)}</p>
                       </div>
-                      <p>This trait connects Olympic <strong>{olympicCue}</strong> and Paralympic <strong>{paralympicCue}</strong>: {card.sharedTrait.description}</p>
                     </section>
                     <BriefingPanel payload={briefing} loading={briefingLoading} onRefresh={onRefreshBriefing} compact card={card} />
                     <SourceMethodPanel refs={sourceRefs} />
@@ -700,7 +702,7 @@ function UnifiedStateCard({
           {flipped ? "Flip to art" : "Flip to data"}
         </button>
         {isUnlocked ? (
-          <button className="primary-button" type="button" onClick={onOpenChallenge}>Replay State Sync Challenge</button>
+          <button className="primary-button" type="button" onClick={onOpenChallenge}>Replay Fan Challenge</button>
         ) : (
           <button className="primary-button card-unlock-btn" type="button" onClick={onOpenChallenge}>
             Unlock State Card

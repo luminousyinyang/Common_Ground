@@ -1,5 +1,5 @@
 import React from "react";
-import { getCardThemeLabel, titleBucket } from "../../lib/stateCard.js";
+import { getCardThemeLabel, plainTraitHeadline, titleBucket } from "../../lib/stateCard.js";
 import Icon from "../common/Icon.jsx";
 import CardArt from "../cards/CardArt.jsx";
 
@@ -22,7 +22,7 @@ function MiniStateCard({ card, discovered, onSelect, panelManifest }) {
       </div>
       <div className="mini-card-body">
         <div>
-          <strong>{card.sharedTrait.name}</strong>
+          <strong>{plainTraitHeadline(card)}</strong>
           <span>{getCardThemeLabel(card)}</span>
         </div>
         <span className={`discover-pill ${discovered ? "is-discovered" : ""}`}>{discovered ? "Discovered" : "Preview"}</span>
