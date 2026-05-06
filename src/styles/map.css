@@ -372,15 +372,21 @@
 
 @media (hover: hover) {
   .state-path:hover {
+    fill: #CEA04E;
     opacity: 1;
-    stroke: var(--navy);
-    stroke-width: 2.2;
   }
 
   .territory-inset:hover .territory-inset-shape {
+    fill: #CEA04E;
     opacity: 1;
-    stroke: var(--map-selected);
-    stroke-width: 2.2;
+  }
+
+  html[data-surface="blacktop"] .state-path:hover {
+    fill: #f5e9a0;
+  }
+
+  html[data-surface="blacktop"] .territory-inset:hover .territory-inset-shape {
+    fill: #f5e9a0;
   }
 
   .map-control-button[data-tooltip]:hover::before,
