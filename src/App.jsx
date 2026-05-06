@@ -281,36 +281,70 @@ function App() {
                       <p className="eyebrow">Geography-powered fan discovery</p>
                       <h2 id="mapTitle">State Atlas</h2>
                     </div>
+                    <label className="data-scope-control" htmlFor="dataScopeSelect">
+                      <span>Data view</span>
+                      <select
+                        id="dataScopeSelect"
+                        value={activeDataScope}
+                        onChange={(event) => setDataScope(event.target.value)}
+                      >
+                        {dataScopeOptions.map((option) => (
+                          <option value={option.id} key={option.id}>{option.label}</option>
+                        ))}
+                      </select>
+                    </label>
                   </div>
-                  <label className="data-scope-control" htmlFor="dataScopeSelect">
-                    <span>Data view</span>
-                    <select
-                      id="dataScopeSelect"
-                      value={activeDataScope}
-                      onChange={(event) => setDataScope(event.target.value)}
-                    >
-                      {dataScopeOptions.map((option) => (
-                        <option value={option.id} key={option.id}>{option.label}</option>
-                      ))}
-                    </select>
-                  </label>
-                </div>
-                <p className="safe-note">Explore aggregate state signals from public Team USA and geography data. Current view: {selectedDataScope.label}. Patterns may suggest fan-discovery context and do not imply performance outcomes.</p>
-                <StateMap mapTopology={mapTopology} features={features} geoFeatures={geoFeatures} cardsByCode={cardsByCode} selectedCode={selectedCode} onSelect={selectState} discoveredCodes={discoveredCodes} totalStates={scopedStates.length} />
+                  <p className="safe-note">Explore aggregate state signals from public Team USA and geography data. Current view: {selectedDataScope.label}. Patterns may suggest fan-discovery context and do not imply performance outcomes.</p>
+                  <StateMap
+                    mapTopology={mapTopology}
+                    features={features}
+                    geoFeatures={geoFeatures}
+                    cardsByCode={cardsByCode}
+                    selectedCode={selectedCode}
+                    onSelect={selectState}
+                    discoveredCodes={discoveredCodes}
+                    totalStates={scopedStates.length}
+                  />
+                </section>
               </section>
-            </section>
-          </div>
-          <div className="view-slide">
-            <CollectionView states={scopedStates} discoveredCodes={discoveredCodes} onSelect={(code) => selectState(code, "collection")} panelManifest={activePanelManifest} isLoggedIn={isLoggedIn} onLogin={() => navigate("login")} />
-          </div>
-        </ViewSlider>
-      )}
-
-      {view === "challenge" && (
-        <ChallengeView card={selectedCard} briefing={briefing} onReturn={() => setView("explorer")} panelManifest={activePanelManifest} onGameComplete={() => markPlayed(selectedCode)} />
-      )}
-
-      {view === "methodology" && <MethodologyView refs={dataScopeSourceRefs} meta={dataset.meta} states={scopedStates} dataScope={selectedDataScope} />}
+            )
+          } />
+          <Route path="/collection" element={
+            appGuard || (
+              <CollectionView
+                states={scopedStates}
+                discoveredCodes={discoveredCodes}
+                onSelect={(code) => selectState(code)}
+                panelManifest={activePanelManifest}
+                isLoggedIn={isLoggedIn}
+                onLogin={() => navigate("/login")}
+              />
+            )
+          } />
+          <Route path="/challenge" element={
+            appGuard || (
+              <ChallengeView
+                card={selectedCard}
+                briefing={briefing}
+                onReturn={() => navigate("/map")}
+                panelManifest={activePanelManifest}
+                onGameComplete={() => markPlayed(selectedCode)}
+              />
+            )
+          } />
+          <Route path="/methodology" element={
+            appGuard || (
+              <MethodologyView
+                refs={dataScopeSourceRefs}
+                meta={dataset.meta}
+                states={scopedStates}
+                dataScope={selectedDataScope}
+              />
+            )
+          } />
+        </Route>
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
 
       {isCardModalOpen && isAppRoute && selectedCard && (
         <CardModal
