@@ -570,7 +570,8 @@ function UnifiedStateCard({
     flipTimers.current = [t1, t2];
   }
 
-  function handleMouseMove(e) {
+  function handlePointerMove(e) {
+    if (e.pointerType !== "mouse") return;
     if (displayBack || flipPhase !== null) return;
     const el = tiltRef.current;
     if (!el) return;
@@ -581,9 +582,15 @@ function UnifiedStateCard({
     setMousePos({ x: dx * 100, y: dy * 100, angle: dx * 180 + dy * 90 + 60 });
   }
 
-  function handleMouseLeave() {
+  function handlePointerLeave(e) {
+    if (e.pointerType !== "mouse") return;
     setTilt({ x: 0, y: 0 });
     setIsHovered(false);
+  }
+
+  function handlePointerEnter(e) {
+    if (e.pointerType !== "mouse") return;
+    setIsHovered(true);
   }
 
   function scrollFullBackBriefing() {
@@ -614,9 +621,9 @@ function UnifiedStateCard({
           ref={tiltRef}
           className="card-tilt-layer"
           style={{ transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)` }}
-          onMouseMove={handleMouseMove}
-          onMouseLeave={handleMouseLeave}
-          onMouseEnter={() => setIsHovered(true)}
+          onPointerMove={handlePointerMove}
+          onPointerLeave={handlePointerLeave}
+          onPointerEnter={handlePointerEnter}
         >
           <div
             className={`sports-card ${isHovered && !displayBack ? "is-hovered" : ""}`}
@@ -624,7 +631,7 @@ function UnifiedStateCard({
           >
             <article
               className={frontClass}
-              aria-label={`${card.stateName} state card front — click to flip`}
+              aria-label={`${card.stateName} state card front`}
               role="button"
               tabIndex={displayBack ? -1 : 0}
               onClick={toggleFlip}
@@ -642,12 +649,12 @@ function UnifiedStateCard({
               )}
             </article>
 
-            <article className={backClass} aria-label={`${card.stateName} state card data`}>
+            <article className={backClass} aria-label={`${card.stateName} state card details`}>
               {isBackExpanded ? (
                 <div className={`expanded-back-shell ${hasMoreFullBackScroll ? "has-more-scroll" : ""}`}>
                   <div className="card-back-scroll" ref={fullBackScrollRef}>
                     <div className="card-header">
-                      <p className="eyebrow">Shared geography view</p>
+                      <p className="eyebrow">State-level insights</p>
                       <h3>{card.stateName}</h3>
                       <p>{card.geographySnapshot}</p>
                       <div className="metric-row compact-metrics">

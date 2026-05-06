@@ -50,14 +50,14 @@ html[data-surface="blacktop"] .login-left-overlay {
 }
 
 .login-left-title {
-  margin: 0 0 8px;
+  margin: 0 0 var(--space-2);
   font-size: clamp(1.6rem, 2.5vw, 2.4rem);
   line-height: 1;
   color: #131a1a;
 }
 
 .login-left-tagline {
-  margin: 0 0 12px;
+  margin: 0 0 var(--space-2);
   font-size: clamp(0.95rem, 1.4vw, 1.1rem);
   font-weight: 700;
   color: #2d3a3a;
@@ -89,7 +89,7 @@ html[data-surface="blacktop"] .login-left-overlay {
   position: relative;
   display: flex;
   border-bottom: 1px solid var(--line);
-  margin-bottom: 28px;
+  margin-bottom: var(--space-4);
 }
 
 .login-tab {
@@ -124,13 +124,13 @@ html[data-surface="blacktop"] .login-left-overlay {
 
 .login-form {
   display: grid;
-  gap: 16px;
+  gap: var(--space-3);
 }
 
 .login-form-header {
   display: grid;
-  gap: 4px;
-  margin-bottom: 4px;
+  gap: var(--space-1);
+  margin-bottom: var(--space-1);
 }
 
 .login-form-header h3 {
@@ -225,7 +225,7 @@ html[data-surface="blacktop"] .login-left-overlay {
 .login-or {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-3);
   color: var(--muted);
   font-size: 0.82rem;
   font-weight: 750;

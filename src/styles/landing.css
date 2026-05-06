@@ -14,7 +14,7 @@
 }
 
 .landing-hero {
-  padding: clamp(64px, 9vw, 32px) 0;
+  padding: clamp(var(--space-8), 9vw, var(--space-9)) 0;
   background: var(--surface);
 }
 
@@ -59,7 +59,7 @@
 
 .landing-hero-content .landing-eyebrow {
   color: #5a6060;
-  margin-bottom: 12px;
+  margin-bottom: var(--space-2);
   font-size: 0.88rem;
   opacity: 1;
 }
@@ -109,11 +109,11 @@ html[data-surface="blacktop"] .landing-hero-content .ghost-button {
 }
 
 .landing-eyebrow {
-  margin: 0 0 16px;
+  margin: 0 0 var(--space-2);
 }
 
 .landing-hero-title {
-  margin: 0 0 20px;
+  margin: 0 0 var(--space-4);
   font-family: var(--display-font);
   font-size: clamp(2.4rem, 5.5vw, 4.8rem);
   line-height: 0.9;
@@ -124,7 +124,7 @@ html[data-surface="blacktop"] .landing-hero-content .ghost-button {
 }
 
 .landing-hero-sub {
-  margin: 0 0 20px;
+  margin: 0 0 var(--space-3);
   color: var(--muted);
   font-family: var(--label-font);
   font-size: clamp(0.72rem, 1.2vw, 0.84rem);
@@ -134,9 +134,9 @@ html[data-surface="blacktop"] .landing-hero-content .ghost-button {
 }
 
 .landing-hero-body {
-  margin: 0 0 36px;
+  margin: 0 0 var(--space-5);
   color: var(--copy);
-  font-size: clamp(0.96rem, 1.6vw, 1.1rem);
+  font-size: clamp(0.9rem, 1.6vw, 1.1rem);
   font-weight: 400;
   line-height: 1.65;
   max-width: 58ch;
@@ -145,14 +145,14 @@ html[data-surface="blacktop"] .landing-hero-content .ghost-button {
 .landing-cta-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: var(--space-2);
 }
 
 
 .landing-features {
-  padding: clamp(64px, 9vw, 32px) 0;
+  padding: clamp(var(--space-8), 9vw, var(--space-9)) 0;
   background: var(--surface);
-  scroll-margin-top: 64px;
+  scroll-margin-top: var(--space-8);
 }
 
 .landing-features .landing-section-inner {
@@ -160,7 +160,7 @@ html[data-surface="blacktop"] .landing-hero-content .ghost-button {
 }
 
 .landing-features-heading {
-  margin: 0 0 clamp(36px, 5vw, 56px);
+  margin: 0 0 clamp(var(--space-5), 5vw, var(--space-8));
   font-family: var(--display-font);
   font-size: clamp(2.2rem, 4vw, 3.6rem);
   line-height: 0.92;
@@ -173,7 +173,7 @@ html[data-surface="blacktop"] .landing-hero-content .ghost-button {
 .landing-features-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 20px;
+  gap: var(--space-4);
 }
 
 .landing-feature-card {
@@ -203,7 +203,7 @@ html[data-surface="blacktop"] .landing-hero-content .ghost-button {
 
 
 .landing-feature-card h3 {
-  margin: 0 0 10px;
+  margin: 0 0 var(--space-2);
   font-family: var(--display-font);
   font-size: clamp(1.4rem, 2.2vw, 1.8rem);
   font-weight: 900;
@@ -215,7 +215,7 @@ html[data-surface="blacktop"] .landing-hero-content .ghost-button {
 
 .landing-feature-card p {
   margin: 0;
-  color: var(--copy);
+  color: var(--copy-strong);
   font-size: 0.92rem;
   font-weight: 400;
   line-height: 1.65;
@@ -223,7 +223,7 @@ html[data-surface="blacktop"] .landing-hero-content .ghost-button {
 }
 
 .landing-cta2 {
-  padding: clamp(72px, 10vw, 32px) 0;
+  padding: clamp(var(--space-8), 10vw, var(--space-10)) 0;
   background: var(--paper-2);
 }
 
@@ -232,7 +232,7 @@ html[data-surface="blacktop"] .landing-hero-content .ghost-button {
 }
 
 .landing-cta2-title {
-  margin: 0 0 20px;
+  margin: 0 0 var(--space-4);
   font-family: var(--display-font);
   font-size: clamp(2.4rem, 5vw, 4.5rem);
   line-height: 0.9;
@@ -242,9 +242,9 @@ html[data-surface="blacktop"] .landing-hero-content .ghost-button {
 }
 
 .landing-cta2-body {
-  margin: 0 auto 32px;
+  margin: 0 auto var(--space-5);
   color: var(--copy);
-  font-size: clamp(0.96rem, 1.6vw, 1.1rem);
+  font-size: clamp(0.9rem, 1.6vw, 1.1rem);
   font-weight: 400;
   line-height: 1.65;
   max-width: 56ch;
@@ -260,7 +260,7 @@ html[data-surface="blacktop"] .landing-hero-content .ghost-button {
 .landing-footer {
   margin-top: auto;
   border-top: 1px solid var(--line);
-  padding: 28px 0;
+  padding: var(--space-4) 0;
   background: var(--paper);
 }
 
@@ -284,7 +284,7 @@ html[data-surface="blacktop"] .landing-hero-content .ghost-button {
 }
 
 .landing-footer p {
-  margin: 4px 0 0;
+  margin: var(--space-1) 0 0;
   color: var(--muted);
   font-size: 0.82rem;
 }

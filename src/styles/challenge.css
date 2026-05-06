@@ -3,7 +3,7 @@
 .collection-view {
   max-width: 1440px;
   margin: 0 auto;
-  padding: 24px;
+  padding: var(--space-4);
   position: relative;
 }
 
@@ -16,8 +16,8 @@
 .challenge-grid {
   display: grid;
   grid-template-columns: minmax(240px, 0.72fr) minmax(420px, 1.28fr);
-  gap: 22px;
-  margin-top: 20px;
+  gap: var(--space-4);
+  margin-top: var(--space-4);
 }
 
 .challenge-copy,
@@ -26,12 +26,12 @@
 .source-panel {
   border: 1px solid var(--line);
   border-radius: 16px;
-  padding: 18px;
+  padding: var(--space-3);
   background: var(--glass);
 }
 
 .challenge-copy h3 {
-  margin: 12px 0;
+  margin: var(--space-3) 0 var(--space-2);
   font-size: 1.65rem;
   line-height: 0.98;
   font-weight: 700;
@@ -42,7 +42,7 @@
 }
 
 .game-status {
-  margin-bottom: 14px;
+  margin-bottom: var(--space-3);
   color: var(--copy);
   font-weight: 720;
 }
@@ -51,7 +51,7 @@
   min-height: 360px;
   border: 1px solid var(--line);
   border-radius: 18px;
-  padding: 14px;
+  padding: var(--space-3);
   background:
     radial-gradient(circle at 50% 42%, color-mix(in srgb, var(--ink) 13%, transparent), transparent 9rem),
     radial-gradient(circle at 50% 42%, transparent 0 5.8rem, color-mix(in srgb, var(--gold) 12%, transparent) 5.9rem 6.05rem, transparent 6.15rem),
@@ -121,7 +121,7 @@ html[data-surface="blacktop"] .game-board.has-game-background .focus-readout {
   place-items: center;
   width: min(320px, 100%);
   min-height: 230px;
-  margin: 24px auto;
+  margin: var(--space-4) auto;
   border: 1px solid var(--line-strong);
   border-radius: 999px;
   color: var(--ink);
@@ -315,8 +315,8 @@ html[data-surface="blacktop"] .game-board.has-game-background .focus-readout {
 
 .pattern-progress {
   display: flex;
-  gap: 7px;
-  margin-top: 12px;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
 }
 
 .pattern-progress span {
@@ -336,12 +336,12 @@ html[data-surface="blacktop"] .game-board.has-game-background .focus-readout {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  margin-top: 12px;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
 }
 
 .pattern-hint {
-  margin: 12px 0 0;
+  margin: var(--space-2) 0 0;
   color: var(--copy);
   font-weight: 760;
 }
@@ -351,7 +351,7 @@ html[data-surface="blacktop"] .game-board.has-game-background .focus-readout {
 }
 
 .game-result {
-  margin-top: 16px;
+  margin-top: var(--space-3);
   color: var(--copy);
   line-height: 1.55;
 }

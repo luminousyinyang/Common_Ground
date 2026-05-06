@@ -55,6 +55,17 @@
   --label-font: "IBM Plex Mono", ui-monospace, monospace;
   --display-transform: none;
   --display-letter-spacing: 0;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 32px;
+  --space-6: 40px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 80px;
+  --space-10: 96px;
 }
 
 html[data-theme="alpine-press"] {
