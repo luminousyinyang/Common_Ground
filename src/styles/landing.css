@@ -88,21 +88,6 @@
   transition: background 140ms ease, border-color 140ms ease, transform 160ms ease, box-shadow 160ms ease;
 }
 
-.landing-hero-content .ghost-button:hover svg {
-  animation: bounce-down 900ms ease-in-out infinite;
-}
-
-.landing-hero-content .ghost-button:hover {
-  background: rgba(255, 255, 255, 0.45);
-  border-color: rgba(19, 26, 26, 0.45);
-  box-shadow: 4px 4px 0 #9D4D32;
-  transform: translateY(-3px);
-}
-
-html[data-surface="blacktop"] .landing-hero-content .ghost-button:hover {
-  background: rgba(255, 255, 255, 0.45);
-  box-shadow: 4px 4px 0 #9D4D32;
-}
 
 html[data-surface="blacktop"] .landing-hero-content .primary-button {
   background: #1c2e50;
@@ -110,7 +95,6 @@ html[data-surface="blacktop"] .landing-hero-content .primary-button {
   border-color: #1c2e50;
 }
 
-html[data-surface="blacktop"] .landing-hero-content .primary-button:hover,
 html[data-surface="blacktop"] .landing-hero-content .primary-button:focus-visible {
   background: #152340;
   border-color: #152340;
@@ -217,9 +201,6 @@ html[data-surface="blacktop"] .landing-hero-content .ghost-button {
   transition: transform 320ms ease;
 }
 
-.landing-feature-card:hover .landing-feature-img img {
-  transform: scale(1.04);
-}
 
 .landing-feature-card h3 {
   margin: 0 0 10px;
@@ -325,6 +306,36 @@ html[data-surface="blacktop"] .landing-hero-content .ghost-button {
   transition: color 120ms ease;
 }
 
-.landing-footer-link:hover {
-  color: var(--ink);
+@media (hover: hover) {
+  .landing-hero-content .ghost-button:hover svg {
+    animation: bounce-down 900ms ease-in-out infinite;
+  }
+
+  .landing-hero-content .ghost-button:hover {
+    background: rgba(255, 255, 255, 0.45);
+    border-color: rgba(19, 26, 26, 0.45);
+    box-shadow: 4px 4px 0 #9D4D32;
+    transform: translateY(-3px);
+  }
+
+  html[data-surface="blacktop"] .landing-hero-content .ghost-button:hover {
+    background: rgba(255, 255, 255, 0.45);
+    box-shadow: 4px 4px 0 #9D4D32;
+  }
+
+  html[data-surface="blacktop"] .landing-hero-content .primary-button:hover {
+    background: #152340;
+    border-color: #152340;
+    box-shadow: 4px 4px 0 #CFA14D;
+    transform: translateY(-3px);
+  }
+
+  .landing-feature-card:hover .landing-feature-img img {
+    transform: scale(1.04);
+  }
+
+  .landing-footer-link:hover {
+    color: var(--ink);
+  }
 }
+

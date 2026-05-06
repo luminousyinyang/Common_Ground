@@ -182,9 +182,7 @@
   animation: compact-bounce-down 900ms ease-in-out infinite;
 }
 
-.compact-back-scroll-cue:hover,
 .compact-back-scroll-cue:focus-visible,
-.expanded-back-scroll-cue:hover,
 .expanded-back-scroll-cue:focus-visible {
   border-color: var(--ink);
   color: var(--ink-contrast);
@@ -320,7 +318,6 @@
   transition: background 140ms ease, border-color 140ms ease, color 140ms ease, transform 160ms ease, box-shadow 160ms ease;
 }
 
-.compact-read-more:hover,
 .compact-read-more:focus-visible {
   background: rgba(255, 255, 255, 0.45);
   border-color: var(--blue);
@@ -328,7 +325,6 @@
   transform: translateY(-3px);
 }
 
-html[data-surface="blacktop"] .compact-read-more:hover,
 html[data-surface="blacktop"] .compact-read-more:focus-visible {
   background: transparent;
   box-shadow: 4px 4px 0 #CFA14D;
@@ -1481,19 +1477,10 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
   transition: filter 180ms ease;
 }
 
-.card-modal-panel.card-interaction-tilt-inspect .sports-card:not(.is-flipped):hover {
-  transform: perspective(900px) rotateX(1.8deg) rotateY(-2.8deg) translateY(-2px);
-}
-
-
 .card-modal-panel.card-interaction-press-lift .sports-card:not(.is-flipped):active {
   transform: translateY(-1px) scale(0.998);
 }
 
-.card-modal-panel.card-interaction-magnetic-snap .sports-card:not(.is-flipped):hover {
-  transform: perspective(950px) rotateY(3.2deg) translateY(-2px);
-  filter: saturate(1.05);
-}
 
 .card-modal-panel.card-interaction-hover-float .sports-card {
   animation: cardIdleFloat 3.2s ease-in-out infinite;
@@ -1887,7 +1874,6 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
   transform: rotate(-45deg);
 }
 
-.modal-close-button:hover,
 .modal-close-button:focus-visible {
   color: var(--ink-contrast);
   background: var(--ink);
@@ -2073,4 +2059,41 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
 .card-modal-panel .card-action-row .primary-button {
   flex: 1;
   min-height: 44px;
+}
+
+@media (hover: hover) {
+  .compact-back-scroll-cue:hover,
+  .expanded-back-scroll-cue:hover {
+    border-color: var(--ink);
+    color: var(--ink-contrast);
+    background: var(--ink);
+    box-shadow: 0 14px 30px color-mix(in srgb, #000000 28%, transparent);
+    transform: translateX(-50%) translateY(-2px);
+  }
+
+  .compact-read-more:hover {
+    background: rgba(255, 255, 255, 0.45);
+    border-color: var(--blue);
+    box-shadow: 4px 4px 0 #9D4D32;
+    transform: translateY(-3px);
+  }
+
+  html[data-surface="blacktop"] .compact-read-more:hover {
+    background: transparent;
+    box-shadow: 4px 4px 0 #CFA14D;
+  }
+
+  .card-modal-panel.card-interaction-tilt-inspect .sports-card:not(.is-flipped):hover {
+    transform: perspective(900px) rotateX(1.8deg) rotateY(-2.8deg) translateY(-2px);
+  }
+
+  .card-modal-panel.card-interaction-magnetic-snap .sports-card:not(.is-flipped):hover {
+    transform: perspective(950px) rotateY(3.2deg) translateY(-2px);
+    filter: saturate(1.05);
+  }
+
+  .modal-close-button:hover {
+    color: var(--ink-contrast);
+    background: var(--ink);
+  }
 }

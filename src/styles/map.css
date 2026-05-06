@@ -72,7 +72,6 @@
   cursor: pointer;
 }
 
-.state-path:hover,
 .state-path:focus-visible {
   opacity: 1;
   stroke: var(--navy);
@@ -177,7 +176,6 @@
 }
 
 .territory-inset.is-selected .territory-inset-shape,
-.territory-inset:hover .territory-inset-shape,
 .territory-inset:focus-visible .territory-inset-shape {
   opacity: 1;
   stroke: var(--map-selected);
@@ -250,8 +248,6 @@
   border-left-color: var(--ink);
 }
 
-.map-control-button[data-tooltip]:hover::before,
-.map-control-button[data-tooltip]:hover::after,
 .map-control-button[data-tooltip]:focus-visible::before,
 .map-control-button[data-tooltip]:focus-visible::after {
   opacity: 1;
@@ -267,7 +263,6 @@
   stroke-width: 2;
 }
 
-.map-control-button:hover,
 .map-control-button:focus-visible {
   color: var(--ink-contrast);
   border-color: var(--blue);
@@ -373,4 +368,29 @@
 
 .signal-dot.insufficient_data {
   background: var(--map-limited);
+}
+
+@media (hover: hover) {
+  .state-path:hover {
+    opacity: 1;
+    stroke: var(--navy);
+    stroke-width: 2.2;
+  }
+
+  .territory-inset:hover .territory-inset-shape {
+    opacity: 1;
+    stroke: var(--map-selected);
+    stroke-width: 2.2;
+  }
+
+  .map-control-button[data-tooltip]:hover::before,
+  .map-control-button[data-tooltip]:hover::after {
+    opacity: 1;
+  }
+
+  .map-control-button:hover {
+    color: var(--ink-contrast);
+    border-color: var(--blue);
+    background: var(--blue);
+  }
 }

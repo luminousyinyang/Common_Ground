@@ -6,7 +6,7 @@ function TopNav({ onNavigate, onLogin, darkMode, onToggleDarkMode }) {
   const { pathname } = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
   const [menuMounted, setMenuMounted] = useState(false);
-  const CLOSE_MS = 340;
+  const CLOSE_MS = 360;
   const mapTabRef = useRef(null);
   const collTabRef = useRef(null);
   const [pillBase, setPillBase] = useState({ left: 0, width: 0 });
@@ -76,8 +76,9 @@ function TopNav({ onNavigate, onLogin, darkMode, onToggleDarkMode }) {
   }, [menuOpen]);
 
   function go(path) {
+    setMenuOpen(false);
+    setTimeout(() => setMenuMounted(false), CLOSE_MS);
     onNavigate(path);
-    closeMenu();
   }
 
   return (
