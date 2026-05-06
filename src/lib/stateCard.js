@@ -23,8 +23,8 @@ export async function getJson(url, options) {
 }
 
 export function fallbackBriefing(card, reason = "The Gemini backend is not available from this dev server.") {
-  const olympicTags = (card.olympicPanel.topSportTags || []).map(displaySportName);
-  const paralympicTags = (card.paralympicPanel.topSportTags || []).map(displaySportName);
+  const olympicTags = panelSportList(card.olympicPanel);
+  const paralympicTags = panelSportList(card.paralympicPanel);
   const olympicMix = joinReadableList(olympicTags);
   const paralympicMix = joinReadableList(paralympicTags);
   const olympicCue = getPanelVisualCue(card.olympicPanel);
@@ -34,15 +34,15 @@ export function fallbackBriefing(card, reason = "The Gemini backend is not avail
     source: "react-fallback",
     model: "safe-fallback",
     briefing: {
-      stateSnapshot: `In the public aggregate Team USA state data, ${card.stateName} shows ${olympicMix || card.olympicPanel.sportFamily} on the Olympic side and ${paralympicMix || card.paralympicPanel.sportFamily} on the Paralympic side. That does not mean geography causes outcomes; it gives fans a safer way to explore why different sport environments appear in one state view.`,
+      stateSnapshot: `In the public aggregate Team USA state data, ${card.stateName} shows Olympic-side and Paralympic-side sport lists for the current data view, with featured card examples from ${olympicCue} and ${paralympicCue}. That does not mean geography causes outcomes; it gives fans a safer way to explore why different sport environments appear in one state view.`,
       sportMix: [
         {
-          theme: "Olympic-side mix",
-          detail: olympicMix ? `${olympicMix} appear in the Olympic side of this aggregate state view.` : `${card.olympicPanel.sportFamily} appears as the Olympic-side sport-family view.`
+          theme: "Olympic-side sports",
+          detail: olympicMix ? `${olympicMix} appear in the Olympic side of this selected data view.` : `${card.olympicPanel.sportFamily} appears as the Olympic-side sport-family view.`
         },
         {
-          theme: "Paralympic-side mix",
-          detail: paralympicMix ? `${paralympicMix} appear in the Paralympic side of this aggregate state view.` : `${card.paralympicPanel.sportFamily} appears as the Paralympic-side sport-family view.`
+          theme: "Paralympic-side sports",
+          detail: paralympicMix ? `${paralympicMix} appear in the Paralympic side of this selected data view.` : `${card.paralympicPanel.sportFamily} appears as the Paralympic-side sport-family view.`
         },
         {
           theme: "Movement themes",
@@ -158,6 +158,11 @@ export function displaySportName(value) {
   const text = String(value || "").trim();
   if (/^paratriathlon$/i.test(text)) return "Para triathlon";
   return text;
+}
+
+function panelSportList(panel) {
+  const sports = panel?.allSportTags?.length ? panel.allSportTags : panel?.topSportTags;
+  return (sports || []).map(displaySportName);
 }
 
 export function hasSpecificSportCue(panel) {

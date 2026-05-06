@@ -104,9 +104,14 @@ function displaySportName(value) {
   return text;
 }
 
+function panelSportList(panel) {
+  const sports = panel?.allSportTags?.length ? panel.allSportTags : panel?.topSportTags;
+  return (sports || []).map(displaySportName);
+}
+
 function safeFallbackBriefing(card, reason = "No live Gemini response was available.") {
-  const olympicTags = (card.olympicPanel.topSportTags || []).map(displaySportName);
-  const paralympicTags = (card.paralympicPanel.topSportTags || []).map(displaySportName);
+  const olympicTags = panelSportList(card.olympicPanel);
+  const paralympicTags = panelSportList(card.paralympicPanel);
   const olympicMix = joinReadableList(olympicTags);
   const paralympicMix = joinReadableList(paralympicTags);
   const olympicCue = displaySportName(card.olympicPanel.primarySportTag || card.olympicPanel.topSportTags?.[0] || card.olympicPanel.sportFamily);
@@ -115,15 +120,15 @@ function safeFallbackBriefing(card, reason = "No live Gemini response was availa
     ? joinReadableList(card.cardStory.geographySignal)
     : card.geographySnapshot;
   return {
-    stateSnapshot: `In the public aggregate Team USA state data, ${card.stateName} shows a sport mix shaped by ${olympicMix || card.olympicPanel.sportFamily} on the Olympic side and ${paralympicMix || card.paralympicPanel.sportFamily} on the Paralympic side. That does not mean ${card.stateName} geography causes outcomes; it gives fans a safer way to explore why different sport environments appear in one state view.`,
+    stateSnapshot: `In the public aggregate Team USA state data, ${card.stateName} shows Olympic-side and Paralympic-side sport lists for the current data view, with featured card examples from ${olympicCue} and ${paralympicCue}. That does not mean ${card.stateName} geography causes outcomes; it gives fans a safer way to explore why different sport environments appear in one state view.`,
     sportMix: [
       {
-        theme: "Olympic-side mix",
-        detail: olympicMix ? `${olympicMix} appear in the Olympic side of this aggregate state view.` : `${card.olympicPanel.sportFamily} appears as the Olympic-side sport-family view.`
+        theme: "Olympic-side sports",
+        detail: olympicMix ? `${olympicMix} appear in the Olympic side of this selected data view.` : `${card.olympicPanel.sportFamily} appears as the Olympic-side sport-family view.`
       },
       {
-        theme: "Paralympic-side mix",
-        detail: paralympicMix ? `${paralympicMix} appear in the Paralympic side of this aggregate state view.` : `${card.paralympicPanel.sportFamily} appears as the Paralympic-side sport-family view.`
+        theme: "Paralympic-side sports",
+        detail: paralympicMix ? `${paralympicMix} appear in the Paralympic side of this selected data view.` : `${card.paralympicPanel.sportFamily} appears as the Paralympic-side sport-family view.`
       },
       {
         theme: "Movement themes",
@@ -137,6 +142,37 @@ function safeFallbackBriefing(card, reason = "No live Gemini response was availa
     sharedStateSignal: `${card.sharedTrait.name}: ${card.sharedTrait.description}`,
     gameIntro: `Try a short fan challenge that reflects ${card.sharedTrait.name.toLowerCase()} as a personal game interaction only.`,
     complianceWarnings: [reason, "Fallback copy used because live Gemini generation is unavailable or did not pass validation."]
+  };
+}
+
+function completeSportMixItems(card) {
+  const olympicMix = joinReadableList(panelSportList(card?.olympicPanel));
+  const paralympicMix = joinReadableList(panelSportList(card?.paralympicPanel));
+  return [
+    olympicMix
+      ? {
+        theme: "Olympic-side sports",
+        detail: `${olympicMix} appear in the Olympic side of this selected data view.`
+      }
+      : null,
+    paralympicMix
+      ? {
+        theme: "Paralympic-side sports",
+        detail: `${paralympicMix} appear in the Paralympic side of this selected data view.`
+      }
+      : null
+  ].filter(Boolean);
+}
+
+function briefingWithCompleteSportMix(briefing, card) {
+  const completeItems = completeSportMixItems(card);
+  const generatedItems = Array.isArray(briefing?.sportMix) ? briefing.sportMix : [];
+  const thematicItems = generatedItems
+    .filter((item) => !/^(Olympic|Paralympic)-side/i.test(String(item?.theme || "")))
+    .slice(0, Math.max(1, 5 - completeItems.length));
+  return {
+    ...briefing,
+    sportMix: [...completeItems, ...thematicItems]
   };
 }
 
@@ -246,6 +282,7 @@ function sportNamesForProgram(card, program) {
   const panel = program === "paralympic" ? card?.paralympicPanel : card?.olympicPanel;
   return [
     panel?.primarySportTag,
+    ...(panel?.allSportTags || []),
     ...(panel?.topSportTags || []),
     ...(panel?.sportTagCandidates || []).map((candidate) => candidate?.sportTag),
     panel?.cardBackCopy?.sportName
@@ -292,7 +329,7 @@ Do not claim that terrain, climate, or training access guarantees outcomes.
 Use conditional language: "may suggest", "could help fans understand", "appears associated with", "could show how".
 Write like a sports explainer for curious fans, not like a data policy disclaimer.
 The featured card panels already deep-dive on two selected sports. The Gemini State Briefing is the wider state story layer: state snapshot, broader sport mix grouped by theme, geography lens, what to notice, a surprising connection, and one shared card thread.
-Use all provided topSportTags for Olympic and Paralympic programs as the broader sport mix, but do not use the phrase "sport tags" in the output.
+Use all provided allSportTags for Olympic and Paralympic programs as the complete selected-data-view sport list. Treat topSportTags, primarySportTag, and cardStory featured sports as featured card lenses only, not the full sport list. Do not use the phrase "sport tags" in the output.
 Give Olympic and Paralympic sport mixes equal depth, equal respect, and equal analytical specificity.
 If olympicPanel.cardBackCopy or paralympicPanel.cardBackCopy are present, use that Gemini card-back copy as supporting context, but do not simply repeat it.
 Do not expose internal implementation terms such as "row", "pipeline", "fallback", "template", "card image cue", "featured cue", "card lens", "sport tag", "sport tags", "raw data", "signal", "participation signal", "aggregate presence", or "athletic landscape".
@@ -341,6 +378,7 @@ ${JSON.stringify({
   olympicPanel: {
     sportFamily: card.olympicPanel?.sportFamily,
     primarySportTag: displaySportName(card.olympicPanel?.primarySportTag),
+    allSportTags: panelSportList(card.olympicPanel),
     topSportTags: (card.olympicPanel?.topSportTags || []).map(displaySportName),
     sportTagCandidates: (card.olympicPanel?.sportTagCandidates || []).map(normalizeCandidate),
     cardBackCopy: card.olympicPanel?.cardBackCopy
@@ -348,6 +386,7 @@ ${JSON.stringify({
   paralympicPanel: {
     sportFamily: card.paralympicPanel?.sportFamily,
     primarySportTag: displaySportName(card.paralympicPanel?.primarySportTag),
+    allSportTags: panelSportList(card.paralympicPanel),
     topSportTags: (card.paralympicPanel?.topSportTags || []).map(displaySportName),
     sportTagCandidates: (card.paralympicPanel?.sportTagCandidates || []).map(normalizeCandidate),
     cardBackCopy: card.paralympicPanel?.cardBackCopy
@@ -390,8 +429,8 @@ ${JSON.stringify({
   stateName: card.stateName,
   geographySnapshot: card.geographySnapshot,
   topHometownSignals: card.topHometownSignals || [],
-  olympicSports: (card.olympicPanel?.topSportTags || []).map(displaySportName),
-  paralympicSports: (card.paralympicPanel?.topSportTags || []).map(displaySportName),
+  olympicSports: panelSportList(card.olympicPanel),
+  paralympicSports: panelSportList(card.paralympicPanel),
   sharedTrait: card.sharedTrait
 }, null, 2)}
 
@@ -566,13 +605,13 @@ async function handleApi(req, res, url) {
         return true;
       }
 
-      const briefing = JSON.parse(normalizeJsonText(gemini.text));
+      const briefing = briefingWithCompleteSportMix(JSON.parse(normalizeJsonText(gemini.text)), card);
       const validationWarnings = complianceCheckBriefing(briefing, card);
       if (validationWarnings.length > 0) {
         try {
           const repairedGemini = await callGemini(buildBriefingRepairPrompt(card, briefing, validationWarnings));
           if (repairedGemini) {
-            const repairedBriefing = JSON.parse(normalizeJsonText(repairedGemini.text));
+            const repairedBriefing = briefingWithCompleteSportMix(JSON.parse(normalizeJsonText(repairedGemini.text)), card);
             const repairedWarnings = complianceCheckBriefing(repairedBriefing, card);
             if (repairedWarnings.length === 0) {
               sendJson(res, 200, {

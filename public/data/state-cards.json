@@ -5,8 +5,20 @@
     "updatedAt": "2026-05-06",
     "dataScopes": [
       {
+        "id": "both",
+        "label": "Paris 2024 + Milano Cortina 2026",
+        "shortLabel": "Both",
+        "description": "Olympic Games Paris 2024, Paralympic Games Paris 2024, Olympic Winter Games Milano Cortina 2026, and Paralympic Winter Games Milano Cortina 2026 public rosters.",
+        "rosterSourceIds": [
+          "paris2024Olympic",
+          "paris2024Paralympic",
+          "milanoCortina2026Olympic",
+          "milanoCortina2026Paralympic"
+        ]
+      },
+      {
         "id": "paris2024",
-        "label": "Olympic Games Paris 2024",
+        "label": "Paris 2024",
         "shortLabel": "Paris 2024",
         "description": "Olympic Games Paris 2024 and Paralympic Games Paris 2024 public rosters.",
         "rosterSourceIds": [
@@ -16,22 +28,10 @@
       },
       {
         "id": "milanoCortina2026",
-        "label": "Olympic Winter Games Milano Cortina 2026",
+        "label": "Milano Cortina 2026",
         "shortLabel": "Milano Cortina 2026",
         "description": "Olympic Winter Games Milano Cortina 2026 and Paralympic Winter Games Milano Cortina 2026 public rosters.",
         "rosterSourceIds": [
-          "milanoCortina2026Olympic",
-          "milanoCortina2026Paralympic"
-        ]
-      },
-      {
-        "id": "both",
-        "label": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
-        "shortLabel": "Both",
-        "description": "Olympic Games Paris 2024, Paralympic Games Paris 2024, Olympic Winter Games Milano Cortina 2026, and Paralympic Winter Games Milano Cortina 2026 public rosters.",
-        "rosterSourceIds": [
-          "paris2024Olympic",
-          "paris2024Paralympic",
           "milanoCortina2026Olympic",
           "milanoCortina2026Paralympic"
         ]
@@ -255,6 +255,11 @@
           "Swimming",
           "Track and Field"
         ],
+        "allSportTags": [
+          "Soccer",
+          "Swimming",
+          "Track and Field"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Soccer",
@@ -328,6 +333,10 @@
         "aggregateSignal": "low",
         "primarySportTag": "Wheelchair Basketball",
         "topSportTags": [
+          "Wheelchair Basketball",
+          "Wheelchair Rugby"
+        ],
+        "allSportTags": [
           "Wheelchair Basketball",
           "Wheelchair Rugby"
         ],
@@ -562,6 +571,11 @@
               "Swimming",
               "Track and Field"
             ],
+            "allSportTags": [
+              "Soccer",
+              "Swimming",
+              "Track and Field"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Soccer",
@@ -625,6 +639,10 @@
             "aggregateSignal": "low",
             "primarySportTag": "Wheelchair Basketball",
             "topSportTags": [
+              "Wheelchair Basketball",
+              "Wheelchair Rugby"
+            ],
+            "allSportTags": [
               "Wheelchair Basketball",
               "Wheelchair Rugby"
             ],
@@ -769,6 +787,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "Alabama has no public Olympic hometown geography roster signal in this Milano Cortina 2026 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -793,6 +812,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "Alabama has no public Paralympic hometown geography roster signal in this Milano Cortina 2026 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -988,6 +1008,13 @@
           "Biathlon",
           "Cycling"
         ],
+        "allSportTags": [
+          "Cross-Country Skiing",
+          "Biathlon",
+          "Cycling",
+          "Ice Hockey",
+          "Rugby"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Cross-Country Skiing",
@@ -1094,6 +1121,9 @@
         "aggregateSignal": "low",
         "primarySportTag": "Para Alpine Skiing",
         "topSportTags": [
+          "Para Alpine Skiing"
+        ],
+        "allSportTags": [
           "Para Alpine Skiing"
         ],
         "sportTagCandidates": [
@@ -1308,6 +1338,10 @@
               "Cycling",
               "Rugby"
             ],
+            "allSportTags": [
+              "Cycling",
+              "Rugby"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Cycling",
@@ -1360,6 +1394,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "Alaska has no public Paralympic hometown geography roster signal in this Paris 2024 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -1540,6 +1575,11 @@
               "Biathlon",
               "Ice Hockey"
             ],
+            "allSportTags": [
+              "Cross-Country Skiing",
+              "Biathlon",
+              "Ice Hockey"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Cross-Country Skiing",
@@ -1612,6 +1652,9 @@
             "aggregateSignal": "low",
             "primarySportTag": "Para Alpine Skiing",
             "topSportTags": [
+              "Para Alpine Skiing"
+            ],
+            "allSportTags": [
               "Para Alpine Skiing"
             ],
             "sportTagCandidates": [
@@ -1880,6 +1923,15 @@
           "Skateboarding",
           "Track and Field"
         ],
+        "allSportTags": [
+          "Cycling",
+          "Skateboarding",
+          "Track and Field",
+          "Diving",
+          "Gymnastics",
+          "Ice Hockey",
+          "Swimming"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Cycling",
@@ -2007,6 +2059,13 @@
           "Sitting Volleyball",
           "Para Archery",
           "Para Nordic Skiing"
+        ],
+        "allSportTags": [
+          "Sitting Volleyball",
+          "Para Archery",
+          "Para Nordic Skiing",
+          "Paratriathlon",
+          "Wheelchair Rugby"
         ],
         "sportTagCandidates": [
           {
@@ -2343,6 +2402,14 @@
               "Skateboarding",
               "Track and Field"
             ],
+            "allSportTags": [
+              "Cycling",
+              "Skateboarding",
+              "Track and Field",
+              "Diving",
+              "Gymnastics",
+              "Swimming"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Cycling",
@@ -2446,6 +2513,12 @@
               "Sitting Volleyball",
               "Para Archery",
               "Paratriathlon"
+            ],
+            "allSportTags": [
+              "Sitting Volleyball",
+              "Para Archery",
+              "Paratriathlon",
+              "Wheelchair Rugby"
             ],
             "sportTagCandidates": [
               {
@@ -2661,6 +2734,9 @@
             "topSportTags": [
               "Ice Hockey"
             ],
+            "allSportTags": [
+              "Ice Hockey"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Ice Hockey",
@@ -2703,6 +2779,9 @@
             "aggregateSignal": "low",
             "primarySportTag": "Para Nordic Skiing",
             "topSportTags": [
+              "Para Nordic Skiing"
+            ],
+            "allSportTags": [
               "Para Nordic Skiing"
             ],
             "sportTagCandidates": [
@@ -2904,6 +2983,7 @@
         "aggregateSignal": "insufficient_data",
         "primarySportTag": null,
         "topSportTags": [],
+        "allSportTags": [],
         "sportTagCandidates": [],
         "geographyConnection": "Arkansas has no public Olympic hometown geography roster signal in this combined Paris 2024 and Milano Cortina 2026 public roster view.",
         "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -2938,6 +3018,11 @@
         "aggregateSignal": "low",
         "primarySportTag": "Para Swimming",
         "topSportTags": [
+          "Para Swimming",
+          "Para Track and Field",
+          "Paracanoe"
+        ],
+        "allSportTags": [
           "Para Swimming",
           "Para Track and Field",
           "Paracanoe"
@@ -3183,6 +3268,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "Arkansas has no public Olympic hometown geography roster signal in this Paris 2024 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -3207,6 +3293,11 @@
             "aggregateSignal": "low",
             "primarySportTag": "Para Swimming",
             "topSportTags": [
+              "Para Swimming",
+              "Para Track and Field",
+              "Paracanoe"
+            ],
+            "allSportTags": [
               "Para Swimming",
               "Para Track and Field",
               "Paracanoe"
@@ -3366,6 +3457,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "Arkansas has no public Olympic hometown geography roster signal in this Milano Cortina 2026 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -3390,6 +3482,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "Arkansas has no public Paralympic hometown geography roster signal in this Milano Cortina 2026 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -4513,6 +4606,46 @@
           "Track and Field",
           "Skateboarding"
         ],
+        "allSportTags": [
+          "Water Polo",
+          "Track and Field",
+          "Skateboarding",
+          "Rugby",
+          "Volleyball",
+          "Badminton",
+          "Basketball",
+          "Soccer",
+          "Beach Volleyball",
+          "Cycling",
+          "Snowboarding",
+          "Alpine Skiing",
+          "Fencing",
+          "Figure Skating",
+          "Golf",
+          "Rowing",
+          "Sailing",
+          "Swimming",
+          "Table Tennis",
+          "Tennis",
+          "Artistic Swimming",
+          "Equestrian",
+          "Freestyle Skiing",
+          "Surfing",
+          "Wrestling",
+          "Archery",
+          "Biathlon",
+          "Bobsled",
+          "Boxing",
+          "Breaking",
+          "Cross-Country Skiing",
+          "Diving",
+          "Field Hockey",
+          "Ice Hockey",
+          "Shooting",
+          "Sport Climbing",
+          "Taekwondo",
+          "Triathlon"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Water Polo",
@@ -4649,6 +4782,22 @@
           "Para Track and Field",
           "Para-Cycling",
           "Para Shooting"
+        ],
+        "allSportTags": [
+          "Para Track and Field",
+          "Para-Cycling",
+          "Para Shooting",
+          "Para Swimming",
+          "Paratriathlon",
+          "Wheelchair Basketball",
+          "Para Alpine Skiing",
+          "Para Judo",
+          "Para Powerlifting",
+          "Para Snowboarding",
+          "Sitting Volleyball",
+          "Sled Hockey",
+          "Wheelchair Rugby",
+          "Wheelchair Tennis"
         ],
         "sportTagCandidates": [
           {
@@ -5837,6 +5986,38 @@
               "Track and Field",
               "Skateboarding"
             ],
+            "allSportTags": [
+              "Water Polo",
+              "Track and Field",
+              "Skateboarding",
+              "Rugby",
+              "Volleyball",
+              "Badminton",
+              "Basketball",
+              "Soccer",
+              "Beach Volleyball",
+              "Cycling",
+              "Fencing",
+              "Golf",
+              "Rowing",
+              "Sailing",
+              "Swimming",
+              "Table Tennis",
+              "Tennis",
+              "Artistic Swimming",
+              "Equestrian",
+              "Surfing",
+              "Wrestling",
+              "Archery",
+              "Boxing",
+              "Breaking",
+              "Diving",
+              "Field Hockey",
+              "Shooting",
+              "Sport Climbing",
+              "Taekwondo",
+              "Triathlon"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Water Polo",
@@ -5963,6 +6144,19 @@
               "Para Track and Field",
               "Para-Cycling",
               "Para Shooting"
+            ],
+            "allSportTags": [
+              "Para Track and Field",
+              "Para-Cycling",
+              "Para Shooting",
+              "Para Swimming",
+              "Paratriathlon",
+              "Wheelchair Basketball",
+              "Para Judo",
+              "Para Powerlifting",
+              "Sitting Volleyball",
+              "Wheelchair Rugby",
+              "Wheelchair Tennis"
             ],
             "sportTagCandidates": [
               {
@@ -6397,6 +6591,16 @@
               "Alpine Skiing",
               "Figure Skating"
             ],
+            "allSportTags": [
+              "Snowboarding",
+              "Alpine Skiing",
+              "Figure Skating",
+              "Freestyle Skiing",
+              "Biathlon",
+              "Bobsled",
+              "Cross-Country Skiing",
+              "Ice Hockey"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Snowboarding",
@@ -6541,6 +6745,11 @@
             "aggregateSignal": "low",
             "primarySportTag": "Para Alpine Skiing",
             "topSportTags": [
+              "Para Alpine Skiing",
+              "Para Snowboarding",
+              "Sled Hockey"
+            ],
+            "allSportTags": [
               "Para Alpine Skiing",
               "Para Snowboarding",
               "Sled Hockey"
@@ -7037,6 +7246,27 @@
           "Freestyle Skiing",
           "Track and Field"
         ],
+        "allSportTags": [
+          "Snowboarding",
+          "Freestyle Skiing",
+          "Track and Field",
+          "Alpine Skiing",
+          "Cycling",
+          "Soccer",
+          "Cross-Country Skiing",
+          "Figure Skating",
+          "Ski Jumping",
+          "Sport Climbing",
+          "Volleyball",
+          "Basketball",
+          "Bobsled",
+          "Golf",
+          "Ice Hockey",
+          "Nordic Combined",
+          "Shooting",
+          "Ski Mountaineering",
+          "Swimming"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Snowboarding",
@@ -7187,6 +7417,16 @@
           "Para Alpine Skiing",
           "Paratriathlon",
           "Para Swimming"
+        ],
+        "allSportTags": [
+          "Para Alpine Skiing",
+          "Paratriathlon",
+          "Para Swimming",
+          "Para Snowboarding",
+          "Para Track and Field",
+          "Sled Hockey",
+          "Wheelchair Fencing",
+          "Wheelchair Rugby"
         ],
         "sportTagCandidates": [
           {
@@ -7638,6 +7878,17 @@
               "Cycling",
               "Soccer"
             ],
+            "allSportTags": [
+              "Track and Field",
+              "Cycling",
+              "Soccer",
+              "Sport Climbing",
+              "Volleyball",
+              "Basketball",
+              "Golf",
+              "Shooting",
+              "Swimming"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Track and Field",
@@ -7764,6 +8015,13 @@
               "Paratriathlon",
               "Para Swimming",
               "Para Track and Field"
+            ],
+            "allSportTags": [
+              "Paratriathlon",
+              "Para Swimming",
+              "Para Track and Field",
+              "Wheelchair Fencing",
+              "Wheelchair Rugby"
             ],
             "sportTagCandidates": [
               {
@@ -8202,6 +8460,18 @@
               "Freestyle Skiing",
               "Alpine Skiing"
             ],
+            "allSportTags": [
+              "Snowboarding",
+              "Freestyle Skiing",
+              "Alpine Skiing",
+              "Cross-Country Skiing",
+              "Figure Skating",
+              "Ski Jumping",
+              "Bobsled",
+              "Ice Hockey",
+              "Nordic Combined",
+              "Ski Mountaineering"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Snowboarding",
@@ -8346,6 +8616,11 @@
             "aggregateSignal": "medium",
             "primarySportTag": "Para Alpine Skiing",
             "topSportTags": [
+              "Para Alpine Skiing",
+              "Para Snowboarding",
+              "Sled Hockey"
+            ],
+            "allSportTags": [
               "Para Alpine Skiing",
               "Para Snowboarding",
               "Sled Hockey"
@@ -8715,6 +8990,19 @@
           "Field Hockey",
           "Freestyle Skiing"
         ],
+        "allSportTags": [
+          "Rowing",
+          "Field Hockey",
+          "Freestyle Skiing",
+          "Ice Hockey",
+          "Modern Pentathlon",
+          "Short Track Speedskating",
+          "Skeleton",
+          "Soccer",
+          "Speedskating",
+          "Swimming",
+          "Track and Field"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Rowing",
@@ -8861,6 +9149,13 @@
           "Para Alpine Skiing",
           "Para Swimming",
           "Para Nordic Skiing"
+        ],
+        "allSportTags": [
+          "Para Alpine Skiing",
+          "Para Swimming",
+          "Para Nordic Skiing",
+          "Para-Rowing",
+          "Sitting Volleyball"
         ],
         "sportTagCandidates": [
           {
@@ -9226,6 +9521,14 @@
               "Field Hockey",
               "Modern Pentathlon"
             ],
+            "allSportTags": [
+              "Rowing",
+              "Field Hockey",
+              "Modern Pentathlon",
+              "Soccer",
+              "Swimming",
+              "Track and Field"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Rowing",
@@ -9324,6 +9627,11 @@
             "aggregateSignal": "low",
             "primarySportTag": "Para-Rowing",
             "topSportTags": [
+              "Para Swimming",
+              "Para-Rowing",
+              "Sitting Volleyball"
+            ],
+            "allSportTags": [
               "Para Swimming",
               "Para-Rowing",
               "Sitting Volleyball"
@@ -9585,6 +9893,13 @@
               "Ice Hockey",
               "Short Track Speedskating"
             ],
+            "allSportTags": [
+              "Freestyle Skiing",
+              "Ice Hockey",
+              "Short Track Speedskating",
+              "Skeleton",
+              "Speedskating"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Freestyle Skiing",
@@ -9687,6 +10002,10 @@
             "aggregateSignal": "low",
             "primarySportTag": "Para Alpine Skiing",
             "topSportTags": [
+              "Para Alpine Skiing",
+              "Para Nordic Skiing"
+            ],
+            "allSportTags": [
               "Para Alpine Skiing",
               "Para Nordic Skiing"
             ],
@@ -9890,6 +10209,10 @@
           "Artistic Swimming",
           "Rugby"
         ],
+        "allSportTags": [
+          "Artistic Swimming",
+          "Rugby"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Artistic Swimming",
@@ -9950,6 +10273,7 @@
         "aggregateSignal": "insufficient_data",
         "primarySportTag": null,
         "topSportTags": [],
+        "allSportTags": [],
         "sportTagCandidates": [],
         "geographyConnection": "Delaware has no public Paralympic hometown geography roster signal in this combined Paris 2024 and Milano Cortina 2026 public roster view.",
         "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -10130,6 +10454,10 @@
               "Artistic Swimming",
               "Rugby"
             ],
+            "allSportTags": [
+              "Artistic Swimming",
+              "Rugby"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Artistic Swimming",
@@ -10180,6 +10508,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "Delaware has no public Paralympic hometown geography roster signal in this Paris 2024 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -10289,6 +10618,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "Delaware has no public Olympic hometown geography roster signal in this Milano Cortina 2026 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -10313,6 +10643,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "Delaware has no public Paralympic hometown geography roster signal in this Milano Cortina 2026 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -10814,6 +11145,31 @@
           "Sailing",
           "Equestrian"
         ],
+        "allSportTags": [
+          "Track and Field",
+          "Sailing",
+          "Equestrian",
+          "Swimming",
+          "Soccer",
+          "Speedskating",
+          "Tennis",
+          "Rowing",
+          "Shooting",
+          "Artistic Swimming",
+          "Basketball",
+          "Bobsled",
+          "Boxing",
+          "Breaking",
+          "Cycling",
+          "Figure Skating",
+          "Golf",
+          "Judo",
+          "Rugby",
+          "Skateboarding",
+          "Surfing",
+          "Taekwondo",
+          "Water Polo"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Track and Field",
@@ -10955,6 +11311,17 @@
           "Para Swimming",
           "Sled Hockey",
           "Goalball"
+        ],
+        "allSportTags": [
+          "Para Swimming",
+          "Sled Hockey",
+          "Goalball",
+          "Para Alpine Skiing",
+          "Para Archery",
+          "Para Table Tennis",
+          "Para-Rowing",
+          "Paratriathlon",
+          "Sitting Volleyball"
         ],
         "sportTagCandidates": [
           {
@@ -11562,6 +11929,28 @@
               "Sailing",
               "Equestrian"
             ],
+            "allSportTags": [
+              "Track and Field",
+              "Sailing",
+              "Equestrian",
+              "Swimming",
+              "Soccer",
+              "Tennis",
+              "Rowing",
+              "Shooting",
+              "Artistic Swimming",
+              "Basketball",
+              "Boxing",
+              "Breaking",
+              "Cycling",
+              "Golf",
+              "Judo",
+              "Rugby",
+              "Skateboarding",
+              "Surfing",
+              "Taekwondo",
+              "Water Polo"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Track and Field",
@@ -11690,6 +12079,15 @@
               "Para Swimming",
               "Goalball",
               "Para Archery"
+            ],
+            "allSportTags": [
+              "Para Swimming",
+              "Goalball",
+              "Para Archery",
+              "Para Table Tennis",
+              "Para-Rowing",
+              "Paratriathlon",
+              "Sitting Volleyball"
             ],
             "sportTagCandidates": [
               {
@@ -11999,6 +12397,11 @@
               "Bobsled",
               "Figure Skating"
             ],
+            "allSportTags": [
+              "Speedskating",
+              "Bobsled",
+              "Figure Skating"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Speedskating",
@@ -12069,6 +12472,10 @@
             "aggregateSignal": "low",
             "primarySportTag": "Para Alpine Skiing",
             "topSportTags": [
+              "Sled Hockey",
+              "Para Alpine Skiing"
+            ],
+            "allSportTags": [
               "Sled Hockey",
               "Para Alpine Skiing"
             ],
@@ -12403,6 +12810,20 @@
           "Shooting",
           "Soccer"
         ],
+        "allSportTags": [
+          "Track and Field",
+          "Shooting",
+          "Soccer",
+          "3x3 Basketball",
+          "Basketball",
+          "Bobsled",
+          "Diving",
+          "Gymnastics",
+          "Sport Climbing",
+          "Swimming",
+          "Tennis",
+          "Weightlifting"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Track and Field",
@@ -12540,6 +12961,12 @@
           "Para Swimming",
           "Para Track and Field",
           "Goalball"
+        ],
+        "allSportTags": [
+          "Para Swimming",
+          "Para Track and Field",
+          "Goalball",
+          "Wheelchair Basketball"
         ],
         "sportTagCandidates": [
           {
@@ -12918,6 +13345,19 @@
               "Shooting",
               "Soccer"
             ],
+            "allSportTags": [
+              "Track and Field",
+              "Shooting",
+              "Soccer",
+              "3x3 Basketball",
+              "Basketball",
+              "Diving",
+              "Gymnastics",
+              "Sport Climbing",
+              "Swimming",
+              "Tennis",
+              "Weightlifting"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Track and Field",
@@ -13042,6 +13482,12 @@
               "Para Swimming",
               "Para Track and Field",
               "Goalball"
+            ],
+            "allSportTags": [
+              "Para Swimming",
+              "Para Track and Field",
+              "Goalball",
+              "Wheelchair Basketball"
             ],
             "sportTagCandidates": [
               {
@@ -13235,6 +13681,9 @@
             "topSportTags": [
               "Bobsled"
             ],
+            "allSportTags": [
+              "Bobsled"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Bobsled",
@@ -13278,6 +13727,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "Georgia has no public Paralympic hometown geography roster signal in this Milano Cortina 2026 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -13461,6 +13911,10 @@
           "Volleyball",
           "Surfing"
         ],
+        "allSportTags": [
+          "Volleyball",
+          "Surfing"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Volleyball",
@@ -13525,6 +13979,9 @@
         "aggregateSignal": "low",
         "primarySportTag": "Sitting Volleyball",
         "topSportTags": [
+          "Sitting Volleyball"
+        ],
+        "allSportTags": [
           "Sitting Volleyball"
         ],
         "sportTagCandidates": [
@@ -13756,6 +14213,10 @@
               "Volleyball",
               "Surfing"
             ],
+            "allSportTags": [
+              "Volleyball",
+              "Surfing"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Volleyball",
@@ -13810,6 +14271,9 @@
             "aggregateSignal": "low",
             "primarySportTag": "Sitting Volleyball",
             "topSportTags": [
+              "Sitting Volleyball"
+            ],
+            "allSportTags": [
               "Sitting Volleyball"
             ],
             "sportTagCandidates": [
@@ -13943,6 +14407,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "Hawaii has no public Olympic hometown geography roster signal in this Milano Cortina 2026 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -13967,6 +14432,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "Hawaii has no public Paralympic hometown geography roster signal in this Milano Cortina 2026 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -14171,6 +14637,14 @@
           "Alpine Skiing",
           "Boxing"
         ],
+        "allSportTags": [
+          "Cross-Country Skiing",
+          "Alpine Skiing",
+          "Boxing",
+          "Ice Hockey",
+          "Snowboarding",
+          "Track and Field"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Cross-Country Skiing",
@@ -14295,6 +14769,12 @@
           "Para Nordic Skiing",
           "Para Track and Field",
           "Para Alpine Skiing"
+        ],
+        "allSportTags": [
+          "Para Nordic Skiing",
+          "Para Track and Field",
+          "Para Alpine Skiing",
+          "Para-Equestrian"
         ],
         "sportTagCandidates": [
           {
@@ -14579,6 +15059,10 @@
               "Boxing",
               "Track and Field"
             ],
+            "allSportTags": [
+              "Boxing",
+              "Track and Field"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Boxing",
@@ -14631,6 +15115,10 @@
             "aggregateSignal": "low",
             "primarySportTag": "Para Track and Field",
             "topSportTags": [
+              "Para Track and Field",
+              "Para-Equestrian"
+            ],
+            "allSportTags": [
               "Para Track and Field",
               "Para-Equestrian"
             ],
@@ -14852,6 +15340,12 @@
               "Alpine Skiing",
               "Ice Hockey"
             ],
+            "allSportTags": [
+              "Cross-Country Skiing",
+              "Alpine Skiing",
+              "Ice Hockey",
+              "Snowboarding"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Cross-Country Skiing",
@@ -14939,6 +15433,11 @@
             "aggregateSignal": "low",
             "primarySportTag": "Para Nordic Skiing",
             "topSportTags": [
+              "Para Nordic Skiing",
+              "Para Alpine Skiing",
+              "Para Track and Field"
+            ],
+            "allSportTags": [
               "Para Nordic Skiing",
               "Para Alpine Skiing",
               "Para Track and Field"
@@ -15501,6 +16000,22 @@
           "Volleyball",
           "Ice Hockey"
         ],
+        "allSportTags": [
+          "Track and Field",
+          "Volleyball",
+          "Ice Hockey",
+          "Soccer",
+          "Speedskating",
+          "Wrestling",
+          "Basketball",
+          "Gymnastics",
+          "Rowing",
+          "Swimming",
+          "Judo",
+          "Rugby",
+          "Sailing",
+          "Ski Jumping"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Track and Field",
@@ -15640,6 +16155,18 @@
           "Para Track and Field",
           "Wheelchair Rugby",
           "Para Swimming"
+        ],
+        "allSportTags": [
+          "Para Track and Field",
+          "Wheelchair Rugby",
+          "Para Swimming",
+          "Paratriathlon",
+          "Sled Hockey",
+          "Para Alpine Skiing",
+          "Para Biathlon",
+          "Para Nordic Skiing",
+          "Para Shooting",
+          "Wheelchair Basketball"
         ],
         "sportTagCandidates": [
           {
@@ -16217,6 +16744,19 @@
               "Volleyball",
               "Soccer"
             ],
+            "allSportTags": [
+              "Track and Field",
+              "Volleyball",
+              "Soccer",
+              "Wrestling",
+              "Basketball",
+              "Gymnastics",
+              "Rowing",
+              "Swimming",
+              "Judo",
+              "Rugby",
+              "Sailing"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Track and Field",
@@ -16342,6 +16882,16 @@
               "Para Track and Field",
               "Wheelchair Rugby",
               "Para Swimming"
+            ],
+            "allSportTags": [
+              "Para Track and Field",
+              "Wheelchair Rugby",
+              "Para Swimming",
+              "Paratriathlon",
+              "Para Biathlon",
+              "Para Nordic Skiing",
+              "Para Shooting",
+              "Wheelchair Basketball"
             ],
             "sportTagCandidates": [
               {
@@ -16707,6 +17257,11 @@
               "Speedskating",
               "Ski Jumping"
             ],
+            "allSportTags": [
+              "Ice Hockey",
+              "Speedskating",
+              "Ski Jumping"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Ice Hockey",
@@ -16782,6 +17337,13 @@
               "Sled Hockey",
               "Para Alpine Skiing",
               "Para Biathlon"
+            ],
+            "allSportTags": [
+              "Sled Hockey",
+              "Para Alpine Skiing",
+              "Para Biathlon",
+              "Para Nordic Skiing",
+              "Paratriathlon"
             ],
             "sportTagCandidates": [
               {
@@ -17170,6 +17732,19 @@
           "Wrestling",
           "Cycling"
         ],
+        "allSportTags": [
+          "Swimming",
+          "Wrestling",
+          "Cycling",
+          "Diving",
+          "3x3 Basketball",
+          "Basketball",
+          "Freestyle Skiing",
+          "Sport Climbing",
+          "Tennis",
+          "Track and Field",
+          "Volleyball"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Swimming",
@@ -17306,6 +17881,12 @@
           "Para Swimming",
           "Goalball",
           "Para Track and Field"
+        ],
+        "allSportTags": [
+          "Para Swimming",
+          "Goalball",
+          "Para Track and Field",
+          "Wheelchair Rugby"
         ],
         "sportTagCandidates": [
           {
@@ -17693,6 +18274,18 @@
               "Wrestling",
               "Cycling"
             ],
+            "allSportTags": [
+              "Swimming",
+              "Wrestling",
+              "Cycling",
+              "Diving",
+              "3x3 Basketball",
+              "Basketball",
+              "Sport Climbing",
+              "Tennis",
+              "Track and Field",
+              "Volleyball"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Swimming",
@@ -17816,6 +18409,12 @@
               "Para Swimming",
               "Goalball",
               "Para Track and Field"
+            ],
+            "allSportTags": [
+              "Para Swimming",
+              "Goalball",
+              "Para Track and Field",
+              "Wheelchair Rugby"
             ],
             "sportTagCandidates": [
               {
@@ -18009,6 +18608,9 @@
             "topSportTags": [
               "Freestyle Skiing"
             ],
+            "allSportTags": [
+              "Freestyle Skiing"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Freestyle Skiing",
@@ -18052,6 +18654,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "Indiana has no public Paralympic hometown geography roster signal in this Milano Cortina 2026 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -18272,6 +18875,11 @@
           "Speedskating",
           "Track and Field"
         ],
+        "allSportTags": [
+          "Rowing",
+          "Speedskating",
+          "Track and Field"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Rowing",
@@ -18352,6 +18960,11 @@
         "aggregateSignal": "medium",
         "primarySportTag": "Para Track and Field",
         "topSportTags": [
+          "Para Track and Field",
+          "Wheelchair Basketball",
+          "Sled Hockey"
+        ],
+        "allSportTags": [
           "Para Track and Field",
           "Wheelchair Basketball",
           "Sled Hockey"
@@ -18640,6 +19253,10 @@
               "Rowing",
               "Track and Field"
             ],
+            "allSportTags": [
+              "Rowing",
+              "Track and Field"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Rowing",
@@ -18695,6 +19312,10 @@
             "aggregateSignal": "medium",
             "primarySportTag": "Para Track and Field",
             "topSportTags": [
+              "Para Track and Field",
+              "Wheelchair Basketball"
+            ],
+            "allSportTags": [
               "Para Track and Field",
               "Wheelchair Basketball"
             ],
@@ -18886,6 +19507,9 @@
             "topSportTags": [
               "Speedskating"
             ],
+            "allSportTags": [
+              "Speedskating"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Speedskating",
@@ -18929,6 +19553,9 @@
             "aggregateSignal": "low",
             "primarySportTag": "Sled Hockey",
             "topSportTags": [
+              "Sled Hockey"
+            ],
+            "allSportTags": [
               "Sled Hockey"
             ],
             "sportTagCandidates": [
@@ -19149,6 +19776,9 @@
         "topSportTags": [
           "Shooting"
         ],
+        "allSportTags": [
+          "Shooting"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Shooting",
@@ -19202,6 +19832,13 @@
           "Para Archery",
           "Para Nordic Skiing",
           "Para Swimming"
+        ],
+        "allSportTags": [
+          "Para Archery",
+          "Para Nordic Skiing",
+          "Para Swimming",
+          "Wheelchair Rugby",
+          "Wheelchair Tennis"
         ],
         "sportTagCandidates": [
           {
@@ -19494,6 +20131,9 @@
             "topSportTags": [
               "Shooting"
             ],
+            "allSportTags": [
+              "Shooting"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Shooting",
@@ -19537,6 +20177,12 @@
               "Para Archery",
               "Para Swimming",
               "Wheelchair Rugby"
+            ],
+            "allSportTags": [
+              "Para Archery",
+              "Para Swimming",
+              "Wheelchair Rugby",
+              "Wheelchair Tennis"
             ],
             "sportTagCandidates": [
               {
@@ -19727,6 +20373,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "Kansas has no public Olympic hometown geography roster signal in this Milano Cortina 2026 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -19751,6 +20398,9 @@
             "aggregateSignal": "low",
             "primarySportTag": "Para Nordic Skiing",
             "topSportTags": [
+              "Para Nordic Skiing"
+            ],
+            "allSportTags": [
               "Para Nordic Skiing"
             ],
             "sportTagCandidates": [
@@ -19949,6 +20599,11 @@
           "Swimming",
           "Track and Field"
         ],
+        "allSportTags": [
+          "Fencing",
+          "Swimming",
+          "Track and Field"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Fencing",
@@ -20026,6 +20681,12 @@
           "Para Biathlon",
           "Para Nordic Skiing",
           "Para-Cycling"
+        ],
+        "allSportTags": [
+          "Para Biathlon",
+          "Para Nordic Skiing",
+          "Para-Cycling",
+          "Para-Rowing"
         ],
         "sportTagCandidates": [
           {
@@ -20300,6 +20961,11 @@
               "Swimming",
               "Track and Field"
             ],
+            "allSportTags": [
+              "Fencing",
+              "Swimming",
+              "Track and Field"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Fencing",
@@ -20367,6 +21033,12 @@
               "Para Biathlon",
               "Para Nordic Skiing",
               "Para-Cycling"
+            ],
+            "allSportTags": [
+              "Para Biathlon",
+              "Para Nordic Skiing",
+              "Para-Cycling",
+              "Para-Rowing"
             ],
             "sportTagCandidates": [
               {
@@ -20571,6 +21243,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "Kentucky has no public Olympic hometown geography roster signal in this Milano Cortina 2026 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -20598,6 +21271,12 @@
               "Para Biathlon",
               "Para Nordic Skiing",
               "Para-Cycling"
+            ],
+            "allSportTags": [
+              "Para Biathlon",
+              "Para Nordic Skiing",
+              "Para-Cycling",
+              "Para-Rowing"
             ],
             "sportTagCandidates": [
               {
@@ -20840,6 +21519,12 @@
           "Beach Volleyball",
           "Gymnastics"
         ],
+        "allSportTags": [
+          "Track and Field",
+          "Beach Volleyball",
+          "Gymnastics",
+          "Volleyball"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Track and Field",
@@ -20925,6 +21610,9 @@
         "aggregateSignal": "low",
         "primarySportTag": "Para Snowboarding",
         "topSportTags": [
+          "Para Snowboarding"
+        ],
+        "allSportTags": [
           "Para Snowboarding"
         ],
         "sportTagCandidates": [
@@ -21138,6 +21826,12 @@
               "Beach Volleyball",
               "Gymnastics"
             ],
+            "allSportTags": [
+              "Track and Field",
+              "Beach Volleyball",
+              "Gymnastics",
+              "Volleyball"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Track and Field",
@@ -21213,6 +21907,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "Louisiana has no public Paralympic hometown geography roster signal in this Paris 2024 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -21344,6 +22039,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "Louisiana has no public Olympic hometown geography roster signal in this Milano Cortina 2026 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -21368,6 +22064,9 @@
             "aggregateSignal": "low",
             "primarySportTag": "Para Snowboarding",
             "topSportTags": [
+              "Para Snowboarding"
+            ],
+            "allSportTags": [
               "Para Snowboarding"
             ],
             "sportTagCandidates": [
@@ -21566,6 +22265,11 @@
           "Bobsled",
           "Snowboarding"
         ],
+        "allSportTags": [
+          "Alpine Skiing",
+          "Bobsled",
+          "Snowboarding"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Alpine Skiing",
@@ -21649,6 +22353,9 @@
         "aggregateSignal": "low",
         "primarySportTag": "Para-Cycling",
         "topSportTags": [
+          "Para-Cycling"
+        ],
+        "allSportTags": [
           "Para-Cycling"
         ],
         "sportTagCandidates": [
@@ -21839,6 +22546,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "Maine has no public Olympic hometown geography roster signal in this Paris 2024 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -21863,6 +22571,9 @@
             "aggregateSignal": "low",
             "primarySportTag": "Para-Cycling",
             "topSportTags": [
+              "Para-Cycling"
+            ],
+            "allSportTags": [
               "Para-Cycling"
             ],
             "sportTagCandidates": [
@@ -22038,6 +22749,11 @@
               "Bobsled",
               "Snowboarding"
             ],
+            "allSportTags": [
+              "Alpine Skiing",
+              "Bobsled",
+              "Snowboarding"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Alpine Skiing",
@@ -22111,6 +22827,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "Maine has no public Paralympic hometown geography roster signal in this Milano Cortina 2026 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -22440,6 +23157,18 @@
           "Track and Field",
           "Wrestling"
         ],
+        "allSportTags": [
+          "Swimming",
+          "Track and Field",
+          "Wrestling",
+          "Bobsled",
+          "Basketball",
+          "Boxing",
+          "Fencing",
+          "Gymnastics",
+          "Triathlon",
+          "Volleyball"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Swimming",
@@ -22577,6 +23306,13 @@
           "Para Swimming",
           "Para Track and Field",
           "Sled Hockey"
+        ],
+        "allSportTags": [
+          "Para Swimming",
+          "Para Track and Field",
+          "Sled Hockey",
+          "Wheelchair Basketball",
+          "Wheelchair Fencing"
         ],
         "sportTagCandidates": [
           {
@@ -22995,6 +23731,17 @@
               "Track and Field",
               "Wrestling"
             ],
+            "allSportTags": [
+              "Swimming",
+              "Track and Field",
+              "Wrestling",
+              "Basketball",
+              "Boxing",
+              "Fencing",
+              "Gymnastics",
+              "Triathlon",
+              "Volleyball"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Swimming",
@@ -23121,6 +23868,12 @@
               "Para Swimming",
               "Para Track and Field",
               "Wheelchair Basketball"
+            ],
+            "allSportTags": [
+              "Para Swimming",
+              "Para Track and Field",
+              "Wheelchair Basketball",
+              "Wheelchair Fencing"
             ],
             "sportTagCandidates": [
               {
@@ -23353,6 +24106,9 @@
             "topSportTags": [
               "Bobsled"
             ],
+            "allSportTags": [
+              "Bobsled"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Bobsled",
@@ -23396,6 +24152,9 @@
             "aggregateSignal": "low",
             "primarySportTag": "Sled Hockey",
             "topSportTags": [
+              "Sled Hockey"
+            ],
+            "allSportTags": [
               "Sled Hockey"
             ],
             "sportTagCandidates": [
@@ -23870,6 +24629,25 @@
           "Ice Hockey",
           "Luge"
         ],
+        "allSportTags": [
+          "Rowing",
+          "Ice Hockey",
+          "Luge",
+          "Gymnastics",
+          "Rugby",
+          "Archery",
+          "Artistic Swimming",
+          "Bobsled",
+          "Cross-Country Skiing",
+          "Curling",
+          "Fencing",
+          "Field Hockey",
+          "Figure Skating",
+          "Shooting",
+          "Soccer",
+          "Speedskating",
+          "Triathlon"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Rowing",
@@ -24015,6 +24793,16 @@
           "Para-Rowing",
           "Para Alpine Skiing",
           "Sled Hockey"
+        ],
+        "allSportTags": [
+          "Para-Rowing",
+          "Para Alpine Skiing",
+          "Sled Hockey",
+          "Para Snowboarding",
+          "Para Swimming",
+          "Para Track and Field",
+          "Para-Equestrian",
+          "Wheelchair Curling"
         ],
         "sportTagCandidates": [
           {
@@ -24477,6 +25265,18 @@
               "Gymnastics",
               "Rugby"
             ],
+            "allSportTags": [
+              "Rowing",
+              "Gymnastics",
+              "Rugby",
+              "Archery",
+              "Artistic Swimming",
+              "Fencing",
+              "Field Hockey",
+              "Shooting",
+              "Soccer",
+              "Triathlon"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Rowing",
@@ -24603,6 +25403,12 @@
               "Para-Rowing",
               "Para Swimming",
               "Para Track and Field"
+            ],
+            "allSportTags": [
+              "Para-Rowing",
+              "Para Swimming",
+              "Para Track and Field",
+              "Para-Equestrian"
             ],
             "sportTagCandidates": [
               {
@@ -24967,6 +25773,15 @@
               "Luge",
               "Bobsled"
             ],
+            "allSportTags": [
+              "Ice Hockey",
+              "Luge",
+              "Bobsled",
+              "Cross-Country Skiing",
+              "Curling",
+              "Figure Skating",
+              "Speedskating"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Ice Hockey",
@@ -25099,6 +25914,12 @@
               "Para Alpine Skiing",
               "Sled Hockey",
               "Para Snowboarding"
+            ],
+            "allSportTags": [
+              "Para Alpine Skiing",
+              "Sled Hockey",
+              "Para Snowboarding",
+              "Wheelchair Curling"
             ],
             "sportTagCandidates": [
               {
@@ -25598,6 +26419,20 @@
           "Track and Field",
           "Figure Skating"
         ],
+        "allSportTags": [
+          "Ice Hockey",
+          "Track and Field",
+          "Figure Skating",
+          "Freestyle Skiing",
+          "Rugby",
+          "Snowboarding",
+          "Basketball",
+          "Cycling",
+          "Field Hockey",
+          "Rowing",
+          "Sport Climbing",
+          "Wrestling"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Ice Hockey",
@@ -25743,6 +26578,15 @@
           "Para Badminton",
           "Para Nordic Skiing",
           "Para Powerlifting"
+        ],
+        "allSportTags": [
+          "Para Badminton",
+          "Para Nordic Skiing",
+          "Para Powerlifting",
+          "Para Taekwondo",
+          "Para Track and Field",
+          "Para-Cycling",
+          "Wheelchair Basketball"
         ],
         "sportTagCandidates": [
           {
@@ -26178,6 +27022,16 @@
               "Rugby",
               "Basketball"
             ],
+            "allSportTags": [
+              "Track and Field",
+              "Rugby",
+              "Basketball",
+              "Cycling",
+              "Field Hockey",
+              "Rowing",
+              "Sport Climbing",
+              "Wrestling"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Track and Field",
@@ -26305,6 +27159,14 @@
               "Para Badminton",
               "Para Powerlifting",
               "Para Taekwondo"
+            ],
+            "allSportTags": [
+              "Para Badminton",
+              "Para Powerlifting",
+              "Para Taekwondo",
+              "Para Track and Field",
+              "Para-Cycling",
+              "Wheelchair Basketball"
             ],
             "sportTagCandidates": [
               {
@@ -26673,6 +27535,12 @@
               "Figure Skating",
               "Freestyle Skiing"
             ],
+            "allSportTags": [
+              "Ice Hockey",
+              "Figure Skating",
+              "Freestyle Skiing",
+              "Snowboarding"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Ice Hockey",
@@ -26757,6 +27625,9 @@
             "aggregateSignal": "low",
             "primarySportTag": "Para Nordic Skiing",
             "topSportTags": [
+              "Para Nordic Skiing"
+            ],
+            "allSportTags": [
               "Para Nordic Skiing"
             ],
             "sportTagCandidates": [
@@ -27304,6 +28175,22 @@
           "Curling",
           "Track and Field"
         ],
+        "allSportTags": [
+          "Ice Hockey",
+          "Curling",
+          "Track and Field",
+          "Biathlon",
+          "Cross-Country Skiing",
+          "Speedskating",
+          "Alpine Skiing",
+          "Cycling",
+          "Freestyle Skiing",
+          "Gymnastics",
+          "Sailing",
+          "Snowboarding",
+          "Swimming",
+          "Volleyball"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Ice Hockey",
@@ -27460,6 +28347,20 @@
           "Para Nordic Skiing",
           "Para Swimming",
           "Wheelchair Basketball"
+        ],
+        "allSportTags": [
+          "Para Nordic Skiing",
+          "Para Swimming",
+          "Wheelchair Basketball",
+          "Para Alpine Skiing",
+          "Para Snowboarding",
+          "Para Table Tennis",
+          "Para Track and Field",
+          "Para-Rowing",
+          "Sitting Volleyball",
+          "Sled Hockey",
+          "Wheelchair Curling",
+          "Wheelchair Rugby"
         ],
         "sportTagCandidates": [
           {
@@ -27907,6 +28808,14 @@
               "Cycling",
               "Gymnastics"
             ],
+            "allSportTags": [
+              "Track and Field",
+              "Cycling",
+              "Gymnastics",
+              "Sailing",
+              "Swimming",
+              "Volleyball"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Track and Field",
@@ -28010,6 +28919,16 @@
               "Para Swimming",
               "Wheelchair Basketball",
               "Para Nordic Skiing"
+            ],
+            "allSportTags": [
+              "Para Swimming",
+              "Wheelchair Basketball",
+              "Para Nordic Skiing",
+              "Para Table Tennis",
+              "Para Track and Field",
+              "Para-Rowing",
+              "Sitting Volleyball",
+              "Wheelchair Rugby"
             ],
             "sportTagCandidates": [
               {
@@ -28542,6 +29461,16 @@
               "Curling",
               "Biathlon"
             ],
+            "allSportTags": [
+              "Ice Hockey",
+              "Curling",
+              "Biathlon",
+              "Cross-Country Skiing",
+              "Speedskating",
+              "Alpine Skiing",
+              "Freestyle Skiing",
+              "Snowboarding"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Ice Hockey",
@@ -28692,6 +29621,14 @@
               "Para Nordic Skiing",
               "Para Alpine Skiing",
               "Para Snowboarding"
+            ],
+            "allSportTags": [
+              "Para Nordic Skiing",
+              "Para Alpine Skiing",
+              "Para Snowboarding",
+              "Para Track and Field",
+              "Sled Hockey",
+              "Wheelchair Curling"
             ],
             "sportTagCandidates": [
               {
@@ -28949,6 +29886,9 @@
         "topSportTags": [
           "Track and Field"
         ],
+        "allSportTags": [
+          "Track and Field"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Track and Field",
@@ -29000,6 +29940,7 @@
         "aggregateSignal": "insufficient_data",
         "primarySportTag": null,
         "topSportTags": [],
+        "allSportTags": [],
         "sportTagCandidates": [],
         "geographyConnection": "Mississippi has no public Paralympic hometown geography roster signal in this combined Paris 2024 and Milano Cortina 2026 public roster view.",
         "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -29180,6 +30121,9 @@
             "topSportTags": [
               "Track and Field"
             ],
+            "allSportTags": [
+              "Track and Field"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Track and Field",
@@ -29221,6 +30165,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "Mississippi has no public Paralympic hometown geography roster signal in this Paris 2024 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -29331,6 +30276,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "Mississippi has no public Olympic hometown geography roster signal in this Milano Cortina 2026 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -29355,6 +30301,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "Mississippi has no public Paralympic hometown geography roster signal in this Milano Cortina 2026 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -29585,6 +30532,15 @@
           "Ice Hockey",
           "Basketball"
         ],
+        "allSportTags": [
+          "Track and Field",
+          "Ice Hockey",
+          "Basketball",
+          "Bobsled",
+          "Diving",
+          "Shooting",
+          "Soccer"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Track and Field",
@@ -29713,6 +30669,12 @@
           "Para Snowboarding",
           "Para Swimming",
           "Para-Cycling"
+        ],
+        "allSportTags": [
+          "Para Snowboarding",
+          "Para Swimming",
+          "Para-Cycling",
+          "Paratriathlon"
         ],
         "sportTagCandidates": [
           {
@@ -30031,6 +30993,13 @@
               "Basketball",
               "Diving"
             ],
+            "allSportTags": [
+              "Track and Field",
+              "Basketball",
+              "Diving",
+              "Shooting",
+              "Soccer"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Track and Field",
@@ -30117,6 +31086,11 @@
             "aggregateSignal": "low",
             "primarySportTag": "Paratriathlon",
             "topSportTags": [
+              "Para Swimming",
+              "Para-Cycling",
+              "Paratriathlon"
+            ],
+            "allSportTags": [
               "Para Swimming",
               "Para-Cycling",
               "Paratriathlon"
@@ -30352,6 +31326,10 @@
               "Ice Hockey",
               "Bobsled"
             ],
+            "allSportTags": [
+              "Ice Hockey",
+              "Bobsled"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Ice Hockey",
@@ -30409,6 +31387,9 @@
             "aggregateSignal": "low",
             "primarySportTag": "Para Snowboarding",
             "topSportTags": [
+              "Para Snowboarding"
+            ],
+            "allSportTags": [
               "Para Snowboarding"
             ],
             "sportTagCandidates": [
@@ -30641,6 +31622,12 @@
           "Ice Hockey",
           "Shooting"
         ],
+        "allSportTags": [
+          "Archery",
+          "Ice Hockey",
+          "Shooting",
+          "Swimming"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Archery",
@@ -30728,6 +31715,11 @@
         "aggregateSignal": "low",
         "primarySportTag": "Para Nordic Skiing",
         "topSportTags": [
+          "Para Nordic Skiing",
+          "Para Biathlon",
+          "Wheelchair Curling"
+        ],
+        "allSportTags": [
           "Para Nordic Skiing",
           "Para Biathlon",
           "Wheelchair Curling"
@@ -30994,6 +31986,11 @@
               "Shooting",
               "Swimming"
             ],
+            "allSportTags": [
+              "Archery",
+              "Shooting",
+              "Swimming"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Archery",
@@ -31057,6 +32054,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "Montana has no public Paralympic hometown geography roster signal in this Paris 2024 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -31234,6 +32232,9 @@
             "topSportTags": [
               "Ice Hockey"
             ],
+            "allSportTags": [
+              "Ice Hockey"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Ice Hockey",
@@ -31276,6 +32277,11 @@
             "aggregateSignal": "low",
             "primarySportTag": "Para Nordic Skiing",
             "topSportTags": [
+              "Para Nordic Skiing",
+              "Para Biathlon",
+              "Wheelchair Curling"
+            ],
+            "allSportTags": [
               "Para Nordic Skiing",
               "Para Biathlon",
               "Wheelchair Curling"
@@ -31532,6 +32538,12 @@
           "Soccer",
           "Track and Field"
         ],
+        "allSportTags": [
+          "Basketball",
+          "Soccer",
+          "Track and Field",
+          "Volleyball"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Basketball",
@@ -31616,6 +32628,10 @@
         "aggregateSignal": "low",
         "primarySportTag": "Para Track and Field",
         "topSportTags": [
+          "Para Track and Field",
+          "Wheelchair Basketball"
+        ],
+        "allSportTags": [
           "Para Track and Field",
           "Wheelchair Basketball"
         ],
@@ -31874,6 +32890,12 @@
               "Soccer",
               "Track and Field"
             ],
+            "allSportTags": [
+              "Basketball",
+              "Soccer",
+              "Track and Field",
+              "Volleyball"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Basketball",
@@ -31948,6 +32970,10 @@
             "aggregateSignal": "low",
             "primarySportTag": "Para Track and Field",
             "topSportTags": [
+              "Para Track and Field",
+              "Wheelchair Basketball"
+            ],
+            "allSportTags": [
               "Para Track and Field",
               "Wheelchair Basketball"
             ],
@@ -32098,6 +33124,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "Nebraska has no public Olympic hometown geography roster signal in this Milano Cortina 2026 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -32122,6 +33149,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "Nebraska has no public Paralympic hometown geography roster signal in this Milano Cortina 2026 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -32290,6 +33318,15 @@
           "Badminton",
           "Cycling"
         ],
+        "allSportTags": [
+          "Swimming",
+          "Badminton",
+          "Cycling",
+          "Rugby",
+          "Shooting",
+          "Taekwondo",
+          "Track and Field"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Swimming",
@@ -32411,6 +33448,7 @@
         "aggregateSignal": "insufficient_data",
         "primarySportTag": null,
         "topSportTags": [],
+        "allSportTags": [],
         "sportTagCandidates": [],
         "geographyConnection": "Nevada has no public Paralympic hometown geography roster signal in this combined Paris 2024 and Milano Cortina 2026 public roster view.",
         "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -32610,6 +33648,15 @@
               "Badminton",
               "Cycling"
             ],
+            "allSportTags": [
+              "Swimming",
+              "Badminton",
+              "Cycling",
+              "Rugby",
+              "Shooting",
+              "Taekwondo",
+              "Track and Field"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Swimming",
@@ -32721,6 +33768,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "Nevada has no public Paralympic hometown geography roster signal in this Paris 2024 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -32830,6 +33878,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "Nevada has no public Olympic hometown geography roster signal in this Milano Cortina 2026 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -32854,6 +33903,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "Nevada has no public Paralympic hometown geography roster signal in this Milano Cortina 2026 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -33058,6 +34108,13 @@
           "Diving",
           "Freestyle Skiing"
         ],
+        "allSportTags": [
+          "Biathlon",
+          "Diving",
+          "Freestyle Skiing",
+          "Ice Hockey",
+          "Rowing"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Biathlon",
@@ -33165,6 +34222,9 @@
         "aggregateSignal": "low",
         "primarySportTag": "Para Track and Field",
         "topSportTags": [
+          "Para Track and Field"
+        ],
+        "allSportTags": [
           "Para Track and Field"
         ],
         "sportTagCandidates": [
@@ -33403,6 +34463,10 @@
               "Diving",
               "Rowing"
             ],
+            "allSportTags": [
+              "Diving",
+              "Rowing"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Diving",
@@ -33456,6 +34520,9 @@
             "aggregateSignal": "low",
             "primarySportTag": "Para Track and Field",
             "topSportTags": [
+              "Para Track and Field"
+            ],
+            "allSportTags": [
               "Para Track and Field"
             ],
             "sportTagCandidates": [
@@ -33655,6 +34722,11 @@
               "Freestyle Skiing",
               "Ice Hockey"
             ],
+            "allSportTags": [
+              "Biathlon",
+              "Freestyle Skiing",
+              "Ice Hockey"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Biathlon",
@@ -33727,6 +34799,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "New Hampshire has no public Paralympic hometown geography roster signal in this Milano Cortina 2026 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -34137,6 +35210,24 @@
           "Fencing",
           "Soccer"
         ],
+        "allSportTags": [
+          "Track and Field",
+          "Fencing",
+          "Soccer",
+          "Swimming",
+          "Snowboarding",
+          "Basketball",
+          "Field Hockey",
+          "Figure Skating",
+          "Golf",
+          "Gymnastics",
+          "Judo",
+          "Rowing",
+          "Skeleton",
+          "Sport Climbing",
+          "Table Tennis",
+          "Triathlon"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Track and Field",
@@ -34274,6 +35365,13 @@
           "Sled Hockey",
           "Para Alpine Skiing",
           "Para Swimming"
+        ],
+        "allSportTags": [
+          "Sled Hockey",
+          "Para Alpine Skiing",
+          "Para Swimming",
+          "Para Track and Field",
+          "Paracanoe"
         ],
         "sportTagCandidates": [
           {
@@ -34726,6 +35824,21 @@
               "Fencing",
               "Soccer"
             ],
+            "allSportTags": [
+              "Track and Field",
+              "Fencing",
+              "Soccer",
+              "Swimming",
+              "Basketball",
+              "Field Hockey",
+              "Golf",
+              "Gymnastics",
+              "Judo",
+              "Rowing",
+              "Sport Climbing",
+              "Table Tennis",
+              "Triathlon"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Track and Field",
@@ -34847,6 +35960,10 @@
             "aggregateSignal": "low",
             "primarySportTag": "Para Track and Field",
             "topSportTags": [
+              "Para Swimming",
+              "Para Track and Field"
+            ],
+            "allSportTags": [
               "Para Swimming",
               "Para Track and Field"
             ],
@@ -35093,6 +36210,11 @@
               "Figure Skating",
               "Skeleton"
             ],
+            "allSportTags": [
+              "Snowboarding",
+              "Figure Skating",
+              "Skeleton"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Snowboarding",
@@ -35163,6 +36285,11 @@
             "aggregateSignal": "low",
             "primarySportTag": "Para Alpine Skiing",
             "topSportTags": [
+              "Sled Hockey",
+              "Para Alpine Skiing",
+              "Paracanoe"
+            ],
+            "allSportTags": [
               "Sled Hockey",
               "Para Alpine Skiing",
               "Paracanoe"
@@ -35395,6 +36522,10 @@
           "Skateboarding",
           "Track and Field"
         ],
+        "allSportTags": [
+          "Skateboarding",
+          "Track and Field"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Skateboarding",
@@ -35458,6 +36589,10 @@
         "aggregateSignal": "low",
         "primarySportTag": "Para Nordic Skiing",
         "topSportTags": [
+          "Para Nordic Skiing",
+          "Sled Hockey"
+        ],
+        "allSportTags": [
           "Para Nordic Skiing",
           "Sled Hockey"
         ],
@@ -35682,6 +36817,10 @@
               "Skateboarding",
               "Track and Field"
             ],
+            "allSportTags": [
+              "Skateboarding",
+              "Track and Field"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Skateboarding",
@@ -35735,6 +36874,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "New Mexico has no public Paralympic hometown geography roster signal in this Paris 2024 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -35865,6 +37005,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "New Mexico has no public Olympic hometown geography roster signal in this Milano Cortina 2026 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -35889,6 +37030,10 @@
             "aggregateSignal": "low",
             "primarySportTag": "Para Nordic Skiing",
             "topSportTags": [
+              "Para Nordic Skiing",
+              "Sled Hockey"
+            ],
+            "allSportTags": [
               "Para Nordic Skiing",
               "Sled Hockey"
             ],
@@ -36378,6 +37523,28 @@
           "Luge",
           "Soccer"
         ],
+        "allSportTags": [
+          "Ice Hockey",
+          "Luge",
+          "Soccer",
+          "Track and Field",
+          "Rowing",
+          "Basketball",
+          "Fencing",
+          "Freestyle Skiing",
+          "Speedskating",
+          "Artistic Swimming",
+          "Breaking",
+          "Curling",
+          "Cycling",
+          "Equestrian",
+          "Short Track Speedskating",
+          "Ski Jumping",
+          "Swimming",
+          "Tennis",
+          "Volleyball",
+          "Wrestling"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Ice Hockey",
@@ -36524,6 +37691,16 @@
           "Para Track and Field",
           "Para Alpine Skiing",
           "Para Swimming"
+        ],
+        "allSportTags": [
+          "Para Track and Field",
+          "Para Alpine Skiing",
+          "Para Swimming",
+          "Para Table Tennis",
+          "Para-Rowing",
+          "Wheelchair Basketball",
+          "Wheelchair Fencing",
+          "Wheelchair Rugby"
         ],
         "sportTagCandidates": [
           {
@@ -37073,6 +38250,21 @@
               "Track and Field",
               "Rowing"
             ],
+            "allSportTags": [
+              "Soccer",
+              "Track and Field",
+              "Rowing",
+              "Basketball",
+              "Fencing",
+              "Artistic Swimming",
+              "Breaking",
+              "Cycling",
+              "Equestrian",
+              "Swimming",
+              "Tennis",
+              "Volleyball",
+              "Wrestling"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Soccer",
@@ -37201,6 +38393,15 @@
               "Para Track and Field",
               "Para Swimming",
               "Para Table Tennis"
+            ],
+            "allSportTags": [
+              "Para Track and Field",
+              "Para Swimming",
+              "Para Table Tennis",
+              "Para-Rowing",
+              "Wheelchair Basketball",
+              "Wheelchair Fencing",
+              "Wheelchair Rugby"
             ],
             "sportTagCandidates": [
               {
@@ -37540,6 +38741,15 @@
               "Luge",
               "Freestyle Skiing"
             ],
+            "allSportTags": [
+              "Ice Hockey",
+              "Luge",
+              "Freestyle Skiing",
+              "Speedskating",
+              "Curling",
+              "Short Track Speedskating",
+              "Ski Jumping"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Ice Hockey",
@@ -37672,6 +38882,9 @@
             "aggregateSignal": "low",
             "primarySportTag": "Para Alpine Skiing",
             "topSportTags": [
+              "Para Alpine Skiing"
+            ],
+            "allSportTags": [
               "Para Alpine Skiing"
             ],
             "sportTagCandidates": [
@@ -37977,6 +39190,15 @@
           "Rugby",
           "3x3 Basketball"
         ],
+        "allSportTags": [
+          "Track and Field",
+          "Rugby",
+          "3x3 Basketball",
+          "Canoe/Kayak",
+          "Diving",
+          "Soccer",
+          "Tennis"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Track and Field",
@@ -38101,6 +39323,15 @@
           "Para Swimming",
           "Sitting Volleyball",
           "Para Judo"
+        ],
+        "allSportTags": [
+          "Para Swimming",
+          "Sitting Volleyball",
+          "Para Judo",
+          "Para Track and Field",
+          "Paratriathlon",
+          "Sled Hockey",
+          "Wheelchair Tennis"
         ],
         "sportTagCandidates": [
           {
@@ -38493,6 +39724,15 @@
               "Rugby",
               "3x3 Basketball"
             ],
+            "allSportTags": [
+              "Track and Field",
+              "Rugby",
+              "3x3 Basketball",
+              "Canoe/Kayak",
+              "Diving",
+              "Soccer",
+              "Tennis"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Track and Field",
@@ -38607,6 +39847,14 @@
               "Para Swimming",
               "Sitting Volleyball",
               "Para Judo"
+            ],
+            "allSportTags": [
+              "Para Swimming",
+              "Sitting Volleyball",
+              "Para Judo",
+              "Para Track and Field",
+              "Paratriathlon",
+              "Wheelchair Tennis"
             ],
             "sportTagCandidates": [
               {
@@ -38828,6 +40076,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "North Carolina has no public Olympic hometown geography roster signal in this Milano Cortina 2026 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -38852,6 +40101,9 @@
             "aggregateSignal": "low",
             "primarySportTag": "Sled Hockey",
             "topSportTags": [
+              "Sled Hockey"
+            ],
+            "allSportTags": [
               "Sled Hockey"
             ],
             "sportTagCandidates": [
@@ -39002,6 +40254,9 @@
         "topSportTags": [
           "Ice Hockey"
         ],
+        "allSportTags": [
+          "Ice Hockey"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Ice Hockey",
@@ -39054,6 +40309,7 @@
         "aggregateSignal": "insufficient_data",
         "primarySportTag": null,
         "topSportTags": [],
+        "allSportTags": [],
         "sportTagCandidates": [],
         "geographyConnection": "North Dakota has no public Paralympic hometown geography roster signal in this combined Paris 2024 and Milano Cortina 2026 public roster view.",
         "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -39196,6 +40452,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "North Dakota has no public Olympic hometown geography roster signal in this Paris 2024 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -39220,6 +40477,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "North Dakota has no public Paralympic hometown geography roster signal in this Paris 2024 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -39348,6 +40606,9 @@
             "topSportTags": [
               "Ice Hockey"
             ],
+            "allSportTags": [
+              "Ice Hockey"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Ice Hockey",
@@ -39390,6 +40651,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "North Dakota has no public Paralympic hometown geography roster signal in this Milano Cortina 2026 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -39708,6 +40970,17 @@
           "Freestyle Skiing",
           "Ice Hockey"
         ],
+        "allSportTags": [
+          "Track and Field",
+          "Freestyle Skiing",
+          "Ice Hockey",
+          "Basketball",
+          "Rowing",
+          "Swimming",
+          "Boxing",
+          "Soccer",
+          "Volleyball"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Track and Field",
@@ -39849,6 +41122,12 @@
           "Para Track and Field",
           "Paratriathlon",
           "Paracanoe"
+        ],
+        "allSportTags": [
+          "Para Track and Field",
+          "Paratriathlon",
+          "Paracanoe",
+          "Wheelchair Fencing"
         ],
         "sportTagCandidates": [
           {
@@ -40228,6 +41507,15 @@
               "Basketball",
               "Rowing"
             ],
+            "allSportTags": [
+              "Track and Field",
+              "Basketball",
+              "Rowing",
+              "Swimming",
+              "Boxing",
+              "Soccer",
+              "Volleyball"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Track and Field",
@@ -40341,6 +41629,12 @@
               "Para Track and Field",
               "Paratriathlon",
               "Paracanoe"
+            ],
+            "allSportTags": [
+              "Para Track and Field",
+              "Paratriathlon",
+              "Paracanoe",
+              "Wheelchair Fencing"
             ],
             "sportTagCandidates": [
               {
@@ -40608,6 +41902,10 @@
               "Freestyle Skiing",
               "Ice Hockey"
             ],
+            "allSportTags": [
+              "Freestyle Skiing",
+              "Ice Hockey"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Freestyle Skiing",
@@ -40665,6 +41963,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "Ohio has no public Paralympic hometown geography roster signal in this Milano Cortina 2026 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -40856,6 +42155,9 @@
         "topSportTags": [
           "Track and Field"
         ],
+        "allSportTags": [
+          "Track and Field"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Track and Field",
@@ -40907,6 +42209,10 @@
         "aggregateSignal": "low",
         "primarySportTag": "Para Track and Field",
         "topSportTags": [
+          "Para Track and Field",
+          "Sitting Volleyball"
+        ],
+        "allSportTags": [
           "Para Track and Field",
           "Sitting Volleyball"
         ],
@@ -41163,6 +42469,9 @@
             "topSportTags": [
               "Track and Field"
             ],
+            "allSportTags": [
+              "Track and Field"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Track and Field",
@@ -41204,6 +42513,10 @@
             "aggregateSignal": "low",
             "primarySportTag": "Para Track and Field",
             "topSportTags": [
+              "Para Track and Field",
+              "Sitting Volleyball"
+            ],
+            "allSportTags": [
               "Para Track and Field",
               "Sitting Volleyball"
             ],
@@ -41354,6 +42667,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "Oklahoma has no public Olympic hometown geography roster signal in this Milano Cortina 2026 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -41378,6 +42692,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "Oklahoma has no public Paralympic hometown geography roster signal in this Milano Cortina 2026 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -41592,6 +42907,16 @@
           "Track and Field",
           "3x3 Basketball"
         ],
+        "allSportTags": [
+          "Snowboarding",
+          "Track and Field",
+          "3x3 Basketball",
+          "Alpine Skiing",
+          "Fencing",
+          "Freestyle Skiing",
+          "Rowing",
+          "Volleyball"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Snowboarding",
@@ -41739,6 +43064,12 @@
           "Para Alpine Skiing",
           "Para-Cycling",
           "Wheelchair Basketball"
+        ],
+        "allSportTags": [
+          "Para Alpine Skiing",
+          "Para-Cycling",
+          "Wheelchair Basketball",
+          "Wheelchair Tennis"
         ],
         "sportTagCandidates": [
           {
@@ -42020,6 +43351,13 @@
               "3x3 Basketball",
               "Fencing"
             ],
+            "allSportTags": [
+              "Track and Field",
+              "3x3 Basketball",
+              "Fencing",
+              "Rowing",
+              "Volleyball"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Track and Field",
@@ -42109,6 +43447,11 @@
             "aggregateSignal": "low",
             "primarySportTag": "Para-Cycling",
             "topSportTags": [
+              "Para-Cycling",
+              "Wheelchair Basketball",
+              "Wheelchair Tennis"
+            ],
+            "allSportTags": [
               "Para-Cycling",
               "Wheelchair Basketball",
               "Wheelchair Tennis"
@@ -42353,6 +43696,11 @@
               "Alpine Skiing",
               "Freestyle Skiing"
             ],
+            "allSportTags": [
+              "Snowboarding",
+              "Alpine Skiing",
+              "Freestyle Skiing"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Snowboarding",
@@ -42426,6 +43774,9 @@
             "aggregateSignal": "low",
             "primarySportTag": "Para Alpine Skiing",
             "topSportTags": [
+              "Para Alpine Skiing"
+            ],
+            "allSportTags": [
               "Para Alpine Skiing"
             ],
             "sportTagCandidates": [
@@ -42920,6 +44271,27 @@
           "Rowing",
           "Swimming"
         ],
+        "allSportTags": [
+          "Field Hockey",
+          "Rowing",
+          "Swimming",
+          "Basketball",
+          "Ice Hockey",
+          "Track and Field",
+          "Wrestling",
+          "Archery",
+          "Bobsled",
+          "Canoe/Kayak",
+          "Curling",
+          "Equestrian",
+          "Fencing",
+          "Luge",
+          "Rugby",
+          "Short Track Speedskating",
+          "Skeleton",
+          "Speedskating",
+          "Water Polo"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Field Hockey",
@@ -43058,6 +44430,15 @@
           "Para-Cycling",
           "Para Swimming",
           "Paratriathlon"
+        ],
+        "allSportTags": [
+          "Para-Cycling",
+          "Para Swimming",
+          "Paratriathlon",
+          "Goalball",
+          "Para Archery",
+          "Para-Equestrian",
+          "Wheelchair Rugby"
         ],
         "sportTagCandidates": [
           {
@@ -43605,6 +44986,20 @@
               "Rowing",
               "Swimming"
             ],
+            "allSportTags": [
+              "Field Hockey",
+              "Rowing",
+              "Swimming",
+              "Basketball",
+              "Track and Field",
+              "Wrestling",
+              "Archery",
+              "Canoe/Kayak",
+              "Equestrian",
+              "Fencing",
+              "Rugby",
+              "Water Polo"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Field Hockey",
@@ -43733,6 +45128,15 @@
               "Para-Cycling",
               "Para Swimming",
               "Paratriathlon"
+            ],
+            "allSportTags": [
+              "Para-Cycling",
+              "Para Swimming",
+              "Paratriathlon",
+              "Goalball",
+              "Para Archery",
+              "Para-Equestrian",
+              "Wheelchair Rugby"
             ],
             "sportTagCandidates": [
               {
@@ -44043,6 +45447,15 @@
               "Bobsled",
               "Curling"
             ],
+            "allSportTags": [
+              "Ice Hockey",
+              "Bobsled",
+              "Curling",
+              "Luge",
+              "Short Track Speedskating",
+              "Skeleton",
+              "Speedskating"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Ice Hockey",
@@ -44175,6 +45588,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "Pennsylvania has no public Paralympic hometown geography roster signal in this Milano Cortina 2026 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -44330,6 +45744,10 @@
           "Rowing",
           "Sailing"
         ],
+        "allSportTags": [
+          "Rowing",
+          "Sailing"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Rowing",
@@ -44394,6 +45812,7 @@
         "aggregateSignal": "insufficient_data",
         "primarySportTag": null,
         "topSportTags": [],
+        "allSportTags": [],
         "sportTagCandidates": [],
         "geographyConnection": "Rhode Island has no public Paralympic hometown geography roster signal in this combined Paris 2024 and Milano Cortina 2026 public roster view.",
         "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -44577,6 +45996,10 @@
               "Rowing",
               "Sailing"
             ],
+            "allSportTags": [
+              "Rowing",
+              "Sailing"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Rowing",
@@ -44631,6 +46054,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "Rhode Island has no public Paralympic hometown geography roster signal in this Paris 2024 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -44743,6 +46167,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "Rhode Island has no public Olympic hometown geography roster signal in this Milano Cortina 2026 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -44767,6 +46192,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "Rhode Island has no public Paralympic hometown geography roster signal in this Milano Cortina 2026 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -44953,6 +46379,11 @@
           "Basketball",
           "Tennis"
         ],
+        "allSportTags": [
+          "Track and Field",
+          "Basketball",
+          "Tennis"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Track and Field",
@@ -45027,6 +46458,9 @@
         "aggregateSignal": "low",
         "primarySportTag": "Wheelchair Fencing",
         "topSportTags": [
+          "Wheelchair Fencing"
+        ],
+        "allSportTags": [
           "Wheelchair Fencing"
         ],
         "sportTagCandidates": [
@@ -45269,6 +46703,11 @@
               "Basketball",
               "Tennis"
             ],
+            "allSportTags": [
+              "Track and Field",
+              "Basketball",
+              "Tennis"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Track and Field",
@@ -45333,6 +46772,9 @@
             "aggregateSignal": "low",
             "primarySportTag": "Wheelchair Fencing",
             "topSportTags": [
+              "Wheelchair Fencing"
+            ],
+            "allSportTags": [
               "Wheelchair Fencing"
             ],
             "sportTagCandidates": [
@@ -45467,6 +46909,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "South Carolina has no public Olympic hometown geography roster signal in this Milano Cortina 2026 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -45491,6 +46934,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "South Carolina has no public Paralympic hometown geography roster signal in this Milano Cortina 2026 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -45640,6 +47084,10 @@
           "Beach Volleyball",
           "Track and Field"
         ],
+        "allSportTags": [
+          "Beach Volleyball",
+          "Track and Field"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Beach Volleyball",
@@ -45702,6 +47150,9 @@
         "aggregateSignal": "low",
         "primarySportTag": "Para Badminton",
         "topSportTags": [
+          "Para Badminton"
+        ],
+        "allSportTags": [
           "Para Badminton"
         ],
         "sportTagCandidates": [
@@ -45909,6 +47360,10 @@
               "Beach Volleyball",
               "Track and Field"
             ],
+            "allSportTags": [
+              "Beach Volleyball",
+              "Track and Field"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Beach Volleyball",
@@ -45961,6 +47416,9 @@
             "aggregateSignal": "low",
             "primarySportTag": "Para Badminton",
             "topSportTags": [
+              "Para Badminton"
+            ],
+            "allSportTags": [
               "Para Badminton"
             ],
             "sportTagCandidates": [
@@ -46097,6 +47555,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "South Dakota has no public Olympic hometown geography roster signal in this Milano Cortina 2026 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -46121,6 +47580,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "South Dakota has no public Paralympic hometown geography roster signal in this Milano Cortina 2026 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -46326,6 +47786,13 @@
           "Weightlifting",
           "3x3 Basketball"
         ],
+        "allSportTags": [
+          "Swimming",
+          "Weightlifting",
+          "3x3 Basketball",
+          "Track and Field",
+          "Triathlon"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Swimming",
@@ -46424,6 +47891,9 @@
         "aggregateSignal": "low",
         "primarySportTag": "Para Track and Field",
         "topSportTags": [
+          "Para Track and Field"
+        ],
+        "allSportTags": [
           "Para Track and Field"
         ],
         "sportTagCandidates": [
@@ -46688,6 +48158,13 @@
               "Weightlifting",
               "3x3 Basketball"
             ],
+            "allSportTags": [
+              "Swimming",
+              "Weightlifting",
+              "3x3 Basketball",
+              "Track and Field",
+              "Triathlon"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Swimming",
@@ -46776,6 +48253,9 @@
             "aggregateSignal": "low",
             "primarySportTag": "Para Track and Field",
             "topSportTags": [
+              "Para Track and Field"
+            ],
+            "allSportTags": [
               "Para Track and Field"
             ],
             "sportTagCandidates": [
@@ -46914,6 +48394,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "Tennessee has no public Olympic hometown geography roster signal in this Milano Cortina 2026 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -46938,6 +48419,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "Tennessee has no public Paralympic hometown geography roster signal in this Milano Cortina 2026 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -47368,6 +48850,28 @@
           "Shooting",
           "Boxing"
         ],
+        "allSportTags": [
+          "Track and Field",
+          "Shooting",
+          "Boxing",
+          "Swimming",
+          "Diving",
+          "Figure Skating",
+          "Gymnastics",
+          "Rowing",
+          "Rugby",
+          "Volleyball",
+          "Basketball",
+          "Bobsled",
+          "Breaking",
+          "Cycling",
+          "Field Hockey",
+          "Ice Hockey",
+          "Soccer",
+          "Sport Climbing",
+          "Taekwondo",
+          "Weightlifting"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Track and Field",
@@ -47505,6 +49009,13 @@
           "Para Track and Field",
           "Para Archery",
           "Para Shooting"
+        ],
+        "allSportTags": [
+          "Para Track and Field",
+          "Para Archery",
+          "Para Shooting",
+          "Wheelchair Basketball",
+          "Para Taekwondo"
         ],
         "sportTagCandidates": [
           {
@@ -48036,6 +49547,25 @@
               "Shooting",
               "Boxing"
             ],
+            "allSportTags": [
+              "Track and Field",
+              "Shooting",
+              "Boxing",
+              "Swimming",
+              "Diving",
+              "Gymnastics",
+              "Rowing",
+              "Rugby",
+              "Volleyball",
+              "Basketball",
+              "Breaking",
+              "Cycling",
+              "Field Hockey",
+              "Soccer",
+              "Sport Climbing",
+              "Taekwondo",
+              "Weightlifting"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Track and Field",
@@ -48162,6 +49692,13 @@
               "Para Track and Field",
               "Para Archery",
               "Para Shooting"
+            ],
+            "allSportTags": [
+              "Para Track and Field",
+              "Para Archery",
+              "Para Shooting",
+              "Wheelchair Basketball",
+              "Para Taekwondo"
             ],
             "sportTagCandidates": [
               {
@@ -48420,6 +49957,11 @@
               "Bobsled",
               "Ice Hockey"
             ],
+            "allSportTags": [
+              "Figure Skating",
+              "Bobsled",
+              "Ice Hockey"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Figure Skating",
@@ -48489,6 +50031,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "Texas has no public Paralympic hometown geography roster signal in this Milano Cortina 2026 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -48788,6 +50331,19 @@
           "Track and Field",
           "Alpine Skiing"
         ],
+        "allSportTags": [
+          "Freestyle Skiing",
+          "Track and Field",
+          "Alpine Skiing",
+          "Luge",
+          "Rugby",
+          "Ski Jumping",
+          "Bobsled",
+          "Cross-Country Skiing",
+          "Snowboarding",
+          "Soccer",
+          "Speedskating"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Freestyle Skiing",
@@ -48943,6 +50499,13 @@
           "Para Alpine Skiing",
           "Para Track and Field",
           "Para Snowboarding"
+        ],
+        "allSportTags": [
+          "Para Alpine Skiing",
+          "Para Track and Field",
+          "Para Snowboarding",
+          "Wheelchair Basketball",
+          "Wheelchair Fencing"
         ],
         "sportTagCandidates": [
           {
@@ -49303,6 +50866,11 @@
               "Rugby",
               "Soccer"
             ],
+            "allSportTags": [
+              "Track and Field",
+              "Rugby",
+              "Soccer"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Track and Field",
@@ -49366,6 +50934,11 @@
             "aggregateSignal": "low",
             "primarySportTag": "Para Track and Field",
             "topSportTags": [
+              "Para Track and Field",
+              "Wheelchair Basketball",
+              "Wheelchair Fencing"
+            ],
+            "allSportTags": [
               "Para Track and Field",
               "Wheelchair Basketball",
               "Wheelchair Fencing"
@@ -49627,6 +51200,16 @@
               "Alpine Skiing",
               "Luge"
             ],
+            "allSportTags": [
+              "Freestyle Skiing",
+              "Alpine Skiing",
+              "Luge",
+              "Ski Jumping",
+              "Bobsled",
+              "Cross-Country Skiing",
+              "Snowboarding",
+              "Speedskating"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Freestyle Skiing",
@@ -49775,6 +51358,10 @@
             "aggregateSignal": "low",
             "primarySportTag": "Para Alpine Skiing",
             "topSportTags": [
+              "Para Alpine Skiing",
+              "Para Snowboarding"
+            ],
+            "allSportTags": [
               "Para Alpine Skiing",
               "Para Snowboarding"
             ],
@@ -50043,6 +51630,14 @@
           "Alpine Skiing",
           "Freestyle Skiing"
         ],
+        "allSportTags": [
+          "Cross-Country Skiing",
+          "Alpine Skiing",
+          "Freestyle Skiing",
+          "Rowing",
+          "Rugby",
+          "Track and Field"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Cross-Country Skiing",
@@ -50164,6 +51759,9 @@
         "aggregateSignal": "low",
         "primarySportTag": "Para Alpine Skiing",
         "topSportTags": [
+          "Para Alpine Skiing"
+        ],
+        "allSportTags": [
           "Para Alpine Skiing"
         ],
         "sportTagCandidates": [
@@ -50397,6 +51995,11 @@
               "Rugby",
               "Track and Field"
             ],
+            "allSportTags": [
+              "Rowing",
+              "Rugby",
+              "Track and Field"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Rowing",
@@ -50463,6 +52066,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "Vermont has no public Paralympic hometown geography roster signal in this Paris 2024 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -50653,6 +52257,11 @@
               "Alpine Skiing",
               "Freestyle Skiing"
             ],
+            "allSportTags": [
+              "Cross-Country Skiing",
+              "Alpine Skiing",
+              "Freestyle Skiing"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Cross-Country Skiing",
@@ -50726,6 +52335,9 @@
             "aggregateSignal": "low",
             "primarySportTag": "Para Alpine Skiing",
             "topSportTags": [
+              "Para Alpine Skiing"
+            ],
+            "allSportTags": [
               "Para Alpine Skiing"
             ],
             "sportTagCandidates": [
@@ -50893,6 +52505,9 @@
         "topSportTags": [
           "Sailing"
         ],
+        "allSportTags": [
+          "Sailing"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Sailing",
@@ -50943,6 +52558,7 @@
         "aggregateSignal": "insufficient_data",
         "primarySportTag": null,
         "topSportTags": [],
+        "allSportTags": [],
         "sportTagCandidates": [],
         "geographyConnection": "U.S. Virgin Islands has no public Paralympic hometown geography roster signal in this combined Paris 2024 and Milano Cortina 2026 public roster view.",
         "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -51105,6 +52721,9 @@
             "topSportTags": [
               "Sailing"
             ],
+            "allSportTags": [
+              "Sailing"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Sailing",
@@ -51145,6 +52764,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "U.S. Virgin Islands has no public Paralympic hometown geography roster signal in this Paris 2024 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -51255,6 +52875,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "U.S. Virgin Islands has no public Olympic hometown geography roster signal in this Milano Cortina 2026 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -51279,6 +52900,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "U.S. Virgin Islands has no public Paralympic hometown geography roster signal in this Milano Cortina 2026 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -51582,6 +53204,21 @@
           "Swimming",
           "Rowing"
         ],
+        "allSportTags": [
+          "Soccer",
+          "Swimming",
+          "Rowing",
+          "Track and Field",
+          "Cycling",
+          "Diving",
+          "Equestrian",
+          "Fencing",
+          "Field Hockey",
+          "Figure Skating",
+          "Short Track Speedskating",
+          "Skeleton",
+          "Speedskating"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Soccer",
@@ -51720,6 +53357,12 @@
           "Goalball",
           "Para Snowboarding",
           "Para Track and Field"
+        ],
+        "allSportTags": [
+          "Goalball",
+          "Para Snowboarding",
+          "Para Track and Field",
+          "Sled Hockey"
         ],
         "sportTagCandidates": [
           {
@@ -52078,6 +53721,17 @@
               "Swimming",
               "Rowing"
             ],
+            "allSportTags": [
+              "Soccer",
+              "Swimming",
+              "Rowing",
+              "Track and Field",
+              "Cycling",
+              "Diving",
+              "Equestrian",
+              "Fencing",
+              "Field Hockey"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Soccer",
@@ -52203,6 +53857,10 @@
             "aggregateSignal": "low",
             "primarySportTag": "Para Track and Field",
             "topSportTags": [
+              "Goalball",
+              "Para Track and Field"
+            ],
+            "allSportTags": [
               "Goalball",
               "Para Track and Field"
             ],
@@ -52432,6 +54090,12 @@
               "Short Track Speedskating",
               "Skeleton"
             ],
+            "allSportTags": [
+              "Figure Skating",
+              "Short Track Speedskating",
+              "Skeleton",
+              "Speedskating"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Figure Skating",
@@ -52517,6 +54181,10 @@
             "aggregateSignal": "low",
             "primarySportTag": "Para Snowboarding",
             "topSportTags": [
+              "Para Snowboarding",
+              "Sled Hockey"
+            ],
+            "allSportTags": [
               "Para Snowboarding",
               "Sled Hockey"
             ],
@@ -52942,6 +54610,19 @@
           "Rowing",
           "Speedskating"
         ],
+        "allSportTags": [
+          "Canoe/Kayak",
+          "Rowing",
+          "Speedskating",
+          "Track and Field",
+          "Artistic Swimming",
+          "Curling",
+          "Short Track Speedskating",
+          "3x3 Basketball",
+          "Alpine Skiing",
+          "Cross-Country Skiing",
+          "Gymnastics"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Canoe/Kayak",
@@ -53091,6 +54772,15 @@
           "Para Track and Field",
           "Para-Cycling",
           "Para Nordic Skiing"
+        ],
+        "allSportTags": [
+          "Para Track and Field",
+          "Para-Cycling",
+          "Para Nordic Skiing",
+          "Para Shooting",
+          "Para-Equestrian",
+          "Sitting Volleyball",
+          "Wheelchair Tennis"
         ],
         "sportTagCandidates": [
           {
@@ -53551,6 +55241,14 @@
               "Rowing",
               "Track and Field"
             ],
+            "allSportTags": [
+              "Canoe/Kayak",
+              "Rowing",
+              "Track and Field",
+              "Artistic Swimming",
+              "3x3 Basketball",
+              "Gymnastics"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Canoe/Kayak",
@@ -53657,6 +55355,14 @@
               "Para Track and Field",
               "Para-Cycling",
               "Para Shooting"
+            ],
+            "allSportTags": [
+              "Para Track and Field",
+              "Para-Cycling",
+              "Para Shooting",
+              "Para-Equestrian",
+              "Sitting Volleyball",
+              "Wheelchair Tennis"
             ],
             "sportTagCandidates": [
               {
@@ -53963,6 +55669,13 @@
               "Curling",
               "Short Track Speedskating"
             ],
+            "allSportTags": [
+              "Speedskating",
+              "Curling",
+              "Short Track Speedskating",
+              "Alpine Skiing",
+              "Cross-Country Skiing"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Speedskating",
@@ -54066,6 +55779,9 @@
             "aggregateSignal": "low",
             "primarySportTag": "Para Nordic Skiing",
             "topSportTags": [
+              "Para Nordic Skiing"
+            ],
+            "allSportTags": [
               "Para Nordic Skiing"
             ],
             "sportTagCandidates": [
@@ -54249,6 +55965,7 @@
         "aggregateSignal": "insufficient_data",
         "primarySportTag": null,
         "topSportTags": [],
+        "allSportTags": [],
         "sportTagCandidates": [],
         "geographyConnection": "West Virginia has no public Olympic hometown geography roster signal in this combined Paris 2024 and Milano Cortina 2026 public roster view.",
         "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -54283,6 +56000,10 @@
         "aggregateSignal": "low",
         "primarySportTag": "Para Track and Field",
         "topSportTags": [
+          "Para Track and Field",
+          "Paratriathlon"
+        ],
+        "allSportTags": [
           "Para Track and Field",
           "Paratriathlon"
         ],
@@ -54499,6 +56220,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "West Virginia has no public Olympic hometown geography roster signal in this Paris 2024 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -54523,6 +56245,10 @@
             "aggregateSignal": "low",
             "primarySportTag": "Para Track and Field",
             "topSportTags": [
+              "Para Track and Field",
+              "Paratriathlon"
+            ],
+            "allSportTags": [
               "Para Track and Field",
               "Paratriathlon"
             ],
@@ -54671,6 +56397,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "West Virginia has no public Olympic hometown geography roster signal in this Milano Cortina 2026 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -54695,6 +56422,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "West Virginia has no public Paralympic hometown geography roster signal in this Milano Cortina 2026 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -55088,6 +56816,21 @@
           "Biathlon",
           "Track and Field"
         ],
+        "allSportTags": [
+          "Rowing",
+          "Biathlon",
+          "Track and Field",
+          "Basketball",
+          "Bobsled",
+          "Fencing",
+          "Judo",
+          "Luge",
+          "Nordic Combined",
+          "Sailing",
+          "Speedskating",
+          "Weightlifting",
+          "Wrestling"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Rowing",
@@ -55235,6 +56978,12 @@
           "Wheelchair Basketball",
           "Wheelchair Curling",
           "Para Alpine Skiing"
+        ],
+        "allSportTags": [
+          "Wheelchair Basketball",
+          "Wheelchair Curling",
+          "Para Alpine Skiing",
+          "Sled Hockey"
         ],
         "sportTagCandidates": [
           {
@@ -55631,6 +57380,16 @@
               "Track and Field",
               "Basketball"
             ],
+            "allSportTags": [
+              "Rowing",
+              "Track and Field",
+              "Basketball",
+              "Fencing",
+              "Judo",
+              "Sailing",
+              "Weightlifting",
+              "Wrestling"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Rowing",
@@ -55754,6 +57513,9 @@
             "aggregateSignal": "medium",
             "primarySportTag": "Wheelchair Basketball",
             "topSportTags": [
+              "Wheelchair Basketball"
+            ],
+            "allSportTags": [
               "Wheelchair Basketball"
             ],
             "sportTagCandidates": [
@@ -56029,6 +57791,13 @@
               "Bobsled",
               "Luge"
             ],
+            "allSportTags": [
+              "Biathlon",
+              "Bobsled",
+              "Luge",
+              "Nordic Combined",
+              "Speedskating"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Biathlon",
@@ -56132,6 +57901,11 @@
             "aggregateSignal": "medium",
             "primarySportTag": "Para Alpine Skiing",
             "topSportTags": [
+              "Wheelchair Curling",
+              "Para Alpine Skiing",
+              "Sled Hockey"
+            ],
+            "allSportTags": [
               "Wheelchair Curling",
               "Para Alpine Skiing",
               "Sled Hockey"
@@ -56366,6 +58140,11 @@
           "Freestyle Skiing",
           "Ski Mountaineering"
         ],
+        "allSportTags": [
+          "Alpine Skiing",
+          "Freestyle Skiing",
+          "Ski Mountaineering"
+        ],
         "sportTagCandidates": [
           {
             "sportTag": "Alpine Skiing",
@@ -56449,6 +58228,7 @@
         "aggregateSignal": "insufficient_data",
         "primarySportTag": null,
         "topSportTags": [],
+        "allSportTags": [],
         "sportTagCandidates": [],
         "geographyConnection": "Wyoming has no public Paralympic hometown geography roster signal in this combined Paris 2024 and Milano Cortina 2026 public roster view.",
         "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -56593,6 +58373,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "Wyoming has no public Olympic hometown geography roster signal in this Paris 2024 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -56617,6 +58398,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "Wyoming has no public Paralympic hometown geography roster signal in this Paris 2024 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
@@ -56784,6 +58566,11 @@
               "Freestyle Skiing",
               "Ski Mountaineering"
             ],
+            "allSportTags": [
+              "Alpine Skiing",
+              "Freestyle Skiing",
+              "Ski Mountaineering"
+            ],
             "sportTagCandidates": [
               {
                 "sportTag": "Alpine Skiing",
@@ -56857,6 +58644,7 @@
             "aggregateSignal": "insufficient_data",
             "primarySportTag": null,
             "topSportTags": [],
+            "allSportTags": [],
             "sportTagCandidates": [],
             "geographyConnection": "Wyoming has no public Paralympic hometown geography roster signal in this Milano Cortina 2026 public roster view.",
             "geminiNote": "This panel stays visible for parity, but it does not infer sport-family patterns without sourced aggregate signal.",
