@@ -5,7 +5,9 @@ import {
   gameBoardClass,
   gameBoardStyle,
   getGameExperience,
-  getJson
+  getJson,
+  plainTraitDescription,
+  plainTraitHeadline
 } from "../../lib/stateCard.js";
 import CardArt from "../cards/CardArt.jsx";
 
@@ -444,6 +446,8 @@ function ChallengeView({ card, briefing, onReturn, panelManifest, onGameComplete
   const [reflection, setReflection] = useState(null);
   const gameExperience = getGameExperience(card);
   const challengeType = gameExperience.challengeType || "reaction_grid";
+  const connectionHeadline = plainTraitHeadline(card);
+  const connectionDescription = gameExperience.sharedTraitDescription || plainTraitDescription(card);
 
   const onResult = useCallback(async (nextResult) => {
     setResult(nextResult);
@@ -478,8 +482,8 @@ function ChallengeView({ card, briefing, onReturn, panelManifest, onGameComplete
       <div className="challenge-header">
         <div>
           <p className="eyebrow">Fan skill challenge</p>
-          <h2>{gameExperience.gameName || `${card.stateName} State Sync Challenge`}</h2>
-          <p>{gameExperience.sharedTraitName}: {gameExperience.sharedTraitDescription}</p>
+          <h2>{gameExperience.gameName || `${card.stateName} Fan Challenge`}</h2>
+          <p>{connectionDescription}</p>
         </div>
         <button className="ghost-button" type="button" onClick={onReturn}>Return to State Insight Card</button>
       </div>
@@ -487,8 +491,8 @@ function ChallengeView({ card, briefing, onReturn, panelManifest, onGameComplete
         <section className="challenge-copy">
           <CardArt card={card} compact panelManifest={panelManifest} />
           <p className="state-pill">{card.stateName} - {GAME_TYPE_LABELS[challengeType] || challengeType.replaceAll("_", " ")}</p>
-          <h3>{gameExperience.sharedTraitName}</h3>
-          <p>{gameExperience.gameIntro || briefing?.briefing?.gameIntro || `Try a short fan challenge inspired by ${String(gameExperience.sharedTraitName || "state sync").toLowerCase()}.`}</p>
+          <h3>{connectionHeadline}</h3>
+          <p>{gameExperience.gameIntro || briefing?.briefing?.gameIntro || `Try a short fan challenge inspired by ${connectionHeadline.toLowerCase()}.`}</p>
           <p className="safe-note">Personal fan result only. This is for appreciation, not measurement or comparison.</p>
           <button className="primary-button wide" type="button" onClick={start}>Start Challenge</button>
         </section>

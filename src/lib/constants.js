@@ -56,7 +56,7 @@ export const FIPS_TO_CODE = {
 export const VIEW_LABELS = {
   explorer: "Map Explorer",
   collection: "My Sport Cards",
-  challenge: "Trait Challenge",
+  challenge: "Fan Challenge",
   methodology: "Methodology"
 };
 
@@ -157,5 +157,5 @@ export const PANEL_QA_ROWS = [
   ["howItWorks", "How it works"],
   ["watchValue", "Why it's fun to watch"],
   ["stateConnection", "State connection"],
-  ["cardTrait", "Card trait"]
+  ["cardTrait", "Why it connects"]
 ];

@@ -580,6 +580,12 @@ html[data-surface="blacktop"] .compact-read-more:focus-visible {
   border-top: 1px solid var(--line);
 }
 
+.art-state-lockup.is-simple {
+  align-content: center;
+  min-height: 70px;
+  padding: 12px 18px;
+}
+
 .art-state-lockup::after {
   position: absolute;
   inset: 0;
@@ -616,6 +622,10 @@ html[data-surface="blacktop"] .art-state-lockup::after {
   font-size: clamp(1.35rem, 3.3vw, 1.8rem);
   line-height: 0.9;
   text-transform: uppercase;
+}
+
+.art-state-lockup.is-simple strong {
+  font-size: clamp(1.45rem, 3.5vw, 2rem);
 }
 
 .art-state-lockup span {
@@ -1035,36 +1045,43 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
 
 .trait-band {
   display: grid;
-  grid-template-columns: 160px minmax(0, 1fr);
-  align-items: center;
-  gap: 16px;
-  padding: 16px;
+  gap: 12px;
+  padding: 18px 20px;
   color: var(--ink);
   background:
     linear-gradient(90deg, rgba(220, 234, 250, 0.78), rgba(244, 216, 200, 0.52));
   border-top: 1px solid var(--line);
 }
 
-.trait-badge {
+.trait-heading-copy {
   display: grid;
-  gap: var(--space-1);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: var(--space-2);
-  background: var(--glass-faint);
+  gap: 6px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 8px;
 }
 
-.trait-badge span {
-  font-size: 0.72rem;
+.trait-heading-copy h3 {
+  margin: 0;
+  font-size: 1.45rem;
+  line-height: 0.95;
+}
+
+.trait-heading-copy p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.88rem;
   font-weight: 900;
   letter-spacing: 0.06em;
+  line-height: 1.25;
   text-transform: uppercase;
 }
 
-.trait-badge strong {
-  font-family: var(--display-font);
-  font-size: 1.25rem;
-  line-height: 1;
+.trait-description {
+  max-width: 980px;
+  color: var(--copy);
+  font-size: 0.88rem;
+  font-weight: 700;
+  line-height: 1.45;
 }
 
 .trait-band p {
@@ -1386,15 +1403,9 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
   gap: 10px;
 }
 
-.sport-mix-preview-list,
-.sport-mix-theme-list {
+.sport-mix-preview-list {
   display: grid;
   gap: 6px;
-}
-
-.sport-mix-theme-list {
-  border-top: 1px solid var(--line);
-  padding-top: 10px;
 }
 
 .sport-mix-see-all-button {
@@ -2114,7 +2125,7 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
 
 .card-modal-panel.is-back-expanded .card-back-scroll > .trait-band {
   border-top: 1px solid var(--line);
-  grid-template-columns: minmax(180px, 0.28fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .card-modal-panel.is-back-expanded .card-back-scroll > .briefing-panel {
