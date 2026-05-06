@@ -8,14 +8,10 @@ html {
   overflow-x: hidden;
 }
 
-html.theme-transitioning *,
-html.theme-transitioning *::before,
-html.theme-transitioning *::after {
-  transition:
-    background-color 300ms ease,
-    color 280ms ease,
-    border-color 280ms ease,
-    box-shadow 280ms ease !important;
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 280ms;
+  animation-timing-function: ease;
 }
 
 body {

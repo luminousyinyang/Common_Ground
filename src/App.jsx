@@ -71,12 +71,19 @@ function App() {
 
   useEffect(() => {
     const html = document.documentElement;
-    html.classList.add("theme-transitioning");
     html.dataset.theme = ACTIVE_VISUAL_THEME.color;
-    html.dataset.surface = darkMode ? "blacktop" : "";
     html.dataset.type = ACTIVE_VISUAL_THEME.type;
-    const t = setTimeout(() => html.classList.remove("theme-transitioning"), 400);
-    return () => clearTimeout(t);
+
+    function apply() {
+      html.dataset.surface = darkMode ? "blacktop" : "";
+    }
+
+    if (!document.startViewTransition) {
+      apply();
+      return;
+    }
+
+    document.startViewTransition(apply);
   }, [darkMode]);
 
   useEffect(() => {
