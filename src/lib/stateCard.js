@@ -96,7 +96,7 @@ export function getRosterCounts(card) {
 
 export function formatMapHint(card) {
   const counts = getRosterCounts(card);
-  return `${card.stateName}: ${counts.olympic} Olympic athlete records, ${counts.paralympic} Paralympic athlete records, ${counts.total} total public Team USA roster records.`;
+  return `${card.stateName}: ${counts.olympic} Olympic athletes, ${counts.paralympic} Paralympic athletes, ${counts.total} total public Team USA athletes.`;
 }
 
 export function getCardStory(card) {
@@ -158,8 +158,50 @@ export function displaySportName(value) {
   return text;
 }
 
+export function hasSpecificSportCue(panel) {
+  return Boolean(panel?.primarySportTag || panel?.topSportTags?.[0]);
+}
+
+function panelAthleteCount(panel) {
+  const count = Number(panel?.sourceAthleteCount);
+  return Number.isFinite(count) ? count : null;
+}
+
+function athleteCountLabel(count) {
+  if (!Number.isFinite(Number(count))) return "public athletes";
+  return `${count} public athlete${Number(count) === 1 ? "" : "s"}`;
+}
+
+function sportFamilySignalName(panel) {
+  const family = String(panel?.sportFamily || "").toLowerCase();
+  if (/no sourced|insufficient/.test(family)) return "";
+  if (/winter|ski|snow|ice|equipment/.test(family)) return "Winter equipment signal";
+  if (/aquatic|water/.test(family)) return "Water sport signal";
+  if (/team|spatial/.test(family)) return "Team sport signal";
+  if (/balance|technical/.test(family)) return "Technical control signal";
+  if (/precision|focus/.test(family)) return "Focus signal";
+  if (/power|contact/.test(family)) return "Power control signal";
+  if (/endurance|pace/.test(family)) return "Pace endurance signal";
+  if (/mixed/.test(family)) return "Mixed sport signal";
+  return "";
+}
+
+function panelFallbackCue(panel) {
+  const programName = shortProgramName(panel?.program);
+  if (panel?.aggregateSignal === "insufficient_data" || /^no sourced/i.test(panel?.sportFamily || "")) {
+    return `No sourced ${programName} signal`;
+  }
+  const familySignal = sportFamilySignalName(panel);
+  if (familySignal) return familySignal;
+  const count = panelAthleteCount(panel);
+  if (Number.isFinite(count) && count > 0) {
+    return `${count} ${programName} athlete${count === 1 ? "" : "s"} signal`;
+  }
+  return `Limited ${programName} signal`;
+}
+
 export function getPanelVisualCue(panel) {
-  return displaySportName(panel?.primarySportTag || panel?.topSportTags?.[0] || "Generalized sport-family cue");
+  return displaySportName(panel?.primarySportTag || panel?.topSportTags?.[0] || panelFallbackCue(panel));
 }
 
 export function panelProgramLabel(panel) {
@@ -173,16 +215,24 @@ export function featuredSportsIntro(card) {
   const paralympicCue = getPanelVisualCue(card?.paralympicPanel);
   const stateName = card?.stateName || "this state";
 
+  if (!hasSpecificSportCue(card?.olympicPanel) || !hasSpecificSportCue(card?.paralympicPanel)) {
+    return `The Olympic and Paralympic lenses stay visible for ${stateName}. If public athletes exist on a side, the card shows the available sport cue; otherwise it keeps that side as source context.`;
+  }
+
   return `${olympicCue} and ${paralympicCue} are the featured Olympic and Paralympic sport lenses for ${stateName}. The notes below explain how each sport works and how ${stateName}'s geography connects to the state story.`;
 }
 
 export function getPanelTopSportText(panel) {
-  if (panel?.aggregateSignal === "insufficient_data") return "No sourced public sport tag is available in this dataset.";
-  return "Generalized because the sourced sport-tag count is limited.";
+  if (panel?.aggregateSignal === "insufficient_data") return `No sourced public ${shortProgramName(panel?.program)} athlete signal is available for this state.`;
+  const count = panelAthleteCount(panel);
+  const familySignal = sportFamilySignalName(panel);
+  const signalPrefix = familySignal ? `${familySignal} is present from ` : "";
+  return `${signalPrefix}${athleteCountLabel(count)}. This low-volume sport cue is shown as state context, not an athlete-level claim.`;
 }
 
 export function panelThemePhrase(panel) {
   const family = String(panel?.sportFamily || "").toLowerCase();
+  if (/winter|equipment/.test(family)) return "winter-equipment sport";
   if (/aquatic|water/.test(family) && /team|spatial/.test(family)) return "aquatic team-sport";
   if (/aquatic|water/.test(family)) return "water-sport";
   if (/endurance|pace/.test(family) && /team|spatial/.test(family)) return "pace-and-spatial sport";
@@ -234,6 +284,9 @@ export function watchLensForSport(visualCue, panel) {
 
 export function fanTakeawayForSport(visualCue, panel, sharedTraitName = "") {
   const sport = String(visualCue || "").toLowerCase();
+  if (!hasSpecificSportCue(panel)) {
+    return `${shortProgramName(panel?.program)} context stays visible here even when no specific sport cue is available.`;
+  }
   if (/water polo/.test(sport)) {
     return "This panel is about rhythm under pressure: players are constantly reading space, coordinating, and moving through resistance.";
   }
@@ -248,6 +301,7 @@ export function fanTakeawayForSport(visualCue, panel, sharedTraitName = "") {
 
 export function subtitleForSport(visualCue, panel) {
   const sport = String(visualCue || "").toLowerCase();
+  if (!hasSpecificSportCue(panel)) return panel?.aggregateSignal === "insufficient_data" ? "No sourced hometown signal" : "Low-volume public athlete signal";
   if (/water polo/.test(sport)) return "Aquatic team sport · goals in net · possession pressure";
   if (/triathlon/.test(sport)) return "Swim · bike · run · transition control";
   if (/swimming/.test(sport)) return "Water rhythm · lane tempo · repeatable control";
@@ -259,6 +313,11 @@ export function subtitleForSport(visualCue, panel) {
 
 export function factChipsForSport(visualCue, panel) {
   const sport = String(visualCue || "").toLowerCase();
+  if (!hasSpecificSportCue(panel)) {
+    return panel?.aggregateSignal === "insufficient_data"
+      ? ["No sourced signal", "Parity panel visible"]
+      : [athleteCountLabel(panelAthleteCount(panel)), "Low-volume cue"];
+  }
   if (/water polo/.test(sport)) return ["7 per team: 6 field + goalkeeper", "4 quarters", "Possession pressure", "One-hand control"];
   if (/triathlon/.test(sport)) return ["Swim segment", "Bike segment", "Run segment", "Transition control"];
   if (/swimming/.test(sport)) return ["Water rhythm", "Lane tempo", "Body position", "Repeat control"];
@@ -285,6 +344,14 @@ export function moduleMixForSport(visualCue, panel) {
 export function qaFactsForSport(visualCue, panel) {
   const sport = String(visualCue || "").toLowerCase();
   const stateConnection = readableGeographyLens(panel, visualCue);
+  if (!hasSpecificSportCue(panel)) {
+    return {
+      howItWorks: getPanelTopSportText(panel),
+      watchValue: `Use this ${shortProgramName(panel?.program)} lens as source context, not as a featured-sport claim.`,
+      stateConnection,
+      cardTrait: fanTakeawayForSport(visualCue, panel)
+    };
+  }
   if (/water polo/.test(sport)) {
     return {
       howItWorks: "Two teams of seven play in the water: six field players plus one goalkeeper. The goal is to throw the ball into the opponent's net, so each attack has to create space, pass, and shoot before the chance disappears.",
@@ -543,7 +610,7 @@ export function formatHometownAreaDetail(area = {}) {
   const label = String(area.label || area.area || "").trim();
   const hometownPhrase = label ? ` list ${label} as their hometown` : "";
   if (Number.isFinite(total) && Number.isFinite(olympic) && Number.isFinite(paralympic)) {
-    return `${total} public Team USA athlete records${hometownPhrase} (${olympic} Olympic-side, ${paralympic} Paralympic-side).`;
+    return `${total} public Team USA athletes${hometownPhrase} (${olympic} Olympic-side, ${paralympic} Paralympic-side).`;
   }
   return "Public aggregate Team USA athlete hometown area in the source view.";
 }
@@ -575,7 +642,7 @@ export function normalizeHometownAreaRow(area, index) {
   const total = Number.isFinite(Number(area.total)) ? Number(area.total) : null;
   const olympic = Number.isFinite(Number(area.olympic)) ? Number(area.olympic) : null;
   const paralympic = Number.isFinite(Number(area.paralympic)) ? Number(area.paralympic) : null;
-  const countLabel = area.countLabel || "public hometown entries";
+  const countLabel = area.countLabel || "public athletes";
   const detail = area.detail || formatHometownAreaDetail({ label, total, olympic, paralympic, countLabel });
 
   return {

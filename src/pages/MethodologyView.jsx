@@ -47,6 +47,11 @@ function CountsTable({ states, compact = false }) {
 }
 
 function MethodologyView({ refs, meta, states }) {
+  const rosterSourceTotals = Object.values(meta.sourceRosterTotals || {});
+  const rosterSourceSummary = rosterSourceTotals.length
+    ? rosterSourceTotals.map((source) => `${source.label}: ${source.total}`).join("; ")
+    : `Olympic ${meta.sourceProgramRecordTotals?.olympic}, Paralympic ${meta.sourceProgramRecordTotals?.paralympic}`;
+
   return (
     <section className="methodology-view page-panel">
       <div className="methodology-hero">
@@ -58,8 +63,8 @@ function MethodologyView({ refs, meta, states }) {
         <section>
           <h3>Data Policy</h3>
           <ul>
-            <li>The aggregate dataset is derived from public TeamUSA.com Paris 2024 source records: Olympic {meta.sourceProgramRecordTotals?.olympic}, Paralympic {meta.sourceProgramRecordTotals?.paralympic}.</li>
-            <li>Records with U.S. hometown geography fields after excluding blank or unsupported values: Olympic {meta.stateCodedRecordTotals?.olympic}, Paralympic {meta.stateCodedRecordTotals?.paralympic}.</li>
+            <li>The aggregate dataset is derived from approved public TeamUSA.com roster sources: {rosterSourceSummary}.</li>
+            <li>Deduplicated public athletes with supported U.S. hometown geography fields: Olympic {meta.stateCodedRecordTotals?.olympic}, Paralympic {meta.stateCodedRecordTotals?.paralympic}, total {meta.stateCodedRecordTotals?.total}.</li>
             <li>No athlete names, images, finish times, individual cards, rankings, or protected marks are included.</li>
             <li>{meta.bucketPolicy}</li>
           </ul>
@@ -96,7 +101,7 @@ function MethodologyView({ refs, meta, states }) {
       </section>
       <section className="source-panel">
         <h3>Official Counts Breakdown</h3>
-        <p>Counts reflect sourced TeamUSA.com Paris 2024 public roster records with supported U.S. hometown geography fields, not a complete historical athlete census.</p>
+        <p>Counts reflect deduplicated public TeamUSA.com athletes from the imported rosters with supported U.S. hometown geography fields, not a complete historical athlete census.</p>
         <CountsTable states={states} />
       </section>
       <section className="source-panel">
