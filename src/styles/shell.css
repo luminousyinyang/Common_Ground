@@ -86,10 +86,10 @@ h4 {
   top: 0;
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: var(--space-4);
   height: 100vh;
   border-right: 1px solid var(--line);
-  padding: 24px 14px;
+  padding: var(--space-4) 14px;
   color: var(--ink);
   background:
     linear-gradient(180deg, var(--glass-strong), var(--glass-soft));
@@ -97,7 +97,7 @@ h4 {
 }
 
 .brand-block {
-  padding: 2px 8px 18px;
+  padding: 0 var(--space-2) var(--space-3);
   border-bottom: 1px solid var(--line);
 }
 
@@ -111,19 +111,20 @@ h4 {
 }
 
 .brand-block p:last-child {
-  margin: 9px 0 0;
+  margin: var(--space-2) 0 0;
   color: var(--muted);
   font-size: 0.88rem;
   line-height: 1.45;
 }
 
 .eyebrow {
-  margin: 0 0 7px;
+  margin: 0 0 var(--space-2);
   color: inherit;
   font-family: var(--label-font);
   font-size: 0.7rem;
   font-weight: 500;
   letter-spacing: 0.1em;
+  line-height: 1.2;
   text-transform: uppercase;
   opacity: 0.72;
 }
@@ -427,7 +428,7 @@ main {
 }
 
 .safe-note {
-  margin: 18px 0;
+  margin: var(--space-3) 0;
   border-left: 4px solid var(--ink);
   border-radius: 0 12px 12px 0;
   padding: 9px 12px;
@@ -439,8 +440,8 @@ main {
 
 .state-summary {
   display: grid;
-  gap: 12px;
-  margin-bottom: 18px;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
 }
 
 .state-summary h2 {
@@ -547,14 +548,14 @@ html[data-surface="blacktop"] .primary-button:focus-visible {
 }
 
 .briefing-meta {
-  margin-top: 14px;
+  margin-top: var(--space-3);
   color: var(--muted);
   font-size: 0.84rem;
   font-weight: 800;
 }
 
 .source-list {
-  margin-top: 10px;
+  margin-top: var(--space-2);
 }
 
 .source-chip {
@@ -610,7 +611,7 @@ html[data-surface="blacktop"] .primary-button:focus-visible {
 
 .section-divider {
   height: 1px;
-  margin: 26px 0 18px;
+  margin: var(--space-5) 0 var(--space-3);
   background: var(--line);
 }
 

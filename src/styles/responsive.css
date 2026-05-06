@@ -45,8 +45,8 @@
   }
 
   .sidebar {
-    gap: 16px;
-    padding: 18px 12px;
+    gap: var(--space-3);
+    padding: var(--space-3) 12px;
   }
 
   .brand-block h1 {

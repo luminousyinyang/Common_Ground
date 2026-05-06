@@ -14,7 +14,7 @@ function LandingPage({ onNavigate, onLogin, darkMode, onToggleDarkMode }) {
             <div className="landing-hero-content">
               <p className="eyebrow landing-eyebrow">Team USA Discovery</p>
               <h1 className="landing-hero-title">Explore Team USA by State</h1>
-              <p className="landing-hero-body">Discover how public Team USA athlete hometown data, geography, climate, and community signals could help reveal regional patterns across the United States.</p>
+              <p className="landing-hero-body">Discover how public Team USA athlete hometown data, geography, climate, and community signals could help reveal regional patterns across the USA.</p>
               <div className="landing-cta-row">
                 <button className="primary-button" type="button" onClick={() => onNavigate("/map")}>Explore the Map</button>
                 <button className="ghost-button hero-features-btn" type="button" onClick={() => document.getElementById("landing-features")?.scrollIntoView({ behavior: "smooth" })}>

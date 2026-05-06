@@ -147,12 +147,12 @@
   display: grid;
   grid-template-rows: auto auto auto auto auto;
   align-content: start;
-  gap: 10px;
+  gap: var(--space-2);
   height: 100%;
   min-height: 0;
   overflow: auto;
   overscroll-behavior: contain;
-  padding: 18px;
+  padding: var(--space-3);
 }
 
 .compact-back-scroll-cue,
@@ -199,9 +199,9 @@
 
 .compact-back-header {
   display: grid;
-  gap: 4px;
+  gap: var(--space-1);
   border-bottom: 1px solid var(--line);
-  padding-bottom: 10px;
+  padding-bottom: var(--space-2);
 }
 
 .compact-back-header span,
@@ -242,7 +242,7 @@
   overflow: visible;
   border: 1px solid var(--line);
   border-radius: 14px;
-  padding: 10px 11px;
+  padding: var(--space-2);
   background: color-mix(in srgb, var(--olympic-tint) 60%, transparent);
 }
 
@@ -252,7 +252,7 @@
 
 .compact-sport-lens h4 {
   display: block;
-  margin: 3px 0 5px;
+  margin: var(--space-1) 0;
   font-family: var(--display-font);
   font-size: clamp(1rem, 4.1vw, 1.32rem);
   line-height: 0.95;
@@ -273,8 +273,8 @@
 .compact-fact-line {
   display: flex;
   flex-wrap: wrap;
-  gap: 5px;
-  margin-top: 7px;
+  gap: var(--space-1);
+  margin-top: var(--space-2);
 }
 
 .compact-fact-line span {
@@ -293,9 +293,9 @@
 .compact-shared-block,
 .compact-connection-block {
   display: grid;
-  gap: 4px;
+  gap: var(--space-1);
   border-top: 1px solid var(--line);
-  padding-top: 9px;
+  padding-top: var(--space-2);
 }
 
 .compact-shared-block strong {
@@ -571,9 +571,9 @@ html[data-surface="blacktop"] .compact-read-more:focus-visible {
 .art-state-lockup {
   position: relative;
   display: grid;
-  gap: 4px;
+  gap: var(--space-1);
   min-height: 96px;
-  padding: 18px;
+  padding: var(--space-3);
   color: var(--ink);
   background:
     linear-gradient(180deg, var(--glass-strong), color-mix(in srgb, var(--paper) 96%, transparent));
@@ -691,9 +691,9 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 18px;
+  gap: var(--space-3);
   min-height: 148px;
-  padding: 22px;
+  padding: var(--space-4);
   color: var(--solid-ink-text);
   background: var(--solid-ink);
 }
@@ -785,10 +785,10 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
 
 .featured-sports-intro {
   display: grid;
-  gap: 6px;
+  gap: var(--space-2);
   border: 1px solid var(--line);
   border-radius: 14px;
-  padding: 14px 16px;
+  padding: var(--space-3);
   background: var(--glass-faint);
 }
 
@@ -815,10 +815,10 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
   grid-auto-rows: max-content;
   align-content: start;
   align-items: start;
-  gap: 12px;
+  gap: var(--space-2);
   flex: 1;
   min-height: 0;
-  padding: 18px 16px;
+  padding: var(--space-3);
   border-top: 1px solid var(--line);
 }
 
@@ -855,13 +855,13 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
 }
 
 .panel-body h4 {
-  margin: 0 0 10px;
+  margin: 0 0 var(--space-2);
   font-size: 1.5rem;
   line-height: 0.98;
 }
 
 .panel-subtitle {
-  margin: 0 0 14px;
+  margin: 0 0 var(--space-3);
   color: var(--muted);
   font-size: 0.86rem;
   font-weight: 900;
@@ -886,9 +886,9 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
 .panel-qa-row {
   display: grid;
   grid-template-columns: minmax(116px, 0.34fr) minmax(0, 1fr);
-  gap: 14px;
+  gap: var(--space-3);
   border-bottom: 1px solid var(--line);
-  padding: 10px 0;
+  padding: var(--space-2) 0;
 }
 
 .panel-qa-row span {
@@ -909,8 +909,8 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
 
 .panel-fact-block {
   display: grid;
-  gap: 7px;
-  margin-top: 16px;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
 }
 
 .panel-chip-label {
@@ -925,7 +925,7 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
 .panel-fact-chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 7px;
+  gap: var(--space-2);
 }
 
 .panel-fact-chips span {
@@ -943,10 +943,10 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
 
 .panel-watch-for {
   display: grid;
-  gap: 5px;
-  margin-top: 14px;
+  gap: var(--space-1);
+  margin-top: var(--space-3);
   border-left: 3px solid color-mix(in srgb, var(--ink) 48%, transparent);
-  padding-left: 12px;
+  padding-left: var(--space-2);
 }
 
 .panel-watch-for span {
@@ -966,17 +966,17 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
 .panel-data-pair {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
-  margin: 0 0 10px;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-2);
 }
 
 .panel-data-pair span {
   display: grid;
-  gap: 3px;
+  gap: var(--space-1);
   min-width: 0;
   border: 1px solid var(--line);
   border-radius: 10px;
-  padding: 9px 10px;
+  padding: var(--space-2);
   background: color-mix(in srgb, var(--paper) 62%, transparent);
 }
 
@@ -1001,11 +1001,11 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
 
 .panel-family-line {
   display: grid;
-  gap: 4px;
-  margin-top: 12px;
+  gap: var(--space-1);
+  margin-top: var(--space-3);
   border: 1px solid var(--line);
   border-radius: 10px;
-  padding: 10px 12px;
+  padding: var(--space-2) var(--space-3);
   background: color-mix(in srgb, var(--paper) 54%, transparent);
 }
 
@@ -1047,10 +1047,10 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
 
 .trait-badge {
   display: grid;
-  gap: 4px;
+  gap: var(--space-1);
   border: 1px solid var(--line);
   border-radius: 12px;
-  padding: 10px;
+  padding: var(--space-2);
   background: var(--glass-faint);
 }
 
@@ -1080,7 +1080,7 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
 
 .card-footer {
   display: grid;
-  gap: 12px;
+  gap: var(--space-3);
   border-top: 1px solid var(--line);
 }
 
@@ -1088,7 +1088,7 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
 .state-challenge-panel {
   display: grid;
   align-content: start;
-  gap: 10px;
+  gap: var(--space-2);
   min-width: 0;
 }
 
@@ -1159,13 +1159,13 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
 .briefing-panel {
   border: 1px solid var(--line);
   border-radius: 14px;
-  padding: 16px;
+  padding: var(--space-3);
   background: var(--glass-faint);
 }
 
 .briefing-panel.is-compact {
-  margin: 14px 12px;
-  padding: 14px;
+  margin: var(--space-2) var(--space-3);
+  padding: var(--space-2);
 }
 
 .briefing-panel.is-compact .briefing-split {
@@ -1183,11 +1183,11 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
 }
 
 .briefing-panel.is-compact .briefing-section {
-  padding: 10px 0;
+  padding: var(--space-2) 0;
 }
 
 .briefing-panel h3 {
-  margin: 0 0 12px;
+  margin: 0 0 var(--space-2);
   font-size: 1.45rem;
   line-height: 0.95;
   font-weight: 700;
@@ -1195,7 +1195,7 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
 
 .briefing-heading-copy {
   display: grid;
-  gap: 5px;
+  gap: var(--space-1);
 }
 
 .briefing-heading-copy h3 {
@@ -1209,7 +1209,7 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
 .hometown-areas-card {
   border: 1px solid var(--line);
   border-radius: 14px;
-  padding: 16px;
+  padding: var(--space-3);
   background: var(--glass-faint);
 }
 
@@ -1219,11 +1219,11 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
 
 .hometown-areas-heading {
   align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: var(--space-3);
 }
 
 .hometown-areas-heading .eyebrow {
-  margin: 0 0 4px;
+  margin: 0 0 var(--space-1);
 }
 
 .hometown-areas-card h3,
@@ -1241,16 +1241,16 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
 .hometown-area-list,
 .hometown-area-dialog-list {
   display: grid;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .hometown-area-row {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   align-items: start;
-  gap: 10px;
+  gap: var(--space-2);
   border-top: 1px solid var(--line);
-  padding-top: 10px;
+  padding-top: var(--space-2);
 }
 
 .hometown-area-row:first-child {
@@ -1284,7 +1284,7 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
 }
 
 .hometown-area-copy p {
-  margin: 3px 0 0;
+  margin: var(--space-1) 0 0;
   color: var(--copy);
   font-size: 0.86rem;
   font-weight: 720;
@@ -1305,7 +1305,7 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
   z-index: 160;
   display: grid;
   place-items: center;
-  padding: 18px;
+  padding: var(--space-3);
   background: color-mix(in srgb, var(--ink) 48%, transparent);
   backdrop-filter: blur(12px) saturate(0.9);
 }
@@ -1322,14 +1322,14 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
   position: relative;
   z-index: 1;
   display: grid;
-  gap: 14px;
+  gap: var(--space-3);
   width: min(620px, calc(100vw - 36px));
   max-height: min(72vh, 620px);
   max-height: min(72svh, 620px);
   overflow: auto;
   border: 1px solid var(--line-strong);
   border-radius: 18px;
-  padding: 16px;
+  padding: var(--space-3);
   background:
     radial-gradient(circle at 12% 2%, var(--paper-accent-a), transparent 20rem),
     linear-gradient(180deg, var(--glass-strong), color-mix(in srgb, var(--paper) 98%, transparent));
@@ -1340,24 +1340,24 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 14px;
+  gap: var(--space-3);
 }
 
 .hometown-area-dialog-heading .eyebrow {
-  margin: 0 0 5px;
+  margin: 0 0 var(--space-1);
 }
 
 .briefing-section-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px 14px;
+  gap: var(--space-2) var(--space-3);
 }
 
 .briefing-section {
   display: grid;
-  gap: 6px;
+  gap: var(--space-1);
   border-top: 1px solid var(--line);
-  padding: 12px 0 0;
+  padding: var(--space-3) 0 0;
 }
 
 .briefing-section span {
@@ -1378,13 +1378,13 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
 
 .briefing-list {
   display: grid;
-  gap: 6px;
+  gap: var(--space-2);
 }
 
 .briefing-split {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
+  gap: var(--space-3);
 }
 
 /* ─── Card Modal ──────────────────────────────────────── */
@@ -1395,7 +1395,7 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
   z-index: 100;
   display: grid;
   place-items: center;
-  padding: 20px;
+  padding: var(--space-4);
   background: color-mix(in srgb, var(--ink) 42%, transparent);
   backdrop-filter: blur(16px) saturate(0.82);
 }
@@ -1412,14 +1412,14 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
   position: relative;
   z-index: 1;
   display: grid;
-  gap: 10px;
+  gap: var(--space-2);
   width: min(460px, calc(100vw - 32px));
   max-height: calc(100vh - 56px);
   max-height: calc(100svh - 56px);
   overflow: visible;
   border: 1px solid var(--glass-line);
   border-radius: 22px;
-  padding: 14px 14px 16px;
+  padding: var(--space-3) var(--space-3) var(--space-3);
   background:
     radial-gradient(circle at 12% 0%, var(--paper-accent-a), transparent 22rem),
     linear-gradient(180deg, var(--glass-strong), var(--glass-soft));
@@ -1847,7 +1847,7 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: var(--space-2);
   color: var(--ink);
   text-shadow: none;
 }
@@ -1870,7 +1870,7 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
   flex-wrap: wrap;
   align-items: center;
   justify-content: flex-end;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .modal-close-row {
@@ -1959,14 +1959,14 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
 
 .card-modal-panel.is-back-expanded .card-back-scroll {
   display: grid;
-  gap: 14px;
+  gap: var(--space-3);
   grid-template-columns: 1fr;
   align-content: start;
   min-height: 0;
   max-height: calc(100vh - 268px);
   max-height: calc(100svh - 268px);
   overflow: auto;
-  padding: 14px 14px 18px;
+  padding: var(--space-3);
   border: 1px solid var(--line-strong);
   border-radius: 18px;
   background:
@@ -2000,7 +2000,7 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
 .card-modal-panel.is-back-expanded .program-panel-grid {
   display: flex;
   align-items: stretch;
-  gap: 14px;
+  gap: var(--space-3);
   border-top: 0;
 }
 
@@ -2010,12 +2010,12 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
   grid-auto-rows: max-content;
   align-content: start;
   align-items: start;
-  gap: 12px;
+  gap: var(--space-2);
   flex: 1 1 0;
   align-self: stretch;
   min-height: 0;
   border-top: 1px solid var(--line);
-  padding: 16px;
+  padding: var(--space-3);
 }
 
 .card-modal-panel.is-back-expanded .panel-label {
@@ -2034,7 +2034,7 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
 }
 
 .card-modal-panel.is-back-expanded .panel-subtitle {
-  margin: 2px 0 12px;
+  margin: var(--space-1) 0 var(--space-2);
 }
 
 .card-modal-panel.is-back-expanded .panel-story {
@@ -2068,7 +2068,7 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
 
 .card-modal-panel.is-back-expanded .card-back-scroll > .source-method-panel,
 .card-modal-panel.is-back-expanded .card-back-scroll > .state-challenge-panel {
-  padding: 16px;
+  padding: var(--space-3);
 }
 
 .card-modal-panel.is-back-expanded .card-back-scroll > .card-footer {
@@ -2079,17 +2079,17 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
   display: grid;
   grid-template-columns: 1fr;
   align-items: stretch;
-  gap: 12px;
+  gap: var(--space-3);
 }
 
 .card-modal-panel .card-action-row {
   justify-content: stretch;
-  gap: 10px;
-  margin-bottom: 2px;
+  gap: var(--space-2);
+  margin-bottom: var(--space-1);
 }
 
 .card-modal-panel.is-back-expanded .card-action-row {
-  margin-bottom: 2px;
+  margin-bottom: var(--space-1);
 }
 
 .card-modal-panel .card-action-row .ghost-button,
