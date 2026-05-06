@@ -8,15 +8,12 @@ html {
   overflow-x: hidden;
 }
 
-html.theme-transitioning *,
-html.theme-transitioning *::before,
-html.theme-transitioning *::after {
-  transition:
-    background-color 300ms ease,
-    color 280ms ease,
-    border-color 280ms ease,
-    box-shadow 280ms ease !important;
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 280ms;
+  animation-timing-function: ease;
 }
+
 
 body {
   position: relative;
@@ -156,7 +153,6 @@ h4 {
   text-align: left;
 }
 
-.side-nav-button:hover,
 .side-nav-button:focus-visible,
 .side-nav-button.is-active {
   color: var(--ink);
@@ -191,7 +187,6 @@ h4 {
   box-shadow: 0 8px 18px color-mix(in srgb, #000000 10%, transparent);
 }
 
-.card-lab-toggle:hover,
 .card-lab-toggle:focus-visible {
   border-color: var(--line-strong);
   background: color-mix(in srgb, var(--surface-soft) 72%, transparent);
@@ -496,7 +491,6 @@ main {
 }
 
 .state-button.is-active,
-.state-button:hover,
 .state-button:focus-visible {
   color: var(--ink-contrast);
   background: var(--blue);
@@ -509,7 +503,6 @@ main {
   transition: background 140ms ease, border-color 140ms ease, transform 160ms ease, box-shadow 160ms ease;
 }
 
-.ghost-button:hover,
 .ghost-button:focus-visible {
   background: rgba(255, 255, 255, 0.45);
   border-color: var(--blue);
@@ -517,7 +510,6 @@ main {
   transform: translateY(-3px);
 }
 
-html[data-surface="blacktop"] .ghost-button:hover,
 html[data-surface="blacktop"] .ghost-button:focus-visible {
   background: transparent;
   box-shadow: 4px 4px 0 #CFA14D;
@@ -536,7 +528,6 @@ html[data-surface="blacktop"] .ghost-button:focus-visible {
   transition: background 140ms ease, border-color 140ms ease, transform 160ms ease, box-shadow 160ms ease;
 }
 
-.primary-button:hover,
 .primary-button:focus-visible {
   background: var(--navy-2);
   border-color: var(--navy-2);
@@ -544,7 +535,6 @@ html[data-surface="blacktop"] .ghost-button:focus-visible {
   transform: translateY(-3px);
 }
 
-html[data-surface="blacktop"] .primary-button:hover,
 html[data-surface="blacktop"] .primary-button:focus-visible {
   background: color-mix(in srgb, var(--cta) 55%, white);
   border-color: color-mix(in srgb, var(--cta) 55%, white);
@@ -622,4 +612,48 @@ html[data-surface="blacktop"] .primary-button:focus-visible {
   height: 1px;
   margin: 26px 0 18px;
   background: var(--line);
+}
+
+@media (hover: hover) {
+  .side-nav-button:hover {
+    color: var(--ink);
+    background: color-mix(in srgb, var(--olympic-tint) 68%, transparent);
+    border-color: var(--line);
+  }
+
+  .card-lab-toggle:hover {
+    border-color: var(--line-strong);
+    background: color-mix(in srgb, var(--surface-soft) 72%, transparent);
+  }
+
+  .state-button:hover {
+    color: var(--ink-contrast);
+    background: var(--blue);
+  }
+
+  .ghost-button:hover {
+    background: rgba(255, 255, 255, 0.45);
+    border-color: var(--blue);
+    box-shadow: 4px 4px 0 #9D4D32;
+    transform: translateY(-3px);
+  }
+
+  html[data-surface="blacktop"] .ghost-button:hover {
+    background: transparent;
+    box-shadow: 4px 4px 0 #CFA14D;
+  }
+
+  .primary-button:hover {
+    background: var(--navy-2);
+    border-color: var(--navy-2);
+    box-shadow: 4px 4px 0 #CFA14D;
+    transform: translateY(-3px);
+  }
+
+  html[data-surface="blacktop"] .primary-button:hover {
+    background: color-mix(in srgb, var(--cta) 55%, white);
+    border-color: color-mix(in srgb, var(--cta) 55%, white);
+    box-shadow: 4px 4px 0 #9D4D32;
+    transform: translateY(-3px);
+  }
 }

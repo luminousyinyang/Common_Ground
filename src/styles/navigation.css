@@ -43,9 +43,6 @@
   cursor: pointer;
 }
 
-.top-nav-brand:hover {
-  opacity: 0.8;
-}
 
 .top-nav-center {
   position: relative;
@@ -102,9 +99,6 @@ html[data-surface="blacktop"] .nav-sliding-pill {
   flex-shrink: 0;
 }
 
-.top-nav-tab:hover {
-  color: var(--ink);
-}
 
 .top-nav-tab.is-active {
   color: var(--ink);
@@ -142,11 +136,6 @@ html[data-surface="blacktop"] .nav-sliding-pill {
   stroke-width: 2;
 }
 
-.top-nav-icon-btn:hover {
-  background: var(--ink);
-  border-color: var(--ink);
-  color: var(--paper);
-}
 
 .top-nav-login-btn {
   border: 1px solid #1c2e50;
@@ -160,13 +149,6 @@ html[data-surface="blacktop"] .nav-sliding-pill {
   transition: background 140ms ease, border-color 140ms ease, color 140ms ease, transform 160ms ease, box-shadow 160ms ease;
 }
 
-.top-nav-login-btn:hover {
-  background: #152340;
-  border-color: #152340;
-  color: #ffffff;
-  box-shadow: 4px 4px 0 #CFA14D;
-  transform: translateY(-3px);
-}
 
 html[data-surface="blacktop"] .top-nav-login-btn {
   background: var(--cta);
@@ -174,13 +156,6 @@ html[data-surface="blacktop"] .top-nav-login-btn {
   color: var(--cta-text);
 }
 
-html[data-surface="blacktop"] .top-nav-login-btn:hover {
-  background: color-mix(in srgb, var(--cta) 85%, white);
-  border-color: color-mix(in srgb, var(--cta) 85%, white);
-  color: var(--cta-text);
-  box-shadow: 4px 4px 0 #9D4D32;
-  transform: translateY(-3px);
-}
 
 /* ─── Hamburger button ────────────────────────────── */
 
@@ -202,10 +177,6 @@ html[data-surface="blacktop"] .top-nav-login-btn:hover {
   transition: background 140ms ease, border-color 140ms ease;
 }
 
-.hamburger-btn:hover {
-  background: var(--glass-strong);
-  border-color: var(--line-strong);
-}
 
 .hamburger-bar {
   display: block;
@@ -245,8 +216,8 @@ html[data-surface="blacktop"] .top-nav-login-btn:hover {
     var(--paper-2);
   transform: translateX(100%);
   opacity: 0;
-  transition: transform 340ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
-              opacity 260ms ease;
+  transition: transform 360ms cubic-bezier(0.4, 0, 0.15, 1),
+              opacity 360ms ease;
   will-change: transform, opacity;
 }
 
@@ -278,10 +249,6 @@ html[data-surface="blacktop"] .top-nav-login-btn:hover {
   transition: background 140ms ease, border-color 140ms ease;
 }
 
-.mobile-menu-close:hover {
-  background: var(--glass-strong);
-  border-color: var(--line-strong);
-}
 
 .mobile-menu-close svg {
   width: 16px;
@@ -401,4 +368,46 @@ html[data-surface="blacktop"] .top-nav-login-btn:hover {
   border-radius: 999px;
   font-size: 1rem;
   opacity: 0;
+}
+
+@media (hover: hover) {
+  .top-nav-brand:hover {
+    opacity: 0.8;
+  }
+
+  .top-nav-tab:hover {
+    color: var(--ink);
+  }
+
+  .top-nav-icon-btn:hover {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--paper);
+  }
+
+  .top-nav-login-btn:hover {
+    background: #152340;
+    border-color: #152340;
+    color: #ffffff;
+    box-shadow: 4px 4px 0 #CFA14D;
+    transform: translateY(-3px);
+  }
+
+  html[data-surface="blacktop"] .top-nav-login-btn:hover {
+    background: color-mix(in srgb, var(--cta) 85%, white);
+    border-color: color-mix(in srgb, var(--cta) 85%, white);
+    color: var(--cta-text);
+    box-shadow: 4px 4px 0 #9D4D32;
+    transform: translateY(-3px);
+  }
+
+  .hamburger-btn:hover {
+    background: var(--glass-strong);
+    border-color: var(--line-strong);
+  }
+
+  .mobile-menu-close:hover {
+    background: var(--glass-strong);
+    border-color: var(--line-strong);
+  }
 }

@@ -76,9 +76,7 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
     const projection = geoMercator().fitExtent([[30, 6], [142, 50]], collection);
     return geoPath(projection);
   }, [territoryFeatures]);
-  const selectedFeature = features.find((item) => item.properties.stateCode === selectedCode);
   const selectedCard = cardsByCode.get(selectedCode);
-  const selectedCentroid = selectedFeature ? path.centroid(selectedFeature) : null;
 
   useEffect(() => {
     if (selectedCard) setHint(formatMapHint(selectedCard));
@@ -385,11 +383,6 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
                 );
               })}
             </g>
-            {selectedCentroid && viewport.scale < 2.9 && (
-              <text className="selected-state-label" x={selectedCentroid[0]} y={selectedCentroid[1]}>
-                {selectedCode}
-              </text>
-            )}
             {territoryPath && territoryFeatures.length > 0 && (
               <g className="territory-inset-layer" transform="translate(846 510)">
                 {territoryFeatures.map((item, index) => {
@@ -436,9 +429,6 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
                     >
                       <rect className="territory-inset-hit" x="34" y="8" width="104" height="40" rx="6" />
                       <path className="territory-inset-shape" d={territoryPath(item)} />
-                      {code === selectedCode && (
-                        <text className="territory-inset-code" x="15" y="34">{code}</text>
-                      )}
                     </g>
                   );
                 })}

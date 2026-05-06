@@ -6,6 +6,7 @@ function LoginPage({ onNavigate, onLogin, darkMode, onToggleDarkMode }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const loginTabRef = useRef(null);
   const createTabRef = useRef(null);
   const [indicator, setIndicator] = useState({ left: 0, width: 0 });
@@ -23,7 +24,7 @@ function LoginPage({ onNavigate, onLogin, darkMode, onToggleDarkMode }) {
 
   return (
     <div className="login-page">
-      <TopNav page="login" view={null} onViewChange={() => {}} onNavigate={onNavigate} onLogin={onLogin} darkMode={darkMode} onToggleDarkMode={onToggleDarkMode} />
+      <TopNav onNavigate={onNavigate} onLogin={onLogin} darkMode={darkMode} onToggleDarkMode={onToggleDarkMode} />
 
       <div className="login-layout">
         <div className="login-left">
@@ -57,7 +58,12 @@ function LoginPage({ onNavigate, onLogin, darkMode, onToggleDarkMode }) {
                 </label>
                 <label className="login-field">
                   <span>Password</span>
-                  <input className="login-input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" autoComplete="current-password" />
+                  <div className="login-password-wrap">
+                    <input className="login-input" type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" autoComplete="current-password" />
+                    <button className="login-pw-toggle" type="button" onClick={() => setShowPassword((v) => !v)} aria-label={showPassword ? "Hide password" : "Show password"}>
+                      {showPassword ? "hide" : "show"}
+                    </button>
+                  </div>
                 </label>
                 <button className="login-forgot" type="button">Forgot password?</button>
                 <button className="primary-button login-submit" type="submit">Log In</button>
@@ -83,7 +89,12 @@ function LoginPage({ onNavigate, onLogin, darkMode, onToggleDarkMode }) {
                 </label>
                 <label className="login-field">
                   <span>Password</span>
-                  <input className="login-input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Create a password" autoComplete="new-password" />
+                  <div className="login-password-wrap">
+                    <input className="login-input" type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Create a password" autoComplete="new-password" />
+                    <button className="login-pw-toggle" type="button" onClick={() => setShowPassword((v) => !v)} aria-label={showPassword ? "Hide password" : "Show password"}>
+                      {showPassword ? "hide" : "show"}
+                    </button>
+                  </div>
                 </label>
                 <button className="primary-button login-submit" type="submit">Create Account</button>
                 <div className="login-or"><span>or</span></div>
@@ -102,9 +113,9 @@ function LoginPage({ onNavigate, onLogin, darkMode, onToggleDarkMode }) {
             <p>Geography-powered fan discovery</p>
           </div>
           <nav className="landing-footer-nav" aria-label="Footer">
-            <button className="landing-footer-link" type="button" onClick={() => onNavigate("app", "explorer")}>Map</button>
-            <button className="landing-footer-link" type="button" onClick={() => onNavigate("app", "collection")}>Collection</button>
-            <button className="landing-footer-link" type="button" onClick={() => onNavigate("app", "methodology")}>Methodology</button>
+            <button className="landing-footer-link" type="button" onClick={() => onNavigate("/map")}>Map</button>
+            <button className="landing-footer-link" type="button" onClick={() => onNavigate("/collection")}>Collection</button>
+            <button className="landing-footer-link" type="button" onClick={() => onNavigate("/methodology")}>Methodology</button>
           </nav>
         </div>
       </footer>

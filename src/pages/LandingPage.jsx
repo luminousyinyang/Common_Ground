@@ -5,7 +5,7 @@ import Icon from "../components/common/Icon.jsx";
 function LandingPage({ onNavigate, onLogin, darkMode, onToggleDarkMode }) {
   return (
     <div className="landing-page">
-      <TopNav page="landing" view={null} onViewChange={() => {}} onNavigate={onNavigate} onLogin={onLogin} darkMode={darkMode} onToggleDarkMode={onToggleDarkMode} />
+      <TopNav onNavigate={onNavigate} onLogin={onLogin} darkMode={darkMode} onToggleDarkMode={onToggleDarkMode} />
 
       <section className="landing-hero">
         <div className="landing-section-inner">
@@ -16,7 +16,7 @@ function LandingPage({ onNavigate, onLogin, darkMode, onToggleDarkMode }) {
               <h1 className="landing-hero-title">Explore Team USA by State</h1>
               <p className="landing-hero-body">Click a state to discover the number of athletes, minigames, and collect cards.</p>
               <div className="landing-cta-row">
-                <button className="primary-button" type="button" onClick={() => onNavigate("app", "explorer")}>Explore the Map</button>
+                <button className="primary-button" type="button" onClick={() => onNavigate("/map")}>Explore the Map</button>
                 <button className="ghost-button hero-features-btn" type="button" onClick={() => document.getElementById("landing-features")?.scrollIntoView({ behavior: "smooth" })}>
                   View Features <Icon name="arrow-down" size={16} strokeWidth={2} />
                 </button>
@@ -59,7 +59,7 @@ function LandingPage({ onNavigate, onLogin, darkMode, onToggleDarkMode }) {
         <div className="landing-section-inner landing-cta2-inner">
           <h2 className="landing-cta2-title">Start Your Collection Today</h2>
           <p className="landing-cta2-body">No account required to explore. Select states on the map to unlock cards and track your journey across all 50 states.</p>
-          <button className="primary-button" type="button" onClick={() => onNavigate("app", "explorer")}>Begin Exploring</button>
+          <button className="primary-button" type="button" onClick={() => onNavigate("/map")}>Begin Exploring</button>
         </div>
       </section>
 
@@ -70,9 +70,9 @@ function LandingPage({ onNavigate, onLogin, darkMode, onToggleDarkMode }) {
             <p>Geography-powered fan discovery</p>
           </div>
           <nav className="landing-footer-nav" aria-label="Footer">
-            <button className="landing-footer-link" type="button" onClick={() => onNavigate("app", "explorer")}>Map</button>
-            <button className="landing-footer-link" type="button" onClick={() => onNavigate("app", "collection")}>Collection</button>
-            <button className="landing-footer-link" type="button" onClick={() => onNavigate("app", "methodology")}>Methodology</button>
+            <button className="landing-footer-link" type="button" onClick={() => onNavigate("/map")}>Map</button>
+            <button className="landing-footer-link" type="button" onClick={() => onNavigate("/collection")}>Collection</button>
+            <button className="landing-footer-link" type="button" onClick={() => onNavigate("/methodology")}>Methodology</button>
           </nav>
         </div>
       </footer>
