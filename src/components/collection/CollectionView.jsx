@@ -90,7 +90,7 @@ function CollectionView({ states, discoveredCodes, onSelect, panelManifest, isLo
         <div>
           <p className="eyebrow">Your collection</p>
           <h2>My State Insight Cards</h2>
-          <p>Browse every state you've discovered, compare state-level patterns, and complete your 50-state collection.</p>
+          <p>Browse what you've discovered, compare patterns, and complete your collection.</p>
         </div>
         <div className="collection-progress-stack">
           <span className="collection-count">{allDiscovered.length} / {states.length}</span>
