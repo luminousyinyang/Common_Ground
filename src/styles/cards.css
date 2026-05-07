@@ -2178,3 +2178,19 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
     background: var(--ink);
   }
 }
+
+/* ── Reduce motion overrides ── */
+html[data-reduce-motion="1"] .sports-card.is-hovered .sports-card-front::after {
+  opacity: 0 !important;
+}
+
+html[data-reduce-motion="1"] .card-modal-panel.card-interaction-tilt-inspect .sports-card:not(.is-flipped):hover,
+html[data-reduce-motion="1"] .card-modal-panel.card-interaction-magnetic-snap .sports-card:not(.is-flipped):hover {
+  transform: none !important;
+  filter: none !important;
+}
+
+html[data-reduce-motion="1"] .card-modal-panel.card-interaction-foil-sweep .sports-card-front::after,
+html[data-reduce-motion="1"] .card-modal-panel.card-interaction-case-shine .sports-card-face::after {
+  animation: none !important;
+}
