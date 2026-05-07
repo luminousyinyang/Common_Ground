@@ -125,9 +125,10 @@ html[data-surface="blacktop"] .game-board.has-game-background .focus-readout {
 .cadence-pad {
   display: grid;
   place-items: center;
+  gap: 8px;
   width: min(320px, 100%);
   min-height: 230px;
-  margin: var(--space-4) auto;
+  margin: var(--space-3) auto;
   border: 1px solid var(--line-strong);
   border-radius: 999px;
   color: var(--ink);
@@ -139,6 +140,53 @@ html[data-surface="blacktop"] .game-board.has-game-background .focus-readout {
   box-shadow: inset 0 1px 0 var(--glass-line), 0 16px 34px color-mix(in srgb, var(--ink) 8%, transparent);
 }
 
+.cadence-board {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-3);
+}
+
+.rhythm-condition-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.rhythm-condition {
+  display: grid;
+  gap: 3px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: var(--copy);
+  background: color-mix(in srgb, var(--paper) 50%, transparent);
+}
+
+.rhythm-condition span,
+.rhythm-condition em {
+  font-size: 0.76rem;
+  font-style: normal;
+  font-weight: 780;
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
+
+.rhythm-condition strong {
+  color: var(--ink);
+  line-height: 1.05;
+}
+
+.rhythm-condition.is-active {
+  border-color: var(--ink);
+  background: color-mix(in srgb, var(--olympic-tint) 38%, var(--paper));
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--ink) 10%, transparent);
+}
+
+.rhythm-condition.is-complete {
+  border-color: color-mix(in srgb, var(--gold) 56%, var(--line));
+}
+
 .cadence-pad span {
   font-size: 1rem;
   font-weight: 700;
@@ -146,6 +194,15 @@ html[data-surface="blacktop"] .game-board.has-game-background .focus-readout {
 
 .cadence-pad strong {
   font-size: 1.2rem;
+}
+
+.cadence-pad em {
+  max-width: 230px;
+  color: var(--copy);
+  font-size: 0.92rem;
+  font-style: normal;
+  font-weight: 760;
+  line-height: 1.2;
 }
 
 .cadence-meter {
@@ -360,4 +417,50 @@ html[data-surface="blacktop"] .game-board.has-game-background .focus-readout {
   margin-top: var(--space-3);
   color: var(--copy);
   line-height: 1.55;
+}
+
+.game-result-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: var(--space-3) 0;
+}
+
+.game-result-metrics div {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: var(--glass-soft);
+}
+
+.game-result-metrics dt {
+  color: var(--copy);
+  font-size: 0.78rem;
+  font-weight: 780;
+  text-transform: uppercase;
+}
+
+.game-result-metrics dd {
+  margin: 2px 0 0;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 900;
+}
+
+.game-result-breakdown {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: var(--space-3);
+}
+
+.game-result-breakdown span {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 10px;
+  background: var(--glass-soft);
+  color: var(--copy);
+  font-size: 0.86rem;
+  font-weight: 760;
 }

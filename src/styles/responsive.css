@@ -199,6 +199,11 @@
     grid-template-columns: repeat(4, minmax(44px, 1fr));
   }
 
+  .rhythm-condition-row,
+  .game-result-metrics {
+    grid-template-columns: 1fr;
+  }
+
 }
 
 /* ── Card modal: full-screen on very small screens ── */

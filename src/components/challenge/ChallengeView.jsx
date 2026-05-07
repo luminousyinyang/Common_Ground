@@ -80,36 +80,161 @@ function ReactionGrid({ card, onResult, gameExperience }) {
   );
 }
 
+const RHYTHM_CONDITIONS = [
+  { key: "one", label: "1s", condition: "Every 1s", targetMs: 1000, intervals: 3 },
+  { key: "one-half", label: "1.5s", condition: "Every 1.5s", targetMs: 1500, intervals: 3 },
+  { key: "two", label: "2s", condition: "Every 2s", targetMs: 2000, intervals: 3 }
+];
+
+const RHYTHM_TARGETS = RHYTHM_CONDITIONS.flatMap((condition) =>
+  Array.from({ length: condition.intervals }, () => condition)
+);
+const RHYTHM_REQUIRED_TAPS = RHYTHM_TARGETS.length + 1;
+
+function rhythmConditionForInterval(index) {
+  const bounded = Math.max(0, Math.min(index, RHYTHM_TARGETS.length - 1));
+  return RHYTHM_TARGETS[bounded] || RHYTHM_CONDITIONS[0];
+}
+
+function rhythmConditionProgress(completedIntervals) {
+  let cursor = 0;
+  return RHYTHM_CONDITIONS.map((condition) => {
+    const start = cursor;
+    const end = start + condition.intervals;
+    cursor = end;
+    return {
+      ...condition,
+      start,
+      end,
+      isActive: completedIntervals >= start && completedIntervals < end,
+      isComplete: completedIntervals >= end
+    };
+  });
+}
+
+function millisecondsLabel(value) {
+  const seconds = value / 1000;
+  return `${seconds.toFixed(2).replace(/\.?0+$/, "")}s`;
+}
+
+function clampScore(value) {
+  return Math.max(0, Math.min(100, Math.round(value)));
+}
+
+function average(values) {
+  if (!values.length) return 0;
+  return values.reduce((sum, value) => sum + value, 0) / values.length;
+}
+
+function rhythmStatsForTaps(nextTaps) {
+  const intervals = nextTaps.slice(1).map((tap, index) => tap - nextTaps[index]);
+  const intervalResults = intervals.map((interval, index) => {
+    const condition = rhythmConditionForInterval(index);
+    return {
+      condition,
+      interval,
+      error: Math.abs(interval - condition.targetMs)
+    };
+  });
+  const averageError = average(intervalResults.map((result) => result.error));
+
+  const conditionBreakdown = RHYTHM_CONDITIONS.map((condition) => {
+    const results = intervalResults.filter((result) => result.condition.key === condition.key);
+    const values = results.map((result) => result.interval);
+    const mean = average(values);
+    const variance = average(values.map((value) => (value - mean) ** 2));
+    return {
+      label: condition.condition,
+      targetMs: condition.targetMs,
+      count: results.length,
+      averageErrorMs: Math.round(average(results.map((result) => result.error))),
+      varianceMs: Math.round(Math.sqrt(variance))
+    };
+  }).filter((condition) => condition.count > 0);
+
+  const averageVariance = average(conditionBreakdown.map((condition) => condition.varianceMs));
+  const adaptationErrors = [];
+  let phaseStart = 0;
+  RHYTHM_CONDITIONS.forEach((condition, index) => {
+    if (index > 0 && intervalResults[phaseStart]) {
+      adaptationErrors.push(intervalResults[phaseStart].error);
+    }
+    phaseStart += condition.intervals;
+  });
+  const adaptationError = average(adaptationErrors);
+  const stabilityScore = clampScore(100 - averageVariance / 7.5);
+  const accuracyScore = clampScore(100 - averageError / 12);
+  const adaptationScore = adaptationErrors.length ? clampScore(100 - adaptationError / 12) : 100;
+  const overallScore = clampScore(stabilityScore * 0.5 + accuracyScore * 0.35 + adaptationScore * 0.15);
+  const rhythmLabel = overallScore >= 85
+    ? "steady"
+    : overallScore >= 70
+      ? "mostly steady"
+      : overallScore >= 50
+        ? "variable"
+        : "hard to settle";
+
+  return {
+    rhythmLabel,
+    overallScore,
+    stabilityScore,
+    accuracyScore,
+    adaptationScore,
+    averageErrorMs: Math.round(averageError),
+    averageVarianceMs: Math.round(averageVariance),
+    conditionBreakdown
+  };
+}
+
 function CadenceKeeper({ card, onResult, gameExperience }) {
   const [taps, setTaps] = useState([]);
-  const targetMs = 700;
-  const requiredTaps = 14;
+  const [feedback, setFeedback] = useState("First tap starts the rhythm.");
   const tapsRef = useRef([]);
   const finishedRef = useRef(false);
 
-  function finish(nextTaps) {
+  const finish = useCallback((nextTaps) => {
     if (finishedRef.current) return;
     finishedRef.current = true;
-    const intervals = nextTaps.slice(1).map((tap, index) => tap - nextTaps[index]);
-    const averageError = intervals.length
-      ? intervals.reduce((sum, interval) => sum + Math.abs(interval - targetMs), 0) / intervals.length
-      : 0;
-    const consistency = Math.max(0, Math.round(100 - averageError / 7));
-    const rhythmLabel = consistency >= 82 ? "steady" : consistency >= 58 ? "developing" : "variable";
+    const stats = rhythmStatsForTaps(nextTaps);
     onResult({
       type: "cadence_keeper",
-      summary: `Your cadence stayed ${rhythmLabel} across ${requiredTaps} taps in this personal game.`,
-      rhythmLabel
+      summary: `Your rhythm was ${stats.rhythmLabel}: ${stats.overallScore}% rhythm stability with about ${stats.averageErrorMs}ms average timing drift as the tempo shifted.`,
+      rhythmLabel: stats.rhythmLabel,
+      stabilityScore: stats.overallScore,
+      averageErrorMs: stats.averageErrorMs,
+      adaptationScore: stats.adaptationScore,
+      metrics: [
+        { label: "Stability", value: `${stats.overallScore}%` },
+        { label: "Avg drift", value: `${stats.averageErrorMs}ms` },
+        { label: "Shift response", value: `${stats.adaptationScore}%` }
+      ],
+      conditionBreakdown: stats.conditionBreakdown
     });
-  }
+  }, [onResult]);
 
-  function recordTap() {
+  const recordTap = useCallback(() => {
     if (finishedRef.current) return;
-    const nextTaps = [...tapsRef.current, performance.now()];
+    const now = performance.now();
+    const previousTap = tapsRef.current.at(-1);
+    const nextTaps = [...tapsRef.current, now];
+    if (previousTap) {
+      const intervalIndex = nextTaps.length - 2;
+      const condition = rhythmConditionForInterval(intervalIndex);
+      const drift = Math.round(now - previousTap - condition.targetMs);
+      const absoluteDrift = Math.abs(drift);
+      const timingLabel = absoluteDrift <= 140
+        ? "on the count"
+        : drift < 0
+          ? `${absoluteDrift}ms early`
+          : `${absoluteDrift}ms late`;
+      setFeedback(`${condition.condition}: ${timingLabel}.`);
+    } else {
+      setFeedback("Rhythm started. Match the current condition.");
+    }
     tapsRef.current = nextTaps;
     setTaps(nextTaps);
-    if (nextTaps.length >= requiredTaps) finish(nextTaps);
-  }
+    if (nextTaps.length >= RHYTHM_REQUIRED_TAPS) finish(nextTaps);
+  }, [finish]);
 
   useEffect(() => {
     function onKey(event) {
@@ -120,16 +245,34 @@ function CadenceKeeper({ card, onResult, gameExperience }) {
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, []);
+  }, [recordTap]);
 
-  const progress = Math.min(taps.length / requiredTaps, 1) * 100;
+  const completedIntervals = Math.max(taps.length - 1, 0);
+  const currentCondition = rhythmConditionForInterval(completedIntervals);
+  const conditions = rhythmConditionProgress(completedIntervals);
+  const progress = Math.min(completedIntervals / RHYTHM_TARGETS.length, 1) * 100;
+  const tapsLeft = Math.max(RHYTHM_REQUIRED_TAPS - taps.length, 0);
+
   return (
     <>
-      <div className="game-status">Cadence Keeper: {Math.max(requiredTaps - taps.length, 0)} taps left. Keep each tap close to the same tempo.</div>
-      <div className={gameBoardClass("cadence-board", gameExperience)} style={gameBoardStyle(gameExperience)} tabIndex="0" aria-label={`${card.stateName} cadence keeper`}>
-        <button className="cadence-pad" type="button" onClick={recordTap}>
-          <span>Tap here or press space</span>
-          <strong>Keep a steady rhythm</strong>
+      <div className="game-status">Rhythm Shift: {tapsLeft} taps left. Match the {millisecondsLabel(currentCondition.targetMs)} count as conditions change.</div>
+      <div className={gameBoardClass("cadence-board", gameExperience)} style={gameBoardStyle(gameExperience)} tabIndex="0" aria-label={`${card.stateName} rhythm shift`}>
+        <div className="rhythm-condition-row" aria-label="Rhythm conditions">
+          {conditions.map((condition) => (
+            <div
+              key={condition.key}
+              className={`rhythm-condition ${condition.isActive ? "is-active" : ""} ${condition.isComplete ? "is-complete" : ""}`}
+            >
+              <span>{condition.label}</span>
+              <strong>{condition.condition}</strong>
+              <em>{millisecondsLabel(condition.targetMs)}</em>
+            </div>
+          ))}
+        </div>
+        <button className={`cadence-pad rhythm-pad rhythm-pad-${currentCondition.key}`} type="button" onClick={recordTap}>
+          <span>{taps.length ? "Tap with the condition" : "Tap to start"}</span>
+          <strong>{millisecondsLabel(currentCondition.targetMs)} rhythm</strong>
+          <em>{feedback}</em>
         </button>
         <div className="cadence-meter" aria-hidden="true"><span style={{ width: `${progress}%` }} /></div>
       </div>
@@ -502,6 +645,25 @@ function ChallengeView({ card, briefing, onReturn, panelManifest, onGameComplete
           {result && (
             <div className="game-result">
               <p><strong>Personal result:</strong> {result.summary}</p>
+              {result.metrics?.length ? (
+                <dl className="game-result-metrics">
+                  {result.metrics.map((metric) => (
+                    <div key={metric.label}>
+                      <dt>{metric.label}</dt>
+                      <dd>{metric.value}</dd>
+                    </div>
+                  ))}
+                </dl>
+              ) : null}
+              {result.conditionBreakdown?.length ? (
+                <div className="game-result-breakdown" aria-label="Condition breakdown">
+                  {result.conditionBreakdown.map((condition) => (
+                    <span key={condition.label}>
+                      {condition.label}: {condition.averageErrorMs}ms drift
+                    </span>
+                  ))}
+                </div>
+              ) : null}
               <p>{reflection ? reflection.reflection : "Generating safe game reflection..."}</p>
             </div>
           )}

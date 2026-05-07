@@ -123,10 +123,10 @@ export const CARD_ART = {
 export const FRAMED_CARD_PANEL_PROMPT_VERSIONS = new Set(["common-ground-card-panel-v2"]);
 
 export const CARD_THEME_LABELS = {
-  aquatic: "Water rhythm card",
+  aquatic: "Water sport card",
   "control-pressure": "Control pressure card",
   neutral: "Open signal card",
-  "rhythm-pace": "Rhythm pace card",
+  "rhythm-pace": "Pace control card",
   "spatial-timing": "Spatial timing card",
   "winter-endurance": "Alpine endurance card"
 };
@@ -141,7 +141,7 @@ export const SUPPORTED_GAME_EXPERIENCE_VERSIONS = new Set([
 ]);
 export const GAME_TYPE_LABELS = {
   reaction_grid: "Reaction Grid",
-  cadence_keeper: "Cadence Keeper",
+  cadence_keeper: "Rhythm Shift",
   precision_trace: "Precision Trace",
   focus_hold: "Focus Hold",
   pattern_scout: "Pattern Scout"

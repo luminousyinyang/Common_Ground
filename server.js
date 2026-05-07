@@ -319,10 +319,10 @@ function connectionTraitDescription(cardOrTrait) {
 function plainTraitHeadline(cardOrTrait) {
   const trait = cardOrTrait?.sharedTrait || cardOrTrait || {};
   const source = `${trait.name || ""} ${trait.description || ""}`.toLowerCase();
-  const hasChangingContext = /\b(conditions?|surfaces?|transitions?|water|roads?)\b/.test(source);
+  const hasChangingContext = /\b(conditions?|surfaces?|transitions?|water|roads?|current|currents)\b/.test(source);
   if (/\b(focus|precision)\b/.test(source)) return "Focus and precision";
   if (/\b(elevation|mountain|terrain|weather|equipment)\b/.test(source) && /\b(pace|pacing|control|decisions?)\b/.test(source)) return "Pacing through terrain and equipment changes";
-  if (/\b(pace|pacing|cadence|rhythm|timing)\b/.test(source) && hasChangingContext) return "Adjusting rhythm as conditions change";
+  if (/\b(pace|pacing|cadence|rhythm|timing)\b/.test(source) && hasChangingContext) return "Rhythm in changing conditions";
   if (/\b(pace|pacing|cadence|rhythm)\b/.test(source)) return "Rhythm and pacing";
   if (/\b(space|spacing|recognition)\b/.test(source)) return "Timing and space awareness";
   if (/\b(pressure|power|body control|short window|well-timed)\b/.test(source)) return "Control under pressure";
