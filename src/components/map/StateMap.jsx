@@ -10,7 +10,7 @@ function SignalLegend() {
       <span className="legend-item"><i className="signal-dot high" /><span>High representation</span></span>
       <span className="legend-item"><i className="signal-dot medium" /><span>Medium</span></span>
       <span className="legend-item"><i className="signal-dot low" /><span>Low</span></span>
-      <span className="legend-item"><i className="signal-dot insufficient_data" /><span>Limited data</span></span>
+      <span className="legend-item"><i className="signal-dot no-athletes" /><span>No athletes</span></span>
     </div>
   );
 }
@@ -40,6 +40,7 @@ const TERRITORY_INSET = {
 function RosterTooltip({ card, position }) {
   if (!card || !position) return null;
   const counts = getRosterCounts(card);
+  const hasAthletes = counts.total > 0;
 
   return (
     <div
@@ -48,9 +49,15 @@ function RosterTooltip({ card, position }) {
       aria-hidden="true"
     >
       <strong>{card.stateName}</strong>
-      <span>Olympic athletes: {counts.olympic}</span>
-      <span>Paralympic athletes: {counts.paralympic}</span>
-      <span>Total: {counts.total}</span>
+      {hasAthletes ? (
+        <>
+          <span>Olympic athletes: {counts.olympic}</span>
+          <span>Paralympic athletes: {counts.paralympic}</span>
+          <span>Total: {counts.total}</span>
+        </>
+      ) : (
+        <span>No athletes in this dataset</span>
+      )}
     </div>
   );
 }
@@ -380,10 +387,11 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
                 const card = cardsByCode.get(code);
                 const counts = getRosterCounts(card);
                 const signal = card?.hometownPresenceBucket || "insufficient_data";
+                const noAthletes = counts.total === 0;
                 const className = [
                   "state-path",
                   card ? "has-data" : "no-data",
-                  signal,
+                  noAthletes ? "no-athletes" : signal,
                   code === selectedCode ? "is-selected" : "",
                   discoveredCodes.has(code) ? "is-discovered" : ""
                 ].filter(Boolean).join(" ");
@@ -394,9 +402,9 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
                     className={className}
                     d={path(item)}
                     data-state-code={code}
-                    role={card ? "button" : "img"}
-                    tabIndex={card ? 0 : -1}
-                    aria-label={card ? `View ${card.stateName} state insights — ${counts.olympic} Olympic, ${counts.paralympic} Paralympic athletes` : `${item.properties.name} — no state data loaded`}
+                    role={card && !noAthletes ? "button" : "img"}
+                    tabIndex={card && !noAthletes ? 0 : -1}
+                    aria-label={card ? `${card.stateName} — ${noAthletes ? "no athletes in this dataset" : `${counts.olympic} Olympic, ${counts.paralympic} Paralympic athletes`}` : `${item.properties.name} — no state data loaded`}
                     onMouseEnter={(event) => describeFeature(item, event)}
                     onMouseMove={(event) => describeFeature(item, event)}
                     onFocus={() => describeFeature(item)}
@@ -406,7 +414,7 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
                     }}
                     onBlur={() => selectedCard && setHint(formatMapHint(selectedCard))}
                     onClick={(event) => {
-                      if (suppressClickRef.current) {
+                      if (suppressClickRef.current || noAthletes) {
                         event.preventDefault();
                         return;
                       }
@@ -446,10 +454,11 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
                   const code = item.properties.stateCode;
                   const card = cardsByCode.get(code);
                   const counts = getRosterCounts(card);
+                  const noAthletes = counts.total === 0;
                   const signal = card?.hometownPresenceBucket || "insufficient_data";
                   const className = [
                     "territory-inset",
-                    signal,
+                    noAthletes ? "no-athletes" : signal,
                     code === selectedCode ? "is-selected" : ""
                   ].filter(Boolean).join(" ");
 
@@ -459,9 +468,9 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
                       className={className}
                       data-state-code={code}
                       transform={`translate(${index * (TERRITORY_INSET.width + TERRITORY_INSET.gap)} 0)`}
-                      role="button"
-                      tabIndex={0}
-                      aria-label={`View ${card.stateName} state insights — ${counts.olympic} Olympic, ${counts.paralympic} Paralympic athletes`}
+                      role={noAthletes ? "img" : "button"}
+                      tabIndex={noAthletes ? -1 : 0}
+                      aria-label={`${card.stateName} — ${noAthletes ? "no athletes in this dataset" : `${counts.olympic} Olympic, ${counts.paralympic} Paralympic athletes`}`}
                       onMouseEnter={(event) => describeFeature(item, event)}
                       onMouseMove={(event) => describeFeature(item, event)}
                       onFocus={() => describeFeature(item)}
@@ -471,14 +480,14 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
                       }}
                       onBlur={() => selectedCard && setHint(formatMapHint(selectedCard))}
                       onClick={(event) => {
-                        if (suppressClickRef.current) {
+                        if (suppressClickRef.current || noAthletes) {
                           event.preventDefault();
                           return;
                         }
                         onSelect(card.stateCode);
                       }}
                       onKeyDown={(event) => {
-                        if (event.key === "Enter" || event.key === " ") {
+                        if (!noAthletes && (event.key === "Enter" || event.key === " ")) {
                           event.preventDefault();
                           onSelect(card.stateCode);
                         }
