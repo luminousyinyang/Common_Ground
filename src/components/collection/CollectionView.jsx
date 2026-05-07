@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { getCardThemeLabel, plainTraitHeadline, titleBucket } from "../../lib/stateCard.js";
 import Icon from "../common/Icon.jsx";
 import CardArt from "../cards/CardArt.jsx";
 
@@ -42,17 +41,6 @@ function MiniStateCard({ card, discovered, onSelect, panelManifest }) {
             <Icon name="lock" size={24} strokeWidth={1.8} />
           </div>
         )}
-      </div>
-      <div className="mini-card-body">
-        <div>
-          <strong>{plainTraitHeadline(card)}</strong>
-          <span>{getCardThemeLabel(card)}</span>
-        </div>
-        <span className={`discover-pill ${discovered ? "is-discovered" : ""}`}>{discovered ? "Discovered" : "Preview"}</span>
-      </div>
-      <div className="mini-card-signals">
-        <span className="signal-mini olympic">Olympic: {titleBucket(card.olympicPanel.aggregateSignal)}</span>
-        <span className="signal-mini paralympic">Paralympic: {titleBucket(card.paralympicPanel.aggregateSignal)}</span>
       </div>
     </button>
   );
