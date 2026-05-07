@@ -11,7 +11,7 @@ function initialForUser(user) {
   return source.trim().charAt(0).toUpperCase() || "C";
 }
 
-function TopNav({ onNavigate, onLogin, onLogout, darkMode, onToggleDarkMode, authLoading, isLoggedIn, user }) {
+function TopNav({ onNavigate, onLogin, onLogout, darkMode, onToggleDarkMode, onOpenHelp, authLoading, isLoggedIn, user }) {
   const { pathname } = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
   const [menuMounted, setMenuMounted] = useState(false);
@@ -179,6 +179,9 @@ function TopNav({ onNavigate, onLogin, onLogout, darkMode, onToggleDarkMode, aut
                 <button className="top-nav-icon-btn" type="button" onClick={onToggleDarkMode} aria-label="Toggle dark mode" data-tooltip={darkMode ? "Light mode" : "Dark mode"}>
                   <Icon name={darkMode ? "sun" : "moon"} size={16} strokeWidth={1.6} />
                 </button>
+                <button className="top-nav-icon-btn" type="button" onClick={onOpenHelp} aria-label="Help" data-tooltip="Help">
+                  <Icon name="help" size={16} strokeWidth={1.6} />
+                </button>
                 <div className={`top-nav-user-menu${accountMenuOpen ? " is-open" : ""}`} ref={accountMenuRef}>
                   <button
                     className="top-nav-avatar-btn"
@@ -207,6 +210,9 @@ function TopNav({ onNavigate, onLogin, onLogout, darkMode, onToggleDarkMode, aut
               <>
                 <button className="top-nav-icon-btn" type="button" onClick={onToggleDarkMode} aria-label="Toggle dark mode" data-tooltip={darkMode ? "Light mode" : "Dark mode"}>
                   <Icon name={darkMode ? "sun" : "moon"} size={16} strokeWidth={1.6} />
+                </button>
+                <button className="top-nav-icon-btn" type="button" onClick={onOpenHelp} aria-label="Help" data-tooltip="Help">
+                  <Icon name="help" size={16} strokeWidth={1.6} />
                 </button>
                 <button className="top-nav-icon-btn" type="button" onClick={() => onNavigate("/settings")} aria-label="Settings" data-tooltip="Settings">
                   <Icon name="settings" size={16} strokeWidth={1.6} />
@@ -289,28 +295,36 @@ function TopNav({ onNavigate, onLogin, onLogout, darkMode, onToggleDarkMode, aut
           </nav>
           <div className="mobile-menu-sep" style={{ "--i": 4 }} />
           <div className="mobile-menu-foot">
-            <button
-              className="mobile-menu-row"
-              type="button"
-              onClick={onToggleDarkMode}
-              style={{ "--i": 5 }}
-            >
-              <span>{darkMode ? "Light mode" : "Dark mode"}</span>
-              <Icon name={darkMode ? "sun" : "moon"} size={20} strokeWidth={1.5} />
-            </button>
-            <button
-              className="primary-button mobile-menu-login"
-              type="button"
-              onClick={() => { isLoggedIn ? onLogout?.() : onLogin(); closeMenu(); }}
-              style={{ "--i": 6 }}
-            >
-              {isLoggedIn ? "Log out" : "Login"}
-            </button>
-            {isLoggedIn && (
-              <span className="mobile-menu-user" style={{ "--i": 7 }}>
-                Signed in as {displayNameForUser(user)}
-              </span>
-            )}
+            <div className="mobile-menu-rows">
+              <button
+                className="mobile-menu-row"
+                type="button"
+                onClick={onToggleDarkMode}
+                style={{ "--i": 5 }}
+              >
+                <span>{darkMode ? "Light mode" : "Dark mode"}</span>
+                <Icon name={darkMode ? "sun" : "moon"} size={20} strokeWidth={1.5} />
+              </button>
+              <button
+                className="mobile-menu-row"
+                type="button"
+                onClick={() => { onOpenHelp(); closeMenu(); }}
+                style={{ "--i": 6 }}
+              >
+                <span>Help</span>
+                <Icon name="help" size={20} strokeWidth={1.5} />
+              </button>
+            </div>
+            <div className="mobile-menu-login-wrap">
+              <button
+                className="primary-button mobile-menu-login"
+                type="button"
+                onClick={() => { isLoggedIn ? onLogout?.() : onLogin(); closeMenu(); }}
+                style={{ "--i": 7 }}
+              >
+                {isLoggedIn ? "Log out" : "Login"}
+              </button>
+            </div>
           </div>
         </div>
       )}

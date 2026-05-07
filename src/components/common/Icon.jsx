@@ -18,6 +18,7 @@ export const ICON_PATHS = {
   lock: <><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></>,
   "arrow-down": <><line x1="12" y1="5" x2="12" y2="19" /><polyline points="19 12 12 19 5 12" /></>,
   "arrow-left": <><line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" /></>,
+  help: <text x="12" y="17.5" textAnchor="middle" fontSize="20" fontWeight="800" fontFamily="system-ui,sans-serif" stroke="none" fill="currentColor">?</text>,
   check: <polyline points="20 6 9 17 4 12" />,
   filter: <><line x1="4" y1="6" x2="20" y2="6" /><line x1="7" y1="12" x2="17" y2="12" /><line x1="10" y1="18" x2="14" y2="18" /></>,
 };

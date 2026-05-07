@@ -24,6 +24,7 @@ import CollectionView from "./components/collection/CollectionView.jsx";
 import LandingPage from "./pages/LandingPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import SettingsPage from "./pages/SettingsPage.jsx";
+import HelpModal from "./components/common/HelpModal.jsx";
 import { useAuth } from "./auth/AuthContext.jsx";
 import { loadUserCollection, saveUserCollection } from "./lib/userCollection.js";
 
@@ -123,7 +124,21 @@ function App() {
     return () => mq.removeEventListener("change", onChange);
   }, []);
 
+  useEffect(() => {
+    function onKey(e) {
+      const tag = e.target?.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA" || e.target?.isContentEditable) return;
+      if (e.key === "?" || (e.key === "/" && e.shiftKey)) {
+        e.preventDefault();
+        setHelpOpen((v) => !v);
+      }
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
   const [dataset, setDataset] = useState(null);
+  const [helpOpen, setHelpOpen] = useState(false);
   const [mapTopology, setMapTopology] = useState(null);
   const [geoTopology, setGeoTopology] = useState(null);
   const [selectedCode, setSelectedCode] = useState("CO");
@@ -364,6 +379,7 @@ function App() {
     onLogout: handleLogout,
     darkMode: settings.darkMode,
     onToggleDarkMode: () => updateSettings({ darkMode: !settings.darkMode }),
+    onOpenHelp: () => setHelpOpen(true),
     authLoading,
     isLoggedIn,
     user
@@ -487,6 +503,7 @@ function App() {
           isUnlocked={playedCodes.has(selectedCode)}
         />
       )}
+      <HelpModal open={helpOpen} onClose={() => setHelpOpen(false)} />
     </>
   );
 }

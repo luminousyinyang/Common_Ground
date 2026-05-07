@@ -2,7 +2,7 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import TopNav from "../navigation/TopNav.jsx";
 
-function AppShell({ onNavigate, onLogin, onLogout, darkMode, onToggleDarkMode, authLoading, isLoggedIn, user }) {
+function AppShell({ onNavigate, onLogin, onLogout, darkMode, onToggleDarkMode, onOpenHelp, authLoading, isLoggedIn, user }) {
   return (
     <div className="app-frame-v2">
       <TopNav
@@ -11,6 +11,7 @@ function AppShell({ onNavigate, onLogin, onLogout, darkMode, onToggleDarkMode, a
         onLogout={onLogout}
         darkMode={darkMode}
         onToggleDarkMode={onToggleDarkMode}
+        onOpenHelp={onOpenHelp}
         authLoading={authLoading}
         isLoggedIn={isLoggedIn}
         user={user}

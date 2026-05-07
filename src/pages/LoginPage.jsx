@@ -15,6 +15,7 @@ function LoginPage({
   onAuthSuccess,
   darkMode,
   onToggleDarkMode,
+  onOpenHelp,
   authLoading,
   authError,
   isLoggedIn,
@@ -119,6 +120,7 @@ function LoginPage({
         onLogout={onLogout}
         darkMode={darkMode}
         onToggleDarkMode={onToggleDarkMode}
+        onOpenHelp={onOpenHelp}
         authLoading={authLoading}
         isLoggedIn={isLoggedIn}
         user={user}

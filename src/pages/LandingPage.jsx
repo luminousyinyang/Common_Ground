@@ -2,7 +2,7 @@ import React from "react";
 import TopNav from "../components/navigation/TopNav.jsx";
 import Icon from "../components/common/Icon.jsx";
 
-function LandingPage({ onNavigate, onLogin, onLogout, darkMode, onToggleDarkMode, authLoading, isLoggedIn, user }) {
+function LandingPage({ onNavigate, onLogin, onLogout, darkMode, onToggleDarkMode, onOpenHelp, authLoading, isLoggedIn, user }) {
   return (
     <div className="landing-page">
       <TopNav
@@ -11,6 +11,7 @@ function LandingPage({ onNavigate, onLogin, onLogout, darkMode, onToggleDarkMode
         onLogout={onLogout}
         darkMode={darkMode}
         onToggleDarkMode={onToggleDarkMode}
+        onOpenHelp={onOpenHelp}
         authLoading={authLoading}
         isLoggedIn={isLoggedIn}
         user={user}
