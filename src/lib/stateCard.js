@@ -27,10 +27,21 @@ const ABSTRACT_TRAIT_NAMES = [
   "Waterline Rhythm",
   "Steady Pace Control",
   "Rhythm and Pace Control",
+  "Coastal Rhythm",
   "Spatial Timing",
   "Focus and Precision",
   "Focus Timing",
   "Control Under Pressure"
+];
+
+const ABSTRACT_CARD_THEME_NAMES = [
+  ...ABSTRACT_TRAIT_NAMES,
+  "Cold Pace",
+  "Elevation Pace",
+  "Heat Control",
+  "City Timing",
+  "Focus Lines",
+  "State Sync"
 ];
 
 function generatedGameExperienceForCard(cardOrTrait) {
@@ -67,10 +78,10 @@ export function plainTraitHeadline(cardOrTrait) {
   if (generatedName && !isAbstractTraitName(generatedName)) return generatedName;
   const trait = cardOrTrait?.sharedTrait || cardOrTrait || {};
   const source = `${trait.name || ""} ${trait.description || ""}`.toLowerCase();
-  const hasChangingContext = /\b(conditions?|surfaces?|transitions?|water|roads?)\b/.test(source);
+  const hasChangingContext = /\b(conditions?|surfaces?|transitions?|water|roads?|current|currents)\b/.test(source);
   if (/\b(focus|precision)\b/.test(source)) return "Focus and precision";
   if (/\b(elevation|mountain|terrain|weather|equipment)\b/.test(source) && /\b(pace|pacing|control|decisions?)\b/.test(source)) return "Pacing through terrain and equipment changes";
-  if (/\b(pace|pacing|cadence|rhythm|timing)\b/.test(source) && hasChangingContext) return "Adjusting rhythm as conditions change";
+  if (/\b(pace|pacing|cadence|rhythm|timing)\b/.test(source) && hasChangingContext) return "Rhythm in changing conditions";
   if (/\b(pace|pacing|cadence|rhythm)\b/.test(source)) return "Rhythm and pacing";
   if (/\b(space|spacing|recognition)\b/.test(source)) return "Timing and space awareness";
   if (/\b(pressure|power|body control|short window|well-timed)\b/.test(source)) return "Control under pressure";
@@ -246,7 +257,9 @@ export function getGeographySignals(card) {
 }
 
 export function getCardThemeName(card) {
-  return getCardStory(card).themeName || plainTraitHeadline(card) || getCardThemeLabel(card);
+  const themeName = String(getCardStory(card).themeName || "").trim();
+  const isAbstractThemeName = ABSTRACT_CARD_THEME_NAMES.some((name) => name.toLowerCase() === themeName.toLowerCase());
+  return !themeName || isAbstractThemeName ? (plainTraitHeadline(card) || getCardThemeLabel(card)) : themeName;
 }
 
 export function getCardTheme(card) {
@@ -686,14 +699,30 @@ export function mergeGeneratedPanelData(card, manifest) {
 export function getGameExperience(card) {
   const generated = generatedGameExperienceForCard(card);
   const challengeType = generated?.challengeType || card.sharedTrait?.challengeType || "reaction_grid";
+  const generatedGameName = String(generated?.gameName || card.cardStory?.fanChallengeName || "").trim();
+  const gameName = challengeType === "cadence_keeper"
+    ? "Rhythm Shift Challenge"
+    : challengeType === "reaction_grid"
+      ? "Focus Window Challenge"
+      : challengeType === "focus_hold"
+        ? "Open Lane Challenge"
+    : generatedGameName || `${GAME_TYPE_LABELS[challengeType] || "State Sync"} Challenge`;
   return {
     version: generated?.version,
     source: generated?.source || "deterministic-fallback",
     challengeType,
-    gameName: generated?.gameName || card.cardStory?.fanChallengeName || `${GAME_TYPE_LABELS[challengeType] || "State Sync"} Challenge`,
-    gameIntro: generated?.gameIntro,
-    sharedTraitName: plainTraitHeadline(card),
-    sharedTraitDescription: generated?.sharedTraitDescription || card.sharedTrait?.description,
+    gameName,
+    gameIntro: challengeType === "cadence_keeper"
+      ? "Tap through 1s, 1.5s, and 2s counts and see how steady your personal rhythm stays."
+      : challengeType === "reaction_grid"
+        ? "Tap only when the moving signal crosses the focus window; early and late taps count against your precision."
+        : challengeType === "focus_hold"
+          ? "Pick the lane that will stay most open after pressure shifts. Ten rounds track best-lane reads and decision time."
+      : generated?.gameIntro,
+    sharedTraitName: challengeType === "focus_hold" ? "Finding open lanes" : plainTraitHeadline(card),
+    sharedTraitDescription: challengeType === "focus_hold"
+      ? "Reading pressure and choosing open space as conditions shift."
+      : generated?.sharedTraitDescription || card.sharedTrait?.description,
     background: generated?.background || null,
     theme: generated?.theme || null
   };

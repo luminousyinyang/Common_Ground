@@ -31,10 +31,10 @@ const GAME_EXPERIENCE_VERSION = "common-ground-game-experience-v3-shared-trait-e
 let firebaseClientsPromise;
 
 const GAME_TYPES = {
-  reaction_grid: "Fast target recognition and quick spatial decisions.",
-  cadence_keeper: "Steady rhythm, pacing, and repeated timing.",
+  reaction_grid: "Focus Window: tap only when a moving signal crosses the target timing window.",
+  cadence_keeper: "Rhythm Shift: steady tapping while target counts change between 1s, 1.5s, and 2s.",
   precision_trace: "Controlled cursor path, line reading, and fine movement choices.",
-  focus_hold: "Staying inside a moving zone while conditions shift.",
+  focus_hold: "Open Lane: choose the lane that will stay most open after pressure areas shift.",
   pattern_scout: "Watching, remembering, and replaying a short visual route."
 };
 
@@ -44,6 +44,7 @@ const ABSTRACT_TRAIT_NAMES = [
   "Waterline Rhythm",
   "Steady Pace Control",
   "Rhythm and Pace Control",
+  "Coastal Rhythm",
   "Elevation Pace",
   "Spatial Timing",
   "Focus Timing",
@@ -316,7 +317,7 @@ Compliance:
 - sharedTraitName must be obvious plain English that a non-sports fan can understand on first read.
 - sharedTraitDescription must describe the shared trait itself, not the examples. It should read cleanly after "The shared trait is".
 - olympicTraitExample and paralympicTraitExample must be short concrete example phrases showing how that shared trait appears in each featured sport.
-- Do not use abstract coined names such as "Shared Signal", "Waterline Control", "Waterline Rhythm", "Steady Pace Control", "Elevation Pace", "Spatial Timing", "Focus Timing", or "Signal Discovery".
+- Do not use abstract coined names such as "Shared Signal", "Waterline Control", "Waterline Rhythm", "Coastal Rhythm", "Steady Pace Control", "Elevation Pace", "Spatial Timing", "Focus Timing", "Cadence Keeper", "Reaction Grid", or "Signal Discovery".
 - Prefer phrases like "Rhythm in changing conditions", "Timing and space awareness", "Focus and precision", or "Pacing through terrain changes" when they fit.
 
 Return valid JSON with:
@@ -412,6 +413,10 @@ function validateGameAssignment(raw) {
     /\bbaseline\b/i,
     /\bguarantee/i,
     /\bproduces? athletes\b/i,
+    /\bwaterline\b/i,
+    /\bcoastal rhythm\b/i,
+    /\bcadence keeper\b/i,
+    /\breaction grid\b/i,
     /\bcreates? athletes\b/i
   ];
   const warnings = banned.filter((pattern) => pattern.test(text)).map(String);
@@ -462,14 +467,29 @@ function isAbstractTraitName(value = "") {
 }
 
 function assignmentFromExistingGameExperience(existing, card) {
+  const challengeType = existing.challengeType;
+  const sharedTraitDescription = existing.sharedTraitDescription || card.sharedTrait?.description;
+  const sharedTraitName = normalizeTraitNameForDisplay(existing.sharedTraitName || card.sharedTrait?.name, sharedTraitDescription);
   return validateGameAssignment({
-    challengeType: existing.challengeType,
-    sharedTraitName: existing.sharedTraitName || card.sharedTrait?.name,
-    sharedTraitDescription: existing.sharedTraitDescription || card.sharedTrait?.description,
+    challengeType,
+    sharedTraitName,
+    sharedTraitDescription,
     olympicTraitExample: existing.olympicTraitExample || existing.sharedTraitExamples?.olympic,
     paralympicTraitExample: existing.paralympicTraitExample || existing.sharedTraitExamples?.paralympic,
-    gameName: existing.gameName || card.cardStory?.fanChallengeName,
-    gameIntro: existing.gameIntro || `Try a short fan challenge inspired by ${String(existing.sharedTraitName || card.sharedTrait?.name || "state sync").toLowerCase()}.`,
+    gameName: challengeType === "cadence_keeper"
+      ? "Rhythm Shift Challenge"
+      : challengeType === "reaction_grid"
+        ? "Focus Window Challenge"
+        : challengeType === "focus_hold"
+          ? "Open Lane Challenge"
+        : existing.gameName || card.cardStory?.fanChallengeName,
+    gameIntro: challengeType === "cadence_keeper"
+      ? "Tap through 1s, 1.5s, and 2s counts and see how steady your personal rhythm stays."
+      : challengeType === "reaction_grid"
+        ? "Tap only when the moving signal crosses the focus window; early and late taps count against your precision."
+        : challengeType === "focus_hold"
+          ? "Pick the lane that will stay most open after pressure shifts. Ten rounds track best-lane reads and decision time."
+      : existing.gameIntro || `Try a short fan challenge inspired by ${String(sharedTraitName || "state sync").toLowerCase()}.`,
     visualTheme: existing.theme || card.cardStory?.themeName || card.sharedTrait?.name || "State game surface",
     backgroundPromptBrief: existing.backgroundPromptBrief || `A rough fan-atlas mini-game backdrop built around ${existing.theme || card.cardStory?.themeName || card.sharedTrait?.name || "the state card theme"}.`,
     darkModeNotes: existing.darkModeNotes || "",
@@ -517,7 +537,7 @@ Return only the image.`;
 function gameBackgroundDirectionForAssignment(assignment) {
   if (assignment.challengeType === "cadence_keeper") {
     return [
-      "Cadence Keeper background must be a rhythm-playing surface, not a general state landscape.",
+      "Rhythm Shift background must be a rhythm-playing surface, not a general state landscape.",
       "The rendered game places a large circular tap pad in the center and a horizontal progress meter near the lower part of the board. Compose around those overlays.",
       "Keep the central 45% of the image quiet, low-contrast, and mostly open: a calm circular water basin or soft seafoam halo with subtle concentric ripple rings only.",
       "Use repeated, evenly spaced wave crests, current bands, pool-lane curves, and soft pulse arcs to communicate steady tempo and timing.",
@@ -530,7 +550,7 @@ function gameBackgroundDirectionForAssignment(assignment) {
 
   if (assignment.challengeType === "reaction_grid") {
     return [
-      "Reaction Grid background should support quick target recognition.",
+      "Focus Window background should support a clean horizontal timing track and quick target recognition.",
       "Keep a calm center and arrange edge detail as broad field/court zones, peripheral motion cues, and clean contrast blocks.",
       "Avoid tiny repeating texture or target-like decorations that could be confused with interactive cells."
     ].join("\n- ");
@@ -546,7 +566,7 @@ function gameBackgroundDirectionForAssignment(assignment) {
 
   if (assignment.challengeType === "focus_hold") {
     return [
-      "Focus Hold background should support sustained attention on a moving zone.",
+      "Open Lane background should support choosing open lanes while pressure zones shift.",
       "Use soft concentric fields, calm terrain bands, or target-range atmosphere around the edges while leaving the center spacious.",
       "Avoid many bullseyes, dots, or small high-contrast objects that could compete with the focus zone."
     ].join("\n- ");

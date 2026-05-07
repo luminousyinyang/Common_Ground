@@ -26,6 +26,20 @@
   margin-top: var(--space-4);
 }
 
+.challenge-view.is-playing {
+  padding-block: var(--space-2);
+}
+
+.challenge-view.is-playing .challenge-grid {
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.challenge-view.is-playing .challenge-copy,
+.challenge-view.is-playing .game-surface {
+  padding: var(--space-2);
+}
+
 .challenge-copy,
 .game-surface,
 .method-grid section,
@@ -45,6 +59,20 @@
 
 .challenge-copy .card-art.is-compact {
   min-height: 210px;
+}
+
+.challenge-view.is-playing .challenge-copy .card-art.is-compact {
+  min-height: 150px;
+}
+
+.challenge-view.is-playing .challenge-copy h3 {
+  margin: var(--space-2) 0;
+  font-size: 1.28rem;
+}
+
+.challenge-view.is-playing .challenge-intro,
+.challenge-view.is-playing .safe-note {
+  display: none;
 }
 
 .game-status {
@@ -87,6 +115,144 @@ html[data-surface="blacktop"] .game-board.has-game-background {
   background-position: center;
 }
 
+.focus-window-board {
+  display: grid;
+  grid-template-rows: auto minmax(130px, 1fr) auto auto;
+  gap: var(--space-3);
+  min-height: 0;
+  height: clamp(300px, 42vh, 380px);
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.focus-window-condition-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.focus-window-condition {
+  display: grid;
+  gap: 3px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 9px 11px;
+  color: var(--copy);
+  background: color-mix(in srgb, var(--paper) 45%, transparent);
+}
+
+.focus-window-condition span {
+  font-size: 0.74rem;
+  font-weight: 820;
+  text-transform: uppercase;
+}
+
+.focus-window-condition strong {
+  color: var(--ink);
+  line-height: 1.05;
+}
+
+.focus-window-condition.is-active {
+  border-color: var(--ink);
+  background: color-mix(in srgb, var(--olympic-tint) 34%, var(--paper));
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--ink) 9%, transparent);
+}
+
+.focus-window-condition.is-complete {
+  border-color: color-mix(in srgb, var(--gold) 56%, var(--line));
+}
+
+.focus-window-track {
+  position: relative;
+  min-height: 130px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--ink) 8%, transparent) 0 1px, transparent 1px) 0 0 / 10% 100%,
+    color-mix(in srgb, var(--paper) 30%, transparent);
+  overflow: hidden;
+}
+
+.focus-window-rail,
+.focus-window-zone,
+.focus-window-signal {
+  position: absolute;
+  top: 50%;
+}
+
+.focus-window-rail {
+  left: 4%;
+  right: 4%;
+  height: 6px;
+  transform: translateY(-50%);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ink) 16%, transparent);
+}
+
+.focus-window-zone {
+  display: grid;
+  place-items: center;
+  height: 86px;
+  transform: translateY(-50%);
+  border: 1px solid color-mix(in srgb, var(--gold) 62%, var(--line));
+  border-radius: 10px;
+  color: var(--ink);
+  background: color-mix(in srgb, var(--gold) 18%, transparent);
+  font-size: 0.8rem;
+  font-weight: 820;
+  text-transform: uppercase;
+}
+
+.focus-window-signal {
+  width: 24px;
+  height: 92px;
+  transform: translate(-50%, -50%);
+  border: 2px solid var(--paper);
+  border-radius: 999px;
+  background: var(--ink);
+  box-shadow:
+    0 0 0 8px color-mix(in srgb, var(--ink) 14%, transparent),
+    0 16px 30px color-mix(in srgb, #000 18%, transparent);
+}
+
+.focus-window-track-label {
+  position: absolute;
+  top: 12px;
+  color: var(--copy);
+  font-size: 0.76rem;
+  font-weight: 780;
+  text-transform: uppercase;
+}
+
+.focus-window-track-label.is-early {
+  left: 16px;
+}
+
+.focus-window-track-label.is-late {
+  right: 16px;
+}
+
+.focus-window-feedback {
+  min-height: 24px;
+  color: var(--copy);
+  font-weight: 780;
+  text-align: center;
+}
+
+.focus-window-progress {
+  height: 10px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: #dbe4ee;
+}
+
+.focus-window-progress span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #5967a3, var(--ink));
+  transition: width 180ms ease;
+}
+
 .reaction-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(64px, 1fr));
@@ -109,7 +275,10 @@ html[data-surface="blacktop"] .game-board.has-game-background {
 .game-board.has-game-background .reaction-cell,
 .game-board.has-game-background .trace-point,
 .game-board.has-game-background .pattern-cell,
-.game-board.has-game-background .focus-readout {
+.game-board.has-game-background .focus-readout,
+.game-board.has-game-background .open-lane-condition,
+.game-board.has-game-background .open-lane-option,
+.game-board.has-game-background .open-lane-readout {
   backdrop-filter: blur(10px) saturate(1.1);
   background-color: color-mix(in srgb, var(--paper) 72%, transparent);
 }
@@ -117,7 +286,10 @@ html[data-surface="blacktop"] .game-board.has-game-background {
 html[data-surface="blacktop"] .game-board.has-game-background .reaction-cell,
 html[data-surface="blacktop"] .game-board.has-game-background .trace-point,
 html[data-surface="blacktop"] .game-board.has-game-background .pattern-cell,
-html[data-surface="blacktop"] .game-board.has-game-background .focus-readout {
+html[data-surface="blacktop"] .game-board.has-game-background .focus-readout,
+html[data-surface="blacktop"] .game-board.has-game-background .open-lane-condition,
+html[data-surface="blacktop"] .game-board.has-game-background .open-lane-option,
+html[data-surface="blacktop"] .game-board.has-game-background .open-lane-readout {
   background-color: color-mix(in srgb, #111827 76%, transparent);
   color: var(--paper);
 }
@@ -125,9 +297,10 @@ html[data-surface="blacktop"] .game-board.has-game-background .focus-readout {
 .cadence-pad {
   display: grid;
   place-items: center;
+  gap: 8px;
   width: min(320px, 100%);
   min-height: 230px;
-  margin: var(--space-4) auto;
+  margin: var(--space-3) auto;
   border: 1px solid var(--line-strong);
   border-radius: 999px;
   color: var(--ink);
@@ -139,6 +312,53 @@ html[data-surface="blacktop"] .game-board.has-game-background .focus-readout {
   box-shadow: inset 0 1px 0 var(--glass-line), 0 16px 34px color-mix(in srgb, var(--ink) 8%, transparent);
 }
 
+.cadence-board {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-3);
+}
+
+.rhythm-condition-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.rhythm-condition {
+  display: grid;
+  gap: 3px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: var(--copy);
+  background: color-mix(in srgb, var(--paper) 50%, transparent);
+}
+
+.rhythm-condition span,
+.rhythm-condition em {
+  font-size: 0.76rem;
+  font-style: normal;
+  font-weight: 780;
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
+
+.rhythm-condition strong {
+  color: var(--ink);
+  line-height: 1.05;
+}
+
+.rhythm-condition.is-active {
+  border-color: var(--ink);
+  background: color-mix(in srgb, var(--olympic-tint) 38%, var(--paper));
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--ink) 10%, transparent);
+}
+
+.rhythm-condition.is-complete {
+  border-color: color-mix(in srgb, var(--gold) 56%, var(--line));
+}
+
 .cadence-pad span {
   font-size: 1rem;
   font-weight: 700;
@@ -146,6 +366,15 @@ html[data-surface="blacktop"] .game-board.has-game-background .focus-readout {
 
 .cadence-pad strong {
   font-size: 1.2rem;
+}
+
+.cadence-pad em {
+  max-width: 230px;
+  color: var(--copy);
+  font-size: 0.92rem;
+  font-style: normal;
+  font-weight: 760;
+  line-height: 1.2;
 }
 
 .cadence-meter {
@@ -246,6 +475,189 @@ html[data-surface="blacktop"] .game-board.has-game-background .focus-readout {
   box-shadow: 0 0 0 10px color-mix(in srgb, var(--gold) 16%, transparent);
 }
 
+.focus-marker.is-pressured {
+  background: #f17f69;
+  box-shadow: 0 0 0 10px color-mix(in srgb, #f17f69 18%, transparent);
+}
+
+.open-lane-board {
+  display: grid;
+  grid-template-rows: auto minmax(220px, 1fr) auto;
+  gap: 12px;
+  min-height: 0;
+  height: clamp(330px, 44vh, 420px);
+}
+
+.open-lane-condition-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.open-lane-condition {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 8px 10px;
+  color: var(--muted);
+  background: color-mix(in srgb, var(--glass) 72%, transparent);
+  font-size: 0.78rem;
+  font-weight: 820;
+  text-align: center;
+}
+
+.open-lane-condition.is-active {
+  border-color: color-mix(in srgb, var(--gold) 62%, var(--line));
+  color: var(--ink);
+  background: color-mix(in srgb, var(--gold) 18%, var(--glass));
+}
+
+.open-lane-field {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 50% 48%, color-mix(in srgb, var(--gold) 8%, transparent), transparent 34%),
+    linear-gradient(180deg, color-mix(in srgb, var(--paper) 4%, transparent), color-mix(in srgb, var(--ink) 7%, transparent));
+}
+
+.open-lane-grid {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--paper) 12%, transparent) 0 1px, transparent 1px) 0 0 / 25% 100%,
+    linear-gradient(180deg, color-mix(in srgb, var(--paper) 7%, transparent) 0 1px, transparent 1px) 0 0 / 100% 25%;
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+.open-lane-option {
+  position: absolute;
+  top: 11%;
+  bottom: 11%;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 6px;
+  border: 1px solid color-mix(in srgb, var(--paper) 18%, var(--line));
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--paper) 8%, transparent), color-mix(in srgb, var(--paper) 2%, transparent)),
+    color-mix(in srgb, var(--glass-strong) 82%, transparent);
+  color: var(--ink);
+  font: inherit;
+  font-weight: 820;
+  box-shadow: inset 0 1px 0 var(--glass-line);
+  transition: border-color 160ms ease, background 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+  z-index: 2;
+}
+
+.open-lane-option:hover:not(:disabled),
+.open-lane-option:focus-visible {
+  border-color: color-mix(in srgb, var(--gold) 52%, var(--line));
+  background: color-mix(in srgb, var(--gold) 10%, var(--glass-strong));
+}
+
+.open-lane-option span {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--glass-strong);
+}
+
+.open-lane-option strong {
+  font-size: 0.9rem;
+}
+
+.open-lane-option em {
+  font-style: normal;
+  color: var(--copy);
+  font-size: 0.84rem;
+}
+
+.open-lane-option.is-selected {
+  transform: translateY(-2px);
+}
+
+.open-lane-option.is-best {
+  border-color: color-mix(in srgb, var(--gold) 72%, var(--line));
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--gold) 22%, transparent), color-mix(in srgb, var(--gold) 8%, transparent)),
+    var(--glass-strong);
+  box-shadow:
+    inset 0 1px 0 var(--glass-line),
+    0 0 0 6px color-mix(in srgb, var(--gold) 10%, transparent);
+}
+
+.open-lane-option.is-miss {
+  border-color: color-mix(in srgb, #f17f69 68%, var(--line));
+  background:
+    linear-gradient(180deg, color-mix(in srgb, #f17f69 18%, transparent), color-mix(in srgb, #f17f69 6%, transparent)),
+    var(--glass-strong);
+}
+
+.open-lane-pressure {
+  position: absolute;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border: 1px solid color-mix(in srgb, #f17f69 62%, var(--line));
+  border-radius: 999px;
+  background:
+    radial-gradient(circle, color-mix(in srgb, #f17f69 32%, transparent) 0 39%, transparent 40%),
+    color-mix(in srgb, #f17f69 13%, transparent);
+  box-shadow: 0 0 0 10px color-mix(in srgb, #f17f69 7%, transparent);
+  opacity: 0.82;
+  pointer-events: none;
+  transition-property: left, top, opacity;
+  transition-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1);
+  z-index: 3;
+}
+
+.open-lane-pressure.is-late {
+  opacity: 0.48;
+  transition-delay: 320ms;
+}
+
+.open-lane-field.is-settled .open-lane-pressure.is-late,
+.open-lane-field.has-choice .open-lane-pressure.is-late {
+  opacity: 0.82;
+}
+
+.open-lane-footer {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(150px, 32%);
+  gap: 12px;
+  align-items: center;
+}
+
+.open-lane-readout {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 9px 12px;
+  color: var(--copy);
+  background: var(--glass-strong);
+  font-weight: 780;
+}
+
+.open-lane-progress {
+  overflow: hidden;
+  height: 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--paper) 13%, transparent);
+}
+
+.open-lane-progress span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: color-mix(in srgb, var(--gold) 74%, var(--olympic-tint));
+  transition: width 180ms ease;
+}
+
 .focus-readout {
   position: absolute;
   left: 16px;
@@ -304,17 +716,27 @@ html[data-surface="blacktop"] .game-board.has-game-background .focus-readout {
 }
 
 .game-board.has-game-background .cadence-pad,
+.game-board.has-game-background .focus-window-condition,
+.game-board.has-game-background .focus-window-zone,
 .game-board.has-game-background .trace-point,
 .game-board.has-game-background .pattern-cell,
-.game-board.has-game-background .focus-readout {
+.game-board.has-game-background .focus-readout,
+.game-board.has-game-background .open-lane-condition,
+.game-board.has-game-background .open-lane-option,
+.game-board.has-game-background .open-lane-readout {
   backdrop-filter: blur(10px) saturate(1.1);
   background-color: color-mix(in srgb, var(--paper) 78%, transparent);
 }
 
 html[data-surface="blacktop"] .game-board.has-game-background .cadence-pad,
+html[data-surface="blacktop"] .game-board.has-game-background .focus-window-condition,
+html[data-surface="blacktop"] .game-board.has-game-background .focus-window-zone,
 html[data-surface="blacktop"] .game-board.has-game-background .trace-point,
 html[data-surface="blacktop"] .game-board.has-game-background .pattern-cell,
-html[data-surface="blacktop"] .game-board.has-game-background .focus-readout {
+html[data-surface="blacktop"] .game-board.has-game-background .focus-readout,
+html[data-surface="blacktop"] .game-board.has-game-background .open-lane-condition,
+html[data-surface="blacktop"] .game-board.has-game-background .open-lane-option,
+html[data-surface="blacktop"] .game-board.has-game-background .open-lane-readout {
   background-color: color-mix(in srgb, #111827 78%, transparent);
   color: var(--paper);
 }
@@ -360,4 +782,50 @@ html[data-surface="blacktop"] .game-board.has-game-background .focus-readout {
   margin-top: var(--space-3);
   color: var(--copy);
   line-height: 1.55;
+}
+
+.game-result-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: var(--space-3) 0;
+}
+
+.game-result-metrics div {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: var(--glass-soft);
+}
+
+.game-result-metrics dt {
+  color: var(--copy);
+  font-size: 0.78rem;
+  font-weight: 780;
+  text-transform: uppercase;
+}
+
+.game-result-metrics dd {
+  margin: 2px 0 0;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 900;
+}
+
+.game-result-breakdown {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: var(--space-3);
+}
+
+.game-result-breakdown span {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 10px;
+  background: var(--glass-soft);
+  color: var(--copy);
+  font-size: 0.86rem;
+  font-weight: 760;
 }
