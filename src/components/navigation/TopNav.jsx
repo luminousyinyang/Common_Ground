@@ -179,9 +179,6 @@ function TopNav({ onNavigate, onLogin, onLogout, darkMode, onToggleDarkMode, onO
                 <button className="top-nav-icon-btn" type="button" onClick={onToggleDarkMode} aria-label="Toggle dark mode" data-tooltip={darkMode ? "Light mode" : "Dark mode"}>
                   <Icon name={darkMode ? "sun" : "moon"} size={16} strokeWidth={1.6} />
                 </button>
-                <button className="top-nav-icon-btn" type="button" onClick={onOpenHelp} aria-label="Help" data-tooltip="Help">
-                  <Icon name="help" size={16} strokeWidth={1.6} />
-                </button>
                 <div className={`top-nav-user-menu${accountMenuOpen ? " is-open" : ""}`} ref={accountMenuRef}>
                   <button
                     className="top-nav-avatar-btn"
@@ -210,9 +207,6 @@ function TopNav({ onNavigate, onLogin, onLogout, darkMode, onToggleDarkMode, onO
               <>
                 <button className="top-nav-icon-btn" type="button" onClick={onToggleDarkMode} aria-label="Toggle dark mode" data-tooltip={darkMode ? "Light mode" : "Dark mode"}>
                   <Icon name={darkMode ? "sun" : "moon"} size={16} strokeWidth={1.6} />
-                </button>
-                <button className="top-nav-icon-btn" type="button" onClick={onOpenHelp} aria-label="Help" data-tooltip="Help">
-                  <Icon name="help" size={16} strokeWidth={1.6} />
                 </button>
                 <button className="top-nav-icon-btn" type="button" onClick={() => onNavigate("/settings")} aria-label="Settings" data-tooltip="Settings">
                   <Icon name="settings" size={16} strokeWidth={1.6} />

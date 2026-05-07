@@ -25,6 +25,7 @@ import LandingPage from "./pages/LandingPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import SettingsPage from "./pages/SettingsPage.jsx";
 import HelpModal from "./components/common/HelpModal.jsx";
+import Icon from "./components/common/Icon.jsx";
 import { useAuth } from "./auth/AuthContext.jsx";
 import { loadUserCollection, saveUserCollection } from "./lib/userCollection.js";
 
@@ -503,6 +504,14 @@ function App() {
           isUnlocked={playedCodes.has(selectedCode)}
         />
       )}
+      <button
+        className="help-fab"
+        type="button"
+        onClick={() => setHelpOpen(true)}
+        aria-label="Help"
+      >
+        <Icon name="help" size={24} />
+      </button>
       <HelpModal open={helpOpen} onClose={() => setHelpOpen(false)} />
     </>
   );
