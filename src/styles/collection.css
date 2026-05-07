@@ -131,6 +131,7 @@
   background: transparent;
   overflow: hidden;
   cursor: pointer;
+  text-align: left;
   transition: transform 160ms ease, box-shadow 160ms ease;
 }
 
@@ -154,18 +155,33 @@
 }
 
 .mini-card.is-locked {
-  opacity: 0.72;
-  filter: saturate(0.62);
   cursor: default;
+}
+
+.mini-card.is-locked .card-art-stack {
+  background: var(--surface-soft);
+}
+
+.mini-card.is-locked .card-art-panel {
+  background: transparent;
+}
+
+.mini-card.is-locked .card-art-panel img,
+.mini-card.is-locked .card-art-panel::after,
+.mini-card.is-locked .art-vignette,
+.mini-card.is-locked .art-panel-label {
+  opacity: 0;
 }
 
 .mini-card-lock-overlay {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 72px;
   display: grid;
   place-items: center;
-  color: var(--paper-2);
-  background: color-mix(in srgb, var(--ink) 42%, transparent);
+  color: var(--ink);
   pointer-events: none;
 }
 
