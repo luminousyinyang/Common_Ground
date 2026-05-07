@@ -55,7 +55,7 @@ function CollectionView({ states, discoveredCodes, onSelect, panelManifest, isLo
   const remaining = allUndiscovered.length;
 
   return (
-    <section className="collection-view page-panel">
+    <section className="collection-view">
       {authLoading && !isLoggedIn && (
         <div className="collection-auth-loading">Checking saved session...</div>
       )}

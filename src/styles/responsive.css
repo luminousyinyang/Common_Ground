@@ -120,13 +120,6 @@
     padding: 12px;
   }
 
-  .map-surface,
-  .challenge-view,
-  .methodology-view,
-  .collection-view {
-    padding: 16px;
-    border-radius: 10px;
-  }
 
   .panel,
   .trait-band,
@@ -410,13 +403,13 @@
 
   /* Tighter workspace padding */
   .workspace-v2 > main {
-    padding: 10px;
+    padding: 16px;
   }
 
   /* Map: allow smaller min-height on tiny screens */
   .map-surface {
     min-height: auto;
-    padding: 10px;
+    padding: 0;
   }
 
   .map-explorer-shell .map-wrap,
@@ -463,11 +456,6 @@
   .section-heading h2,
   .collection-header h2 {
     font-size: clamp(26px, 6vw, 40px);
-  }
-
-  /* Collection: reduce inner padding since workspace already has it */
-  .collection-view {
-    padding: 0;
   }
 
   /* Collection: single-col mini-cards with better spacing */

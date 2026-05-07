@@ -352,7 +352,7 @@ main {
 
 .map-surface {
   border: 0;
-  padding: clamp(12px, 1.8vw, 20px);
+  padding: 0;
   background: transparent;
   box-shadow: none;
 }
@@ -585,10 +585,11 @@ html[data-surface="blacktop"] .primary-button:focus-visible {
   flex: 1;
   min-width: 0;
   overflow: hidden;
+  background: var(--surface);
 }
 
 .workspace-v2 > main {
-  padding: clamp(14px, 2vw, 24px);
+  padding: clamp(20px, 3vw, 32px) clamp(32px, 5vw, 80px);
 }
 
 .view-slider-viewport {

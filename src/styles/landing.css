@@ -14,7 +14,7 @@
 }
 
 .landing-hero {
-  padding: clamp(var(--space-8), 9vw, var(--space-9)) 0;
+  padding: clamp(var(--space-6), 9vw, var(--space-6)) 0;
   background: var(--surface);
 }
 
@@ -151,12 +151,12 @@ html[data-surface="blacktop"] .landing-hero-content .ghost-button {
 
 .landing-features {
   padding: clamp(var(--space-8), 9vw, var(--space-9)) 0;
-  background: color-mix(in srgb, var(--surface-soft) 60%, var(--paper));
+  background: var(--surface);
   scroll-margin-top: var(--space-8);
 }
 
 html[data-surface="blacktop"] .landing-features {
-  background: var(--surface-soft);
+  background: var(--surface);
 }
 
 .landing-features .landing-section-inner {
@@ -228,6 +228,10 @@ html[data-surface="blacktop"] .landing-features {
 
 .landing-cta2 {
   padding: clamp(var(--space-8), 10vw, var(--space-10)) 0;
+  background: color-mix(in srgb, var(--surface-soft) 60%, var(--paper));
+}
+
+html[data-surface="blacktop"] .landing-cta2 {
   background: var(--paper-2);
 }
 
