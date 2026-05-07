@@ -113,6 +113,7 @@ html[data-surface="blacktop"] .nav-sliding-pill {
 }
 
 .top-nav-icon-btn {
+  position: relative;
   display: grid;
   place-items: center;
   width: 36px;
@@ -124,6 +125,43 @@ html[data-surface="blacktop"] .nav-sliding-pill {
   background: var(--glass);
   cursor: pointer;
   transition: background 140ms ease;
+}
+
+.top-nav-icon-btn[data-tooltip]::before,
+.top-nav-icon-btn[data-tooltip]::after {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 140ms ease;
+  z-index: 200;
+}
+
+.top-nav-icon-btn[data-tooltip]::before {
+  content: attr(data-tooltip);
+  transform: translateX(-50%);
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  padding: 5px 10px;
+  border-radius: 6px;
+}
+
+.top-nav-icon-btn[data-tooltip]::after {
+  content: '';
+  top: calc(100% + 2px);
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-bottom-color: var(--ink);
+}
+
+.top-nav-icon-btn[data-tooltip]:focus-visible::before,
+.top-nav-icon-btn[data-tooltip]:focus-visible::after {
+  opacity: 1;
 }
 
 .top-nav-icon-btn svg {
@@ -481,6 +519,11 @@ html[data-surface="blacktop"] .top-nav-login-btn {
     background: var(--ink);
     border-color: var(--ink);
     color: var(--paper);
+  }
+
+  .top-nav-icon-btn[data-tooltip]:hover::before,
+  .top-nav-icon-btn[data-tooltip]:hover::after {
+    opacity: 1;
   }
 
   .top-nav-login-btn:hover {

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Icon from "../components/common/Icon.jsx";
 
 function displayName(user) {
@@ -33,6 +34,7 @@ function ToggleRow({ label, description, checked, onChange }) {
 function SettingsPage({ settings, onUpdate, onResetCollection, onResetProgress, onNavigate, user, isLoggedIn }) {
   const [resetConfirm, setResetConfirm] = useState(null);
   const headingRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     headingRef.current?.focus();
@@ -54,7 +56,7 @@ function SettingsPage({ settings, onUpdate, onResetCollection, onResetProgress, 
         <button
           className="settings-back-btn"
           type="button"
-          onClick={() => onNavigate("/map")}
+          onClick={() => navigate(-1)}
           aria-label="Back to map"
         >
           <Icon name="arrow-left" size={18} strokeWidth={2} />
@@ -116,7 +118,7 @@ function SettingsPage({ settings, onUpdate, onResetCollection, onResetProgress, 
           </div>
         </section>
 
-        <section className="settings-section" aria-labelledby="data-heading">
+        {isLoggedIn && <section className="settings-section" aria-labelledby="data-heading">
           <h2 className="settings-section-title" id="data-heading">Data & Progress</h2>
           <div className="settings-section-body">
             <p className="settings-info-text">
@@ -154,7 +156,7 @@ function SettingsPage({ settings, onUpdate, onResetCollection, onResetProgress, 
               </button>
             )}
           </div>
-        </section>
+        </section>}
 
         <div className="settings-about">
           <p>Common Ground · Team USA hometown discovery</p>
