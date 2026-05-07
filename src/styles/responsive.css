@@ -17,11 +17,6 @@
     height: clamp(560px, calc(100vh - 176px), 700px);
   }
 
-  .card-grid,
-  .compact-grid {
-    grid-template-columns: repeat(2, minmax(220px, 1fr));
-  }
-
   .card-modal-panel.is-back-expanded .card-back-scroll {
     grid-template-columns: 1fr;
   }
@@ -205,11 +200,6 @@
 
   .card-art {
     min-height: 0;
-  }
-
-  .card-grid,
-  .compact-grid {
-    grid-template-columns: 1fr;
   }
 
   .reaction-grid {
@@ -484,16 +474,6 @@
   .collection-progress-stack {
     gap: 8px;
     min-width: 0;
-  }
-
-  /* Collection grid: 2 cols on small mobile */
-  .card-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
-  }
-
-  .compact-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   /* Map tooltip: keep inside viewport */
