@@ -627,7 +627,7 @@ function UnifiedStateCard({
           onPointerEnter={handlePointerEnter}
         >
           <div
-            className={`sports-card ${isHovered && !displayBack ? "is-hovered" : ""}`}
+            className={`sports-card ${displayBack ? "is-flipped" : ""} ${isHovered && !displayBack ? "is-hovered" : ""}`}
             style={{ "--holo-x": `${mousePos.x}%`, "--holo-y": `${mousePos.y}%`, "--holo-angle": `${mousePos.angle}deg` }}
           >
             <article
