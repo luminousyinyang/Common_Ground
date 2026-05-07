@@ -44,19 +44,15 @@ function SourceMethodPanel({ refs }) {
   );
 }
 
-function StateChallengePanel({ stateName, isUnlocked, onOpenChallenge }) {
+function StateChallengePanel({ stateName, onOpenChallenge }) {
   return (
     <section className="state-challenge-panel" aria-label={`${stateName} state challenge`}>
       <div className="state-challenge-copy">
         <span className="footer-panel-kicker">State Sync Challenge</span>
-        <p>
-          {isUnlocked
-            ? `${stateName} state card unlocked. Replay the mini-game anytime.`
-            : `Play the mini-game to unlock the ${stateName} state card.`}
-        </p>
+        <p>Test your knowledge of {stateName} with the State Sync mini-game.</p>
       </div>
       <button className="primary-button state-challenge-button" type="button" onClick={onOpenChallenge}>
-        {isUnlocked ? "Replay Challenge" : "Play Challenge"}
+        Play Challenge
       </button>
     </section>
   );
@@ -489,7 +485,7 @@ function UnifiedStateCard({
   isBackExpanded,
   onBackExpandedChange,
   panelManifest = EMPTY_CARD_PANEL_MANIFEST,
-  isUnlocked = false
+  onCollect
 }) {
   const [flipped, setFlipped] = useState(false);
   const [displayBack, setDisplayBack] = useState(false);
@@ -550,7 +546,7 @@ function UnifiedStateCard({
       window.removeEventListener("resize", updateScrollCue);
       resizeObserver?.disconnect();
     };
-  }, [card.stateCode, isBackExpanded, briefing, briefingLoading, isUnlocked]);
+  }, [card.stateCode, isBackExpanded, briefing, briefingLoading]);
 
   function toggleFlip() {
     if (flipPhase !== null) return;
@@ -560,6 +556,7 @@ function UnifiedStateCard({
     const t1 = setTimeout(() => {
       const next = !flipped;
       if (!next) onBackExpandedChange?.(false);
+      if (next) onCollect?.();
       setFlipped(next);
       setDisplayBack(next);
       setFlipPhase("in");
@@ -603,7 +600,6 @@ function UnifiedStateCard({
 
   const frontClass = [
     "sports-card-face sports-card-front",
-    !isUnlocked ? "is-locked" : "",
     displayBack ? "face-hidden" : "",
     !displayBack && flipPhase === "out" ? "flip-out" : "",
     !displayBack && flipPhase === "in" ? "flip-in" : "",
@@ -640,15 +636,6 @@ function UnifiedStateCard({
               onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggleFlip(); } }}
             >
               <CardArt card={card} panelManifest={panelManifest} />
-              {!isUnlocked && (
-                <div className="card-locked-overlay">
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                  </svg>
-                  <span>Complete the Fan Challenge to unlock this state's insights</span>
-                </div>
-              )}
             </article>
 
             <article className={backClass} aria-label={`${card.stateName} state card details`}>
@@ -681,7 +668,7 @@ function UnifiedStateCard({
                     </section>
                     <BriefingPanel payload={briefing} loading={briefingLoading} onRefresh={onRefreshBriefing} compact card={card} />
                     <SourceMethodPanel refs={sourceRefs} />
-                    <StateChallengePanel stateName={card.stateName} isUnlocked={isUnlocked} onOpenChallenge={onOpenChallenge} />
+                    <StateChallengePanel stateName={card.stateName} onOpenChallenge={onOpenChallenge} />
                   </div>
 
                   {hasMoreFullBackScroll && (
@@ -706,13 +693,7 @@ function UnifiedStateCard({
         <button className="ghost-button" type="button" onClick={toggleFlip}>
           {flipped ? "Flip to art" : "Flip to data"}
         </button>
-        {isUnlocked ? (
-          <button className="primary-button" type="button" onClick={onOpenChallenge}>Replay State Sync Challenge</button>
-        ) : (
-          <button className="primary-button card-unlock-btn" type="button" onClick={onOpenChallenge}>
-            Unlock State Card
-          </button>
-        )}
+        <button className="primary-button" type="button" onClick={onOpenChallenge}>Play Challenge</button>
       </div>
     </section>
   );

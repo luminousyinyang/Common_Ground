@@ -37,32 +37,6 @@
   outline-offset: -3px;
 }
 
-.sports-card-front.is-locked .card-art {
-  filter: grayscale(1) brightness(0.55);
-}
-
-.sports-card-front.is-locked::after {
-  display: none;
-}
-
-.card-locked-overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  border-radius: inherit;
-  background: rgba(0, 0, 0, 0.35);
-  color: #ffffff;
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-  text-align: center;
-  pointer-events: none;
-}
 
 .sports-card-front::before {
   position: absolute;

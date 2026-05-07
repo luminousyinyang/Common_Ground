@@ -76,18 +76,24 @@ function App() {
   const [briefingLoading, setBriefingLoading] = useState(false);
   const [loadError, setLoadError] = useState(null);
   const [isCardModalOpen, setIsCardModalOpen] = useState(false);
-  const [discoveredCodes, setDiscoveredCodes] = useState(() => new Set(["CO"]));
-  const [playedCodes, setPlayedCodes] = useState(() => new Set());
+  const [discoveredCodes, setDiscoveredCodes] = useState(() => new Set());
   const [panelManifest, setPanelManifest] = useState(EMPTY_CARD_PANEL_MANIFEST);
   const [dataScope, setDataScope] = useState("paris2024");
-  const [showCompleted, setShowCompleted] = useState(false);
+  const [showCompleted, setShowCompleted] = useState(() => {
+    try {
+      const saved = window.localStorage.getItem("common-ground-show-completed");
+      return saved === null ? true : saved === "true";
+    } catch {
+      return true;
+    }
+  });
 
   useEffect(() => {
     try {
       const saved = JSON.parse(window.localStorage.getItem("common-ground-discovered") || "[]");
       if (Array.isArray(saved) && saved.length) setDiscoveredCodes(new Set(saved));
     } catch {
-      setDiscoveredCodes(new Set(["CO"]));
+      setDiscoveredCodes(new Set());
     }
   }, []);
 
@@ -101,16 +107,10 @@ function App() {
 
   useEffect(() => {
     try {
-      const saved = JSON.parse(window.localStorage.getItem("common-ground-played") || "[]");
-      if (Array.isArray(saved) && saved.length) setPlayedCodes(new Set(saved));
+      window.localStorage.setItem("common-ground-show-completed", String(showCompleted));
     } catch {}
-  }, []);
+  }, [showCompleted]);
 
-  useEffect(() => {
-    try {
-      window.localStorage.setItem("common-ground-played", JSON.stringify([...playedCodes]));
-    } catch {}
-  }, [playedCodes]);
 
   useEffect(() => {
     const html = document.documentElement;
@@ -212,17 +212,8 @@ function App() {
     });
   }
 
-  function markPlayed(code) {
-    setPlayedCodes((current) => {
-      const next = new Set(current);
-      next.add(code);
-      return next;
-    });
-  }
-
   function selectState(code, openCard = true) {
     setSelectedCode(code);
-    markDiscovered(code);
     if (openCard) setIsCardModalOpen(true);
   }
 
@@ -312,7 +303,6 @@ function App() {
                 briefing={briefing}
                 onReturn={() => navigate("/map")}
                 panelManifest={activePanelManifest}
-                onGameComplete={() => markPlayed(selectedCode)}
               />
             )
           } />
@@ -333,7 +323,7 @@ function App() {
           }}
           onClose={() => setIsCardModalOpen(false)}
           panelManifest={activePanelManifest}
-          isUnlocked={playedCodes.has(selectedCode)}
+          onCollect={() => markDiscovered(selectedCode)}
         />
       )}
     </>
