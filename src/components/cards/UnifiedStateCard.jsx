@@ -46,16 +46,23 @@ function SourceMethodPanel({ refs }) {
   );
 }
 
-function StateChallengePanel({ stateName, onOpenChallenge, isUnlocked }) {
+function lowerFirstCopy(value = "") {
+  const text = String(value || "").trim();
+  return text ? text.charAt(0).toLowerCase() + text.slice(1) : "";
+}
+
+function StateChallengePanel({ card, onOpenChallenge, isUnlocked }) {
+  const stateName = card?.stateName || "This state";
+  const olympicCue = getPanelVisualCue(card?.olympicPanel);
+  const paralympicCue = getPanelVisualCue(card?.paralympicPanel);
+  const traitName = lowerFirstCopy(plainTraitHeadline(card));
+  const actionCopy = isUnlocked ? "Play anytime." : `Play to unlock the ${stateName} state card.`;
+
   return (
     <section className="state-challenge-panel" aria-label={`${stateName} state challenge`}>
       <div className="state-challenge-copy">
         <span className="footer-panel-kicker">Fan Challenge</span>
-        <p>
-          {isUnlocked
-            ? `${stateName} state card unlocked. Replay the mini-game anytime.`
-            : `Play the mini-game to unlock the ${stateName} state card.`}
-        </p>
+        <p>{actionCopy} This quick challenge is inspired by {olympicCue} and {paralympicCue}, the featured sports on this card. Get a feel for their shared trait: {traitName}.</p>
       </div>
       <button className="primary-button state-challenge-button" type="button" onClick={onOpenChallenge}>
         Play Challenge
@@ -169,8 +176,6 @@ function SportMixSection({ card, value }) {
   const olympicFeatured = panelFeaturedSportList(card?.olympicPanel);
   const paralympicFeatured = panelFeaturedSportList(card?.paralympicPanel);
   const canShowAll = olympicSports.length > olympicFeatured.length || paralympicSports.length > paralympicFeatured.length;
-  const thematicItems = (Array.isArray(value) ? value : [])
-    .filter((item) => !/^(Olympic|Paralympic)(-side)? sports$/i.test(String(item?.theme || "")));
   const groups = [
     { label: "Olympic sports", sports: olympicSports },
     { label: "Paralympic sports", sports: paralympicSports }
@@ -197,11 +202,6 @@ function SportMixSection({ card, value }) {
       <div className="sport-mix-preview-list">
         <SportMixSidePreview label="Olympic sports" card={card} panel={card.olympicPanel} />
         <SportMixSidePreview label="Paralympic sports" card={card} panel={card.paralympicPanel} />
-        {thematicItems.map((item) => (
-          typeof item === "object" && item !== null
-            ? <p key={`${item.theme || item.area}-${item.detail}`}><strong>{item.theme || item.area}:</strong> {item.detail}</p>
-            : <p key={item}>{item}</p>
-        ))}
       </div>
       {canShowAll && (
         <button className="ghost-button small sport-mix-see-all-button" type="button" onClick={() => setShowAll(true)}>
@@ -671,7 +671,7 @@ function UnifiedStateCard({
                     </section>
                     <BriefingPanel payload={briefing} loading={briefingLoading} onRefresh={onRefreshBriefing} compact card={card} />
                     <SourceMethodPanel refs={sourceRefs} />
-                    <StateChallengePanel stateName={card.stateName} onOpenChallenge={onOpenChallenge} isUnlocked={isUnlocked} />
+                    <StateChallengePanel card={card} onOpenChallenge={onOpenChallenge} isUnlocked={isUnlocked} />
                   </div>
 
                   {hasMoreFullBackScroll && (
