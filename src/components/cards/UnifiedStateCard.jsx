@@ -46,16 +46,23 @@ function SourceMethodPanel({ refs }) {
   );
 }
 
-function StateChallengePanel({ stateName, onOpenChallenge, isUnlocked }) {
+function lowerFirstCopy(value = "") {
+  const text = String(value || "").trim();
+  return text ? text.charAt(0).toLowerCase() + text.slice(1) : "";
+}
+
+function StateChallengePanel({ card, onOpenChallenge, isUnlocked }) {
+  const stateName = card?.stateName || "This state";
+  const olympicCue = getPanelVisualCue(card?.olympicPanel);
+  const paralympicCue = getPanelVisualCue(card?.paralympicPanel);
+  const traitName = lowerFirstCopy(plainTraitHeadline(card));
+  const actionCopy = isUnlocked ? "Play anytime." : `Play to unlock the ${stateName} state card.`;
+
   return (
     <section className="state-challenge-panel" aria-label={`${stateName} state challenge`}>
       <div className="state-challenge-copy">
         <span className="footer-panel-kicker">Fan Challenge</span>
-        <p>
-          {isUnlocked
-            ? `${stateName} state card unlocked. Replay the mini-game anytime.`
-            : `Play the mini-game to unlock the ${stateName} state card.`}
-        </p>
+        <p>{actionCopy} This quick challenge is inspired by {olympicCue} and {paralympicCue}, the featured sports on this card. Get a feel for their shared trait: {traitName}.</p>
       </div>
       <button className="primary-button state-challenge-button" type="button" onClick={onOpenChallenge}>
         Play Challenge
@@ -664,7 +671,7 @@ function UnifiedStateCard({
                     </section>
                     <BriefingPanel payload={briefing} loading={briefingLoading} onRefresh={onRefreshBriefing} compact card={card} />
                     <SourceMethodPanel refs={sourceRefs} />
-                    <StateChallengePanel stateName={card.stateName} onOpenChallenge={onOpenChallenge} isUnlocked={isUnlocked} />
+                    <StateChallengePanel card={card} onOpenChallenge={onOpenChallenge} isUnlocked={isUnlocked} />
                   </div>
 
                   {hasMoreFullBackScroll && (
