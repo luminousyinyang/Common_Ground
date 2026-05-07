@@ -140,7 +140,7 @@ export const SUPPORTED_GAME_EXPERIENCE_VERSIONS = new Set([
   "common-ground-game-experience-v1"
 ]);
 export const GAME_TYPE_LABELS = {
-  reaction_grid: "Reaction Grid",
+  reaction_grid: "Focus Window",
   cadence_keeper: "Rhythm Shift",
   precision_trace: "Precision Trace",
   focus_hold: "Focus Hold",

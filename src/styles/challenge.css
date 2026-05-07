@@ -26,6 +26,20 @@
   margin-top: var(--space-4);
 }
 
+.challenge-view.is-playing {
+  padding-block: var(--space-2);
+}
+
+.challenge-view.is-playing .challenge-grid {
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.challenge-view.is-playing .challenge-copy,
+.challenge-view.is-playing .game-surface {
+  padding: var(--space-2);
+}
+
 .challenge-copy,
 .game-surface,
 .method-grid section,
@@ -45,6 +59,20 @@
 
 .challenge-copy .card-art.is-compact {
   min-height: 210px;
+}
+
+.challenge-view.is-playing .challenge-copy .card-art.is-compact {
+  min-height: 150px;
+}
+
+.challenge-view.is-playing .challenge-copy h3 {
+  margin: var(--space-2) 0;
+  font-size: 1.28rem;
+}
+
+.challenge-view.is-playing .challenge-intro,
+.challenge-view.is-playing .safe-note {
+  display: none;
 }
 
 .game-status {
@@ -85,6 +113,144 @@ html[data-surface="blacktop"] .game-board.has-game-background {
     linear-gradient(180deg, var(--glass-strong), var(--glass-soft));
   background-size: cover, auto, cover, auto;
   background-position: center;
+}
+
+.focus-window-board {
+  display: grid;
+  grid-template-rows: auto minmax(130px, 1fr) auto auto;
+  gap: var(--space-3);
+  min-height: 0;
+  height: clamp(300px, 42vh, 380px);
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.focus-window-condition-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.focus-window-condition {
+  display: grid;
+  gap: 3px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 9px 11px;
+  color: var(--copy);
+  background: color-mix(in srgb, var(--paper) 45%, transparent);
+}
+
+.focus-window-condition span {
+  font-size: 0.74rem;
+  font-weight: 820;
+  text-transform: uppercase;
+}
+
+.focus-window-condition strong {
+  color: var(--ink);
+  line-height: 1.05;
+}
+
+.focus-window-condition.is-active {
+  border-color: var(--ink);
+  background: color-mix(in srgb, var(--olympic-tint) 34%, var(--paper));
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--ink) 9%, transparent);
+}
+
+.focus-window-condition.is-complete {
+  border-color: color-mix(in srgb, var(--gold) 56%, var(--line));
+}
+
+.focus-window-track {
+  position: relative;
+  min-height: 130px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--ink) 8%, transparent) 0 1px, transparent 1px) 0 0 / 10% 100%,
+    color-mix(in srgb, var(--paper) 30%, transparent);
+  overflow: hidden;
+}
+
+.focus-window-rail,
+.focus-window-zone,
+.focus-window-signal {
+  position: absolute;
+  top: 50%;
+}
+
+.focus-window-rail {
+  left: 4%;
+  right: 4%;
+  height: 6px;
+  transform: translateY(-50%);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ink) 16%, transparent);
+}
+
+.focus-window-zone {
+  display: grid;
+  place-items: center;
+  height: 86px;
+  transform: translateY(-50%);
+  border: 1px solid color-mix(in srgb, var(--gold) 62%, var(--line));
+  border-radius: 10px;
+  color: var(--ink);
+  background: color-mix(in srgb, var(--gold) 18%, transparent);
+  font-size: 0.8rem;
+  font-weight: 820;
+  text-transform: uppercase;
+}
+
+.focus-window-signal {
+  width: 24px;
+  height: 92px;
+  transform: translate(-50%, -50%);
+  border: 2px solid var(--paper);
+  border-radius: 999px;
+  background: var(--ink);
+  box-shadow:
+    0 0 0 8px color-mix(in srgb, var(--ink) 14%, transparent),
+    0 16px 30px color-mix(in srgb, #000 18%, transparent);
+}
+
+.focus-window-track-label {
+  position: absolute;
+  top: 12px;
+  color: var(--copy);
+  font-size: 0.76rem;
+  font-weight: 780;
+  text-transform: uppercase;
+}
+
+.focus-window-track-label.is-early {
+  left: 16px;
+}
+
+.focus-window-track-label.is-late {
+  right: 16px;
+}
+
+.focus-window-feedback {
+  min-height: 24px;
+  color: var(--copy);
+  font-weight: 780;
+  text-align: center;
+}
+
+.focus-window-progress {
+  height: 10px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: #dbe4ee;
+}
+
+.focus-window-progress span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #5967a3, var(--ink));
+  transition: width 180ms ease;
 }
 
 .reaction-grid {
@@ -361,6 +527,8 @@ html[data-surface="blacktop"] .game-board.has-game-background .focus-readout {
 }
 
 .game-board.has-game-background .cadence-pad,
+.game-board.has-game-background .focus-window-condition,
+.game-board.has-game-background .focus-window-zone,
 .game-board.has-game-background .trace-point,
 .game-board.has-game-background .pattern-cell,
 .game-board.has-game-background .focus-readout {
@@ -369,6 +537,8 @@ html[data-surface="blacktop"] .game-board.has-game-background .focus-readout {
 }
 
 html[data-surface="blacktop"] .game-board.has-game-background .cadence-pad,
+html[data-surface="blacktop"] .game-board.has-game-background .focus-window-condition,
+html[data-surface="blacktop"] .game-board.has-game-background .focus-window-zone,
 html[data-surface="blacktop"] .game-board.has-game-background .trace-point,
 html[data-surface="blacktop"] .game-board.has-game-background .pattern-cell,
 html[data-surface="blacktop"] .game-board.has-game-background .focus-readout {

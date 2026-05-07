@@ -11,70 +11,222 @@ import {
 } from "../../lib/stateCard.js";
 import CardArt from "../cards/CardArt.jsx";
 
-function ReactionGrid({ card, onResult, gameExperience }) {
-  const [target, setTarget] = useState(() => Math.floor(Math.random() * 16));
+const FOCUS_WINDOW_CONDITIONS = [
+  { key: "read", label: "Read", condition: "Wide window", durationMs: 1900, windowWidth: 24, centers: [50, 50, 50] },
+  { key: "narrow", label: "Narrow", condition: "Smaller window", durationMs: 1600, windowWidth: 17, centers: [48, 52, 50] },
+  { key: "shift", label: "Shift", condition: "Offset window", durationMs: 1400, windowWidth: 18, centers: [42, 58, 46] }
+];
+
+const FOCUS_WINDOW_TRIALS = FOCUS_WINDOW_CONDITIONS.flatMap((condition) =>
+  condition.centers.map((center) => ({ ...condition, center }))
+);
+
+function focusWindowStats(results) {
+  const hits = results.filter((result) => result.hit);
+  const misses = results.length - hits.length;
+  const averageTimingErrorMs = hits.length ? average(hits.map((result) => result.timingErrorMs)) : 0;
+  const hitRate = results.length ? hits.length / results.length : 0;
+  const precisionScore = clampScore(hitRate * 100 - averageTimingErrorMs / 8 - misses * 4);
+  const focusLabel = precisionScore >= 86
+    ? "clean"
+    : precisionScore >= 70
+      ? "controlled"
+      : precisionScore >= 52
+        ? "developing"
+        : "hard to settle";
+  const conditionBreakdown = FOCUS_WINDOW_CONDITIONS.map((condition) => {
+    const conditionResults = results.filter((result) => result.conditionKey === condition.key);
+    const conditionHits = conditionResults.filter((result) => result.hit);
+    return {
+      label: condition.condition,
+      count: conditionResults.length,
+      hits: conditionHits.length,
+      averageErrorMs: conditionHits.length ? Math.round(average(conditionHits.map((result) => result.timingErrorMs))) : null
+    };
+  }).filter((condition) => condition.count > 0);
+
+  return {
+    focusLabel,
+    precisionScore,
+    hits: hits.length,
+    misses,
+    averageTimingErrorMs: Math.round(averageTimingErrorMs),
+    conditionBreakdown
+  };
+}
+
+function FocusWindow({ card, onResult, gameExperience }) {
+  const [trialIndex, setTrialIndex] = useState(0);
+  const [position, setPosition] = useState(4);
   const [hits, setHits] = useState(0);
   const [misses, setMisses] = useState(0);
-  const [remaining, setRemaining] = useState(15);
+  const [feedback, setFeedback] = useState("Tap or press space when the signal is inside the focus window.");
+  const trialIndexRef = useRef(0);
+  const positionRef = useRef(4);
+  const startedAtRef = useRef(performance.now());
+  const lockedRef = useRef(false);
   const finishedRef = useRef(false);
+  const resultsRef = useRef([]);
 
-  useEffect(() => {
-    const timer = setInterval(() => setRemaining((value) => value - 1), 1000);
-    const targetTimer = setInterval(() => setTarget(Math.floor(Math.random() * 16)), 950);
-    return () => {
-      clearInterval(timer);
-      clearInterval(targetTimer);
-    };
-  }, []);
+  const finish = useCallback((nextResults) => {
+    if (finishedRef.current) return;
+    finishedRef.current = true;
+    const stats = focusWindowStats(nextResults);
+    onResult({
+      type: "reaction_grid",
+      summary: `Your focus window was ${stats.focusLabel}: ${stats.hits}/${FOCUS_WINDOW_TRIALS.length} timed taps with about ${stats.averageTimingErrorMs}ms average timing offset.`,
+      focusLabel: stats.focusLabel,
+      precisionScore: stats.precisionScore,
+      hits: stats.hits,
+      misses: stats.misses,
+      averageTimingErrorMs: stats.averageTimingErrorMs,
+      metrics: [
+        { label: "Precision", value: `${stats.precisionScore}%` },
+        { label: "Timed taps", value: `${stats.hits}/${FOCUS_WINDOW_TRIALS.length}` },
+        { label: "Avg offset", value: `${stats.averageTimingErrorMs}ms` }
+      ],
+      conditionBreakdown: stats.conditionBreakdown
+    });
+  }, [onResult]);
 
-  useEffect(() => {
-    if (remaining <= 0 && !finishedRef.current) {
-      finishedRef.current = true;
-      onResult({
-        type: "reaction_grid",
-        summary: `You found ${hits} targets with ${misses} missed taps in this personal game.`,
-        hits,
-        misses
-      });
+  const completeTrial = useCallback((result) => {
+    if (finishedRef.current) return;
+    const nextResults = [...resultsRef.current, result];
+    resultsRef.current = nextResults;
+    setHits(nextResults.filter((item) => item.hit).length);
+    setMisses(nextResults.filter((item) => !item.hit).length);
+    setFeedback(result.feedback);
+
+    if (nextResults.length >= FOCUS_WINDOW_TRIALS.length) {
+      window.setTimeout(() => finish(nextResults), 260);
+      return;
     }
-  }, [remaining, hits, misses, onResult]);
+
+    window.setTimeout(() => {
+      const nextIndex = nextResults.length;
+      trialIndexRef.current = nextIndex;
+      setTrialIndex(nextIndex);
+      startedAtRef.current = performance.now();
+      positionRef.current = 4;
+      setPosition(4);
+      lockedRef.current = false;
+      const nextTrial = FOCUS_WINDOW_TRIALS[nextIndex];
+      setFeedback(`${nextTrial.condition}: wait for the signal to enter the window.`);
+    }, 360);
+  }, [finish]);
+
+  const evaluateTap = useCallback(() => {
+    if (lockedRef.current || finishedRef.current) return;
+    const trial = FOCUS_WINDOW_TRIALS[trialIndexRef.current];
+    const currentPosition = positionRef.current;
+    const windowStart = trial.center - trial.windowWidth / 2;
+    const windowEnd = trial.center + trial.windowWidth / 2;
+    const hit = currentPosition >= windowStart && currentPosition <= windowEnd;
+    const timingErrorMs = Math.round((Math.abs(currentPosition - trial.center) / 92) * trial.durationMs);
+    const direction = currentPosition < windowStart ? "early" : currentPosition > windowEnd ? "late" : "inside";
+    const feedbackText = hit
+      ? timingErrorMs <= 70
+        ? "Clean timing."
+        : `Inside window, ${timingErrorMs}ms from center.`
+      : direction === "early"
+        ? "Early tap. Wait for the window."
+        : "Late tap. Reset your timing.";
+
+    lockedRef.current = true;
+    completeTrial({
+      conditionKey: trial.key,
+      conditionLabel: trial.condition,
+      hit,
+      timingErrorMs,
+      direction,
+      feedback: feedbackText
+    });
+  }, [completeTrial]);
+
+  useEffect(() => {
+    let animationFrame = 0;
+
+    function tick(now) {
+      if (finishedRef.current) return;
+      const trial = FOCUS_WINDOW_TRIALS[trialIndexRef.current];
+      const elapsed = now - startedAtRef.current;
+      const progress = Math.min(elapsed / trial.durationMs, 1);
+      const nextPosition = 4 + progress * 92;
+      positionRef.current = nextPosition;
+      setPosition(nextPosition);
+
+      if (progress >= 1 && !lockedRef.current) {
+        lockedRef.current = true;
+        completeTrial({
+          conditionKey: trial.key,
+          conditionLabel: trial.condition,
+          hit: false,
+          timingErrorMs: Math.round(trial.durationMs * 0.18),
+          direction: "late",
+          feedback: "Signal passed the window. Reset your timing."
+        });
+      }
+
+      animationFrame = window.requestAnimationFrame(tick);
+    }
+
+    animationFrame = window.requestAnimationFrame(tick);
+    return () => window.cancelAnimationFrame(animationFrame);
+  }, [completeTrial]);
 
   useEffect(() => {
     function onKey(event) {
       if (event.key === " ") {
         event.preventDefault();
-        setHits((value) => value + 1);
-        setTarget(Math.floor(Math.random() * 16));
+        evaluateTap();
       }
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, []);
+  }, [evaluateTap]);
 
-  function hitCell(index) {
-    if (index === target) {
-      setHits((value) => value + 1);
-      setTarget(Math.floor(Math.random() * 16));
-    } else {
-      setMisses((value) => value + 1);
-    }
-  }
+  const trial = FOCUS_WINDOW_TRIALS[Math.min(trialIndex, FOCUS_WINDOW_TRIALS.length - 1)];
+  const windowStart = trial.center - trial.windowWidth / 2;
+  const progress = (trialIndex / FOCUS_WINDOW_TRIALS.length) * 100;
 
   return (
     <>
-      <div className="game-status">Reaction Grid: {Math.max(remaining, 0)} seconds left. Hits: {hits}. Misses: {misses}.</div>
-      <div className={gameBoardClass("reaction-board", gameExperience)} style={gameBoardStyle(gameExperience)} tabIndex="0" aria-label={`${card.stateName} reaction grid`}>
-        <div className="reaction-grid">
-          {Array.from({ length: 16 }, (_, index) => (
-            <button
-              key={index}
-              className={`reaction-cell ${index === target ? "is-target" : ""}`}
-              type="button"
-              aria-label={`Grid cell ${index + 1}`}
-              onClick={() => hitCell(index)}
-            />
-          ))}
+      <div className="game-status">Focus Window: trial {Math.min(trialIndex + 1, FOCUS_WINDOW_TRIALS.length)} of {FOCUS_WINDOW_TRIALS.length}. Timed taps: {hits}. Early/late: {misses}.</div>
+      <div
+        className={gameBoardClass("focus-window-board", gameExperience)}
+        style={gameBoardStyle(gameExperience)}
+        tabIndex="0"
+        aria-label={`${card.stateName} focus window`}
+        onPointerDown={evaluateTap}
+      >
+        <div className="focus-window-condition-row" aria-label="Focus window conditions">
+          {FOCUS_WINDOW_CONDITIONS.map((condition) => {
+            const startIndex = FOCUS_WINDOW_CONDITIONS
+              .slice(0, FOCUS_WINDOW_CONDITIONS.indexOf(condition))
+              .reduce((sum, item) => sum + item.centers.length, 0);
+            const endIndex = startIndex + condition.centers.length;
+            return (
+              <div
+                key={condition.key}
+                className={`focus-window-condition ${trialIndex >= startIndex && trialIndex < endIndex ? "is-active" : ""} ${trialIndex >= endIndex ? "is-complete" : ""}`}
+              >
+                <span>{condition.label}</span>
+                <strong>{condition.condition}</strong>
+              </div>
+            );
+          })}
         </div>
+        <div className="focus-window-track" aria-hidden="true">
+          <span className="focus-window-track-label is-early">Early</span>
+          <span className="focus-window-track-label is-late">Late</span>
+          <div className="focus-window-rail" />
+          <div className="focus-window-zone" style={{ left: `${windowStart}%`, width: `${trial.windowWidth}%` }}>
+            Focus window
+          </div>
+          <div className="focus-window-signal" style={{ left: `${position}%` }} />
+        </div>
+        <div className="focus-window-feedback">{feedback}</div>
+        <div className="focus-window-progress" aria-hidden="true"><span style={{ width: `${progress}%` }} /></div>
       </div>
     </>
   );
@@ -580,7 +732,7 @@ function ChallengeGame({ challengeType, card, onResult, gameExperience }) {
   if (challengeType === "precision_trace") return <PrecisionTrace card={card} onResult={onResult} gameExperience={gameExperience} />;
   if (challengeType === "focus_hold") return <FocusHold card={card} onResult={onResult} gameExperience={gameExperience} />;
   if (challengeType === "pattern_scout") return <PatternScout card={card} onResult={onResult} gameExperience={gameExperience} />;
-  return <ReactionGrid card={card} onResult={onResult} gameExperience={gameExperience} />;
+  return <FocusWindow card={card} onResult={onResult} gameExperience={gameExperience} />;
 }
 
 function ChallengeView({ card, briefing, onReturn, panelManifest, onGameComplete }) {
@@ -621,7 +773,7 @@ function ChallengeView({ card, briefing, onReturn, panelManifest, onGameComplete
   }
 
   return (
-    <section className="challenge-view page-panel">
+    <section className={`challenge-view page-panel ${started ? "is-playing" : ""}`}>
       <div className="challenge-header">
         <div>
           <p className="eyebrow">Fan skill challenge</p>
@@ -635,9 +787,9 @@ function ChallengeView({ card, briefing, onReturn, panelManifest, onGameComplete
           <CardArt card={card} compact panelManifest={panelManifest} />
           <p className="state-pill">{card.stateName} - {GAME_TYPE_LABELS[challengeType] || challengeType.replaceAll("_", " ")}</p>
           <h3>{connectionHeadline}</h3>
-          <p>{gameExperience.gameIntro || briefing?.briefing?.gameIntro || `Try a short fan challenge inspired by ${connectionHeadline.toLowerCase()}.`}</p>
+          <p className="challenge-intro">{gameExperience.gameIntro || briefing?.briefing?.gameIntro || `Try a short fan challenge inspired by ${connectionHeadline.toLowerCase()}.`}</p>
           <p className="safe-note">Personal fan result only. This is for appreciation, not measurement or comparison.</p>
-          <button className="primary-button wide" type="button" onClick={start}>Start Challenge</button>
+          {!started && <button className="primary-button wide" type="button" onClick={start}>{result ? "Try Again" : "Start Challenge"}</button>}
         </section>
         <section className="game-surface">
           {!started && !result && <div className="game-status">Press start when you are ready.</div>}

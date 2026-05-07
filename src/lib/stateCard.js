@@ -702,6 +702,8 @@ export function getGameExperience(card) {
   const generatedGameName = String(generated?.gameName || card.cardStory?.fanChallengeName || "").trim();
   const gameName = challengeType === "cadence_keeper"
     ? "Rhythm Shift Challenge"
+    : challengeType === "reaction_grid"
+      ? "Focus Window Challenge"
     : generatedGameName || `${GAME_TYPE_LABELS[challengeType] || "State Sync"} Challenge`;
   return {
     version: generated?.version,
@@ -710,6 +712,8 @@ export function getGameExperience(card) {
     gameName,
     gameIntro: challengeType === "cadence_keeper"
       ? "Tap through 1s, 1.5s, and 2s counts and see how steady your personal rhythm stays."
+      : challengeType === "reaction_grid"
+        ? "Tap only when the moving signal crosses the focus window; early and late taps count against your precision."
       : generated?.gameIntro,
     sharedTraitName: plainTraitHeadline(card),
     sharedTraitDescription: generated?.sharedTraitDescription || card.sharedTrait?.description,

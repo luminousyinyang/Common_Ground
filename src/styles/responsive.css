@@ -200,8 +200,13 @@
   }
 
   .rhythm-condition-row,
+  .focus-window-condition-row,
   .game-result-metrics {
     grid-template-columns: 1fr;
+  }
+
+  .focus-window-board {
+    height: 340px;
   }
 
 }
