@@ -24,9 +24,11 @@ function TopNav({ onNavigate, onLogin, onLogout, darkMode, onToggleDarkMode, aut
   const accountMenuRef = useRef(null);
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
 
-  const isAppPage = pathname === "/map" || pathname === "/collection" || pathname === "/challenge" || pathname === "/methodology";
+  const isAppPage = pathname === "/map" || pathname === "/collection" || pathname === "/challenge" || pathname === "/methodology" || pathname === "/settings";
+  const isTabPage = pathname === "/map" || pathname === "/collection";
 
   useLayoutEffect(() => {
+    if (!isTabPage) return;
     const activeRef = pathname === "/collection" ? collTabRef : mapTabRef;
     const el = activeRef.current;
     if (!el) return;
@@ -34,7 +36,7 @@ function TopNav({ onNavigate, onLogin, onLogout, darkMode, onToggleDarkMode, aut
   }, [pathname]);
 
   function handleNavPointerDown(e) {
-    if (!isAppPage) return;
+    if (!isTabPage) return;
     const startView = pathname === "/collection" ? "collection" : "explorer";
     dragRef.current = { active: true, startX: e.clientX, startView, delta: 0 };
     setDragDelta(0);
@@ -141,7 +143,7 @@ function TopNav({ onNavigate, onLogin, onLogout, darkMode, onToggleDarkMode, aut
             onPointerCancel={handleNavPointerUp}
             style={{ touchAction: "none" }}
           >
-            {isAppPage && pillBase.width > 0 && (
+            {isTabPage && pillBase.width > 0 && (
               <div
                 className="nav-sliding-pill"
                 style={{
@@ -190,11 +192,7 @@ function TopNav({ onNavigate, onLogin, onLogout, darkMode, onToggleDarkMode, aut
                     <span className="top-nav-avatar" aria-hidden="true">{initialForUser(user)}</span>
                   </button>
                   <div id="top-nav-account-menu" className="top-nav-user-popover" role="menu">
-                    <button className="top-nav-menu-item" type="button" onClick={handleMenuPlaceholder} role="menuitem">
-                      <Icon name="user" size={16} strokeWidth={1.8} />
-                      <span>Profile</span>
-                    </button>
-                    <button className="top-nav-menu-item" type="button" onClick={handleMenuPlaceholder} role="menuitem">
+                    <button className="top-nav-menu-item" type="button" onClick={() => go("/settings")} role="menuitem">
                       <Icon name="settings" size={16} strokeWidth={1.8} />
                       <span>Settings</span>
                     </button>
@@ -276,14 +274,23 @@ function TopNav({ onNavigate, onLogin, onLogout, darkMode, onToggleDarkMode, aut
               <span className="mobile-menu-link-icon"><Icon name="cards" size={26} strokeWidth={1.4} /></span>
               Collection
             </button>
+            <button
+              className={`mobile-menu-link${pathname === "/settings" ? " is-active" : ""}`}
+              type="button"
+              onClick={() => go("/settings")}
+              style={{ "--i": 3 }}
+            >
+              <span className="mobile-menu-link-icon"><Icon name="settings" size={26} strokeWidth={1.4} /></span>
+              Settings
+            </button>
           </nav>
-          <div className="mobile-menu-sep" style={{ "--i": 3 }} />
+          <div className="mobile-menu-sep" style={{ "--i": 4 }} />
           <div className="mobile-menu-foot">
             <button
               className="mobile-menu-row"
               type="button"
               onClick={onToggleDarkMode}
-              style={{ "--i": 4 }}
+              style={{ "--i": 5 }}
             >
               <span>{darkMode ? "Light mode" : "Dark mode"}</span>
               <Icon name={darkMode ? "sun" : "moon"} size={20} strokeWidth={1.5} />
@@ -292,12 +299,12 @@ function TopNav({ onNavigate, onLogin, onLogout, darkMode, onToggleDarkMode, aut
               className="primary-button mobile-menu-login"
               type="button"
               onClick={() => { isLoggedIn ? onLogout?.() : onLogin(); closeMenu(); }}
-              style={{ "--i": 5 }}
+              style={{ "--i": 6 }}
             >
               {isLoggedIn ? "Log out" : "Login"}
             </button>
             {isLoggedIn && (
-              <span className="mobile-menu-user" style={{ "--i": 6 }}>
+              <span className="mobile-menu-user" style={{ "--i": 7 }}>
                 Signed in as {displayNameForUser(user)}
               </span>
             )}

@@ -3,6 +3,10 @@ import { Routes, Route, Navigate, useNavigate, useLocation } from "react-router-
 import { feature } from "topojson-client";
 import {
   ACTIVE_VISUAL_THEME,
+  ACTIVE_CARD_EXPERIENCE,
+  CARD_OPEN_PRESETS,
+  CARD_INTERACTION_PRESETS,
+  CARD_LAYOUT_PRESETS,
   EMPTY_CARD_PANEL_MANIFEST,
   FIPS_TO_CODE
 } from "./lib/constants.js";
@@ -19,6 +23,7 @@ import ChallengeView from "./components/challenge/ChallengeView.jsx";
 import CollectionView from "./components/collection/CollectionView.jsx";
 import LandingPage from "./pages/LandingPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
+import SettingsPage from "./pages/SettingsPage.jsx";
 import { useAuth } from "./auth/AuthContext.jsx";
 import { loadUserCollection, saveUserCollection } from "./lib/userCollection.js";
 
@@ -83,7 +88,41 @@ function App() {
     user
   } = useAuth();
 
-  const [darkMode, setDarkMode] = useState(false);
+  function loadSetting(key, def) {
+    try { const v = window.localStorage.getItem(`cg-s-${key}`); return v === null ? def : JSON.parse(v); } catch { return def; }
+  }
+  function saveSetting(key, val) {
+    try { window.localStorage.setItem(`cg-s-${key}`, JSON.stringify(val)); } catch {}
+  }
+
+  const [settings, setSettings] = useState(() => ({
+    colorTheme: loadSetting("colorTheme", ACTIVE_VISUAL_THEME.color),
+    typeStyle: loadSetting("typeStyle", ACTIVE_VISUAL_THEME.type),
+    darkMode: loadSetting("darkMode", window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false),
+    cardOpenAnimation: loadSetting("cardOpenAnimation", ACTIVE_CARD_EXPERIENCE.openAnimation.id),
+    cardInteraction: loadSetting("cardInteraction", ACTIVE_CARD_EXPERIENCE.interaction.id),
+    cardLayout: loadSetting("cardLayout", ACTIVE_CARD_EXPERIENCE.cardLayout.id),
+    reduceMotion: loadSetting("reduceMotion", false),
+    largeText: loadSetting("largeText", false),
+    highContrast: loadSetting("highContrast", false),
+    alwaysShowFocus: loadSetting("alwaysShowFocus", false),
+  }));
+
+  function updateSettings(patch) {
+    setSettings((prev) => {
+      const next = { ...prev, ...patch };
+      Object.entries(patch).forEach(([k, v]) => saveSetting(k, v));
+      return next;
+    });
+  }
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    function onChange(e) { updateSettings({ darkMode: e.matches }); }
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+
   const [dataset, setDataset] = useState(null);
   const [mapTopology, setMapTopology] = useState(null);
   const [geoTopology, setGeoTopology] = useState(null);
@@ -189,20 +228,18 @@ function App() {
 
   useEffect(() => {
     const html = document.documentElement;
-    html.dataset.theme = ACTIVE_VISUAL_THEME.color;
-    html.dataset.type = ACTIVE_VISUAL_THEME.type;
-
     function apply() {
-      html.dataset.surface = darkMode ? "blacktop" : "";
+      html.dataset.theme = ACTIVE_VISUAL_THEME.color;
+      html.dataset.type = ACTIVE_VISUAL_THEME.type;
+      html.dataset.surface = settings.darkMode ? "blacktop" : "";
+      settings.reduceMotion ? html.setAttribute("data-reduce-motion", "1") : html.removeAttribute("data-reduce-motion");
+      settings.largeText ? html.setAttribute("data-large-text", "1") : html.removeAttribute("data-large-text");
+      settings.highContrast ? html.setAttribute("data-high-contrast", "1") : html.removeAttribute("data-high-contrast");
+      settings.alwaysShowFocus ? html.setAttribute("data-always-focus", "1") : html.removeAttribute("data-always-focus");
     }
-
-    if (!document.startViewTransition) {
-      apply();
-      return;
-    }
-
+    if (!document.startViewTransition) { apply(); return; }
     document.startViewTransition(apply);
-  }, [darkMode]);
+  }, [settings.darkMode, settings.reduceMotion, settings.largeText, settings.highContrast, settings.alwaysShowFocus]);
 
   useEffect(() => {
     Promise.all([
@@ -234,6 +271,12 @@ function App() {
     () => selectedBaseCard ? mergeGeneratedPanelData(selectedBaseCard, activePanelManifest) : selectedBaseCard,
     [selectedBaseCard, activePanelManifest]
   );
+  const cardExperience = useMemo(() => ({
+    openAnimation: CARD_OPEN_PRESETS.find((p) => p.id === settings.cardOpenAnimation) || CARD_OPEN_PRESETS[0],
+    interaction: CARD_INTERACTION_PRESETS.find((p) => p.id === settings.cardInteraction) || CARD_INTERACTION_PRESETS[0],
+    cardLayout: CARD_LAYOUT_PRESETS.find((p) => p.id === settings.cardLayout) || CARD_LAYOUT_PRESETS[0],
+  }), [settings.cardOpenAnimation, settings.cardInteraction, settings.cardLayout]);
+
   const globalSourceRefs = useMemo(() => (dataset?.meta?.sourceRefs || []).filter((ref) => ref.sourceType !== "teamusa"), [dataset]);
   const sourceRefs = selectedCard && dataset ? uniqueSourceRefs([...(selectedCard.sourceRefs || []), ...globalSourceRefs]) : [];
   const features = useMemo(() => {
@@ -319,8 +362,8 @@ function App() {
     onNavigate: navigate,
     onLogin: () => navigate("/login"),
     onLogout: handleLogout,
-    darkMode,
-    onToggleDarkMode: () => setDarkMode((d) => !d),
+    darkMode: settings.darkMode,
+    onToggleDarkMode: () => updateSettings({ darkMode: !settings.darkMode }),
     authLoading,
     isLoggedIn,
     user
@@ -411,6 +454,17 @@ function App() {
               />
             )
           } />
+          <Route path="/settings" element={
+            <SettingsPage
+              settings={settings}
+              onUpdate={updateSettings}
+              onResetCollection={() => setDiscoveredCodes(new Set())}
+              onResetProgress={() => { setDiscoveredCodes(new Set()); setPlayedCodes(new Set()); }}
+              onNavigate={navigate}
+              user={user}
+              isLoggedIn={isLoggedIn}
+            />
+          } />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
@@ -428,6 +482,7 @@ function App() {
           }}
           onClose={() => setIsCardModalOpen(false)}
           panelManifest={activePanelManifest}
+          cardExperience={cardExperience}
           onCollect={() => markDiscovered(selectedCode)}
           isUnlocked={playedCodes.has(selectedCode)}
         />
