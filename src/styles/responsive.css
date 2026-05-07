@@ -209,6 +209,18 @@
     height: 340px;
   }
 
+  .open-lane-board {
+    height: 340px;
+  }
+
+  .open-lane-condition-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .open-lane-footer {
+    grid-template-columns: 1fr;
+  }
+
 }
 
 /* ── Card modal: full-screen on very small screens ── */

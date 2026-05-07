@@ -275,7 +275,10 @@ html[data-surface="blacktop"] .game-board.has-game-background {
 .game-board.has-game-background .reaction-cell,
 .game-board.has-game-background .trace-point,
 .game-board.has-game-background .pattern-cell,
-.game-board.has-game-background .focus-readout {
+.game-board.has-game-background .focus-readout,
+.game-board.has-game-background .open-lane-condition,
+.game-board.has-game-background .open-lane-option,
+.game-board.has-game-background .open-lane-readout {
   backdrop-filter: blur(10px) saturate(1.1);
   background-color: color-mix(in srgb, var(--paper) 72%, transparent);
 }
@@ -283,7 +286,10 @@ html[data-surface="blacktop"] .game-board.has-game-background {
 html[data-surface="blacktop"] .game-board.has-game-background .reaction-cell,
 html[data-surface="blacktop"] .game-board.has-game-background .trace-point,
 html[data-surface="blacktop"] .game-board.has-game-background .pattern-cell,
-html[data-surface="blacktop"] .game-board.has-game-background .focus-readout {
+html[data-surface="blacktop"] .game-board.has-game-background .focus-readout,
+html[data-surface="blacktop"] .game-board.has-game-background .open-lane-condition,
+html[data-surface="blacktop"] .game-board.has-game-background .open-lane-option,
+html[data-surface="blacktop"] .game-board.has-game-background .open-lane-readout {
   background-color: color-mix(in srgb, #111827 76%, transparent);
   color: var(--paper);
 }
@@ -469,6 +475,189 @@ html[data-surface="blacktop"] .game-board.has-game-background .focus-readout {
   box-shadow: 0 0 0 10px color-mix(in srgb, var(--gold) 16%, transparent);
 }
 
+.focus-marker.is-pressured {
+  background: #f17f69;
+  box-shadow: 0 0 0 10px color-mix(in srgb, #f17f69 18%, transparent);
+}
+
+.open-lane-board {
+  display: grid;
+  grid-template-rows: auto minmax(220px, 1fr) auto;
+  gap: 12px;
+  min-height: 0;
+  height: clamp(330px, 44vh, 420px);
+}
+
+.open-lane-condition-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.open-lane-condition {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 8px 10px;
+  color: var(--muted);
+  background: color-mix(in srgb, var(--glass) 72%, transparent);
+  font-size: 0.78rem;
+  font-weight: 820;
+  text-align: center;
+}
+
+.open-lane-condition.is-active {
+  border-color: color-mix(in srgb, var(--gold) 62%, var(--line));
+  color: var(--ink);
+  background: color-mix(in srgb, var(--gold) 18%, var(--glass));
+}
+
+.open-lane-field {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 50% 48%, color-mix(in srgb, var(--gold) 8%, transparent), transparent 34%),
+    linear-gradient(180deg, color-mix(in srgb, var(--paper) 4%, transparent), color-mix(in srgb, var(--ink) 7%, transparent));
+}
+
+.open-lane-grid {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--paper) 12%, transparent) 0 1px, transparent 1px) 0 0 / 25% 100%,
+    linear-gradient(180deg, color-mix(in srgb, var(--paper) 7%, transparent) 0 1px, transparent 1px) 0 0 / 100% 25%;
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+.open-lane-option {
+  position: absolute;
+  top: 11%;
+  bottom: 11%;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 6px;
+  border: 1px solid color-mix(in srgb, var(--paper) 18%, var(--line));
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--paper) 8%, transparent), color-mix(in srgb, var(--paper) 2%, transparent)),
+    color-mix(in srgb, var(--glass-strong) 82%, transparent);
+  color: var(--ink);
+  font: inherit;
+  font-weight: 820;
+  box-shadow: inset 0 1px 0 var(--glass-line);
+  transition: border-color 160ms ease, background 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+  z-index: 2;
+}
+
+.open-lane-option:hover:not(:disabled),
+.open-lane-option:focus-visible {
+  border-color: color-mix(in srgb, var(--gold) 52%, var(--line));
+  background: color-mix(in srgb, var(--gold) 10%, var(--glass-strong));
+}
+
+.open-lane-option span {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--glass-strong);
+}
+
+.open-lane-option strong {
+  font-size: 0.9rem;
+}
+
+.open-lane-option em {
+  font-style: normal;
+  color: var(--copy);
+  font-size: 0.84rem;
+}
+
+.open-lane-option.is-selected {
+  transform: translateY(-2px);
+}
+
+.open-lane-option.is-best {
+  border-color: color-mix(in srgb, var(--gold) 72%, var(--line));
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--gold) 22%, transparent), color-mix(in srgb, var(--gold) 8%, transparent)),
+    var(--glass-strong);
+  box-shadow:
+    inset 0 1px 0 var(--glass-line),
+    0 0 0 6px color-mix(in srgb, var(--gold) 10%, transparent);
+}
+
+.open-lane-option.is-miss {
+  border-color: color-mix(in srgb, #f17f69 68%, var(--line));
+  background:
+    linear-gradient(180deg, color-mix(in srgb, #f17f69 18%, transparent), color-mix(in srgb, #f17f69 6%, transparent)),
+    var(--glass-strong);
+}
+
+.open-lane-pressure {
+  position: absolute;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border: 1px solid color-mix(in srgb, #f17f69 62%, var(--line));
+  border-radius: 999px;
+  background:
+    radial-gradient(circle, color-mix(in srgb, #f17f69 32%, transparent) 0 39%, transparent 40%),
+    color-mix(in srgb, #f17f69 13%, transparent);
+  box-shadow: 0 0 0 10px color-mix(in srgb, #f17f69 7%, transparent);
+  opacity: 0.82;
+  pointer-events: none;
+  transition-property: left, top, opacity;
+  transition-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1);
+  z-index: 3;
+}
+
+.open-lane-pressure.is-late {
+  opacity: 0.48;
+  transition-delay: 320ms;
+}
+
+.open-lane-field.is-settled .open-lane-pressure.is-late,
+.open-lane-field.has-choice .open-lane-pressure.is-late {
+  opacity: 0.82;
+}
+
+.open-lane-footer {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(150px, 32%);
+  gap: 12px;
+  align-items: center;
+}
+
+.open-lane-readout {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 9px 12px;
+  color: var(--copy);
+  background: var(--glass-strong);
+  font-weight: 780;
+}
+
+.open-lane-progress {
+  overflow: hidden;
+  height: 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--paper) 13%, transparent);
+}
+
+.open-lane-progress span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: color-mix(in srgb, var(--gold) 74%, var(--olympic-tint));
+  transition: width 180ms ease;
+}
+
 .focus-readout {
   position: absolute;
   left: 16px;
@@ -531,7 +720,10 @@ html[data-surface="blacktop"] .game-board.has-game-background .focus-readout {
 .game-board.has-game-background .focus-window-zone,
 .game-board.has-game-background .trace-point,
 .game-board.has-game-background .pattern-cell,
-.game-board.has-game-background .focus-readout {
+.game-board.has-game-background .focus-readout,
+.game-board.has-game-background .open-lane-condition,
+.game-board.has-game-background .open-lane-option,
+.game-board.has-game-background .open-lane-readout {
   backdrop-filter: blur(10px) saturate(1.1);
   background-color: color-mix(in srgb, var(--paper) 78%, transparent);
 }
@@ -541,7 +733,10 @@ html[data-surface="blacktop"] .game-board.has-game-background .focus-window-cond
 html[data-surface="blacktop"] .game-board.has-game-background .focus-window-zone,
 html[data-surface="blacktop"] .game-board.has-game-background .trace-point,
 html[data-surface="blacktop"] .game-board.has-game-background .pattern-cell,
-html[data-surface="blacktop"] .game-board.has-game-background .focus-readout {
+html[data-surface="blacktop"] .game-board.has-game-background .focus-readout,
+html[data-surface="blacktop"] .game-board.has-game-background .open-lane-condition,
+html[data-surface="blacktop"] .game-board.has-game-background .open-lane-option,
+html[data-surface="blacktop"] .game-board.has-game-background .open-lane-readout {
   background-color: color-mix(in srgb, #111827 78%, transparent);
   color: var(--paper);
 }

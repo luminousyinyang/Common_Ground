@@ -143,7 +143,7 @@ export const GAME_TYPE_LABELS = {
   reaction_grid: "Focus Window",
   cadence_keeper: "Rhythm Shift",
   precision_trace: "Precision Trace",
-  focus_hold: "Focus Hold",
+  focus_hold: "Open Lane",
   pattern_scout: "Pattern Scout"
 };
 

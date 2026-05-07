@@ -34,7 +34,7 @@ const GAME_TYPES = {
   reaction_grid: "Focus Window: tap only when a moving signal crosses the target timing window.",
   cadence_keeper: "Rhythm Shift: steady tapping while target counts change between 1s, 1.5s, and 2s.",
   precision_trace: "Controlled cursor path, line reading, and fine movement choices.",
-  focus_hold: "Staying inside a moving zone while conditions shift.",
+  focus_hold: "Open Lane: choose the lane that will stay most open after pressure areas shift.",
   pattern_scout: "Watching, remembering, and replaying a short visual route."
 };
 
@@ -480,11 +480,15 @@ function assignmentFromExistingGameExperience(existing, card) {
       ? "Rhythm Shift Challenge"
       : challengeType === "reaction_grid"
         ? "Focus Window Challenge"
+        : challengeType === "focus_hold"
+          ? "Open Lane Challenge"
         : existing.gameName || card.cardStory?.fanChallengeName,
     gameIntro: challengeType === "cadence_keeper"
       ? "Tap through 1s, 1.5s, and 2s counts and see how steady your personal rhythm stays."
       : challengeType === "reaction_grid"
         ? "Tap only when the moving signal crosses the focus window; early and late taps count against your precision."
+        : challengeType === "focus_hold"
+          ? "Pick the lane that will stay most open after pressure shifts. Ten rounds track best-lane reads and decision time."
       : existing.gameIntro || `Try a short fan challenge inspired by ${String(sharedTraitName || "state sync").toLowerCase()}.`,
     visualTheme: existing.theme || card.cardStory?.themeName || card.sharedTrait?.name || "State game surface",
     backgroundPromptBrief: existing.backgroundPromptBrief || `A rough fan-atlas mini-game backdrop built around ${existing.theme || card.cardStory?.themeName || card.sharedTrait?.name || "the state card theme"}.`,
@@ -562,7 +566,7 @@ function gameBackgroundDirectionForAssignment(assignment) {
 
   if (assignment.challengeType === "focus_hold") {
     return [
-      "Focus Hold background should support sustained attention on a moving zone.",
+      "Open Lane background should support choosing open lanes while pressure zones shift.",
       "Use soft concentric fields, calm terrain bands, or target-range atmosphere around the edges while leaving the center spacious.",
       "Avoid many bullseyes, dots, or small high-contrast objects that could compete with the focus zone."
     ].join("\n- ");

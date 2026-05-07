@@ -494,103 +494,283 @@ function PrecisionTrace({ card, onResult, gameExperience }) {
   );
 }
 
-function FocusHold({ card, onResult, gameExperience }) {
-  const boardRef = useRef(null);
-  const markerRef = useRef({ x: 50, y: 50 });
-  const zoneRef = useRef({ x: 50, y: 50 });
-  const finishedRef = useRef(false);
-  const tickRef = useRef(0);
-  const stableTicksRef = useRef(0);
-  const [marker, setMarker] = useState(markerRef.current);
-  const [zone, setZone] = useState(zoneRef.current);
-  const [remaining, setRemaining] = useState(12);
-  const [stableTicks, setStableTicks] = useState(0);
+const OPEN_LANE_ROUND_COUNT = 10;
+const OPEN_LANE_LANE_COUNT = 4;
+const OPEN_LANE_ANIMATION_MS = 1500;
+const OPEN_LANE_CONDITIONS = [
+  { key: "slow", label: "Slow shift", rounds: 3, pressureCount: 2, radius: 9, laneWidth: 18, shift: 8 },
+  { key: "late", label: "Late pressure", rounds: 3, pressureCount: 2, radius: 10, laneWidth: 18, shift: 14 },
+  { key: "narrow", label: "Narrow lanes", rounds: 2, pressureCount: 2, radius: 10, laneWidth: 15, shift: 11 },
+  { key: "double", label: "Double pressure", rounds: 2, pressureCount: 3, radius: 9, laneWidth: 16, shift: 12 }
+];
 
-  function distance(a, b) {
-    return Math.hypot(a.x - b.x, a.y - b.y);
+function clampRange(value, min, max) {
+  return Math.max(min, Math.min(max, value));
+}
+
+function seededUnit(seed, index, salt) {
+  const value = Math.sin(seed * 12.9898 + index * 78.233 + salt * 37.719) * 43758.5453;
+  return value - Math.floor(value);
+}
+
+function openLaneConditionForRound(index) {
+  let cursor = 0;
+  for (const condition of OPEN_LANE_CONDITIONS) {
+    cursor += condition.rounds;
+    if (index < cursor) return condition;
   }
+  return OPEN_LANE_CONDITIONS.at(-1);
+}
 
-  function updateMarker(nextMarker) {
-    const bounded = {
-      x: Math.max(4, Math.min(96, nextMarker.x)),
-      y: Math.max(4, Math.min(96, nextMarker.y))
+function openLaneScore(lane, pressures) {
+  const baseScore = 100;
+  const penalty = pressures.reduce((sum, pressure) => {
+    const horizontalOverlap = Math.max(0, lane.width / 2 + pressure.radius - Math.abs(lane.center - pressure.endX));
+    const overlapRatio = horizontalOverlap / (lane.width / 2 + pressure.radius);
+    const centralWeight = 0.72 + 0.28 * (1 - Math.abs(pressure.endY - 50) / 42);
+    return sum + overlapRatio * pressure.weight * centralWeight;
+  }, 0);
+  return Math.max(0, Math.round(baseScore - penalty));
+}
+
+function createOpenLaneRounds(stateCode) {
+  const seed = stateCode.split("").reduce((sum, char, index) => sum + char.charCodeAt(0) * (index + 1), 17);
+  const laneGap = 4;
+  const laneSlot = 100 / OPEN_LANE_LANE_COUNT;
+
+  return Array.from({ length: OPEN_LANE_ROUND_COUNT }, (_, roundIndex) => {
+    const condition = openLaneConditionForRound(roundIndex);
+    const laneWidth = condition.laneWidth;
+    const lanes = Array.from({ length: OPEN_LANE_LANE_COUNT }, (_, laneIndex) => ({
+      index: laneIndex,
+      center: laneSlot * laneIndex + laneSlot / 2,
+      width: Math.max(12, laneWidth - (condition.key === "narrow" ? laneIndex % 2 : 0)),
+      left: laneSlot * laneIndex + laneGap / 2,
+      visualWidth: laneSlot - laneGap
+    }));
+    const intendedBestLane = Math.floor(seededUnit(seed, roundIndex, 1) * OPEN_LANE_LANE_COUNT);
+    const pressuredLanes = lanes
+      .map((lane) => lane.index)
+      .filter((laneIndex) => laneIndex !== intendedBestLane)
+      .sort((a, b) => seededUnit(seed + a * 11, roundIndex, 2) - seededUnit(seed + b * 11, roundIndex, 2));
+
+    const pressures = Array.from({ length: condition.pressureCount }, (_, pressureIndex) => {
+      const laneIndex = pressuredLanes[(pressureIndex + roundIndex) % pressuredLanes.length];
+      const lane = lanes[laneIndex];
+      const startDirection = seededUnit(seed, roundIndex, 3 + pressureIndex) > 0.5 ? 1 : -1;
+      const laneNudge = (seededUnit(seed, roundIndex, 7 + pressureIndex) - 0.5) * lane.width * 0.55;
+      const yBase = 28 + seededUnit(seed, roundIndex, 11 + pressureIndex) * 44;
+      const endX = clampRange(lane.center + laneNudge, 8, 92);
+      const endY = clampRange(yBase, 18, 82);
+      return {
+        id: `${roundIndex}-${pressureIndex}`,
+        startX: clampRange(endX + startDirection * condition.shift, 8, 92),
+        startY: clampRange(endY + (seededUnit(seed, roundIndex, 16 + pressureIndex) - 0.5) * 20, 16, 84),
+        endX,
+        endY,
+        radius: condition.radius + (pressureIndex % 2),
+        weight: condition.key === "double" ? 42 : condition.key === "narrow" ? 48 : 44,
+        isLate: condition.key === "late" && pressureIndex === condition.pressureCount - 1
+      };
+    });
+
+    const scoredLanes = lanes.map((lane) => ({
+      ...lane,
+      score: openLaneScore(lane, pressures)
+    }));
+    const bestLane = scoredLanes.reduce((best, lane) => (lane.score > best.score ? lane : best), scoredLanes[0]);
+
+    return {
+      index: roundIndex,
+      condition,
+      lanes: scoredLanes,
+      pressures,
+      bestLaneIndex: bestLane.index
     };
-    markerRef.current = bounded;
-    setMarker(bounded);
-  }
+  });
+}
 
-  function finish() {
+function openLaneStats(results) {
+  const correct = results.filter((result) => result.correct);
+  const correctCount = correct.length;
+  const averageDecisionMs = Math.round(average(results.map((result) => result.decisionMs)));
+  const openLaneScoreValue = clampScore((correctCount / OPEN_LANE_ROUND_COUNT) * 100 - averageDecisionMs / 120);
+  const readLabel = openLaneScoreValue >= 82
+    ? "clear"
+    : openLaneScoreValue >= 64
+      ? "steady"
+      : openLaneScoreValue >= 44
+        ? "developing"
+        : "crowded";
+  const conditionBreakdown = OPEN_LANE_CONDITIONS.map((condition) => {
+    const conditionResults = results.filter((result) => result.conditionKey === condition.key);
+    const conditionCorrect = conditionResults.filter((result) => result.correct).length;
+    return {
+      label: condition.label,
+      count: conditionResults.length,
+      hits: conditionCorrect,
+      averageErrorMs: null,
+      displayValue: `${conditionCorrect}/${conditionResults.length} best picks`
+    };
+  }).filter((condition) => condition.count > 0);
+
+  return {
+    readLabel,
+    score: openLaneScoreValue,
+    correctCount,
+    averageDecisionMs,
+    conditionBreakdown
+  };
+}
+
+function OpenLaneChallenge({ card, onResult, gameExperience }) {
+  const rounds = useMemo(() => createOpenLaneRounds(card.stateCode), [card.stateCode]);
+  const [roundIndex, setRoundIndex] = useState(0);
+  const [isSettled, setIsSettled] = useState(false);
+  const [selectedLane, setSelectedLane] = useState(null);
+  const [feedback, setFeedback] = useState("Watch the pressure shift, then pick the lane with the most open space.");
+  const resultsRef = useRef([]);
+  const roundStartedAtRef = useRef(performance.now());
+  const finishedRef = useRef(false);
+
+  const finish = useCallback((nextResults) => {
     if (finishedRef.current) return;
     finishedRef.current = true;
-    const ratio = stableTicksRef.current / Math.max(tickRef.current, 1);
-    const holdLabel = ratio >= 0.7 ? "steady" : ratio >= 0.42 ? "developing" : "wandering";
+    const stats = openLaneStats(nextResults);
     onResult({
       type: "focus_hold",
-      summary: `Your focus hold felt ${holdLabel} while the target zone moved in this personal game.`,
-      holdLabel
+      summary: `Your open-lane read was ${stats.readLabel}: ${stats.correctCount}/${OPEN_LANE_ROUND_COUNT} best lanes found with ${millisecondsLabel(stats.averageDecisionMs)} average decision time.`,
+      holdLabel: stats.readLabel,
+      readScore: stats.score,
+      correctCount: stats.correctCount,
+      averageDecisionMs: stats.averageDecisionMs,
+      metrics: [
+        { label: "Open lanes", value: `${stats.correctCount}/${OPEN_LANE_ROUND_COUNT}` },
+        { label: "Read score", value: `${stats.score}%` },
+        { label: "Decision", value: millisecondsLabel(stats.averageDecisionMs) }
+      ],
+      conditionBreakdown: stats.conditionBreakdown
     });
-  }
+  }, [onResult]);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      tickRef.current += 1;
-      const tick = tickRef.current;
-      const nextZone = {
-        x: 50 + Math.sin(tick / 4) * 27,
-        y: 50 + Math.cos(tick / 5) * 21
-      };
-      zoneRef.current = nextZone;
-      setZone(nextZone);
-      if (distance(markerRef.current, nextZone) <= 16) {
-        stableTicksRef.current += 1;
-        setStableTicks(stableTicksRef.current);
-      }
-      setRemaining(Math.max(0, 12 - Math.floor(tick / 4)));
-      if (tick >= 48) finish();
-    }, 250);
-    return () => clearInterval(timer);
+  const beginRound = useCallback((nextIndex) => {
+    setRoundIndex(nextIndex);
+    setSelectedLane(null);
+    setFeedback("Watch the pressure shift, then pick the lane with the most open space.");
+    setIsSettled(false);
+    roundStartedAtRef.current = performance.now();
+    window.requestAnimationFrame(() => setIsSettled(true));
   }, []);
 
-  function handlePointerMove(event) {
-    const rect = boardRef.current?.getBoundingClientRect();
-    if (!rect) return;
-    updateMarker({
-      x: ((event.clientX - rect.left) / rect.width) * 100,
-      y: ((event.clientY - rect.top) / rect.height) * 100
-    });
-  }
-
-  function handleKeyDown(event) {
-    const step = event.shiftKey ? 8 : 4;
-    const keyMoves = {
-      ArrowLeft: { x: -step, y: 0 },
-      ArrowRight: { x: step, y: 0 },
-      ArrowUp: { x: 0, y: -step },
-      ArrowDown: { x: 0, y: step }
+  const chooseLane = useCallback((laneIndex) => {
+    if (finishedRef.current || selectedLane !== null) return;
+    const round = rounds[roundIndex];
+    const chosenLane = round.lanes[laneIndex];
+    const bestLane = round.lanes[round.bestLaneIndex];
+    const correct = laneIndex === round.bestLaneIndex;
+    const decisionMs = Math.round(performance.now() - roundStartedAtRef.current);
+    const result = {
+      conditionKey: round.condition.key,
+      conditionLabel: round.condition.label,
+      chosenLane: laneIndex,
+      bestLane: round.bestLaneIndex,
+      correct,
+      decisionMs,
+      chosenScore: chosenLane.score,
+      bestScore: bestLane.score
     };
-    const move = keyMoves[event.key];
-    if (!move) return;
-    event.preventDefault();
-    updateMarker({ x: markerRef.current.x + move.x, y: markerRef.current.y + move.y });
-  }
+    const nextResults = [...resultsRef.current, result];
+    resultsRef.current = nextResults;
+    setSelectedLane(laneIndex);
+    setFeedback(correct
+      ? `Good read. Lane ${laneIndex + 1} had the most open space.`
+      : `Lane ${laneIndex + 1} was tighter. Lane ${round.bestLaneIndex + 1} had more open space.`);
 
-  const isInside = distance(marker, zone) <= 16;
+    window.setTimeout(() => {
+      if (nextResults.length >= OPEN_LANE_ROUND_COUNT) {
+        finish(nextResults);
+      } else {
+        beginRound(roundIndex + 1);
+      }
+    }, 850);
+  }, [beginRound, finish, roundIndex, rounds, selectedLane]);
+
+  useEffect(() => {
+    beginRound(0);
+  }, [beginRound]);
+
+  useEffect(() => {
+    function onKey(event) {
+      if (!/^[1-4]$/.test(event.key)) return;
+      event.preventDefault();
+      chooseLane(Number(event.key) - 1);
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [chooseLane]);
+
+  const round = rounds[roundIndex];
+  const chosen = selectedLane !== null;
+  const progress = (resultsRef.current.length / OPEN_LANE_ROUND_COUNT) * 100;
 
   return (
     <>
-      <div className="game-status">Focus Hold: {remaining} seconds left. Keep your marker inside the moving zone.</div>
+      <div className="game-status">Open Lane: round {roundIndex + 1} of {OPEN_LANE_ROUND_COUNT}. Pick the lane with the best open-space score.</div>
       <div
-        className={gameBoardClass("focus-board", gameExperience)}
+        className={gameBoardClass("open-lane-board", gameExperience)}
         style={gameBoardStyle(gameExperience)}
         tabIndex="0"
-        ref={boardRef}
-        aria-label={`${card.stateName} focus hold`}
-        onPointerMove={handlePointerMove}
-        onKeyDown={handleKeyDown}
+        aria-label={`${card.stateName} open lane challenge`}
       >
-        <div className="focus-zone" style={{ left: `${zone.x}%`, top: `${zone.y}%` }} />
-        <div className={`focus-marker ${isInside ? "is-inside" : ""}`} style={{ left: `${marker.x}%`, top: `${marker.y}%` }} />
-        <div className="focus-readout">Stable moments: {stableTicks}</div>
+        <div className="open-lane-condition-row" aria-label="Open lane conditions">
+          {OPEN_LANE_CONDITIONS.map((condition) => (
+            <div
+              key={condition.key}
+              className={`open-lane-condition ${round.condition.key === condition.key ? "is-active" : ""}`}
+            >
+              <span>{condition.label}</span>
+            </div>
+          ))}
+        </div>
+        <div className={`open-lane-field ${isSettled ? "is-settled" : ""} ${chosen ? "has-choice" : ""}`}>
+          <div className="open-lane-grid" aria-hidden="true" />
+          {round.lanes.map((lane) => {
+            const isSelected = selectedLane === lane.index;
+            const isBest = chosen && round.bestLaneIndex === lane.index;
+            const isMiss = chosen && isSelected && !isBest;
+            return (
+              <button
+                key={lane.index}
+                className={`open-lane-option ${isSelected ? "is-selected" : ""} ${isBest ? "is-best" : ""} ${isMiss ? "is-miss" : ""}`}
+                type="button"
+                style={{ left: `${lane.left}%`, width: `${lane.visualWidth}%` }}
+                onClick={() => chooseLane(lane.index)}
+                disabled={chosen}
+                aria-label={`Choose lane ${lane.index + 1}`}
+              >
+                <span>{lane.index + 1}</span>
+                <strong>Lane {lane.index + 1}</strong>
+                {chosen && <em>{lane.score}</em>}
+              </button>
+            );
+          })}
+          {round.pressures.map((pressure) => (
+            <div
+              key={pressure.id}
+              className={`open-lane-pressure ${pressure.isLate ? "is-late" : ""}`}
+              style={{
+                left: `${isSettled ? pressure.endX : pressure.startX}%`,
+                top: `${isSettled ? pressure.endY : pressure.startY}%`,
+                width: `clamp(48px, ${pressure.radius * 2}%, 88px)`,
+                transitionDuration: `${OPEN_LANE_ANIMATION_MS}ms`
+              }}
+            />
+          ))}
+        </div>
+        <div className="open-lane-footer">
+          <div className="open-lane-readout">{feedback}</div>
+          <div className="open-lane-progress" aria-hidden="true"><span style={{ width: `${progress}%` }} /></div>
+        </div>
       </div>
     </>
   );
@@ -730,7 +910,7 @@ function PatternScout({ card, onResult, gameExperience }) {
 function ChallengeGame({ challengeType, card, onResult, gameExperience }) {
   if (challengeType === "cadence_keeper") return <CadenceKeeper card={card} onResult={onResult} gameExperience={gameExperience} />;
   if (challengeType === "precision_trace") return <PrecisionTrace card={card} onResult={onResult} gameExperience={gameExperience} />;
-  if (challengeType === "focus_hold") return <FocusHold card={card} onResult={onResult} gameExperience={gameExperience} />;
+  if (challengeType === "focus_hold") return <OpenLaneChallenge card={card} onResult={onResult} gameExperience={gameExperience} />;
   if (challengeType === "pattern_scout") return <PatternScout card={card} onResult={onResult} gameExperience={gameExperience} />;
   return <FocusWindow card={card} onResult={onResult} gameExperience={gameExperience} />;
 }
@@ -741,7 +921,7 @@ function ChallengeView({ card, briefing, onReturn, panelManifest, onGameComplete
   const [reflection, setReflection] = useState(null);
   const gameExperience = getGameExperience(card);
   const challengeType = gameExperience.challengeType || "reaction_grid";
-  const connectionHeadline = plainTraitHeadline(card);
+  const connectionHeadline = gameExperience.sharedTraitName || plainTraitHeadline(card);
   const connectionDescription = gameExperience.sharedTraitDescription || plainTraitDescription(card);
 
   const onResult = useCallback(async (nextResult) => {
@@ -811,7 +991,7 @@ function ChallengeView({ card, briefing, onReturn, panelManifest, onGameComplete
                 <div className="game-result-breakdown" aria-label="Condition breakdown">
                   {result.conditionBreakdown.map((condition) => (
                     <span key={condition.label}>
-                      {condition.label}: {condition.averageErrorMs}ms drift
+                      {condition.label}: {condition.displayValue || (Number.isFinite(condition.averageErrorMs) ? `${condition.averageErrorMs}ms drift` : `${condition.hits}/${condition.count} clear`)}
                     </span>
                   ))}
                 </div>

@@ -704,6 +704,8 @@ export function getGameExperience(card) {
     ? "Rhythm Shift Challenge"
     : challengeType === "reaction_grid"
       ? "Focus Window Challenge"
+      : challengeType === "focus_hold"
+        ? "Open Lane Challenge"
     : generatedGameName || `${GAME_TYPE_LABELS[challengeType] || "State Sync"} Challenge`;
   return {
     version: generated?.version,
@@ -714,9 +716,13 @@ export function getGameExperience(card) {
       ? "Tap through 1s, 1.5s, and 2s counts and see how steady your personal rhythm stays."
       : challengeType === "reaction_grid"
         ? "Tap only when the moving signal crosses the focus window; early and late taps count against your precision."
+        : challengeType === "focus_hold"
+          ? "Pick the lane that will stay most open after pressure shifts. Ten rounds track best-lane reads and decision time."
       : generated?.gameIntro,
-    sharedTraitName: plainTraitHeadline(card),
-    sharedTraitDescription: generated?.sharedTraitDescription || card.sharedTrait?.description,
+    sharedTraitName: challengeType === "focus_hold" ? "Finding open lanes" : plainTraitHeadline(card),
+    sharedTraitDescription: challengeType === "focus_hold"
+      ? "Reading pressure and choosing open space as conditions shift."
+      : generated?.sharedTraitDescription || card.sharedTrait?.description,
     background: generated?.background || null,
     theme: generated?.theme || null
   };
