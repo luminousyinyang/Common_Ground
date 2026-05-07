@@ -26,7 +26,7 @@ const imageMaxAttempts = positiveInteger(process.env.GAME_IMAGE_MAX_ATTEMPTS, 3)
 const imageRetryDelayMs = positiveInteger(process.env.GAME_IMAGE_RETRY_DELAY_MS, 5000);
 const imageRequestTimeoutMs = positiveInteger(process.env.GAME_IMAGE_REQUEST_TIMEOUT_MS, 900000);
 const textRequestTimeoutMs = positiveInteger(process.env.GAME_COPY_REQUEST_TIMEOUT_MS, 120000);
-const GAME_EXPERIENCE_VERSION = "common-ground-game-experience-v2-style-references";
+const GAME_EXPERIENCE_VERSION = "common-ground-game-experience-v3-shared-trait-examples";
 
 let firebaseClientsPromise;
 
@@ -314,13 +314,17 @@ Compliance:
 - Use fan-appreciation language only.
 - Do not imply geography causes athletic outcomes.
 - sharedTraitName must be obvious plain English that a non-sports fan can understand on first read.
+- sharedTraitDescription must describe the shared trait itself, not the examples. It should read cleanly after "The shared trait is".
+- olympicTraitExample and paralympicTraitExample must be short concrete example phrases showing how that shared trait appears in each featured sport.
 - Do not use abstract coined names such as "Shared Signal", "Waterline Control", "Waterline Rhythm", "Steady Pace Control", "Elevation Pace", "Spatial Timing", "Focus Timing", or "Signal Discovery".
 - Prefer phrases like "Rhythm in changing conditions", "Timing and space awareness", "Focus and precision", or "Pacing through terrain changes" when they fit.
 
 Return valid JSON with:
 - challengeType: one allowed game type
 - sharedTraitName: short fan-facing trait name, 2-5 words
-- sharedTraitDescription: one sentence about the trait
+- sharedTraitDescription: one plain-English sentence fragment or sentence about the trait, 8-18 words, with no sport names
+- olympicTraitExample: short concrete phrase, 6-16 words, about how the Olympic featured sport shows the trait
+- paralympicTraitExample: short concrete phrase, 6-16 words, about how the Paralympic featured sport shows the trait
 - gameName: short challenge title
 - gameIntro: one safe fan-facing sentence
 - visualTheme: 2-5 words for the game background
@@ -412,11 +416,28 @@ function validateGameAssignment(raw) {
   ];
   const warnings = banned.filter((pattern) => pattern.test(text)).map(String);
   if (warnings.length) throw new Error(`Unsafe game assignment language: ${warnings.join(", ")}`);
+  const olympicTraitExample = normalizeTraitExamplePhrase(assignment.olympicTraitExample || assignment.sharedTraitExamples?.olympic);
+  const paralympicTraitExample = normalizeTraitExamplePhrase(assignment.paralympicTraitExample || assignment.sharedTraitExamples?.paralympic);
   return {
     ...assignment,
     sharedTraitName: normalizeTraitNameForDisplay(assignment.sharedTraitName, assignment.sharedTraitDescription),
+    olympicTraitExample,
+    paralympicTraitExample,
+    sharedTraitExamples: {
+      ...(assignment.sharedTraitExamples || {}),
+      ...(olympicTraitExample ? { olympic: olympicTraitExample } : {}),
+      ...(paralympicTraitExample ? { paralympic: paralympicTraitExample } : {})
+    },
     complianceWarnings: Array.isArray(assignment.complianceWarnings) ? assignment.complianceWarnings : []
   };
+}
+
+function normalizeTraitExamplePhrase(value = "") {
+  return String(value || "")
+    .trim()
+    .replace(/[.!?]+$/, "")
+    .replace(/^(it can show up as|that can show up as|showing|through)\s+/i, "")
+    .trim();
 }
 
 function normalizeTraitNameForDisplay(name, description = "") {
@@ -445,6 +466,8 @@ function assignmentFromExistingGameExperience(existing, card) {
     challengeType: existing.challengeType,
     sharedTraitName: existing.sharedTraitName || card.sharedTrait?.name,
     sharedTraitDescription: existing.sharedTraitDescription || card.sharedTrait?.description,
+    olympicTraitExample: existing.olympicTraitExample || existing.sharedTraitExamples?.olympic,
+    paralympicTraitExample: existing.paralympicTraitExample || existing.sharedTraitExamples?.paralympic,
     gameName: existing.gameName || card.cardStory?.fanChallengeName,
     gameIntro: existing.gameIntro || `Try a short fan challenge inspired by ${String(existing.sharedTraitName || card.sharedTrait?.name || "state sync").toLowerCase()}.`,
     visualTheme: existing.theme || card.cardStory?.themeName || card.sharedTrait?.name || "State game surface",
@@ -551,6 +574,9 @@ function gameExperienceRecord({ card, dataScope, assignment, prompt, background 
     challengeType: assignment.challengeType,
     sharedTraitName: assignment.sharedTraitName,
     sharedTraitDescription: assignment.sharedTraitDescription,
+    sharedTraitExamples: assignment.sharedTraitExamples,
+    olympicTraitExample: assignment.olympicTraitExample,
+    paralympicTraitExample: assignment.paralympicTraitExample,
     gameName: assignment.gameName,
     gameIntro: assignment.gameIntro,
     theme: assignment.visualTheme,

@@ -133,9 +133,10 @@ export const CARD_THEME_LABELS = {
 
 export const EMPTY_CARD_PANEL_MANIFEST = { states: {} };
 export const CURRENT_CARD_BACK_COPY_VERSION = "common-ground-card-back-v14-basic-rules";
-export const CURRENT_GAME_EXPERIENCE_VERSION = "common-ground-game-experience-v2-style-references";
+export const CURRENT_GAME_EXPERIENCE_VERSION = "common-ground-game-experience-v3-shared-trait-examples";
 export const SUPPORTED_GAME_EXPERIENCE_VERSIONS = new Set([
   CURRENT_GAME_EXPERIENCE_VERSION,
+  "common-ground-game-experience-v2-style-references",
   "common-ground-game-experience-v1"
 ]);
 export const GAME_TYPE_LABELS = {
@@ -156,6 +157,5 @@ export const SIGNAL_LABELS = {
 export const PANEL_QA_ROWS = [
   ["howItWorks", "How it works"],
   ["watchValue", "Why it's fun to watch"],
-  ["stateConnection", "State connection"],
-  ["cardTrait", "Why it connects"]
+  ["stateConnection", "State connection"]
 ];

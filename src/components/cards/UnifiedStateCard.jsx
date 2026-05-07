@@ -169,8 +169,6 @@ function SportMixSection({ card, value }) {
   const olympicFeatured = panelFeaturedSportList(card?.olympicPanel);
   const paralympicFeatured = panelFeaturedSportList(card?.paralympicPanel);
   const canShowAll = olympicSports.length > olympicFeatured.length || paralympicSports.length > paralympicFeatured.length;
-  const thematicItems = (Array.isArray(value) ? value : [])
-    .filter((item) => !/^(Olympic|Paralympic)(-side)? sports$/i.test(String(item?.theme || "")));
   const groups = [
     { label: "Olympic sports", sports: olympicSports },
     { label: "Paralympic sports", sports: paralympicSports }
@@ -197,11 +195,6 @@ function SportMixSection({ card, value }) {
       <div className="sport-mix-preview-list">
         <SportMixSidePreview label="Olympic sports" card={card} panel={card.olympicPanel} />
         <SportMixSidePreview label="Paralympic sports" card={card} panel={card.paralympicPanel} />
-        {thematicItems.map((item) => (
-          typeof item === "object" && item !== null
-            ? <p key={`${item.theme || item.area}-${item.detail}`}><strong>{item.theme || item.area}:</strong> {item.detail}</p>
-            : <p key={item}>{item}</p>
-        ))}
       </div>
       {canShowAll && (
         <button className="ghost-button small sport-mix-see-all-button" type="button" onClick={() => setShowAll(true)}>

@@ -47,6 +47,13 @@ function lowerFirst(value = "") {
   return text ? text.charAt(0).toLowerCase() + text.slice(1) : "";
 }
 
+function connectionTraitDescription(cardOrTrait) {
+  return lowerFirst(plainTraitDescription(cardOrTrait))
+    .replace(/[.!?]+$/, "")
+    .replace(/^celebrate the ability to\s+/i, "the ability to ")
+    .replace(/^celebrate the\s+/i, "the ");
+}
+
 export function plainTraitDescription(cardOrTrait) {
   const generated = generatedGameExperienceForCard(cardOrTrait);
   if (String(generated?.sharedTraitDescription || "").trim()) return String(generated.sharedTraitDescription).trim();
@@ -73,7 +80,62 @@ export function plainTraitHeadline(cardOrTrait) {
 }
 
 export function traitConnectionSentence(card, olympicCue = "the Olympic sport", paralympicCue = "the Paralympic sport") {
-  return `Olympic ${olympicCue} and Paralympic ${paralympicCue} both involve ${lowerFirst(plainTraitDescription(card)).replace(/[.!?]+$/, "")}.`;
+  const olympicExample = traitExampleForProgram(card, "olympic", olympicCue);
+  const paralympicExample = traitExampleForProgram(card, "paralympic", paralympicCue);
+  return `The shared trait is ${connectionTraitDescription(card)}. For ${olympicCue}, that can mean ${olympicExample}; for ${paralympicCue}, it can mean ${paralympicExample}.`;
+}
+
+function traitExampleForProgram(card, program, visualCue) {
+  const generated = generatedGameExperienceForCard(card);
+  const generatedExamples = generated?.sharedTraitExamples || {};
+  const generatedExample = generatedExamples[program] || generated?.[`${program}TraitExample`];
+  if (String(generatedExample || "").trim()) {
+    return normalizeExamplePhrase(generatedExample);
+  }
+  return sportTraitExample(visualCue, card?.[`${program}Panel`]);
+}
+
+function normalizeExamplePhrase(value) {
+  return lowerFirst(value)
+    .replace(/[.!?]+$/, "")
+    .replace(/^(it can show up as|that can show up as|showing|through)\s+/i, "")
+    .trim();
+}
+
+export function sportTraitExample(visualCue, panel) {
+  const sport = String(visualCue || "").toLowerCase();
+  const family = String(panel?.sportFamily || "").toLowerCase();
+  if (!hasSpecificSportCue(panel)) {
+    return "comparing the available sport-family context";
+  }
+  if (/water polo/.test(sport)) {
+    return "reading passing lanes and resetting spacing while players tread water";
+  }
+  if (/triathlon/.test(sport)) {
+    return "switching rhythm across swim, bike, run, and transition moments";
+  }
+  if (/snowboard/.test(sport)) {
+    return "using edge control, line choice, and landing timing on changing snow";
+  }
+  if (/alpine ski|skiing/.test(sport)) {
+    return "linking turns while managing speed, gates, and equipment";
+  }
+  if (/swimming|surfing|sailing|rowing|canoe/.test(sport) || /aquatic|water/.test(family)) {
+    return "holding body position and rhythm while the water keeps changing";
+  }
+  if (/track|cycling|marathon|race walk/.test(sport) || /endurance|pace/.test(family)) {
+    return "adjusting pace and cadence as the race conditions shift";
+  }
+  if (/shooting|archery|fencing|golf|tennis|table tennis|badminton/.test(sport) || /precision|focus/.test(family)) {
+    return "holding focus through setup, timing, and a short decision window";
+  }
+  if (/basketball|soccer|volleyball|rugby|goalball|hockey|handball|baseball|softball/.test(sport) || /team|spatial/.test(family)) {
+    return "reading space, timing passes, and resetting shape under pressure";
+  }
+  if (/skateboarding|gymnastics|climbing|equestrian|breaking/.test(sport) || /balance|technical/.test(family)) {
+    return "using balance, line choice, and timing through each sequence";
+  }
+  return "turning timing, movement, and decisions into something fans can watch for";
 }
 
 export function sanitizeTraitJargon(value, replacement = "the connection") {
@@ -103,20 +165,16 @@ export function fallbackBriefing(card, reason = "The Gemini backend is not avail
           theme: "Olympic sports",
           detail: sportMixPreviewDetail(card, card.olympicPanel, "Olympic")
         },
-        {
-          theme: "Paralympic sports",
-          detail: sportMixPreviewDetail(card, card.paralympicPanel, "Paralympic")
-        },
-        {
-          theme: "Movement themes",
-          detail: "Across the combined state view, fans can look for rhythm, spacing, pacing, precision, equipment control, and surface changes."
-        }
-      ],
+      {
+        theme: "Paralympic sports",
+        detail: sportMixPreviewDetail(card, card.paralympicPanel, "Paralympic")
+      }
+    ],
       geographyLens: `${card.geographySnapshot} could help fans understand why varied sport environments appear in this aggregate state view.`,
       hometownAreas: formatHometownAreas(card.topHometownSignals),
       whatToNotice: "The useful fan read is contrast: some sports emphasize spacing and quick decisions, while others emphasize rhythm, stillness, pacing, equipment, or transitions.",
       surprisingConnection: `${olympicCue} and ${paralympicCue} do not need to look alike to share a viewing idea; both can point fans toward control when timing, surface, or spacing changes.`,
-      sharedStateSignal: plainTraitDescription(card),
+      sharedStateSignal: traitConnectionSentence(card, olympicCue, paralympicCue),
       gameIntro: `Try a short fan challenge inspired by ${lowerFirst(plainTraitHeadline(card))}.`,
       complianceWarnings: [reason]
     },
