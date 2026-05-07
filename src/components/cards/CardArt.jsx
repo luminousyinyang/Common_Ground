@@ -50,10 +50,9 @@ function CardArt({ card, compact = false, panelManifest = EMPTY_CARD_PANEL_MANIF
           {!compact && <strong className="art-panel-sport">{getPanelVisualCue(card.paralympicPanel)}</strong>}
         </div>
       </div>
-      <div className="art-state-lockup">
+      <div className={`art-state-lockup ${compact ? "" : "is-simple"}`}>
         <strong>{card.stateName}</strong>
-        <span>{compact ? themeName : "State Sync Challenge"}</span>
-        {!compact && <em>{themeName} · {card.sharedTrait.name}</em>}
+        {compact && <span>{themeName}</span>}
       </div>
     </div>
   );

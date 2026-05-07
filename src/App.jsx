@@ -19,6 +19,8 @@ import ChallengeView from "./components/challenge/ChallengeView.jsx";
 import CollectionView from "./components/collection/CollectionView.jsx";
 import LandingPage from "./pages/LandingPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
+import { useAuth } from "./auth/AuthContext.jsx";
+import { loadUserCollection, saveUserCollection } from "./lib/userCollection.js";
 
 const FALLBACK_DATA_SCOPES = [
   {
@@ -61,12 +63,26 @@ function scopeOptionsForDataset(dataset) {
   return Array.isArray(options) && options.length ? options : FALLBACK_DATA_SCOPES;
 }
 
+function mergeCodes(current, incoming) {
+  const next = new Set(current);
+  for (const code of incoming || []) {
+    if (typeof code === "string" && code.trim()) next.add(code.toUpperCase());
+  }
+  return next;
+}
 
 function App() {
   const routerNavigate = useNavigate();
   const location = useLocation();
+  const {
+    authError,
+    isLoggedIn,
+    loading: authLoading,
+    logout,
+    sessionError,
+    user
+  } = useAuth();
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const [dataset, setDataset] = useState(null);
   const [mapTopology, setMapTopology] = useState(null);
@@ -87,6 +103,8 @@ function App() {
       return true;
     }
   });
+  const [collectionReadyUid, setCollectionReadyUid] = useState(null);
+  const [collectionSyncError, setCollectionSyncError] = useState("");
 
   useEffect(() => {
     try {
@@ -111,6 +129,47 @@ function App() {
     } catch {}
   }, [showCompleted]);
 
+
+  useEffect(() => {
+    if (!isLoggedIn || !user?.uid) {
+      setCollectionReadyUid(null);
+      setCollectionSyncError("");
+      return undefined;
+    }
+
+    let cancelled = false;
+    setCollectionReadyUid(null);
+
+    loadUserCollection()
+      .then((remoteCollection) => {
+        if (cancelled) return;
+        setDiscoveredCodes((current) => mergeCodes(current, remoteCollection.discoveredCodes));
+        setPlayedCodes((current) => mergeCodes(current, remoteCollection.playedCodes));
+        setCollectionReadyUid(user.uid);
+        setCollectionSyncError("");
+      })
+      .catch((error) => {
+        if (cancelled) return;
+        setCollectionReadyUid(user.uid);
+        setCollectionSyncError(error.message);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [isLoggedIn, user?.uid]);
+
+  useEffect(() => {
+    if (!isLoggedIn || !user?.uid || collectionReadyUid !== user.uid) return undefined;
+
+    const timeout = window.setTimeout(() => {
+      saveUserCollection({ discoveredCodes, playedCodes })
+        .then(() => setCollectionSyncError(""))
+        .catch((error) => setCollectionSyncError(error.message));
+    }, 500);
+
+    return () => window.clearTimeout(timeout);
+  }, [collectionReadyUid, discoveredCodes, isLoggedIn, playedCodes, user?.uid]);
 
   useEffect(() => {
     const html = document.documentElement;
@@ -223,11 +282,23 @@ function App() {
     routerNavigate(path);
   }
 
+  async function handleLogout() {
+    try {
+      await logout();
+    } finally {
+      navigate("/map");
+    }
+  }
+
   const navProps = {
     onNavigate: navigate,
     onLogin: () => navigate("/login"),
+    onLogout: handleLogout,
     darkMode,
-    onToggleDarkMode: () => setDarkMode((d) => !d)
+    onToggleDarkMode: () => setDarkMode((d) => !d),
+    authLoading,
+    isLoggedIn,
+    user
   };
 
   const isAppRoute = location.pathname !== "/" && location.pathname !== "/login";
@@ -248,10 +319,16 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage {...navProps} />} />
         <Route path="/login" element={
-          <LoginPage
-            {...navProps}
-            onLogin={() => { setIsLoggedIn(true); navigate("/map"); }}
-          />
+          isLoggedIn ? (
+            <Navigate to="/map" replace />
+          ) : (
+            <LoginPage
+              {...navProps}
+              authError={authError}
+              onAuthSuccess={() => navigate("/map")}
+              sessionError={sessionError}
+            />
+          )
         } />
         <Route element={<AppShell {...navProps} />}>
           <Route path="/map" element={
@@ -292,6 +369,8 @@ function App() {
                 onSelect={(code) => selectState(code)}
                 panelManifest={activePanelManifest}
                 isLoggedIn={isLoggedIn}
+                authLoading={authLoading}
+                collectionSyncError={collectionSyncError}
                 onLogin={() => navigate("/login")}
               />
             )

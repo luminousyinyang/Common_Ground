@@ -167,6 +167,31 @@ Use `--force` to replace existing generated panels. Firebase mode uploads each i
 
 Set `VERTEX_AUTH_MODE=service_account` only if you intentionally want Vertex to use the JSON key too; in that case the service account needs `roles/aiplatform.user` on the Vertex project. `VERTEX_AUTH_MODE=gcloud` forces local gcloud auth. The default `auto` mode is usually best.
 
+## Firebase Auth
+
+The app supports Firebase Authentication with email/password and Google sign-in. The browser uses the Firebase Web SDK for sign-in and token refresh, then sends the Firebase ID token to the Node server. The server verifies that token with Firebase Admin, creates an HTTP-only `common_ground_session` Firebase session cookie, and uses that session for `/api/user/collection` sync.
+
+Add the Firebase web-app config values to local `.env` for Vite:
+
+```bash
+VITE_FIREBASE_API_KEY=[WEB-API-KEY]
+VITE_FIREBASE_AUTH_DOMAIN=common-ground-tests.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=common-ground-tests
+VITE_FIREBASE_STORAGE_BUCKET=common-ground-tests.firebasestorage.app
+VITE_FIREBASE_MESSAGING_SENDER_ID=[SENDER-ID]
+VITE_FIREBASE_APP_ID=[WEB-APP-ID]
+```
+
+Keep the Admin SDK config server-side:
+
+```bash
+FIREBASE_PROJECT_ID=common-ground-tests
+GOOGLE_APPLICATION_CREDENTIALS=/absolute/path/to/local-service-account.json
+FIREBASE_SESSION_DAYS=5
+```
+
+For Cloud Run, do not ship a service-account JSON file. Use the attached service account with Firebase Auth/Firestore access and set the same `VITE_FIREBASE_*` values at build/deploy time. `FIREBASE_SESSION_DAYS` is interpreted as days, supports fractional values, and is clamped between Firebase's 5-minute and 2-week session-cookie limits.
+
 Image generation can take several minutes on preview models. The generator uses a long request timeout by default; tune it with:
 
 ```bash

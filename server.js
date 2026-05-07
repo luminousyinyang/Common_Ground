@@ -19,9 +19,18 @@ const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-3.1-pro-preview";
 const GOOGLE_CLOUD_PROJECT = process.env.GOOGLE_CLOUD_PROJECT || process.env.GCLOUD_PROJECT || "";
 const GOOGLE_CLOUD_LOCATION = process.env.GOOGLE_CLOUD_LOCATION || "global";
 const VERTEX_SCOPE = "https://www.googleapis.com/auth/cloud-platform";
+const FIREBASE_SESSION_COOKIE = "common_ground_session";
+const FIREBASE_SESSION_DAYS_VALUE = Number(process.env.FIREBASE_SESSION_DAYS || 5);
+const FIREBASE_SESSION_DAYS = Number.isFinite(FIREBASE_SESSION_DAYS_VALUE) ? FIREBASE_SESSION_DAYS_VALUE : 5;
+const FIREBASE_SESSION_EXPIRES_IN_MS = Math.min(
+  Math.max(FIREBASE_SESSION_DAYS * 24 * 60 * 60 * 1000, 5 * 60 * 1000),
+  14 * 24 * 60 * 60 * 1000
+);
+const FIREBASE_SESSION_MAX_AGE_SECONDS = Math.round(FIREBASE_SESSION_EXPIRES_IN_MS / 1000);
 
 let cachedDataset;
 let cachedStaticRoot;
+let firebaseAdminPromise;
 
 const contentTypes = {
   ".html": "text/html; charset=utf-8",
@@ -82,6 +91,192 @@ function readBody(req) {
   });
 }
 
+function readGoogleApplicationCredentials() {
+  const credentialsPath = process.env.GOOGLE_APPLICATION_CREDENTIALS;
+  if (!credentialsPath) return null;
+  try {
+    return JSON.parse(readFileSync(credentialsPath, "utf8"));
+  } catch {
+    return null;
+  }
+}
+
+async function getFirebaseAdmin() {
+  if (!firebaseAdminPromise) {
+    firebaseAdminPromise = (async () => {
+      const [
+        { applicationDefault, getApps, initializeApp },
+        { getAuth },
+        { FieldValue, getFirestore }
+      ] = await Promise.all([
+        import("firebase-admin/app"),
+        import("firebase-admin/auth"),
+        import("firebase-admin/firestore")
+      ]);
+
+      const credentials = readGoogleApplicationCredentials();
+      const projectId = process.env.FIREBASE_PROJECT_ID || credentials?.project_id || process.env.GCLOUD_PROJECT || GOOGLE_CLOUD_PROJECT;
+      const app = getApps()[0] || initializeApp({
+        credential: applicationDefault(),
+        projectId
+      });
+
+      return {
+        auth: getAuth(app),
+        db: getFirestore(app),
+        FieldValue
+      };
+    })();
+  }
+
+  return firebaseAdminPromise;
+}
+
+function parseCookies(cookieHeader = "") {
+  function decode(value) {
+    try {
+      return decodeURIComponent(value);
+    } catch {
+      return value;
+    }
+  }
+
+  return Object.fromEntries(
+    cookieHeader
+      .split(";")
+      .map((part) => part.trim())
+      .filter(Boolean)
+      .map((part) => {
+        const index = part.indexOf("=");
+        if (index === -1) return [part, ""];
+        return [
+          decode(part.slice(0, index)),
+          decode(part.slice(index + 1))
+        ];
+      })
+  );
+}
+
+function sessionCookieFlags(maxAgeSeconds) {
+  const secure = process.env.FIREBASE_SESSION_COOKIE_SECURE === "true"
+    || Boolean(process.env.K_SERVICE)
+    || process.env.NODE_ENV === "production";
+  return [
+    "Path=/",
+    "HttpOnly",
+    "SameSite=Lax",
+    `Max-Age=${maxAgeSeconds}`,
+    secure ? "Secure" : ""
+  ].filter(Boolean).join("; ");
+}
+
+function setSessionCookie(res, value) {
+  res.setHeader("Set-Cookie", `${FIREBASE_SESSION_COOKIE}=${encodeURIComponent(value)}; ${sessionCookieFlags(FIREBASE_SESSION_MAX_AGE_SECONDS)}`);
+}
+
+function clearSessionCookie(res) {
+  res.setHeader("Set-Cookie", `${FIREBASE_SESSION_COOKIE}=; ${sessionCookieFlags(0)}`);
+}
+
+function userFromDecodedToken(decoded) {
+  return {
+    uid: decoded.uid || decoded.sub,
+    email: decoded.email || "",
+    name: decoded.name || decoded.email || "Common Ground fan",
+    firstName: "",
+    lastName: "",
+    photoURL: decoded.picture || "",
+    emailVerified: Boolean(decoded.email_verified),
+    signInProvider: decoded.firebase?.sign_in_provider || ""
+  };
+}
+
+function cleanNamePart(value) {
+  return String(value || "").trim().replace(/\s+/g, " ").slice(0, 80);
+}
+
+function splitDisplayName(name = "", email = "") {
+  const source = cleanNamePart(name) || cleanNamePart(String(email || "").split("@")[0].replace(/[._-]+/g, " "));
+  const parts = source.split(/\s+/).filter(Boolean);
+  return {
+    firstName: parts[0] || "",
+    lastName: parts.slice(1).join(" ")
+  };
+}
+
+function userWithProfile(decoded, profile = {}) {
+  const baseUser = userFromDecodedToken(decoded);
+  const firstName = cleanNamePart(profile.firstName);
+  const lastName = cleanNamePart(profile.lastName);
+  const name = [firstName, lastName].filter(Boolean).join(" ") || baseUser.name;
+
+  return {
+    ...baseUser,
+    name,
+    firstName,
+    lastName
+  };
+}
+
+async function upsertUserProfile(decoded, incomingProfile = {}) {
+  const { db, FieldValue } = await getFirebaseAdmin();
+  const baseUser = userFromDecodedToken(decoded);
+  const profileRef = db.collection("userProfiles").doc(baseUser.uid);
+  const snapshot = await profileRef.get();
+  const existing = snapshot.exists ? snapshot.data() : {};
+  const derived = splitDisplayName(baseUser.name, baseUser.email);
+
+  const firstName = cleanNamePart(incomingProfile.firstName) || cleanNamePart(existing.firstName) || derived.firstName;
+  const lastName = cleanNamePart(incomingProfile.lastName) || cleanNamePart(existing.lastName) || derived.lastName;
+  const profile = {
+    email: baseUser.email,
+    firstName,
+    lastName,
+    name: [firstName, lastName].filter(Boolean).join(" ") || baseUser.name,
+    photoURL: baseUser.photoURL,
+    signInProvider: baseUser.signInProvider,
+    updatedAt: FieldValue.serverTimestamp()
+  };
+
+  if (!snapshot.exists) profile.createdAt = FieldValue.serverTimestamp();
+  await profileRef.set(profile, { merge: true });
+  return userWithProfile(decoded, profile);
+}
+
+function bearerToken(req) {
+  const header = req.headers.authorization || "";
+  const match = header.match(/^Bearer\s+(.+)$/i);
+  return match?.[1] || "";
+}
+
+async function currentAuthUser(req) {
+  const { auth } = await getFirebaseAdmin();
+  const token = bearerToken(req);
+  if (token) {
+    const decoded = await auth.verifyIdToken(token);
+    return userFromDecodedToken(decoded);
+  }
+
+  const cookies = parseCookies(req.headers.cookie || "");
+  const sessionCookie = cookies[FIREBASE_SESSION_COOKIE];
+  if (!sessionCookie) return null;
+
+  const checkRevoked = process.env.FIREBASE_SESSION_CHECK_REVOKED === "true";
+  const decoded = await auth.verifySessionCookie(sessionCookie, checkRevoked);
+  return userFromDecodedToken(decoded);
+}
+
+function normalizeCodeList(value, dataset) {
+  const allowed = new Set((dataset.states || []).map((state) => state.stateCode));
+  return [
+    ...new Set(
+      (Array.isArray(value) ? value : [])
+        .map((code) => String(code || "").trim().toUpperCase())
+        .filter((code) => allowed.has(code))
+    )
+  ];
+}
+
 function normalizeJsonText(text) {
   return text
     .trim()
@@ -98,10 +293,35 @@ function joinReadableList(items = []) {
   return `${values.slice(0, -1).join(", ")}, and ${values.at(-1)}`;
 }
 
+function lowerFirst(value = "") {
+  const text = String(value || "").trim();
+  return text ? text.charAt(0).toLowerCase() + text.slice(1) : "";
+}
+
 function displaySportName(value) {
   const text = String(value || "").trim();
   if (/^paratriathlon$/i.test(text)) return "Para triathlon";
   return text;
+}
+
+function plainTraitDescription(cardOrTrait) {
+  const trait = cardOrTrait?.sharedTrait || cardOrTrait || {};
+  return String(trait.description || "The featured sports share a similar mix of timing, control, and adaptation.").trim();
+}
+
+function plainTraitHeadline(cardOrTrait) {
+  const trait = cardOrTrait?.sharedTrait || cardOrTrait || {};
+  const source = `${trait.name || ""} ${trait.description || ""}`.toLowerCase();
+  const hasChangingContext = /\b(conditions?|surfaces?|transitions?|water|roads?)\b/.test(source);
+  if (/\b(focus|precision)\b/.test(source)) return "Focus and precision";
+  if (/\b(elevation|mountain|terrain|weather|equipment)\b/.test(source) && /\b(pace|pacing|control|decisions?)\b/.test(source)) return "Pacing through terrain and equipment changes";
+  if (/\b(pace|pacing|cadence|rhythm|timing)\b/.test(source) && hasChangingContext) return "Adjusting rhythm as conditions change";
+  if (/\b(pace|pacing|cadence|rhythm)\b/.test(source)) return "Rhythm and pacing";
+  if (/\b(space|spacing|recognition)\b/.test(source)) return "Timing and space awareness";
+  if (/\b(pressure|power|body control|short window|well-timed)\b/.test(source)) return "Control under pressure";
+  if (/\b(signal|signals|source context)\b/.test(source)) return "Explore the available roster context";
+  if (/\b(timing)\b/.test(source)) return "Clean timing";
+  return plainTraitDescription(trait).replace(/[.!?]+$/, "");
 }
 
 function panelSportList(panel) {
@@ -160,8 +380,8 @@ function safeFallbackBriefing(card, reason = "No live Gemini response was availa
     hometownAreas: formatHometownAreas(card.topHometownSignals),
     whatToNotice: `The useful fan read is contrast: some sports emphasize spacing and quick decisions, while others emphasize rhythm, stillness, pacing, equipment, or transitions.`,
     surprisingConnection: `${olympicCue} and ${paralympicCue} do not need to look alike to share a viewing idea; both can point fans toward control when timing, surface, or spacing changes.`,
-    sharedStateSignal: `${card.sharedTrait.name}: ${card.sharedTrait.description}`,
-    gameIntro: `Try a short fan challenge that reflects ${card.sharedTrait.name.toLowerCase()} as a personal game interaction only.`,
+    sharedStateSignal: plainTraitDescription(card),
+    gameIntro: `Try a short fan challenge inspired by ${lowerFirst(plainTraitHeadline(card))}.`,
     complianceWarnings: [reason, "Fallback copy used because live Gemini generation is unavailable or did not pass validation."]
   };
 }
@@ -191,7 +411,8 @@ function briefingWithCompleteSportMix(briefing, card) {
     .slice(0, Math.max(1, 5 - completeItems.length));
   return {
     ...briefing,
-    sportMix: [...completeItems, ...thematicItems]
+    sportMix: [...completeItems, ...thematicItems],
+    sharedStateSignal: plainTraitDescription(card)
   };
 }
 
@@ -205,7 +426,7 @@ function formatHometownAreas(signals = []) {
 function safeFallbackGameReflection(card, result, reason = "No live Gemini response was available.") {
   const detail = result?.summary || "Your result is saved as a personal game result.";
   return {
-    reflection: `${detail} That could help you appreciate why ${card.sharedTrait.name.toLowerCase()} matters across several sport families. This is a fan challenge only and does not measure ability or compare you with anyone.`,
+    reflection: `${detail} That could help you appreciate how ${lowerFirst(plainTraitDescription(card))} can matter across several sport families. This is a fan challenge only and does not measure ability or compare you with anyone.`,
     model: "safe-fallback",
     warnings: [reason]
   };
@@ -370,7 +591,7 @@ Return valid JSON with these fields:
 - geographyLens: 1-2 sentences connecting geography/climate/terrain to fan context with conditional language.
 - whatToNotice: 2-3 sentences with concrete fan viewing observations across the broader sport mix.
 - surprisingConnection: 1-2 sentences. Choose one surprising connection across the broader state sport mix. Prefer one Olympic-side sport and one Paralympic-side sport, but do not force the featured card pair if another connection is more interesting.
-- sharedStateSignal: 1 sentence naming and explaining the shared card thread without using the phrase "state signal" or implying performance outcomes.
+- sharedStateSignal: 1 plain-English sentence explaining why the two featured sports connect. Lead with the description, not a coined trait name, and do not use the phrase "state signal" or imply performance outcomes.
 - gameIntro: 1 sentence safe challenge intro for the challenge screen.
 - complianceWarnings
 
@@ -393,7 +614,10 @@ ${JSON.stringify({
   hometownPresenceBucket: card.hometownPresenceBucket,
   topHometownSignals: card.topHometownSignals || [],
   cardStory: stripRecordCounts(card.cardStory),
-  sharedTrait: card.sharedTrait,
+  sportConnection: {
+    headline: plainTraitHeadline(card),
+    description: plainTraitDescription(card)
+  },
   olympicPanel: {
     sportFamily: card.olympicPanel?.sportFamily,
     primarySportTag: displaySportName(card.olympicPanel?.primarySportTag),
@@ -450,7 +674,10 @@ ${JSON.stringify({
   topHometownSignals: card.topHometownSignals || [],
   olympicSports: panelSportList(card.olympicPanel),
   paralympicSports: panelSportList(card.paralympicPanel),
-  sharedTrait: card.sharedTrait
+  sportConnection: {
+    headline: plainTraitHeadline(card),
+    description: plainTraitDescription(card)
+  }
 }, null, 2)}
 
 Rejected briefing:
@@ -460,7 +687,8 @@ ${JSON.stringify(briefing, null, 2)}`;
 function buildGamePrompt(card, result) {
   return `You are writing a safe fan-game reflection for a Team USA x Google Cloud Hackathon project.
 
-Use only the provided state trait and personal game result.
+Use only the provided plain sport connection and personal game result.
+Do not use coined trait names such as "Waterline Control"; explain the connection in plain language.
 Do not compare the user to athletes, Olympians, Paralympians, medalists, teams, training baselines, finish times, or competition scores.
 Do not call this a diagnostic, assessment, talent test, or athletic test.
 Use conditional fan-appreciation language.
@@ -468,8 +696,8 @@ Return valid JSON with fields:
 - reflection
 - warnings
 
-State trait:
-${JSON.stringify(card.sharedTrait, null, 2)}
+Plain sport connection:
+${plainTraitDescription(card)}
 
 Personal game result:
 ${JSON.stringify(result, null, 2)}`;
@@ -593,6 +821,103 @@ async function callVertexGemini(prompt) {
 
 async function handleApi(req, res, url) {
   const dataset = await loadDataset();
+
+  if (req.method === "POST" && url.pathname === "/api/auth/session") {
+    const body = await readBody(req);
+    const payload = body ? JSON.parse(body) : {};
+    const idToken = String(payload.idToken || "");
+    if (!idToken) {
+      sendJson(res, 400, { error: "Missing Firebase ID token." });
+      return true;
+    }
+
+    try {
+      const { auth } = await getFirebaseAdmin();
+      const decoded = await auth.verifyIdToken(idToken);
+      const user = await upsertUserProfile(decoded, payload.profile);
+      const sessionCookie = await auth.createSessionCookie(idToken, {
+        expiresIn: FIREBASE_SESSION_EXPIRES_IN_MS
+      });
+      setSessionCookie(res, sessionCookie);
+      sendJson(res, 200, {
+        user,
+        expiresIn: FIREBASE_SESSION_MAX_AGE_SECONDS
+      });
+    } catch (error) {
+      clearSessionCookie(res);
+      sendJson(res, 401, { error: `Firebase session could not be created: ${error.message}` });
+    }
+    return true;
+  }
+
+  if (req.method === "GET" && url.pathname === "/api/auth/session") {
+    try {
+      const user = await currentAuthUser(req);
+      if (!user) {
+        sendJson(res, 401, { error: "No active session." });
+        return true;
+      }
+      sendJson(res, 200, { user });
+    } catch (error) {
+      clearSessionCookie(res);
+      sendJson(res, 401, { error: `Session is not valid: ${error.message}` });
+    }
+    return true;
+  }
+
+  if (req.method === "DELETE" && url.pathname === "/api/auth/session") {
+    clearSessionCookie(res);
+    sendJson(res, 200, { ok: true });
+    return true;
+  }
+
+  if (url.pathname === "/api/user/collection" && (req.method === "GET" || req.method === "PUT")) {
+    let user;
+    try {
+      user = await currentAuthUser(req);
+    } catch (error) {
+      clearSessionCookie(res);
+      sendJson(res, 401, { error: `Session is not valid: ${error.message}` });
+      return true;
+    }
+
+    if (!user) {
+      sendJson(res, 401, { error: "Log in to sync your collection." });
+      return true;
+    }
+
+    const { db, FieldValue } = await getFirebaseAdmin();
+    const collectionRef = db.collection("userCollections").doc(user.uid);
+
+    if (req.method === "GET") {
+      const snapshot = await collectionRef.get();
+      const data = snapshot.exists ? snapshot.data() : {};
+      sendJson(res, 200, {
+        discoveredCodes: normalizeCodeList(data.discoveredCodes || ["CO"], dataset),
+        playedCodes: normalizeCodeList(data.playedCodes || [], dataset),
+        updatedAt: data.updatedAt?.toDate?.()?.toISOString?.() || null
+      });
+      return true;
+    }
+
+    const body = await readBody(req);
+    const payload = body ? JSON.parse(body) : {};
+    const discoveredCodes = normalizeCodeList(payload.discoveredCodes || ["CO"], dataset);
+    const playedCodes = normalizeCodeList(payload.playedCodes || [], dataset);
+
+    await collectionRef.set({
+      discoveredCodes: discoveredCodes.length ? discoveredCodes : ["CO"],
+      playedCodes,
+      uid: user.uid,
+      updatedAt: FieldValue.serverTimestamp()
+    }, { merge: true });
+
+    sendJson(res, 200, {
+      discoveredCodes: discoveredCodes.length ? discoveredCodes : ["CO"],
+      playedCodes
+    });
+    return true;
+  }
 
   if (req.method === "GET" && url.pathname === "/api/states") {
     sendJson(res, 200, dataset);

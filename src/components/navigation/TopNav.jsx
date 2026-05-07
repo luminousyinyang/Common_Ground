@@ -2,7 +2,16 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Icon from "../common/Icon.jsx";
 
-function TopNav({ onNavigate, onLogin, darkMode, onToggleDarkMode }) {
+function displayNameForUser(user) {
+  return user?.name || user?.email || "Signed in";
+}
+
+function initialForUser(user) {
+  const source = user?.firstName || displayNameForUser(user);
+  return source.trim().charAt(0).toUpperCase() || "C";
+}
+
+function TopNav({ onNavigate, onLogin, onLogout, darkMode, onToggleDarkMode, authLoading, isLoggedIn, user }) {
   const { pathname } = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
   const [menuMounted, setMenuMounted] = useState(false);
@@ -12,6 +21,8 @@ function TopNav({ onNavigate, onLogin, darkMode, onToggleDarkMode }) {
   const [pillBase, setPillBase] = useState({ left: 0, width: 0 });
   const [dragDelta, setDragDelta] = useState(0);
   const dragRef = useRef({ active: false, startX: 0, startView: null });
+  const accountMenuRef = useRef(null);
+  const [accountMenuOpen, setAccountMenuOpen] = useState(false);
 
   const isAppPage = pathname === "/map" || pathname === "/collection" || pathname === "/challenge" || pathname === "/methodology";
 
@@ -75,10 +86,43 @@ function TopNav({ onNavigate, onLogin, darkMode, onToggleDarkMode }) {
     return () => { document.body.style.overflow = ""; };
   }, [menuOpen]);
 
+  useEffect(() => {
+    setAccountMenuOpen(false);
+  }, [pathname, isLoggedIn]);
+
+  useEffect(() => {
+    if (!accountMenuOpen) return undefined;
+
+    function handlePointerDown(event) {
+      if (!accountMenuRef.current?.contains(event.target)) setAccountMenuOpen(false);
+    }
+
+    function handleKeyDown(event) {
+      if (event.key === "Escape") setAccountMenuOpen(false);
+    }
+
+    document.addEventListener("pointerdown", handlePointerDown);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [accountMenuOpen]);
+
   function go(path) {
     setMenuOpen(false);
+    setAccountMenuOpen(false);
     setTimeout(() => setMenuMounted(false), CLOSE_MS);
     onNavigate(path);
+  }
+
+  function handleMenuPlaceholder() {
+    setAccountMenuOpen(false);
+  }
+
+  function handleAccountLogout() {
+    setAccountMenuOpen(false);
+    onLogout?.();
   }
 
   return (
@@ -128,10 +172,49 @@ function TopNav({ onNavigate, onLogin, darkMode, onToggleDarkMode }) {
             </button>
           </nav>
           <div className="top-nav-actions">
-            <button className="top-nav-icon-btn" type="button" onClick={onToggleDarkMode} aria-label="Toggle dark mode">
-              <Icon name={darkMode ? "sun" : "moon"} size={16} strokeWidth={1.6} />
-            </button>
-            <button className="top-nav-login-btn" type="button" onClick={onLogin}>Login</button>
+            {isLoggedIn ? (
+              <>
+                <button className="top-nav-icon-btn" type="button" onClick={onToggleDarkMode} aria-label="Toggle dark mode">
+                  <Icon name={darkMode ? "sun" : "moon"} size={16} strokeWidth={1.6} />
+                </button>
+                <div className={`top-nav-user-menu${accountMenuOpen ? " is-open" : ""}`} ref={accountMenuRef}>
+                  <button
+                    className="top-nav-avatar-btn"
+                    type="button"
+                    aria-label={`Account menu for ${displayNameForUser(user)}`}
+                    aria-haspopup="menu"
+                    aria-expanded={accountMenuOpen}
+                    aria-controls="top-nav-account-menu"
+                    onClick={() => setAccountMenuOpen((open) => !open)}
+                  >
+                    <span className="top-nav-avatar" aria-hidden="true">{initialForUser(user)}</span>
+                  </button>
+                  <div id="top-nav-account-menu" className="top-nav-user-popover" role="menu">
+                    <button className="top-nav-menu-item" type="button" onClick={handleMenuPlaceholder} role="menuitem">
+                      <Icon name="user" size={16} strokeWidth={1.8} />
+                      <span>Profile</span>
+                    </button>
+                    <button className="top-nav-menu-item" type="button" onClick={handleMenuPlaceholder} role="menuitem">
+                      <Icon name="settings" size={16} strokeWidth={1.8} />
+                      <span>Settings</span>
+                    </button>
+                    <button className="top-nav-menu-item" type="button" onClick={handleAccountLogout} role="menuitem">
+                      <Icon name="log-out" size={16} strokeWidth={1.8} />
+                      <span>Log out</span>
+                    </button>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <button className="top-nav-icon-btn" type="button" onClick={onToggleDarkMode} aria-label="Toggle dark mode">
+                  <Icon name={darkMode ? "sun" : "moon"} size={16} strokeWidth={1.6} />
+                </button>
+                <button className="top-nav-login-btn" type="button" onClick={onLogin} disabled={authLoading}>
+                  {authLoading ? "Checking..." : "Login"}
+                </button>
+              </>
+            )}
           </div>
           <button
             className={`hamburger-btn${menuOpen ? " is-open" : ""}`}
@@ -208,11 +291,16 @@ function TopNav({ onNavigate, onLogin, darkMode, onToggleDarkMode }) {
             <button
               className="primary-button mobile-menu-login"
               type="button"
-              onClick={() => { onLogin(); closeMenu(); }}
+              onClick={() => { isLoggedIn ? onLogout?.() : onLogin(); closeMenu(); }}
               style={{ "--i": 5 }}
             >
-              Login
+              {isLoggedIn ? "Log out" : "Login"}
             </button>
+            {isLoggedIn && (
+              <span className="mobile-menu-user" style={{ "--i": 6 }}>
+                Signed in as {displayNameForUser(user)}
+              </span>
+            )}
           </div>
         </div>
       )}

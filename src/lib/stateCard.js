@@ -22,6 +22,73 @@ export async function getJson(url, options) {
   return response.json();
 }
 
+const ABSTRACT_TRAIT_NAMES = [
+  "Waterline Control",
+  "Waterline Rhythm",
+  "Steady Pace Control",
+  "Rhythm and Pace Control",
+  "Spatial Timing",
+  "Focus and Precision",
+  "Focus Timing",
+  "Control Under Pressure"
+];
+
+function generatedGameExperienceForCard(cardOrTrait) {
+  return cardOrTrait?.gameExperience || cardOrTrait?.cardStory?.gameExperience || null;
+}
+
+function isAbstractTraitName(value = "") {
+  const normalized = String(value || "").trim().toLowerCase();
+  return ABSTRACT_TRAIT_NAMES.some((name) => name.toLowerCase() === normalized);
+}
+
+function lowerFirst(value = "") {
+  const text = String(value || "").trim();
+  return text ? text.charAt(0).toLowerCase() + text.slice(1) : "";
+}
+
+export function plainTraitDescription(cardOrTrait) {
+  const generated = generatedGameExperienceForCard(cardOrTrait);
+  if (String(generated?.sharedTraitDescription || "").trim()) return String(generated.sharedTraitDescription).trim();
+  const trait = cardOrTrait?.sharedTrait || cardOrTrait || {};
+  return String(trait.description || "The featured sports share a similar mix of timing, control, and adaptation.").trim();
+}
+
+export function plainTraitHeadline(cardOrTrait) {
+  const generated = generatedGameExperienceForCard(cardOrTrait);
+  const generatedName = String(generated?.sharedTraitName || "").trim();
+  if (generatedName && !isAbstractTraitName(generatedName)) return generatedName;
+  const trait = cardOrTrait?.sharedTrait || cardOrTrait || {};
+  const source = `${trait.name || ""} ${trait.description || ""}`.toLowerCase();
+  const hasChangingContext = /\b(conditions?|surfaces?|transitions?|water|roads?)\b/.test(source);
+  if (/\b(focus|precision)\b/.test(source)) return "Focus and precision";
+  if (/\b(elevation|mountain|terrain|weather|equipment)\b/.test(source) && /\b(pace|pacing|control|decisions?)\b/.test(source)) return "Pacing through terrain and equipment changes";
+  if (/\b(pace|pacing|cadence|rhythm|timing)\b/.test(source) && hasChangingContext) return "Adjusting rhythm as conditions change";
+  if (/\b(pace|pacing|cadence|rhythm)\b/.test(source)) return "Rhythm and pacing";
+  if (/\b(space|spacing|recognition)\b/.test(source)) return "Timing and space awareness";
+  if (/\b(pressure|power|body control|short window|well-timed)\b/.test(source)) return "Control under pressure";
+  if (/\b(signal|signals|source context)\b/.test(source)) return "Explore the available roster context";
+  if (/\b(timing)\b/.test(source)) return "Clean timing";
+  return plainTraitDescription(trait).replace(/[.!?]+$/, "");
+}
+
+export function traitConnectionSentence(card, olympicCue = "the Olympic sport", paralympicCue = "the Paralympic sport") {
+  return `Olympic ${olympicCue} and Paralympic ${paralympicCue} both involve ${lowerFirst(plainTraitDescription(card)).replace(/[.!?]+$/, "")}.`;
+}
+
+export function sanitizeTraitJargon(value, replacement = "the connection") {
+  let text = String(value || "");
+  for (const name of ABSTRACT_TRAIT_NAMES) {
+    const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    text = text
+      .replace(new RegExp(`connects to ${escaped} through`, "gi"), "connects through")
+      .replace(new RegExp(`links to ${escaped} through`, "gi"), "links through")
+      .replace(new RegExp(`read ${escaped} through`, "gi"), "notice the connection through")
+      .replace(new RegExp(escaped, "g"), replacement);
+  }
+  return text;
+}
+
 export function fallbackBriefing(card, reason = "The Gemini backend is not available from this dev server.") {
   const olympicCue = getPanelVisualCue(card.olympicPanel);
   const paralympicCue = getPanelVisualCue(card.paralympicPanel);
@@ -49,8 +116,8 @@ export function fallbackBriefing(card, reason = "The Gemini backend is not avail
       hometownAreas: formatHometownAreas(card.topHometownSignals),
       whatToNotice: "The useful fan read is contrast: some sports emphasize spacing and quick decisions, while others emphasize rhythm, stillness, pacing, equipment, or transitions.",
       surprisingConnection: `${olympicCue} and ${paralympicCue} do not need to look alike to share a viewing idea; both can point fans toward control when timing, surface, or spacing changes.`,
-      sharedStateSignal: `${card.sharedTrait.name}: ${card.sharedTrait.description}`,
-      gameIntro: `Try a short fan challenge that reflects ${card.sharedTrait.name.toLowerCase()} as a personal interaction only.`,
+      sharedStateSignal: plainTraitDescription(card),
+      gameIntro: `Try a short fan challenge inspired by ${lowerFirst(plainTraitHeadline(card))}.`,
       complianceWarnings: [reason]
     },
     complianceWarnings: [reason]
@@ -66,7 +133,7 @@ export function formatHometownAreas(signals = []) {
 
 export function fallbackGameReflection(card, result, reason = "The Gemini backend is not available from this dev server.") {
   return {
-    reflection: `${result.summary} That could help you appreciate why ${card.sharedTrait.name.toLowerCase()} matters across several sport families. This is a fan challenge only and does not measure ability or compare you with anyone.`,
+    reflection: `${result.summary} That could help you appreciate how ${lowerFirst(plainTraitDescription(card))} can matter across several sport families. This is a fan challenge only and does not measure ability or compare you with anyone.`,
     model: "safe-fallback",
     warnings: [reason]
   };
@@ -99,7 +166,7 @@ export function formatMapHint(card) {
 
 export function getCardStory(card) {
   return card?.cardStory || {
-    themeName: card?.sharedTrait?.name || getCardThemeLabel(card),
+    themeName: plainTraitHeadline(card) || getCardThemeLabel(card),
     geographySignal: card?.terrainSignals || [],
     olympicFeatured: {
       sportTag: card?.olympicPanel?.primarySportTag || getPanelVisualCue(card?.olympicPanel),
@@ -110,7 +177,7 @@ export function getCardStory(card) {
       sportFamily: card?.paralympicPanel?.sportFamily
     },
     sharedTrait: card?.sharedTrait,
-    fanChallengeName: `${card?.sharedTrait?.name || "State Sync"} Challenge`
+    fanChallengeName: "Fan Challenge"
   };
 }
 
@@ -121,7 +188,7 @@ export function getGeographySignals(card) {
 }
 
 export function getCardThemeName(card) {
-  return getCardStory(card).themeName || card.sharedTrait?.name || getCardThemeLabel(card);
+  return getCardStory(card).themeName || plainTraitHeadline(card) || getCardThemeLabel(card);
 }
 
 export function getCardTheme(card) {
@@ -324,7 +391,7 @@ export function fanTakeawayForSport(visualCue, panel, sharedTraitName = "") {
   if (/swimming|surfing|sailing|rowing|canoe/.test(sport)) {
     return "This panel keeps the card close to water movement: rhythm, balance, and control while conditions shift.";
   }
-  return `${visualCue} helps fans read ${sharedTraitName || panel?.sportFamily || "the shared trait"} through a specific sport instead of an abstract data label.`;
+  return `${visualCue} helps fans notice ${sharedTraitName || panel?.sportFamily || "the connection"} through a specific sport instead of an abstract data label.`;
 }
 
 export function subtitleForSport(visualCue, panel) {
@@ -385,7 +452,7 @@ export function qaFactsForSport(visualCue, panel) {
       howItWorks: "Two teams of seven play in the water: six field players plus one goalkeeper. The goal is to throw the ball into the opponent's net, so each attack has to create space, pass, and shoot before the chance disappears.",
       watchValue: "Water polo gets easier to read when you watch the spacing before the shot. The drama is that every pass, fake, and goal attempt happens while players are swimming or treading water.",
       stateConnection,
-      cardTrait: "Water polo connects to the shared trait through spacing, body position, and quick rhythm changes in a pool where no one has stable footing."
+      cardTrait: "Water polo connects through spacing, body position, and quick rhythm changes in a pool where no one has stable footing."
     };
   }
   if (/triathlon/.test(sport)) {
@@ -393,7 +460,7 @@ export function qaFactsForSport(visualCue, panel) {
       howItWorks: "Para triathlon is a race across swim, bike, and run stages. The competitor with the fastest total race time in their event wins, and transition time between stages matters too.",
       watchValue: "The race keeps changing shape as water gives way to equipment setup, bike rhythm, and another reset for the run.",
       stateConnection,
-      cardTrait: "Para triathlon connects to the shared trait through pacing and adaptation across changing surfaces."
+      cardTrait: "Para triathlon connects through pacing and adaptation across changing surfaces."
     };
   }
   return {
@@ -420,7 +487,13 @@ export function getPanelBackCopy(panel) {
 
 export function getPanelBackCopyForDisplay(panel) {
   if (panel?.cardBackCopyVersion === CURRENT_CARD_BACK_COPY_VERSION && panel?.cardBackCopy) {
-    return panel.cardBackCopy;
+    return {
+      ...panel.cardBackCopy,
+      qaFacts: {
+        ...panel.cardBackCopy.qaFacts,
+        cardTrait: sanitizeTraitJargon(panel.cardBackCopy.qaFacts?.cardTrait, "the card connection")
+      }
+    };
   }
   const fallback = getPanelBackCopy(panel);
   const legacy = panel?.cardBackCopy || {};
@@ -433,12 +506,16 @@ export function getPanelBackCopyForDisplay(panel) {
       cardTrait: legacyQa.cardTrait || legacyQa.eventRhythm || legacyQa.funFact
     }
     : fallback.qaFacts;
+  const qaFacts = {
+    ...legacyQaFacts,
+    cardTrait: sanitizeTraitJargon(legacyQaFacts.cardTrait, "the card connection")
+  };
   return {
     ...fallback,
     featuredCue: displaySportName(legacy.featuredCue || fallback.featuredCue),
     moduleMix: Array.isArray(legacy.moduleMix) && legacy.moduleMix.length ? legacy.moduleMix : fallback.moduleMix,
     subtitle: legacy.subtitle || legacy.sportFamilyTheme || fallback.subtitle,
-    qaFacts: legacyQaFacts,
+    qaFacts,
     factChips: Array.isArray(legacy.factChips) && legacy.factChips.length ? legacy.factChips : fallback.factChips,
   };
 }
@@ -478,7 +555,12 @@ function getGeneratedPanelForCardProgram(card, program, manifest) {
 function generatedGameExperienceSourceForCard(card, manifest) {
   const stateEntry = statePanelEntryForCard(card, manifest);
   const scopeId = card?.dataScopeId || "both";
-  return stateEntry.scopes?.[scopeId] || (scopeId === "both" ? stateEntry : {});
+  const exactScopeEntry = stateEntry.scopes?.[scopeId];
+  if (exactScopeEntry?.gameExperience || exactScopeEntry?.game) return exactScopeEntry;
+  if (scopeId === "both") return stateEntry.scopes?.both?.gameExperience || stateEntry.scopes?.both?.game
+    ? stateEntry.scopes.both
+    : stateEntry;
+  return {};
 }
 
 export function getPanelArtUrl(card, program, manifest) {
@@ -508,9 +590,7 @@ export function mergeGeneratedPanelData(card, manifest) {
     olympic: getGeneratedPanelForCardProgram(card, "olympic", manifest),
     paralympic: getGeneratedPanelForCardProgram(card, "paralympic", manifest)
   };
-  const gameExperience = matchingPanels.olympic && matchingPanels.paralympic
-    ? getGeneratedGameExperience(scopedGameExperienceSource)
-    : null;
+  const gameExperience = getGeneratedGameExperience(scopedGameExperienceSource);
 
   function mergePanel(program, panel) {
     const generated = matchingPanels[program] || {};
@@ -546,15 +626,15 @@ export function mergeGeneratedPanelData(card, manifest) {
 }
 
 export function getGameExperience(card) {
-  const generated = card.gameExperience || card.cardStory?.gameExperience;
+  const generated = generatedGameExperienceForCard(card);
   const challengeType = generated?.challengeType || card.sharedTrait?.challengeType || "reaction_grid";
   return {
     version: generated?.version,
-    source: generated?.source || "dataset",
+    source: generated?.source || "deterministic-fallback",
     challengeType,
     gameName: generated?.gameName || card.cardStory?.fanChallengeName || `${GAME_TYPE_LABELS[challengeType] || "State Sync"} Challenge`,
     gameIntro: generated?.gameIntro,
-    sharedTraitName: generated?.sharedTraitName || card.sharedTrait?.name,
+    sharedTraitName: plainTraitHeadline(card),
     sharedTraitDescription: generated?.sharedTraitDescription || card.sharedTrait?.description,
     background: generated?.background || null,
     theme: generated?.theme || null
@@ -582,8 +662,7 @@ export function briefingSections(briefing = {}) {
       ["Sport Mix", briefing.sportMix],
       ["Geography Lens", briefing.geographyLens],
       ["What To Notice", briefing.whatToNotice],
-      ["Surprising Connection", briefing.surprisingConnection],
-      ["Shared State Signal", briefing.sharedStateSignal]
+      ["Surprising Connection", briefing.surprisingConnection]
     ].filter(([, value]) => Array.isArray(value) ? value.length : String(value || "").trim());
   }
 
@@ -593,8 +672,7 @@ export function briefingSections(briefing = {}) {
       ["Sport Mix", [briefing.sportMix?.olympic, briefing.sportMix?.paralympic].filter(Boolean)],
       ["Geography Lens", briefing.geographyLens],
       ["What To Notice", briefing.whyInteresting],
-      ["Surprising Connection", briefing.surprisingConnection],
-      ["Shared State Signal", briefing.sharedSignal]
+      ["Surprising Connection", briefing.surprisingConnection]
     ].filter(([, value]) => Array.isArray(value) ? value.length : String(value || "").trim());
   }
 
@@ -603,8 +681,7 @@ export function briefingSections(briefing = {}) {
     ["Sport Mix", [
       briefing.olympicNarrative ? `Olympic side: ${briefing.olympicNarrative}` : "",
       briefing.paralympicNarrative ? `Paralympic side: ${briefing.paralympicNarrative}` : ""
-    ].filter(Boolean)],
-    ["Shared State Signal", briefing.sharedTraitExplanation]
+    ].filter(Boolean)]
   ].filter(([, value]) => Array.isArray(value) ? value.length : String(value || "").trim());
 }
 

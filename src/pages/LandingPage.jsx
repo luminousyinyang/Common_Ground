@@ -2,10 +2,19 @@ import React from "react";
 import TopNav from "../components/navigation/TopNav.jsx";
 import Icon from "../components/common/Icon.jsx";
 
-function LandingPage({ onNavigate, onLogin, darkMode, onToggleDarkMode }) {
+function LandingPage({ onNavigate, onLogin, onLogout, darkMode, onToggleDarkMode, authLoading, isLoggedIn, user }) {
   return (
     <div className="landing-page">
-      <TopNav onNavigate={onNavigate} onLogin={onLogin} darkMode={darkMode} onToggleDarkMode={onToggleDarkMode} />
+      <TopNav
+        onNavigate={onNavigate}
+        onLogin={onLogin}
+        onLogout={onLogout}
+        darkMode={darkMode}
+        onToggleDarkMode={onToggleDarkMode}
+        authLoading={authLoading}
+        isLoggedIn={isLoggedIn}
+        user={user}
+      />
 
       <section className="landing-hero">
         <div className="landing-section-inner">
@@ -72,7 +81,7 @@ function LandingPage({ onNavigate, onLogin, darkMode, onToggleDarkMode }) {
           <nav className="landing-footer-nav" aria-label="Footer">
             <button className="landing-footer-link" type="button" onClick={() => onNavigate("/map")}>Map</button>
             <button className="landing-footer-link" type="button" onClick={() => onNavigate("/collection")}>Collection</button>
-            <button className="landing-footer-link" type="button" onClick={() => onNavigate("/login")}>Login</button>
+            <button className="landing-footer-link" type="button" onClick={isLoggedIn ? onLogout : () => onNavigate("/login")}>{isLoggedIn ? "Log out" : "Login"}</button>
           </nav>
         </div>
       </footer>

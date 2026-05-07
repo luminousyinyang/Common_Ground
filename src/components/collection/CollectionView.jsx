@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
+import { getCardThemeLabel, plainTraitHeadline, titleBucket } from "../../lib/stateCard.js";
 import Icon from "../common/Icon.jsx";
 import CardArt from "../cards/CardArt.jsx";
 
@@ -34,7 +35,25 @@ function MiniStateCard({ card, discovered, onSelect, panelManifest }) {
       disabled={!discovered}
       aria-label={discovered ? `Open ${card.stateName} state insight card` : `${card.stateName} — not yet discovered`}
     >
-      <CardArt card={card} compact panelManifest={panelManifest} />
+      <div className="mini-card-art-wrap">
+        <CardArt card={card} compact panelManifest={panelManifest} />
+        {!discovered && (
+          <div className="mini-card-lock-overlay">
+            <Icon name="lock" size={24} strokeWidth={1.8} />
+          </div>
+        )}
+      </div>
+      <div className="mini-card-body">
+        <div>
+          <strong>{plainTraitHeadline(card)}</strong>
+          <span>{getCardThemeLabel(card)}</span>
+        </div>
+        <span className={`discover-pill ${discovered ? "is-discovered" : ""}`}>{discovered ? "Discovered" : "Preview"}</span>
+      </div>
+      <div className="mini-card-signals">
+        <span className="signal-mini olympic">Olympic: {titleBucket(card.olympicPanel.aggregateSignal)}</span>
+        <span className="signal-mini paralympic">Paralympic: {titleBucket(card.paralympicPanel.aggregateSignal)}</span>
+      </div>
     </button>
   );
 }
@@ -50,6 +69,17 @@ function CollectionView({ states, discoveredCodes, onSelect, panelManifest, isLo
   return (
     <section className="collection-view">
       {!isLoggedIn && (
+function CollectionView({ states, discoveredCodes, onSelect, panelManifest, isLoggedIn, authLoading, collectionSyncError, onLogin }) {
+  const discoveredStates = states.filter((card) => discoveredCodes.has(card.stateCode));
+  const previewStates = states.filter((card) => !discoveredCodes.has(card.stateCode)).slice(0, 12);
+  const remaining = states.length - discoveredStates.length;
+
+  return (
+    <section className="collection-view page-panel">
+      {authLoading && !isLoggedIn && (
+        <div className="collection-auth-loading">Checking saved session...</div>
+      )}
+      {!isLoggedIn && !authLoading && (
         <div className="collection-gate">
           <div className="collection-gate-content">
             <span className="collection-gate-icon"><Icon name="cards" size={32} strokeWidth={1.3} /></span>
@@ -71,6 +101,9 @@ function CollectionView({ states, discoveredCodes, onSelect, panelManifest, isLo
             </div>
           </div>
         </div>
+      )}
+      {collectionSyncError && isLoggedIn && (
+        <p className="collection-sync-warning">{collectionSyncError}</p>
       )}
       {isLoggedIn && <>
       <div className="collection-header">

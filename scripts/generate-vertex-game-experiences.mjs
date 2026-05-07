@@ -38,6 +38,19 @@ const GAME_TYPES = {
   pattern_scout: "Watching, remembering, and replaying a short visual route."
 };
 
+const ABSTRACT_TRAIT_NAMES = [
+  "Shared Signal",
+  "Waterline Control",
+  "Waterline Rhythm",
+  "Steady Pace Control",
+  "Rhythm and Pace Control",
+  "Elevation Pace",
+  "Spatial Timing",
+  "Focus Timing",
+  "Signal Discovery",
+  "Control Under Pressure"
+];
+
 const STYLE_REFERENCE_IMAGE_PATHS = [
   path.join(rootDir, "public", "assets", "graphics", "Fan Challenges.png"),
   path.join(rootDir, "public", "assets", "graphics", "Interactive Map.png"),
@@ -63,6 +76,7 @@ if (!project) {
 
 const dataset = JSON.parse(await readFile(dataPath, "utf8"));
 const selectedCards = selectCards(dataset.states, args);
+const selectedDataScopes = selectDataScopes(dataset, args);
 if (!selectedCards.length) throw new Error("No matching states found. Use --states CA,AL,KS,MT,HI or --all.");
 if (args.noLocal && !args.firebase) throw new Error("--no-local requires --firebase so generated images still have a storage target.");
 
@@ -79,81 +93,91 @@ manifest.states ||= {};
 
 const assignedTypes = new Set();
 
-for (const card of selectedCards) {
-  manifest.states[card.stateCode] ||= {};
-  const existing = manifest.states[card.stateCode].gameExperience;
-  if (!args.force && existing?.version === GAME_EXPERIENCE_VERSION && existing?.background?.url) {
-    assignedTypes.add(existing.challengeType);
-    console.log(`Skipping ${card.stateCode} game experience; manifest already has ${GAME_EXPERIENCE_VERSION}. Use --force to regenerate.`);
-    continue;
-  }
+for (const baseCard of selectedCards) {
+  manifest.states[baseCard.stateCode] ||= {};
 
-  let assignment;
-  const assignmentPrompt = buildGameAssignmentPrompt(card, [...assignedTypes]);
-  if (args.reuseAssignment && existing?.challengeType) {
-    assignment = assignmentFromExistingGameExperience(existing, card);
-    console.log(`Reusing existing ${card.stateName} ${assignment.challengeType} game assignment.`);
-  } else {
-    if (args.dryRun) {
-      console.log(`\n--- ${card.stateName} Gemini game assignment prompt ---\n${assignmentPrompt}\n`);
+  for (const dataScope of selectedDataScopes) {
+    const card = cardForDataScope(baseCard, dataScope);
+    if (!card) continue;
+    manifest.states[card.stateCode].scopes ||= {};
+    manifest.states[card.stateCode].scopes[dataScope.id] ||= {};
+
+    const existing = manifestGameExperienceForScope(manifest, card.stateCode, dataScope.id);
+    if (!args.force && existing?.version === GAME_EXPERIENCE_VERSION && existing?.background?.url) {
+      assignedTypes.add(existing.challengeType);
+      console.log(`Skipping ${card.stateCode} ${dataScope.id} game experience; manifest already has ${GAME_EXPERIENCE_VERSION}. Use --force to regenerate.`);
       continue;
     }
 
-    console.log(`Generating ${card.stateName} game assignment with ${textModel}...`);
-    assignment = validateGameAssignment(await generateGeminiJsonWithRetry({
-      token,
-      prompt: assignmentPrompt,
-      modelName: textModel,
-      label: `${card.stateName} game assignment`,
-      timeoutMs: textRequestTimeoutMs
-    }));
-  }
-  assignedTypes.add(assignment.challengeType);
+    let assignment;
+    const assignmentPrompt = buildGameAssignmentPrompt(card, [...assignedTypes]);
+    if (args.reuseAssignment && existing?.challengeType) {
+      assignment = assignmentFromExistingGameExperience(existing, card);
+      console.log(`Reusing existing ${card.stateName} ${dataScope.id} ${assignment.challengeType} game assignment.`);
+    } else {
+      if (args.dryRun) {
+        console.log(`\n--- ${card.stateName} ${dataScope.id} Gemini game assignment prompt ---\n${assignmentPrompt}\n`);
+        continue;
+      }
 
-  const prompt = buildGameBackgroundPrompt(card, assignment);
-  if (args.dryRun) {
-    console.log(`\n--- ${card.stateName} Gemini game background prompt ---\n${prompt}\n`);
-    continue;
-  }
+      console.log(`Generating ${card.stateName} ${dataScope.id} game assignment with ${textModel}...`);
+      assignment = validateGameAssignment(await generateGeminiJsonWithRetry({
+        token,
+        prompt: assignmentPrompt,
+        modelName: textModel,
+        label: `${card.stateName} ${dataScope.id} game assignment`,
+        timeoutMs: textRequestTimeoutMs
+      }));
+    }
+    assignedTypes.add(assignment.challengeType);
 
-  if (args.metadataOnly) {
-    const record = gameExperienceRecord({ card, assignment, prompt, background: null });
-    manifest.states[card.stateCode].gameExperience = record;
+    const prompt = buildGameBackgroundPrompt(card, assignment);
+    if (args.dryRun) {
+      console.log(`\n--- ${card.stateName} ${dataScope.id} Gemini game background prompt ---\n${prompt}\n`);
+      continue;
+    }
+
+    if (args.metadataOnly) {
+      const record = gameExperienceRecord({ card, dataScope, assignment, prompt, background: null });
+      setManifestGameExperienceForScope(manifest, card.stateCode, dataScope.id, record);
+      await writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
+      if (args.firebase) await writeGameExperienceToFirebase({ card, dataScope, record, prompt });
+      continue;
+    }
+
+    console.log(`Generating ${card.stateName} ${dataScope.id} ${assignment.challengeType} background with ${imageModel}...`);
+    const { imageBuffer, mimeType } = await generateGeminiImageWithRetry({ token, prompt, label: `${card.stateName} ${dataScope.id} game background` });
+    const filename = gameBackgroundFilename(card, dataScope.id, assignment);
+    const localUrl = `/assets/card-panels/${filename}`;
+    const outPath = path.join(outputDir, filename);
+    if (!args.noLocal) {
+      await writeFile(outPath, imageBuffer);
+      console.log(`Wrote ${localUrl}`);
+    }
+
+    const localBackground = {
+      url: localUrl,
+      localUrl: args.noLocal ? null : localUrl,
+      mimeType,
+      model: imageModel,
+      location,
+      promptHash: hashText(prompt)
+    };
+
+    const background = args.firebase
+      ? await saveGameBackgroundToFirebase({ card, dataScope, assignment, imageBuffer, mimeType, prompt, localBackground })
+      : localBackground;
+
+    const record = gameExperienceRecord({ card, dataScope, assignment, prompt, background });
+    setManifestGameExperienceForScope(manifest, card.stateCode, dataScope.id, record);
     await writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
-    if (args.firebase) await writeGameExperienceToFirebase({ card, record, prompt });
-    continue;
+    if (args.firebase) await writeGameExperienceToFirebase({ card, dataScope, record, prompt });
   }
-
-  console.log(`Generating ${card.stateName} ${assignment.challengeType} background with ${imageModel}...`);
-  const { imageBuffer, mimeType } = await generateGeminiImageWithRetry({ token, prompt, label: `${card.stateName} game background` });
-  const filename = `${card.stateCode.toLowerCase()}-${assignment.challengeType}-game.png`;
-  const localUrl = `/assets/card-panels/${filename}`;
-  const outPath = path.join(outputDir, filename);
-  if (!args.noLocal) {
-    await writeFile(outPath, imageBuffer);
-    console.log(`Wrote ${localUrl}`);
-  }
-
-  const localBackground = {
-    url: localUrl,
-    localUrl: args.noLocal ? null : localUrl,
-    mimeType,
-    model: imageModel,
-    location,
-    promptHash: hashText(prompt)
-  };
-
-  const background = args.firebase
-    ? await saveGameBackgroundToFirebase({ card, assignment, imageBuffer, mimeType, prompt, localBackground })
-    : localBackground;
-
-  const record = gameExperienceRecord({ card, assignment, prompt, background });
-  manifest.states[card.stateCode].gameExperience = record;
-  await writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
-  if (args.firebase) await writeGameExperienceToFirebase({ card, record, prompt });
 }
 
-console.log(`Updated ${path.relative(rootDir, manifestPath)}`);
+console.log(args.dryRun
+  ? `Dry run complete; ${path.relative(rootDir, manifestPath)} was not changed.`
+  : `Updated ${path.relative(rootDir, manifestPath)}`);
 
 function parseArgs(argv) {
   const parsed = {
@@ -164,6 +188,7 @@ function parseArgs(argv) {
     metadataOnly: false,
     noLocal: false,
     reuseAssignment: false,
+    dataScopes: ["both", "paris2024", "milanoCortina2026"],
     states: ["CA", "AL", "KS", "MT", "HI"]
   };
 
@@ -176,6 +201,9 @@ function parseArgs(argv) {
     else if (arg === "--metadata-only") parsed.metadataOnly = true;
     else if (arg === "--no-local") parsed.noLocal = true;
     else if (arg === "--reuse-assignment") parsed.reuseAssignment = true;
+    else if (arg === "--data-scope" || arg === "--data-scopes") parsed.dataScopes = parseDataScopeList(argv[index += 1]);
+    else if (arg.startsWith("--data-scope=")) parsed.dataScopes = parseDataScopeList(arg.slice("--data-scope=".length));
+    else if (arg.startsWith("--data-scopes=")) parsed.dataScopes = parseDataScopeList(arg.slice("--data-scopes=".length));
     else if (arg === "--states") parsed.states = String(argv[index += 1] || "").split(",");
     else if (arg.startsWith("--states=")) parsed.states = arg.slice("--states=".length).split(",");
     else throw new Error(`Unknown argument: ${arg}`);
@@ -185,16 +213,93 @@ function parseArgs(argv) {
   return parsed;
 }
 
+function parseDataScopeList(value) {
+  const aliases = {
+    all: ["both", "paris2024", "milanoCortina2026"],
+    combined: ["both"],
+    summer: ["paris2024"],
+    summer2024: ["paris2024"],
+    paris: ["paris2024"],
+    paris2024: ["paris2024"],
+    winter: ["milanoCortina2026"],
+    winter2026: ["milanoCortina2026"],
+    milan: ["milanoCortina2026"],
+    milano: ["milanoCortina2026"],
+    milano2026: ["milanoCortina2026"],
+    milanocortina2026: ["milanoCortina2026"],
+    both: ["both"]
+  };
+  const scopes = String(value || "all")
+    .split(",")
+    .flatMap((scope) => aliases[scope.trim().replace(/[\s_-]/g, "").toLowerCase()] || [])
+    .filter(Boolean);
+  return scopes.length ? [...new Set(scopes)] : ["both", "paris2024", "milanoCortina2026"];
+}
+
 function selectCards(states, parsedArgs) {
   if (parsedArgs.all) return states;
   const wanted = new Set(parsedArgs.states);
   return states.filter((state) => wanted.has(state.stateCode));
 }
 
-function buildGameAssignmentPrompt(card, assignedTypes) {
-  return `You are Gemini choosing the best safe fan mini-game for a Common Ground state card.
+function selectDataScopes(dataset, parsedArgs) {
+  const availableScopes = new Map((dataset.meta?.dataScopes || []).map((scope) => [scope.id, scope]));
+  const fallbackScopes = [
+    { id: "both", label: "Paris 2024 + Milano Cortina 2026" },
+    { id: "paris2024", label: "Paris 2024" },
+    { id: "milanoCortina2026", label: "Milano Cortina 2026" }
+  ];
+  const scopes = parsedArgs.dataScopes
+    .map((scopeId) => availableScopes.get(scopeId) || fallbackScopes.find((scope) => scope.id === scopeId))
+    .filter(Boolean);
+  return scopes.length ? scopes : fallbackScopes;
+}
 
-Choose the game type from the allowed list. The selected game must be based on the aggregate state card story, featured sports, sport-family themes, shared trait, and geography notes. Do not hardcode by state name.
+function stripNestedScopes(card) {
+  if (!card) return card;
+  const { dataScopes, ...safeCard } = card;
+  return safeCard;
+}
+
+function cardForDataScope(baseCard, dataScope) {
+  const scopedCard = dataScope.id === "both" ? baseCard : baseCard.dataScopes?.[dataScope.id];
+  if (!scopedCard) return null;
+  return {
+    ...stripNestedScopes(scopedCard),
+    dataScopeId: dataScope.id,
+    dataScopeLabel: dataScope.label
+  };
+}
+
+function manifestGameExperienceForScope(manifest, stateCode, dataScopeId) {
+  const stateEntry = manifest.states?.[stateCode] || {};
+  return dataScopeId === "both"
+    ? stateEntry.scopes?.both?.gameExperience || stateEntry.gameExperience || stateEntry.game
+    : stateEntry.scopes?.[dataScopeId]?.gameExperience || stateEntry.scopes?.[dataScopeId]?.game;
+}
+
+function setManifestGameExperienceForScope(manifest, stateCode, dataScopeId, record) {
+  manifest.states[stateCode] ||= {};
+  manifest.states[stateCode].scopes ||= {};
+  manifest.states[stateCode].scopes[dataScopeId] ||= {};
+  manifest.states[stateCode].scopes[dataScopeId].gameExperience = record;
+  if (dataScopeId === "both") {
+    manifest.states[stateCode].gameExperience = record;
+  }
+}
+
+function gameBackgroundFilename(card, dataScopeId, assignment) {
+  const state = card.stateCode.toLowerCase();
+  return dataScopeId === "both"
+    ? `${state}-${assignment.challengeType}-game.png`
+    : `${state}-${dataScopeId}-${assignment.challengeType}-game.png`;
+}
+
+function buildGameAssignmentPrompt(card, assignedTypes) {
+  return `You are Gemini choosing the plain sport connection and best safe fan mini-game for a Common Ground state card.
+
+Choose both the fan-facing sport connection and the game type from the allowed list. The selected game must be based on the selected dataset scope, aggregate state card story, featured sports, sport-family themes, and geography notes. Do not hardcode by state name.
+The provided sportConnectionFallback is deterministic context only; use it as a fallback signal, not as a required answer.
 This generation batch is intended to demonstrate all five game types across several state cards. If a listed unused game still fits this card, prefer an unused type. Do not choose a poor fit just for variety.
 
 Allowed game types:
@@ -208,6 +313,9 @@ Compliance:
 - Do not call the game a test, assessment, diagnostic, talent measure, training simulation, or athlete baseline.
 - Use fan-appreciation language only.
 - Do not imply geography causes athletic outcomes.
+- sharedTraitName must be obvious plain English that a non-sports fan can understand on first read.
+- Do not use abstract coined names such as "Shared Signal", "Waterline Control", "Waterline Rhythm", "Steady Pace Control", "Elevation Pace", "Spatial Timing", "Focus Timing", or "Signal Discovery".
+- Prefer phrases like "Rhythm in changing conditions", "Timing and space awareness", "Focus and precision", or "Pacing through terrain changes" when they fit.
 
 Return valid JSON with:
 - challengeType: one allowed game type
@@ -226,20 +334,27 @@ State card:
 ${JSON.stringify({
   stateCode: card.stateCode,
   stateName: card.stateName,
+  dataScopeId: card.dataScopeId,
+  dataScopeLabel: card.dataScopeLabel,
   geographySnapshot: card.geographySnapshot,
   climateSignal: card.climateSignal,
   terrainSignals: card.terrainSignals,
-  sharedTrait: card.sharedTrait,
-  cardStory: stripRecordCounts(card.cardStory),
+  sportConnectionFallback: {
+    description: card.sharedTrait?.description,
+    challengeType: card.sharedTrait?.challengeType
+  },
+  cardStory: cardStoryForGamePrompt(card.cardStory),
   olympicPanel: {
     sportFamily: card.olympicPanel?.sportFamily,
     primarySportTag: displaySportName(card.olympicPanel?.primarySportTag),
+    allSportTags: panelSportList(card.olympicPanel),
     topSportTags: (card.olympicPanel?.topSportTags || []).map(displaySportName),
     sportTagCandidates: (card.olympicPanel?.sportTagCandidates || []).slice(0, 6).map(sanitizeSportCandidate)
   },
   paralympicPanel: {
     sportFamily: card.paralympicPanel?.sportFamily,
     primarySportTag: displaySportName(card.paralympicPanel?.primarySportTag),
+    allSportTags: panelSportList(card.paralympicPanel),
     topSportTags: (card.paralympicPanel?.topSportTags || []).map(displaySportName),
     sportTagCandidates: (card.paralympicPanel?.sportTagCandidates || []).slice(0, 6).map(sanitizeSportCandidate)
   }
@@ -260,6 +375,13 @@ function stripRecordCounts(value) {
       .filter(([key]) => key !== "recordCount" && key !== "featuredSportRecordCount")
       .map(([key, entry]) => [key, stripRecordCounts(entry)])
   );
+}
+
+function cardStoryForGamePrompt(cardStory) {
+  const story = stripRecordCounts(cardStory);
+  if (!story || typeof story !== "object") return story;
+  const { sharedTrait, fanChallengeName, ...safeStory } = story;
+  return safeStory;
 }
 
 function validateGameAssignment(raw) {
@@ -292,8 +414,30 @@ function validateGameAssignment(raw) {
   if (warnings.length) throw new Error(`Unsafe game assignment language: ${warnings.join(", ")}`);
   return {
     ...assignment,
+    sharedTraitName: normalizeTraitNameForDisplay(assignment.sharedTraitName, assignment.sharedTraitDescription),
     complianceWarnings: Array.isArray(assignment.complianceWarnings) ? assignment.complianceWarnings : []
   };
+}
+
+function normalizeTraitNameForDisplay(name, description = "") {
+  const raw = String(name || "").trim();
+  if (raw && !isAbstractTraitName(raw)) return raw;
+  const source = `${raw} ${description}`.toLowerCase();
+  const hasChangingContext = /\b(conditions?|surfaces?|transitions?|water|roads?|current|currents)\b/.test(source);
+  if (/\b(focus|precision)\b/.test(source)) return "Focus and precision";
+  if (/\b(elevation|mountain|terrain|weather|equipment)\b/.test(source) && /\b(pace|pacing|control|decisions?)\b/.test(source)) return "Pacing through terrain changes";
+  if (/\b(space|spacing|recognition)\b/.test(source)) return "Timing and space awareness";
+  if (/\b(pace|pacing|cadence|rhythm|timing)\b/.test(source) && hasChangingContext) return "Rhythm in changing conditions";
+  if (/\b(pace|pacing|cadence|rhythm)\b/.test(source)) return "Rhythm and pacing";
+  if (/\b(pressure|power|body control|short window|well-timed)\b/.test(source)) return "Control under pressure";
+  if (/\b(signal|signals|source context)\b/.test(source)) return "Exploring the available roster context";
+  if (/\b(timing)\b/.test(source)) return "Clean timing";
+  return raw || "Sport connection";
+}
+
+function isAbstractTraitName(value = "") {
+  const normalized = String(value || "").trim().toLowerCase();
+  return ABSTRACT_TRAIT_NAMES.some((name) => name.toLowerCase() === normalized);
 }
 
 function assignmentFromExistingGameExperience(existing, card) {
@@ -354,7 +498,7 @@ function gameBackgroundDirectionForAssignment(assignment) {
       "The rendered game places a large circular tap pad in the center and a horizontal progress meter near the lower part of the board. Compose around those overlays.",
       "Keep the central 45% of the image quiet, low-contrast, and mostly open: a calm circular water basin or soft seafoam halo with subtle concentric ripple rings only.",
       "Use repeated, evenly spaced wave crests, current bands, pool-lane curves, and soft pulse arcs to communicate steady tempo and timing.",
-      "For California Waterline Rhythm, make the core scene an abstract pool-meets-Pacific water surface: shallow coastal current bands, lane-rope rhythm, water-polo passing arcs, and a gentle shoreline curve.",
+      "If the selected state card centers water rhythm, make the core scene an abstract pool-meets-coast water surface: shallow current bands, lane-rope rhythm, passing arcs, and a gentle shoreline curve.",
       "Place richer sport and state cues only near the far edges: small abstract water-polo ball/goal shapes, distant coast/mountain/desert silhouettes, or transition-route curves. Keep them away from the tap pad and progress meter.",
       "Avoid literal roads, city street grids, map tiles, scenic postcard mountains, busy swimmers, full people, and sports equipment directly under the progress meter.",
       "The result should feel like the user is tapping on the steady pulse of water: readable rhythm first, California context second."
@@ -396,12 +540,14 @@ function gameBackgroundDirectionForAssignment(assignment) {
   return "Keep the board-specific playable area quiet and use richer state/story detail only at the edges.";
 }
 
-function gameExperienceRecord({ card, assignment, prompt, background }) {
+function gameExperienceRecord({ card, dataScope, assignment, prompt, background }) {
   return {
     version: GAME_EXPERIENCE_VERSION,
     source: "gemini",
     stateCode: card.stateCode,
     stateName: card.stateName,
+    dataScopeId: dataScope.id,
+    dataScopeLabel: dataScope.label,
     challengeType: assignment.challengeType,
     sharedTraitName: assignment.sharedTraitName,
     sharedTraitDescription: assignment.sharedTraitDescription,
@@ -556,10 +702,11 @@ function mimeTypeForImage(filePath) {
   return "image/png";
 }
 
-async function saveGameBackgroundToFirebase({ card, assignment, imageBuffer, mimeType, prompt, localBackground }) {
+async function saveGameBackgroundToFirebase({ card, dataScope, assignment, imageBuffer, mimeType, prompt, localBackground }) {
   const { bucket, firebaseProjectId, storageBucket } = await getFirebaseClients();
-  const objectName = `${card.stateCode.toLowerCase()}-${assignment.challengeType}.png`;
-  const storagePath = `game-backgrounds/${GAME_EXPERIENCE_VERSION}/${card.stateCode.toLowerCase()}/${objectName}`;
+  const objectName = gameBackgroundFilename(card, dataScope.id, assignment);
+  const storageScopePath = dataScope.id === "both" ? "" : `${dataScope.id}/`;
+  const storagePath = `game-backgrounds/${GAME_EXPERIENCE_VERSION}/${card.stateCode.toLowerCase()}/${storageScopePath}${objectName}`;
   const downloadToken = randomUUID();
   const file = bucket.file(storagePath);
 
@@ -571,6 +718,7 @@ async function saveGameBackgroundToFirebase({ card, assignment, imageBuffer, mim
       metadata: {
         firebaseStorageDownloadTokens: downloadToken,
         commonGroundStateCode: card.stateCode,
+        commonGroundDataScope: dataScope.id,
         commonGroundChallengeType: assignment.challengeType,
         commonGroundPromptVersion: GAME_EXPERIENCE_VERSION,
         commonGroundPromptHash: hashText(prompt)
@@ -591,21 +739,51 @@ async function saveGameBackgroundToFirebase({ card, assignment, imageBuffer, mim
   };
 }
 
-async function writeGameExperienceToFirebase({ card, record, prompt }) {
+async function writeGameExperienceToFirebase({ card, dataScope, record, prompt }) {
   const { db, FieldValue } = await getFirebaseClients();
   const stateDoc = db.collection("cardPanels").doc(card.stateCode);
   await stateDoc.set({
     stateCode: card.stateCode,
     stateName: card.stateName,
+    dataScopes: {
+      [dataScope.id]: {
+        label: dataScope.label,
+        sharedTrait: card.sharedTrait,
+        hometownPresenceBucket: card.hometownPresenceBucket,
+        hometownRosterCounts: card.hometownRosterCounts,
+        gameExperience: record
+      }
+    },
+    updatedAt: FieldValue.serverTimestamp(),
+    ...(dataScope.id === "both" ? { gameExperience: record } : {})
+  }, { merge: true });
+
+  if (dataScope.id === "both") {
+    await stateDoc.collection("gameExperience").doc("current").set({
+      ...record,
+      prompt,
+      updatedAt: FieldValue.serverTimestamp()
+    }, { merge: true });
+  }
+
+  await stateDoc.collection("scopes").doc(dataScope.id).set({
+    dataScopeId: dataScope.id,
+    dataScopeLabel: dataScope.label,
+    stateCode: card.stateCode,
+    stateName: card.stateName,
+    sharedTrait: card.sharedTrait,
+    hometownPresenceBucket: card.hometownPresenceBucket,
+    hometownRosterCounts: card.hometownRosterCounts,
     gameExperience: record,
     updatedAt: FieldValue.serverTimestamp()
   }, { merge: true });
-  await stateDoc.collection("gameExperience").doc("current").set({
+
+  await stateDoc.collection("scopes").doc(dataScope.id).collection("gameExperience").doc("current").set({
     ...record,
     prompt,
     updatedAt: FieldValue.serverTimestamp()
   }, { merge: true });
-  console.log(`Wrote Firestore cardPanels/${card.stateCode}/gameExperience/current`);
+  console.log(`Wrote Firestore cardPanels/${card.stateCode}/scopes/${dataScope.id}/gameExperience/current`);
 }
 
 async function postVertexJson(endpoint, { headers, body, timeoutMs }) {
@@ -802,6 +980,11 @@ function displaySportName(value) {
   const text = String(value || "").trim();
   if (/^paratriathlon$/i.test(text)) return "Para triathlon";
   return text;
+}
+
+function panelSportList(panel) {
+  const sports = panel?.allSportTags?.length ? panel.allSportTags : panel?.topSportTags;
+  return (sports || []).map(displaySportName);
 }
 
 function firebaseDownloadUrl(bucketName, storagePath, token) {
