@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { CARD_ART, EMPTY_CARD_PANEL_MANIFEST } from "../../lib/constants.js";
-import { getCardTheme, getCardThemeName, getPanelArtUrl, getPanelVisualCue, shortProgramName } from "../../lib/stateCard.js";
+import { featuredPanelsForCard, getCardTheme, getCardThemeName, getPanelArtUrl, getPanelVisualCue, shortProgramName } from "../../lib/stateCard.js";
 
 function PanelArtImage({ src, fallback }) {
   const [didError, setDidError] = useState(false);
@@ -30,25 +30,22 @@ function CommonGroundSeal() {
 function CardArt({ card, compact = false, panelManifest = EMPTY_CARD_PANEL_MANIFEST }) {
   const theme = getCardTheme(card);
   const fallback = CARD_ART[theme] || CARD_ART.neutral;
-  const olympicSrc = getPanelArtUrl(card, "olympic", panelManifest);
-  const paralympicSrc = getPanelArtUrl(card, "paralympic", panelManifest);
   const themeName = getCardThemeName(card);
+  const featuredPanels = featuredPanelsForCard(card);
+  const displayPanels = featuredPanels.length ? featuredPanels : [card.olympicPanel, card.paralympicPanel].filter(Boolean);
+  const isSinglePanel = displayPanels.length === 1;
 
   return (
     <div className={`card-art card-art-${theme} ${compact ? "is-compact" : ""}`}>
-      <div className="card-art-stack">
-        <div className="card-art-panel olympic-art-panel">
-          <PanelArtImage src={olympicSrc} fallback={fallback} />
-          <div className="art-vignette" />
-          <span className="art-panel-label">{shortProgramName(card.olympicPanel.program)}</span>
-          {!compact && <strong className="art-panel-sport">{getPanelVisualCue(card.olympicPanel)}</strong>}
-        </div>
-        <div className="card-art-panel paralympic-art-panel">
-          <PanelArtImage src={paralympicSrc} fallback={fallback} />
-          <div className="art-vignette" />
-          <span className="art-panel-label">{shortProgramName(card.paralympicPanel.program)}</span>
-          {!compact && <strong className="art-panel-sport">{getPanelVisualCue(card.paralympicPanel)}</strong>}
-        </div>
+      <div className={`card-art-stack ${isSinglePanel ? "is-single-panel" : ""}`}>
+        {displayPanels.map((panel) => (
+          <div className={`card-art-panel ${panel.program}-art-panel`} key={panel.program}>
+            <PanelArtImage src={getPanelArtUrl(card, panel.program, panelManifest)} fallback={fallback} />
+            <div className="art-vignette" />
+            <span className="art-panel-label">{shortProgramName(panel.program)}</span>
+            {!compact && <strong className="art-panel-sport">{getPanelVisualCue(panel)}</strong>}
+          </div>
+        ))}
       </div>
       <div className={`art-state-lockup ${compact ? "" : "is-simple"}`}>
         <strong>{card.stateName}</strong>

@@ -335,10 +335,29 @@ function hasSpecificSportCue(panel) {
   return Boolean(panel?.primarySportTag || panel?.topSportTags?.[0]);
 }
 
+function featuredPanelEntries(card) {
+  return [
+    { program: "olympic", label: "Olympic", panel: card?.olympicPanel },
+    { program: "paralympic", label: "Paralympic", panel: card?.paralympicPanel }
+  ].filter((entry) => hasSpecificSportCue(entry.panel));
+}
+
 function sharedTraitConnectionSentence(card, olympicCue, paralympicCue) {
-  const olympicExample = traitExampleForProgram(card, "olympic", olympicCue);
-  const paralympicExample = traitExampleForProgram(card, "paralympic", paralympicCue);
-  return `The shared trait is ${connectionTraitDescription(card)}. For ${olympicCue}, that can mean ${olympicExample}; for ${paralympicCue}, it can mean ${paralympicExample}.`;
+  const featuredEntries = featuredPanelEntries(card);
+  if (featuredEntries.length === 1) {
+    const { program, panel } = featuredEntries[0];
+    const cue = displaySportName(panel.primarySportTag || panel.topSportTags?.[0] || panel.sportFamily);
+    const example = traitExampleForProgram(card, program, cue);
+    return `The featured sport trait is ${connectionTraitDescription(card)}. In ${cue}, that can mean ${example}.`;
+  }
+  if (featuredEntries.length === 0) {
+    return "This selected dataset does not have a featured sport trait for this state because no sourced sport appears on the card.";
+  }
+  const olympicLabel = olympicCue || displaySportName(card?.olympicPanel?.primarySportTag || card?.olympicPanel?.topSportTags?.[0] || card?.olympicPanel?.sportFamily) || "the Olympic sport";
+  const paralympicLabel = paralympicCue || displaySportName(card?.paralympicPanel?.primarySportTag || card?.paralympicPanel?.topSportTags?.[0] || card?.paralympicPanel?.sportFamily) || "the Paralympic sport";
+  const olympicExample = traitExampleForProgram(card, "olympic", olympicLabel);
+  const paralympicExample = traitExampleForProgram(card, "paralympic", paralympicLabel);
+  return `The shared trait is ${connectionTraitDescription(card)}. For ${olympicLabel}, that can mean ${olympicExample}; for ${paralympicLabel}, it can mean ${paralympicExample}.`;
 }
 
 function traitExampleForProgram(card, program, visualCue) {
@@ -405,25 +424,28 @@ function sportMixPreviewDetail(card, panel, programLabel) {
 function safeFallbackBriefing(card, reason = "No live Gemini response was available.") {
   const olympicCue = displaySportName(card.olympicPanel.primarySportTag || card.olympicPanel.topSportTags?.[0] || card.olympicPanel.sportFamily);
   const paralympicCue = displaySportName(card.paralympicPanel.primarySportTag || card.paralympicPanel.topSportTags?.[0] || card.paralympicPanel.sportFamily);
+  const featuredEntries = featuredPanelEntries(card);
+  const hasSinglePanel = featuredEntries.length === 1;
+  const onlyEntry = featuredEntries[0];
+  const onlyCue = onlyEntry ? displaySportName(onlyEntry.panel.primarySportTag || onlyEntry.panel.topSportTags?.[0] || onlyEntry.panel.sportFamily) : "";
   const geography = card.cardStory?.geographySignal?.length
     ? joinReadableList(card.cardStory.geographySignal)
     : card.geographySnapshot;
   return {
-    stateSnapshot: `In the public aggregate Team USA state data, ${card.stateName} shows Olympic and Paralympic sport lists from the ${datasetLabelForCard(card)}, with featured card examples from ${olympicCue} and ${paralympicCue}. That does not mean ${card.stateName} geography causes outcomes; it gives fans a safer way to explore why different sport environments appear in one state view.`,
-    sportMix: [
-      {
-        theme: "Olympic sports",
-        detail: sportMixPreviewDetail(card, card.olympicPanel, "Olympic")
-      },
-      {
-        theme: "Paralympic sports",
-        detail: sportMixPreviewDetail(card, card.paralympicPanel, "Paralympic")
-      }
-    ],
-    geographyLens: `${card.geographySnapshot} could help fans understand why varied sport environments appear in this aggregate state view.`,
+    stateSnapshot: hasSinglePanel
+      ? `In the public aggregate Team USA state data, ${card.stateName} shows a sourced ${onlyEntry.label} sport list from the ${datasetLabelForCard(card)}, with a featured card example from ${onlyCue}. That does not mean ${card.stateName} geography causes outcomes; it gives fans a safer way to explore why that sport environment appears in one state view.`
+      : `In the public aggregate Team USA state data, ${card.stateName} shows Olympic and Paralympic sport lists from the ${datasetLabelForCard(card)}, with featured card examples from ${olympicCue} and ${paralympicCue}. That does not mean ${card.stateName} geography causes outcomes; it gives fans a safer way to explore why different sport environments appear in one state view.`,
+    sportMix: completeSportMixItems(card),
+    geographyLens: hasSinglePanel
+      ? `${card.geographySnapshot} could help fans understand why this sport environment appears in this aggregate state view.`
+      : `${card.geographySnapshot} could help fans understand why varied sport environments appear in this aggregate state view.`,
     hometownAreas: formatHometownAreas(card.topHometownSignals),
-    whatToNotice: `The useful fan read is contrast: some sports emphasize spacing and quick decisions, while others emphasize rhythm, stillness, pacing, equipment, or transitions.`,
-    surprisingConnection: `${olympicCue} and ${paralympicCue} do not need to look alike to share a viewing idea; both can point fans toward control when timing, surface, or spacing changes.`,
+    whatToNotice: hasSinglePanel
+      ? `The useful fan read is the featured sport's viewing pattern: notice how ${sportTraitExample(onlyCue, onlyEntry.panel)}. The card keeps the missing program side out of the featured panel instead of inventing a comparison.`
+      : `The useful fan read is contrast: some sports emphasize spacing and quick decisions, while others emphasize rhythm, stillness, pacing, equipment, or transitions.`,
+    surprisingConnection: hasSinglePanel
+      ? `${onlyCue} can still open a broader state story; fans can watch how ${connectionTraitDescription(card)} shows up through one sourced featured sport.`
+      : `${olympicCue} and ${paralympicCue} do not need to look alike to share a viewing idea; both can point fans toward control when timing, surface, or spacing changes.`,
     sharedStateSignal: sharedTraitConnectionSentence(card, olympicCue, paralympicCue),
     gameIntro: `Try a short fan challenge inspired by ${lowerFirst(plainTraitHeadline(card))}.`,
     complianceWarnings: [reason, "Fallback copy used because live Gemini generation is unavailable or did not pass validation."]
@@ -451,10 +473,14 @@ function briefingWithCompleteSportMix(briefing, card) {
   const completeItems = completeSportMixItems(card);
   const olympicCue = displaySportName(card.olympicPanel.primarySportTag || card.olympicPanel.topSportTags?.[0] || card.olympicPanel.sportFamily);
   const paralympicCue = displaySportName(card.paralympicPanel.primarySportTag || card.paralympicPanel.topSportTags?.[0] || card.paralympicPanel.sportFamily);
+  const featuredEntries = featuredPanelEntries(card);
+  const generatedSignal = sharedTraitConnectionSentence(card, olympicCue, paralympicCue);
   return {
     ...briefing,
     sportMix: completeItems,
-    sharedStateSignal: String(briefing?.sharedStateSignal || "").trim() || sharedTraitConnectionSentence(card, olympicCue, paralympicCue)
+    sharedStateSignal: featuredEntries.length === 1
+      ? generatedSignal
+      : String(briefing?.sharedStateSignal || "").trim() || generatedSignal
   };
 }
 
@@ -533,12 +559,18 @@ function complianceCheckBriefing(briefing, card) {
   }
 
   const sportMixText = collectStrings(briefing.sportMix || []).join(" ");
-  const hasOlympicContext = /Olympic/i.test(sportMixText)
-    || textIncludesAnySport(sportMixText, sportNamesForProgram(card, "olympic"));
-  const hasParalympicContext = /Paralympic/i.test(sportMixText)
-    || textIncludesAnySport(sportMixText, sportNamesForProgram(card, "paralympic"));
-  if (!hasOlympicContext || !hasParalympicContext) {
-    warnings.push("Sport Mix must include both Olympic and Paralympic context.");
+  const availablePrograms = featuredPanelEntries(card);
+  for (const entry of availablePrograms) {
+    const hasProgramContext = new RegExp(entry.label, "i").test(sportMixText)
+      || textIncludesAnySport(sportMixText, sportNamesForProgram(card, entry.program));
+    if (!hasProgramContext) {
+      warnings.push(`Sport Mix must include ${entry.label} context.`);
+    }
+  }
+
+  const sharedStateSignalText = String(briefing.sharedStateSignal || "");
+  if (availablePrograms.length === 1 && /\b(shared trait|both featured|two featured|Olympic and Paralympic)\b/i.test(sharedStateSignalText)) {
+    warnings.push("SharedStateSignal must describe the trait of the single featured sport, not a shared two-sport trait.");
   }
 
   return warnings;
@@ -599,6 +631,24 @@ function buildStatePrompt(card) {
   const normalizeCandidate = (candidate) => candidate
     ? { ...stripRecordCounts(candidate), sportTag: displaySportName(candidate.sportTag) }
     : candidate;
+  const featuredEntries = featuredPanelEntries(card);
+  const hasSinglePanel = featuredEntries.length === 1;
+  const onlyEntry = featuredEntries[0];
+  const featuredPanelGuidance = hasSinglePanel
+    ? `Only the ${onlyEntry.label} side has sourced sports in this selected data view. The featured card panel deep-dives on that one selected sport. Do not invent, compare against, or include a missing ${onlyEntry.program === "olympic" ? "Paralympic" : "Olympic"} featured sport.`
+    : "The featured card panels already deep-dive on two selected sports. The Gemini State Briefing is the wider state story layer: state snapshot, broader sport mix grouped by theme, geography lens, what to notice, a surprising connection, and one shared card thread.";
+  const sportMixGuidance = hasSinglePanel
+    ? `sportMix: array of 1 object only: one "${onlyEntry.label} sports" object. Do not add a no-sourced or placeholder object for the missing program side.`
+    : 'sportMix: array of 2 objects only: one "Olympic sports" object and one "Paralympic sports" object.';
+  const sharedSignalGuidance = hasSinglePanel
+    ? `sharedStateSignal: 1 plain-English sentence explaining the trait of the featured ${onlyEntry.label} sport, with one short concrete example from that sport. Use readable wording similar to: "The featured sport trait is [plain trait]. In [featured sport], that can mean [example]." Do not use the phrase "shared trait" for this one-sport card.`
+    : `sharedStateSignal: 1 plain-English sentence explaining the shared trait between the two featured sports, with one short concrete example from each featured sport. Use readable wording similar to: "The shared trait is [plain trait]. For [Olympic featured sport], that can mean [example]; for [Paralympic featured sport], it can mean [example]."`;
+  const programDepthGuidance = hasSinglePanel
+    ? `Cover only the ${onlyEntry.label} sport mix with sourced sport context. Keep the missing program side out of the copy unless you are briefly explaining that this selected data view has no featured sport on that side.`
+    : "Give Olympic and Paralympic sport mixes equal depth, equal respect, and equal analytical specificity.";
+  const surprisingConnectionGuidance = hasSinglePanel
+    ? "surprisingConnection: 1-2 sentences. Choose a surprising observation within the sourced sport list or featured sport family. Do not create a two-program comparison."
+    : "surprisingConnection: 1-2 sentences. Choose one surprising connection across the broader state sport mix. Prefer one Olympic-side sport and one Paralympic-side sport, but do not force the featured card pair if another connection is more interesting.";
   return `You are generating a compliant state insight for a Team USA x Google Cloud Hackathon project.
 
 Use only the provided aggregate data and geography notes.
@@ -610,9 +660,9 @@ Do not imply geography causes success.
 Do not claim that terrain, climate, or training access guarantees outcomes.
 Use conditional language: "may suggest", "could help fans understand", "appears associated with", "could show how".
 Write like a sports explainer for curious fans, not like a data policy disclaimer.
-The featured card panels already deep-dive on two selected sports. The Gemini State Briefing is the wider state story layer: state snapshot, broader sport mix grouped by theme, geography lens, what to notice, a surprising connection, and one shared card thread.
+${featuredPanelGuidance}
 Use allSportTags as the complete selected-data-view sport list, but do not enumerate the full list in paragraph copy. The application renders that full list behind a See all control. Treat topSportTags, primarySportTag, and cardStory featured sports as featured card lenses for concise examples. Do not use the phrase "sport tags" in the output.
-Give Olympic and Paralympic sport mixes equal depth, equal respect, and equal analytical specificity.
+${programDepthGuidance}
 If olympicPanel.cardBackCopy or paralympicPanel.cardBackCopy are present, use that Gemini card-back copy as supporting context, but do not simply repeat it.
 Do not expose internal implementation terms such as "row", "pipeline", "fallback", "template", "card image cue", "featured cue", "card lens", "sport tag", "sport tags", "raw data", "signal", "participation signal", "aggregate presence", or "athletic landscape".
 Do not use these weak or internal-sounding words and phrases: "backdrop", "frame", "framing", "could help fans discover", "state signal", "high signal", "medium signal", "low signal".
@@ -624,14 +674,14 @@ Do not imply these sports are all trained in the state or caused by state geogra
 
 Return valid JSON with these fields:
 - stateSnapshot: 2-3 sentences starting with "In the public aggregate Team USA state data..." or similar safe wording. It should explain the broad state view without implying geography causes outcomes.
-- sportMix: array of 2 objects only: one "Olympic sports" object and one "Paralympic sports" object. Keep this section as a concise inventory of the selected sport lists and featured examples. Do not add thematic interpretation rows here; put broader sport-pattern insight in whatToNotice or surprisingConnection.
+- ${sportMixGuidance} Keep this section as a concise inventory of the selected sport lists and featured examples. Do not add thematic interpretation rows here; put broader sport-pattern insight in whatToNotice or surprisingConnection.
 - hometownAreas: array of up to 3 objects. If topHometownSignals are provided, each object has:
   - area: the city/area label from the provided data.
   - detail: 1 sentence with its provided total public Team USA athlete records listing that area as hometown plus Olympic-side and Paralympic-side entries. Say "records", not "athletes", and do not imply this is a complete athlete census.
 - geographyLens: 1-2 sentences connecting geography/climate/terrain to fan context with conditional language.
 - whatToNotice: 2-3 sentences with concrete fan viewing observations across the broader sport mix.
-- surprisingConnection: 1-2 sentences. Choose one surprising connection across the broader state sport mix. Prefer one Olympic-side sport and one Paralympic-side sport, but do not force the featured card pair if another connection is more interesting.
-- sharedStateSignal: 1 plain-English sentence explaining the shared trait between the two featured sports, with one short concrete example from each featured sport. Use readable wording similar to: "The shared trait is [plain trait]. For [Olympic featured sport], that can mean [example]; for [Paralympic featured sport], it can mean [example]." Do not use coined trait names, the phrase "state signal", or performance-outcome claims.
+- ${surprisingConnectionGuidance}
+- ${sharedSignalGuidance} Do not use coined trait names, the phrase "state signal", or performance-outcome claims.
 - gameIntro: 1 sentence safe challenge intro for the challenge screen.
 - complianceWarnings
 
@@ -679,6 +729,15 @@ ${JSON.stringify({
 }
 
 function buildBriefingRepairPrompt(card, briefing, validationWarnings) {
+  const featuredEntries = featuredPanelEntries(card);
+  const hasSinglePanel = featuredEntries.length === 1;
+  const onlyEntry = featuredEntries[0];
+  const sharedSignalRepairGuidance = hasSinglePanel
+    ? `Keep sharedStateSignal as one readable featured-sport-trait sentence with one short concrete example from ${onlyEntry.label} sport context. Do not use "shared trait" or compare to a missing program side.`
+    : "Keep sharedStateSignal as one readable shared-trait sentence with one short concrete example from each featured sport.";
+  const sportMixRepairGuidance = hasSinglePanel
+    ? `sportMix: array of 1 object with theme and detail: "${onlyEntry.label} sports" only. Do not include a missing-program placeholder.`
+    : 'sportMix: array of 2 objects with theme and detail: "Olympic sports" and "Paralympic sports" only';
   return `Rewrite this Gemini State Briefing JSON so it passes the local compliance validator.
 
 Keep the same JSON schema and the same state/sport meaning.
@@ -690,12 +749,12 @@ Use conditional wording such as "may suggest", "could help fans understand", "ap
 Remove every word or phrase flagged by the validator. In particular, do not use any form of "guarantee", "frame", "framing", "backdrop", "signal", "row", "roster data", "athletic landscape", "dominant", "best", or "strong".
 Use "does not imply performance outcomes" instead of any sentence containing the word "guarantee".
 Use "could help fans understand" or "could show how" instead of "frame", "framing", or "backdrop".
-Keep sharedStateSignal as one readable shared-trait sentence with one short concrete example from each featured sport.
+${sharedSignalRepairGuidance}
 For complianceWarnings, return an empty array unless there is a real unresolved issue.
 
 Return valid JSON with these exact fields:
 - stateSnapshot
-- sportMix: array of 2 objects with theme and detail: "Olympic sports" and "Paralympic sports" only
+- ${sportMixRepairGuidance}
 - geographyLens
 - hometownAreas: array of up to 3 objects with area and detail
 - whatToNotice
