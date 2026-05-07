@@ -127,7 +127,33 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
       zoomAtViewBoxPoint(anchor, viewportRef.current.scale + direction * step);
     }
     svg.addEventListener("wheel", onWheel, { passive: false });
-    return () => svg.removeEventListener("wheel", onWheel);
+
+    function onTouchStart(e) {
+      if (e.touches.length !== 1) return;
+      const t = e.touches[0];
+      startDrag(t.clientX, t.clientY);
+    }
+    function onTouchMove(e) {
+      if (!dragRef.current) return;
+      e.preventDefault();
+      const t = e.touches[0];
+      updateDrag(t.clientX, t.clientY);
+    }
+    function onTouchEnd() {
+      endDrag();
+    }
+    svg.addEventListener("touchstart", onTouchStart, { passive: true });
+    svg.addEventListener("touchmove", onTouchMove, { passive: false });
+    svg.addEventListener("touchend", onTouchEnd);
+    svg.addEventListener("touchcancel", onTouchEnd);
+
+    return () => {
+      svg.removeEventListener("wheel", onWheel);
+      svg.removeEventListener("touchstart", onTouchStart);
+      svg.removeEventListener("touchmove", onTouchMove);
+      svg.removeEventListener("touchend", onTouchEnd);
+      svg.removeEventListener("touchcancel", onTouchEnd);
+    };
   }, []);
 
   useEffect(() => {
@@ -312,19 +338,21 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
   }
 
   function handlePointerDown(event) {
+    if (event.pointerType === "touch") return;
     if (event.button !== 0) return;
-    // On touch, allow dragging from any map target — tap vs drag is resolved by suppressClickRef
-    if (event.pointerType !== "touch" && isInteractiveMapTarget(event.target)) return;
+    if (isInteractiveMapTarget(event.target)) return;
     const started = startDrag(event.clientX, event.clientY);
     if (!started) return;
     event.currentTarget.setPointerCapture?.(event.pointerId);
   }
 
   function handlePointerMove(event) {
+    if (event.pointerType === "touch") return;
     updateDrag(event.clientX, event.clientY);
   }
 
   function handlePointerEnd(event) {
+    if (event.pointerType === "touch") return;
     endDrag();
     event.currentTarget.releasePointerCapture?.(event.pointerId);
   }
