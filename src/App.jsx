@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Routes, Route, Navigate, useNavigate, useLocation } from "react-router-dom";
 import { feature } from "topojson-client";
 import {
@@ -80,18 +80,7 @@ function App() {
   const [playedCodes, setPlayedCodes] = useState(() => new Set());
   const [panelManifest, setPanelManifest] = useState(EMPTY_CARD_PANEL_MANIFEST);
   const [dataScope, setDataScope] = useState("paris2024");
-  const [filterOpen, setFilterOpen] = useState(false);
   const [showCompleted, setShowCompleted] = useState(false);
-  const filterRef = useRef(null);
-
-  useEffect(() => {
-    if (!filterOpen) return;
-    function handleClick(e) {
-      if (filterRef.current && !filterRef.current.contains(e.target)) setFilterOpen(false);
-    }
-    document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
-  }, [filterOpen]);
 
   useEffect(() => {
     try {
@@ -283,45 +272,6 @@ function App() {
                       <p className="eyebrow">Geography-powered fan discovery</p>
                       <h2 id="mapTitle">State Atlas</h2>
                     </div>
-                    <div className="map-toolbar">
-                      <label className="map-completed-toggle">
-                        <input
-                          type="checkbox"
-                          checked={showCompleted}
-                          onChange={(e) => setShowCompleted(e.target.checked)}
-                        />
-                        Show completed states
-                      </label>
-                      <div className="map-filter-wrap" ref={filterRef}>
-                        <button
-                          className={`map-filter-btn${filterOpen ? " is-open" : ""}`}
-                          onClick={() => setFilterOpen((o) => !o)}
-                          aria-label="Filter data view"
-                          aria-expanded={filterOpen}
-                        >
-                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <line x1="2" y1="4" x2="14" y2="4" />
-                            <line x1="4" y1="8" x2="12" y2="8" />
-                            <line x1="6" y1="12" x2="10" y2="12" />
-                          </svg>
-                          <span>{selectedDataScope.shortLabel ?? selectedDataScope.label}</span>
-                        </button>
-                        {filterOpen && (
-                          <div className="map-filter-menu" role="menu">
-                            {dataScopeOptions.map((option) => (
-                              <button
-                                key={option.id}
-                                role="menuitem"
-                                className={`map-filter-option${activeDataScope === option.id ? " is-active" : ""}`}
-                                onClick={() => { setDataScope(option.id); setFilterOpen(false); }}
-                              >
-                                {option.label}
-                              </button>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    </div>
                   </div>
                   <p className="safe-note">Explore aggregate Team USA athlete hometown and geography data by state. Darker states indicate higher hometown representation in the selected dataset.</p>
                   <StateMap
@@ -334,6 +284,10 @@ function App() {
                     discoveredCodes={discoveredCodes}
                     totalStates={scopedStates.length}
                     showCompleted={showCompleted}
+                    onToggleCompleted={() => setShowCompleted((c) => !c)}
+                    dataScopeOptions={dataScopeOptions}
+                    activeDataScope={activeDataScope}
+                    onDataScopeChange={(id) => setDataScope(id)}
                   />
                 </section>
               </section>

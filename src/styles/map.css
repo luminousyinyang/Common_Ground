@@ -1,57 +1,23 @@
-/* ─── Map toolbar ─────────────────────────────────── */
-
-.map-toolbar {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  flex-shrink: 0;
-}
-
-.map-completed-toggle {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  color: var(--copy);
-  font-size: 0.88rem;
-  font-weight: 750;
-  cursor: pointer;
-  white-space: nowrap;
-  user-select: none;
-}
-
-.map-completed-toggle input[type="checkbox"] {
-  width: 16px;
-  height: 16px;
-  border: 1.5px solid var(--line-strong);
-  border-radius: 4px;
-  accent-color: var(--ink);
-  cursor: pointer;
-  flex-shrink: 0;
-}
-
 .map-filter-wrap {
   position: relative;
 }
 
-.map-filter-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-1);
-  border: 1px solid var(--line-strong);
-  border-radius: 999px;
-  padding: 6px 12px 6px 10px;
-  color: var(--ink);
-  background: var(--glass);
-  font-size: 0.88rem;
-  font-weight: 750;
-  cursor: pointer;
-  transition: background 140ms ease, border-color 140ms ease;
+.map-controls-divider {
+  height: 1px;
+  background: var(--line-strong);
+  margin: var(--space-1) 0;
 }
 
-.map-filter-btn.is-open,
-.map-filter-btn:focus-visible {
-  border-color: var(--line-strong);
-  background: var(--glass-strong);
+.map-control-button.is-active {
+  color: var(--blue);
+  border-color: var(--blue);
+  background: color-mix(in srgb, var(--blue) 12%, var(--glass-strong));
+}
+
+.map-controls .map-filter-menu {
+  top: 0;
+  bottom: auto;
+  right: calc(100% + 8px);
 }
 
 .map-filter-menu {
@@ -92,15 +58,14 @@
 }
 
 @media (hover: hover) {
-  .map-filter-btn:hover {
-    background: var(--glass-strong);
-    border-color: var(--line-strong);
-  }
-
   .map-filter-option:hover {
     color: var(--ink);
     background: color-mix(in srgb, var(--olympic-tint) 40%, transparent);
   }
+}
+
+.map-outer {
+  position: relative;
 }
 
 .map-wrap {
