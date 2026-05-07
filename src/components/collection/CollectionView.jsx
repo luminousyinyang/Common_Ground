@@ -35,14 +35,17 @@ function MiniStateCard({ card, discovered, onSelect, panelManifest }) {
   );
 }
 
-function CollectionView({ states, discoveredCodes, onSelect, panelManifest, isLoggedIn, onLogin }) {
+function CollectionView({ states, discoveredCodes, onSelect, panelManifest, isLoggedIn, authLoading, collectionSyncError, onLogin }) {
   const discoveredStates = states.filter((card) => discoveredCodes.has(card.stateCode));
   const previewStates = states.filter((card) => !discoveredCodes.has(card.stateCode)).slice(0, 12);
   const remaining = states.length - discoveredStates.length;
 
   return (
     <section className="collection-view page-panel">
-      {!isLoggedIn && (
+      {authLoading && !isLoggedIn && (
+        <div className="collection-auth-loading">Checking saved session...</div>
+      )}
+      {!isLoggedIn && !authLoading && (
         <div className="collection-gate">
           <div className="collection-gate-content">
             <span className="collection-gate-icon"><Icon name="cards" size={32} strokeWidth={1.3} /></span>
@@ -64,6 +67,9 @@ function CollectionView({ states, discoveredCodes, onSelect, panelManifest, isLo
             </div>
           </div>
         </div>
+      )}
+      {collectionSyncError && isLoggedIn && (
+        <p className="collection-sync-warning">{collectionSyncError}</p>
       )}
       {isLoggedIn && <>
       <div className="collection-header">
