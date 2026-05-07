@@ -85,6 +85,15 @@
   max-width: 680px;
 }
 
+.collection-header .eyebrow {
+  color: var(--ink);
+}
+
+.collection-view .muted-eyebrow {
+  color: var(--copy);
+  opacity: 0.9;
+}
+
 .collection-count {
   background: color-mix(in srgb, var(--olympic-tint) 56%, transparent);
   border-color: var(--line);
@@ -125,7 +134,7 @@
   display: block;
   width: 100%;
   aspect-ratio: 2 / 3;
-  border: 0;
+  border: 1px solid var(--line-strong);
   border-radius: 12px;
   padding: 0;
   background: transparent;
