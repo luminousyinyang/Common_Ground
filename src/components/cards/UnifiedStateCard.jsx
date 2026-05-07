@@ -696,13 +696,7 @@ function UnifiedStateCard({
         <button className="ghost-button" type="button" onClick={toggleFlip}>
           {flipped ? "Flip to art" : "Flip to data"}
         </button>
-        {isUnlocked ? (
-          <button className="primary-button" type="button" onClick={onOpenChallenge}>Replay Fan Challenge</button>
-        ) : (
-          <button className="primary-button card-unlock-btn" type="button" onClick={onOpenChallenge}>
-            Unlock State Card
-          </button>
-        )}
+        <button className="primary-button" type="button" onClick={onOpenChallenge}>Play Challenge</button>
       </div>
     </section>
   );
