@@ -117,6 +117,20 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
   }, [filterOpen]);
 
   useEffect(() => {
+    const svg = svgRef.current;
+    if (!svg) return;
+    function onWheel(event) {
+      event.preventDefault();
+      const anchor = clientToViewBox(event.clientX, event.clientY);
+      const direction = event.deltaY < 0 ? 1 : -1;
+      const step = event.ctrlKey || event.metaKey ? 0.28 : 0.18;
+      zoomAtViewBoxPoint(anchor, viewportRef.current.scale + direction * step);
+    }
+    svg.addEventListener("wheel", onWheel, { passive: false });
+    return () => svg.removeEventListener("wheel", onWheel);
+  }, []);
+
+  useEffect(() => {
     function onWindowMouseMove(event) {
       if (!dragRef.current && event.buttons === 1 && isPointInsideSvg(event.clientX, event.clientY)) {
         startDrag(event.clientX, event.clientY);
@@ -249,14 +263,6 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
     }
   }
 
-  function handleWheel(event) {
-    event.preventDefault();
-    const anchor = clientToViewBox(event.clientX, event.clientY);
-    const direction = event.deltaY < 0 ? 1 : -1;
-    const step = event.ctrlKey || event.metaKey ? 0.28 : 0.18;
-    zoomAtViewBoxPoint(anchor, viewport.scale + direction * step);
-  }
-
   function startDrag(clientX, clientY) {
     const currentViewport = viewportRef.current;
     if (currentViewport.scale <= 1) return false;
@@ -307,7 +313,8 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
 
   function handlePointerDown(event) {
     if (event.button !== 0) return;
-    if (isInteractiveMapTarget(event.target)) return;
+    // On touch, allow dragging from any map target — tap vs drag is resolved by suppressClickRef
+    if (event.pointerType !== "touch" && isInteractiveMapTarget(event.target)) return;
     const started = startDrag(event.clientX, event.clientY);
     if (!started) return;
     event.currentTarget.setPointerCapture?.(event.pointerId);
@@ -332,7 +339,6 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
           viewBox="0 0 975 610"
           role="img"
           aria-label="Interactive U.S. map. Select a state to explore Team USA athlete hometown patterns."
-          onWheel={handleWheel}
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerEnd}
