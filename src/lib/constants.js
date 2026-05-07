@@ -123,26 +123,27 @@ export const CARD_ART = {
 export const FRAMED_CARD_PANEL_PROMPT_VERSIONS = new Set(["common-ground-card-panel-v2"]);
 
 export const CARD_THEME_LABELS = {
-  aquatic: "Water rhythm card",
+  aquatic: "Water sport card",
   "control-pressure": "Control pressure card",
   neutral: "Open signal card",
-  "rhythm-pace": "Rhythm pace card",
+  "rhythm-pace": "Pace control card",
   "spatial-timing": "Spatial timing card",
   "winter-endurance": "Alpine endurance card"
 };
 
 export const EMPTY_CARD_PANEL_MANIFEST = { states: {} };
 export const CURRENT_CARD_BACK_COPY_VERSION = "common-ground-card-back-v14-basic-rules";
-export const CURRENT_GAME_EXPERIENCE_VERSION = "common-ground-game-experience-v2-style-references";
+export const CURRENT_GAME_EXPERIENCE_VERSION = "common-ground-game-experience-v3-shared-trait-examples";
 export const SUPPORTED_GAME_EXPERIENCE_VERSIONS = new Set([
   CURRENT_GAME_EXPERIENCE_VERSION,
+  "common-ground-game-experience-v2-style-references",
   "common-ground-game-experience-v1"
 ]);
 export const GAME_TYPE_LABELS = {
-  reaction_grid: "Reaction Grid",
-  cadence_keeper: "Cadence Keeper",
+  reaction_grid: "Focus Window",
+  cadence_keeper: "Rhythm Shift",
   precision_trace: "Precision Trace",
-  focus_hold: "Focus Hold",
+  focus_hold: "Open Lane",
   pattern_scout: "Pattern Scout"
 };
 
@@ -156,6 +157,5 @@ export const SIGNAL_LABELS = {
 export const PANEL_QA_ROWS = [
   ["howItWorks", "How it works"],
   ["watchValue", "Why it's fun to watch"],
-  ["stateConnection", "State connection"],
-  ["cardTrait", "Why it connects"]
+  ["stateConnection", "State connection"]
 ];

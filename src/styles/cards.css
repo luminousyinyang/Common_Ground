@@ -408,6 +408,10 @@ html[data-surface="blacktop"] .compact-read-more:focus-visible {
   background: var(--paper);
 }
 
+.card-art-stack.is-single-panel .card-art-panel {
+  height: 100%;
+}
+
 .card-art-panel::after {
   position: absolute;
   inset: 0;
@@ -694,6 +698,10 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
   border-top: 1px solid var(--line);
 }
 
+.program-panel-grid.is-single-panel {
+  grid-template-columns: 1fr;
+}
+
 .program-panel-grid > .panel {
   border-top: 0;
   border-right: 0;
@@ -702,6 +710,10 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
 
 .program-panel-grid > .panel:first-child {
   border-right: 1px solid var(--line);
+}
+
+.program-panel-grid.is-single-panel > .panel:first-child {
+  border-right: 0;
 }
 
 .sports-card-front-footer h3 {
@@ -2033,11 +2045,11 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
   background: var(--glass-faint);
 }
 
-.card-modal-panel.is-back-expanded .program-panel-grid > .panel:first-child {
+.card-modal-panel.is-back-expanded .program-panel-grid > .panel.olympic {
   background: color-mix(in srgb, var(--olympic-tint) 72%, transparent);
 }
 
-.card-modal-panel.is-back-expanded .program-panel-grid > .panel:last-child {
+.card-modal-panel.is-back-expanded .program-panel-grid > .panel.paralympic {
   background: color-mix(in srgb, var(--paralympic-tint) 72%, transparent);
 }
 

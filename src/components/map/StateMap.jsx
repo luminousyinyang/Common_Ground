@@ -71,6 +71,7 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
   const [filterOpen, setFilterOpen] = useState(false);
   const svgRef = useRef(null);
   const dragRef = useRef(null);
+  const pinchRef = useRef(null);
   const viewportRef = useRef(viewport);
   const suppressClickRef = useRef(false);
   const filterRef = useRef(null);
@@ -136,20 +137,53 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
     svg.addEventListener("wheel", onWheel, { passive: false });
 
     function onTouchStart(e) {
+      if (e.touches.length === 2) {
+        e.preventDefault();
+        dragRef.current = null;
+        setIsDragging(false);
+        const [t1, t2] = [e.touches[0], e.touches[1]];
+        pinchRef.current = {
+          distance: getTouchDistance(t1, t2),
+          midpoint: getTouchMidpoint(t1, t2),
+          viewport: { ...viewportRef.current },
+        };
+        return;
+      }
       if (e.touches.length !== 1) return;
       const t = e.touches[0];
       startDrag(t.clientX, t.clientY);
     }
     function onTouchMove(e) {
+      if (e.touches.length === 2 && pinchRef.current) {
+        e.preventDefault();
+        const [t1, t2] = [e.touches[0], e.touches[1]];
+        const newDist = getTouchDistance(t1, t2);
+        const newMid = getTouchMidpoint(t1, t2);
+        const { distance: initDist, midpoint: initMid, viewport: initVp } = pinchRef.current;
+        const ratio = newDist / initDist;
+        const newScale = clampScale(initVp.scale * ratio);
+        const initAnchor = clientToViewBox(initMid.x, initMid.y);
+        const mapX = (initAnchor.x - initVp.x) / initVp.scale;
+        const mapY = (initAnchor.y - initVp.y) / initVp.scale;
+        const curAnchor = clientToViewBox(newMid.x, newMid.y);
+        suppressClickRef.current = true;
+        setViewport({
+          scale: newScale,
+          x: curAnchor.x - mapX * newScale,
+          y: curAnchor.y - mapY * newScale,
+        });
+        return;
+      }
       if (!dragRef.current) return;
       e.preventDefault();
       const t = e.touches[0];
       updateDrag(t.clientX, t.clientY);
     }
-    function onTouchEnd() {
-      endDrag();
+    function onTouchEnd(e) {
+      if (!e || e.touches.length < 2) pinchRef.current = null;
+      if (!e || e.touches.length === 0) endDrag();
     }
-    svg.addEventListener("touchstart", onTouchStart, { passive: true });
+    svg.addEventListener("touchstart", onTouchStart, { passive: false });
     svg.addEventListener("touchmove", onTouchMove, { passive: false });
     svg.addEventListener("touchend", onTouchEnd);
     svg.addEventListener("touchcancel", onTouchEnd);
@@ -294,6 +328,16 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
       setHint(`${item.properties.name}: real map boundary shown. No card is loaded for this geography.`);
       setHoverTip(null);
     }
+  }
+
+  function getTouchDistance(t1, t2) {
+    const dx = t1.clientX - t2.clientX;
+    const dy = t1.clientY - t2.clientY;
+    return Math.sqrt(dx * dx + dy * dy);
+  }
+
+  function getTouchMidpoint(t1, t2) {
+    return { x: (t1.clientX + t2.clientX) / 2, y: (t1.clientY + t2.clientY) / 2 };
   }
 
   function startDrag(clientX, clientY) {

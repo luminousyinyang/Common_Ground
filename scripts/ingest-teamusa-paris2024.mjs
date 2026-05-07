@@ -875,7 +875,7 @@ function chooseSharedTraitForFeatured(olympicFeatured, paralympicFeatured, olymp
   const tags = new Set([...(olympicFeatured?.themeTags || []), ...(paralympicFeatured?.themeTags || [])]);
   if (tags.has("water") && (tags.has("pace") || tags.has("rhythm") || tags.has("balance"))) {
     return {
-      name: "Waterline Control",
+      name: "Rhythm in changing conditions",
       description: "Timing, spacing, and controlled rhythm when movement conditions keep changing.",
       challengeType: "cadence_keeper"
     };
@@ -906,7 +906,7 @@ function chooseSharedTraitForFeatured(olympicFeatured, paralympicFeatured, olymp
 
 function cardThemeName({ geographyTags, olympicFeatured, paralympicFeatured, sharedTrait }) {
   const tags = new Set([...(olympicFeatured?.themeTags || []), ...(paralympicFeatured?.themeTags || [])]);
-  if (geographyTags.includes("coastal") && tags.has("water")) return "Coastal Rhythm";
+  if (geographyTags.includes("coastal") && tags.has("water")) return "Rhythm in changing conditions";
   if (geographyTags.includes("winter")) return "Cold Pace";
   if (geographyTags.includes("mountain")) return "Elevation Pace";
   if (geographyTags.includes("heat")) return "Heat Control";
@@ -924,9 +924,9 @@ function geographySignalLabels(geographySnapshot) {
 }
 
 function fanChallengeName(themeName, sharedTrait) {
-  if (/coastal|water/i.test(themeName)) return "Waterline Timing Challenge";
+  if (/coastal|water|rhythm/i.test(themeName) && sharedTrait?.challengeType === "cadence_keeper") return "Rhythm Shift Challenge";
   if (/elevation|cold|pace/i.test(themeName)) return "Pace Control Challenge";
-  if (/focus/i.test(themeName)) return "Focus Timing Challenge";
+  if (/focus/i.test(themeName) || sharedTrait?.challengeType === "reaction_grid") return "Focus Window Challenge";
   if (/city|spatial/i.test(themeName) || /spatial/i.test(sharedTrait?.name || "")) return "Spatial Timing Challenge";
   return `${sharedTrait?.name || "State Sync"} Challenge`;
 }
