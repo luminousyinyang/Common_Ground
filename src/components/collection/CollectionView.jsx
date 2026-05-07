@@ -3,6 +3,29 @@ import { getCardThemeLabel, plainTraitHeadline, titleBucket } from "../../lib/st
 import Icon from "../common/Icon.jsx";
 import CardArt from "../cards/CardArt.jsx";
 
+const REGIONS = [
+  { id: "all", label: "All" },
+  { id: "northeast", label: "Northeast" },
+  { id: "south", label: "South" },
+  { id: "midwest", label: "Midwest" },
+  { id: "west", label: "West" },
+  { id: "territories", label: "Territories" },
+];
+
+const REGION_CODES = {
+  northeast: new Set(["CT","ME","MA","NH","NJ","NY","PA","RI","VT"]),
+  south:     new Set(["AL","AR","DC","DE","FL","GA","KY","LA","MD","MS","NC","OK","SC","TN","TX","VA","WV"]),
+  midwest:   new Set(["IL","IN","IA","KS","MI","MN","MO","NE","ND","OH","SD","WI"]),
+  west:      new Set(["AK","AZ","CA","CO","HI","ID","MT","NV","NM","OR","UT","WA","WY"]),
+  territories: new Set(["VI"]),
+};
+
+function filterByRegion(cards, regionId) {
+  if (regionId === "all") return cards;
+  const codes = REGION_CODES[regionId];
+  return cards.filter((card) => codes?.has(card.stateCode));
+}
+
 function MiniStateCard({ card, discovered, onSelect, panelManifest }) {
   return (
     <button
@@ -35,6 +58,17 @@ function MiniStateCard({ card, discovered, onSelect, panelManifest }) {
   );
 }
 
+function CollectionView({ states, discoveredCodes, onSelect, panelManifest, isLoggedIn, onLogin }) {
+  const [activeRegion, setActiveRegion] = useState("all");
+  const allDiscovered = states.filter((card) => discoveredCodes.has(card.stateCode));
+  const allUndiscovered = states.filter((card) => !discoveredCodes.has(card.stateCode));
+  const discoveredStates = filterByRegion(allDiscovered, activeRegion);
+  const previewStates = filterByRegion(allUndiscovered, activeRegion).slice(0, 12);
+  const remaining = allUndiscovered.length;
+
+  return (
+    <section className="collection-view">
+      {!isLoggedIn && (
 function CollectionView({ states, discoveredCodes, onSelect, panelManifest, isLoggedIn, authLoading, collectionSyncError, onLogin }) {
   const discoveredStates = states.filter((card) => discoveredCodes.has(card.stateCode));
   const previewStates = states.filter((card) => !discoveredCodes.has(card.stateCode)).slice(0, 12);
@@ -79,11 +113,25 @@ function CollectionView({ states, discoveredCodes, onSelect, panelManifest, isLo
           <p>Browse every state you've discovered, compare state-level patterns, and complete your 50-state collection.</p>
         </div>
         <div className="collection-progress-stack">
-          <span className="collection-count">{discoveredStates.length} / {states.length}</span>
+          <span className="collection-count">{allDiscovered.length} / {states.length}</span>
           <div className="collection-progress-track" aria-hidden="true">
-            <div className="collection-progress-fill" style={{ width: `${Math.round((discoveredStates.length / states.length) * 100)}%` }} />
+            <div className="collection-progress-fill" style={{ width: `${Math.round((allDiscovered.length / states.length) * 100)}%` }} />
           </div>
         </div>
+      </div>
+
+      <div className="collection-filter-row" role="group" aria-label="Filter by region">
+        {REGIONS.map((region) => (
+          <button
+            key={region.id}
+            type="button"
+            className={`filter-tag${activeRegion === region.id ? " is-active" : ""}`}
+            onClick={() => setActiveRegion(region.id)}
+            aria-pressed={activeRegion === region.id}
+          >
+            {region.label}
+          </button>
+        ))}
       </div>
 
       <div className="card-grid">
@@ -96,7 +144,7 @@ function CollectionView({ states, discoveredCodes, onSelect, panelManifest, isLo
         <>
           <div className="section-divider" />
           <p className="eyebrow muted-eyebrow">Not yet discovered — explore the map to unlock ({remaining} remaining)</p>
-          <div className="card-grid compact-grid">
+          <div className="card-grid">
             {previewStates.map((card) => (
               <MiniStateCard key={card.stateCode} card={card} discovered={false} onSelect={onSelect} panelManifest={panelManifest} />
             ))}

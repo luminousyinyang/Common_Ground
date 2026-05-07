@@ -92,10 +92,17 @@ function App() {
   const [briefingLoading, setBriefingLoading] = useState(false);
   const [loadError, setLoadError] = useState(null);
   const [isCardModalOpen, setIsCardModalOpen] = useState(false);
-  const [discoveredCodes, setDiscoveredCodes] = useState(() => new Set(["CO"]));
-  const [playedCodes, setPlayedCodes] = useState(() => new Set());
+  const [discoveredCodes, setDiscoveredCodes] = useState(() => new Set());
   const [panelManifest, setPanelManifest] = useState(EMPTY_CARD_PANEL_MANIFEST);
   const [dataScope, setDataScope] = useState("paris2024");
+  const [showCompleted, setShowCompleted] = useState(() => {
+    try {
+      const saved = window.localStorage.getItem("common-ground-show-completed");
+      return saved === null ? true : saved === "true";
+    } catch {
+      return true;
+    }
+  });
   const [collectionReadyUid, setCollectionReadyUid] = useState(null);
   const [collectionSyncError, setCollectionSyncError] = useState("");
 
@@ -104,7 +111,7 @@ function App() {
       const saved = JSON.parse(window.localStorage.getItem("common-ground-discovered") || "[]");
       if (Array.isArray(saved) && saved.length) setDiscoveredCodes(new Set(saved));
     } catch {
-      setDiscoveredCodes(new Set(["CO"]));
+      setDiscoveredCodes(new Set());
     }
   }, []);
 
@@ -118,16 +125,10 @@ function App() {
 
   useEffect(() => {
     try {
-      const saved = JSON.parse(window.localStorage.getItem("common-ground-played") || "[]");
-      if (Array.isArray(saved) && saved.length) setPlayedCodes(new Set(saved));
+      window.localStorage.setItem("common-ground-show-completed", String(showCompleted));
     } catch {}
-  }, []);
+  }, [showCompleted]);
 
-  useEffect(() => {
-    try {
-      window.localStorage.setItem("common-ground-played", JSON.stringify([...playedCodes]));
-    } catch {}
-  }, [playedCodes]);
 
   useEffect(() => {
     if (!isLoggedIn || !user?.uid) {
@@ -270,17 +271,8 @@ function App() {
     });
   }
 
-  function markPlayed(code) {
-    setPlayedCodes((current) => {
-      const next = new Set(current);
-      next.add(code);
-      return next;
-    });
-  }
-
   function selectState(code, openCard = true) {
     setSelectedCode(code);
-    markDiscovered(code);
     if (openCard) setIsCardModalOpen(true);
   }
 
@@ -348,20 +340,8 @@ function App() {
                       <p className="eyebrow">Geography-powered fan discovery</p>
                       <h2 id="mapTitle">State Atlas</h2>
                     </div>
-                    <label className="data-scope-control" htmlFor="dataScopeSelect">
-                      <span>Data view</span>
-                      <select
-                        id="dataScopeSelect"
-                        value={activeDataScope}
-                        onChange={(event) => setDataScope(event.target.value)}
-                      >
-                        {dataScopeOptions.map((option) => (
-                          <option value={option.id} key={option.id}>{option.label}</option>
-                        ))}
-                      </select>
-                    </label>
                   </div>
-                  <p className="safe-note">Explore aggregate Team USA athlete hometown and geography data by state. Darker states indicate higher hometown representation in the selected dataset. Current view: {selectedDataScope.label}. Patterns are exploratory and do not imply performance outcomes.</p>
+                  <p className="safe-note">Explore aggregate Team USA athlete hometown and geography data by state. Darker states indicate higher hometown representation in the selected dataset.</p>
                   <StateMap
                     mapTopology={mapTopology}
                     features={features}
@@ -371,6 +351,11 @@ function App() {
                     onSelect={selectState}
                     discoveredCodes={discoveredCodes}
                     totalStates={scopedStates.length}
+                    showCompleted={showCompleted}
+                    onToggleCompleted={() => setShowCompleted((c) => !c)}
+                    dataScopeOptions={dataScopeOptions}
+                    activeDataScope={activeDataScope}
+                    onDataScopeChange={(id) => setDataScope(id)}
                   />
                 </section>
               </section>
@@ -397,7 +382,6 @@ function App() {
                 briefing={briefing}
                 onReturn={() => navigate("/map")}
                 panelManifest={activePanelManifest}
-                onGameComplete={() => markPlayed(selectedCode)}
               />
             )
           } />
@@ -418,7 +402,7 @@ function App() {
           }}
           onClose={() => setIsCardModalOpen(false)}
           panelManifest={activePanelManifest}
-          isUnlocked={playedCodes.has(selectedCode)}
+          onCollect={() => markDiscovered(selectedCode)}
         />
       )}
     </>

@@ -11,7 +11,7 @@ function CardModal({
   onOpenChallenge,
   onClose,
   panelManifest,
-  isUnlocked
+  onCollect
 }) {
   const [isBackExpanded, setIsBackExpanded] = useState(false);
   const { openAnimation, interaction, cardLayout } = ACTIVE_CARD_EXPERIENCE;
@@ -45,7 +45,7 @@ function CardModal({
           isBackExpanded={isBackExpanded}
           onBackExpandedChange={setIsBackExpanded}
           panelManifest={panelManifest}
-          isUnlocked={isUnlocked}
+          onCollect={onCollect}
         />
       </div>
     </div>

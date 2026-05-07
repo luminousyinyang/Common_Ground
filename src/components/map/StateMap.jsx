@@ -45,16 +45,18 @@ function RosterTooltip({ card, position }) {
   );
 }
 
-function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCode, onSelect, discoveredCodes = new Set(), totalStates = 0 }) {
+function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCode, onSelect, discoveredCodes = new Set(), totalStates = 0, showCompleted = false, onToggleCompleted, dataScopeOptions = [], activeDataScope = "both", onDataScopeChange }) {
   const [hint, setHint] = useState("Select or focus a state to preview Team USA athlete hometown counts and sport presence.");
   const [hoverTip, setHoverTip] = useState(null);
   const [viewport, setViewport] = useState({ scale: 1, x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [isLocating, setIsLocating] = useState(false);
+  const [filterOpen, setFilterOpen] = useState(false);
   const svgRef = useRef(null);
   const dragRef = useRef(null);
   const viewportRef = useRef(viewport);
   const suppressClickRef = useRef(false);
+  const filterRef = useRef(null);
   const path = useMemo(() => geoPath(), []);
   const mapCenter = { x: 487.5, y: 305 };
   const borderPath = useMemo(() => {
@@ -84,6 +86,15 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
   useEffect(() => {
     viewportRef.current = viewport;
   }, [viewport]);
+
+  useEffect(() => {
+    if (!filterOpen) return;
+    function handleClick(e) {
+      if (filterRef.current && !filterRef.current.contains(e.target)) setFilterOpen(false);
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, [filterOpen]);
 
   useEffect(() => {
     function onWindowMouseMove(event) {
@@ -293,17 +304,8 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
 
   return (
     <>
-      <div className="map-wrap">
-        <div className="map-controls" aria-label="Map controls">
-          <button className="map-control-button" type="button" onClick={zoomIn} aria-label="Zoom in" data-tooltip="Zoom in">+</button>
-          <button className="map-control-button" type="button" onClick={zoomOut} aria-label="Zoom out" data-tooltip="Zoom out">−</button>
-          <button className="map-control-button" type="button" onClick={locateCurrentState} disabled={isLocating} aria-label="Use my location" data-tooltip="My location">
-            <Icon name="locate" size={16} strokeWidth={2} />
-          </button>
-          <button className="map-control-button" type="button" onClick={resetMap} aria-label="Reset map" data-tooltip="Reset map">
-            <Icon name="reset" size={16} strokeWidth={2} />
-          </button>
-        </div>
+      <div className="map-outer">
+        <div className="map-wrap">
         <svg
           ref={svgRef}
           className={`state-map ${isDragging ? "is-dragging" : ""}`}
@@ -367,21 +369,23 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
               })}
             </g>
             {borderPath && <path className="state-borders" d={borderPath} />}
-            <g className="discovered-markers" aria-hidden="true">
-              {features.map((item) => {
-                const code = item.properties.stateCode;
-                if (!discoveredCodes.has(code)) return null;
-                const centroid = path.centroid(item);
-                if (!Number.isFinite(centroid[0]) || !Number.isFinite(centroid[1])) return null;
-                const s = 1 / viewport.scale;
-                return (
-                  <g key={`chk-${code}`} transform={`translate(${centroid[0]} ${centroid[1]}) scale(${s})`} pointerEvents="none">
-                    <circle className="check-bg" r="9" />
-                    <polyline className="check-tick" points="-3.5,0.8 -1,3.3 5,-3.8" />
-                  </g>
-                );
-              })}
-            </g>
+            {showCompleted && (
+              <g className="discovered-markers" aria-hidden="true">
+                {features.map((item) => {
+                  const code = item.properties.stateCode;
+                  if (!discoveredCodes.has(code)) return null;
+                  const centroid = path.centroid(item);
+                  if (!Number.isFinite(centroid[0]) || !Number.isFinite(centroid[1])) return null;
+                  const s = 1 / viewport.scale;
+                  return (
+                    <g key={`chk-${code}`} transform={`translate(${centroid[0]} ${centroid[1]}) scale(${s})`} pointerEvents="none">
+                      <circle className="check-bg" r="9" />
+                      <polyline className="check-tick" points="-3.5,0.8 -1,3.3 5,-3.8" />
+                    </g>
+                  );
+                })}
+              </g>
+            )}
             {territoryPath && territoryFeatures.length > 0 && (
               <g className="territory-inset-layer" transform="translate(846 510)">
                 {territoryFeatures.map((item, index) => {
@@ -435,7 +439,55 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
             )}
           </g>
         </svg>
-        <RosterTooltip card={hoverTip?.card} position={hoverTip?.position} />
+          <RosterTooltip card={hoverTip?.card} position={hoverTip?.position} />
+        </div>
+        <div className="map-controls" aria-label="Map controls">
+          <button className="map-control-button" type="button" onClick={zoomIn} aria-label="Zoom in" data-tooltip="Zoom in">+</button>
+          <button className="map-control-button" type="button" onClick={zoomOut} aria-label="Zoom out" data-tooltip="Zoom out">−</button>
+          <button className="map-control-button" type="button" onClick={locateCurrentState} disabled={isLocating} aria-label="Use my location" data-tooltip="My location">
+            <Icon name="locate" size={16} strokeWidth={2} />
+          </button>
+          <button className="map-control-button" type="button" onClick={resetMap} aria-label="Reset map" data-tooltip="Reset map">
+            <Icon name="reset" size={16} strokeWidth={2} />
+          </button>
+          <div className="map-controls-divider" aria-hidden="true" />
+          <button
+            className={`map-control-button${showCompleted ? " is-active" : ""}`}
+            type="button"
+            onClick={onToggleCompleted}
+            aria-label="Toggle show completed states"
+            aria-pressed={showCompleted}
+            data-tooltip="Show completed"
+          >
+            <Icon name="check" size={16} strokeWidth={2.5} />
+          </button>
+          <div className="map-filter-wrap" ref={filterRef}>
+            <button
+              className={`map-control-button${filterOpen ? " is-active" : ""}`}
+              type="button"
+              onClick={() => setFilterOpen((o) => !o)}
+              aria-label="Filter data view"
+              aria-expanded={filterOpen}
+              data-tooltip="Filter data"
+            >
+              <Icon name="filter" size={16} strokeWidth={2} />
+            </button>
+            {filterOpen && (
+              <div className="map-filter-menu" role="menu">
+                {dataScopeOptions.map((option) => (
+                  <button
+                    key={option.id}
+                    role="menuitem"
+                    className={`map-filter-option${activeDataScope === option.id ? " is-active" : ""}`}
+                    onClick={() => { onDataScopeChange(option.id); setFilterOpen(false); }}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
       </div>
       <SignalLegend />
       <MapProgressBar discovered={discoveredCodes.size} total={totalStates} />

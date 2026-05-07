@@ -46,7 +46,7 @@ function SourceMethodPanel({ refs }) {
   );
 }
 
-function StateChallengePanel({ stateName, isUnlocked, onOpenChallenge }) {
+function StateChallengePanel({ stateName, onOpenChallenge }) {
   return (
     <section className="state-challenge-panel" aria-label={`${stateName} state challenge`}>
       <div className="state-challenge-copy">
@@ -58,7 +58,7 @@ function StateChallengePanel({ stateName, isUnlocked, onOpenChallenge }) {
         </p>
       </div>
       <button className="primary-button state-challenge-button" type="button" onClick={onOpenChallenge}>
-        {isUnlocked ? "Replay Challenge" : "Play Challenge"}
+        Play Challenge
       </button>
     </section>
   );
@@ -487,7 +487,7 @@ function UnifiedStateCard({
   isBackExpanded,
   onBackExpandedChange,
   panelManifest = EMPTY_CARD_PANEL_MANIFEST,
-  isUnlocked = false
+  onCollect
 }) {
   const [flipped, setFlipped] = useState(false);
   const [displayBack, setDisplayBack] = useState(false);
@@ -548,7 +548,7 @@ function UnifiedStateCard({
       window.removeEventListener("resize", updateScrollCue);
       resizeObserver?.disconnect();
     };
-  }, [card.stateCode, isBackExpanded, briefing, briefingLoading, isUnlocked]);
+  }, [card.stateCode, isBackExpanded, briefing, briefingLoading]);
 
   function toggleFlip() {
     if (flipPhase !== null) return;
@@ -558,6 +558,7 @@ function UnifiedStateCard({
     const t1 = setTimeout(() => {
       const next = !flipped;
       if (!next) onBackExpandedChange?.(false);
+      if (next) onCollect?.();
       setFlipped(next);
       setDisplayBack(next);
       setFlipPhase("in");
@@ -601,7 +602,6 @@ function UnifiedStateCard({
 
   const frontClass = [
     "sports-card-face sports-card-front",
-    !isUnlocked ? "is-locked" : "",
     displayBack ? "face-hidden" : "",
     !displayBack && flipPhase === "out" ? "flip-out" : "",
     !displayBack && flipPhase === "in" ? "flip-in" : "",
@@ -679,7 +679,7 @@ function UnifiedStateCard({
                     </section>
                     <BriefingPanel payload={briefing} loading={briefingLoading} onRefresh={onRefreshBriefing} compact card={card} />
                     <SourceMethodPanel refs={sourceRefs} />
-                    <StateChallengePanel stateName={card.stateName} isUnlocked={isUnlocked} onOpenChallenge={onOpenChallenge} />
+                    <StateChallengePanel stateName={card.stateName} onOpenChallenge={onOpenChallenge} />
                   </div>
 
                   {hasMoreFullBackScroll && (

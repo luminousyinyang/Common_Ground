@@ -151,8 +151,12 @@ html[data-surface="blacktop"] .landing-hero-content .ghost-button {
 
 .landing-features {
   padding: clamp(var(--space-8), 9vw, var(--space-9)) 0;
-  background: var(--surface);
+  background: color-mix(in srgb, var(--surface-soft) 60%, var(--paper));
   scroll-margin-top: var(--space-8);
+}
+
+html[data-surface="blacktop"] .landing-features {
+  background: var(--surface-soft);
 }
 
 .landing-features .landing-section-inner {
