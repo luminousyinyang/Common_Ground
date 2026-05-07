@@ -1,5 +1,6 @@
 import React, { useLayoutEffect, useRef, useState } from "react";
 import TopNav from "../components/navigation/TopNav.jsx";
+import AppFooter from "../components/common/AppFooter.jsx";
 import {
   authErrorMessage,
   loginWithEmail,
@@ -216,19 +217,7 @@ function LoginPage({
         </div>
       </div>
 
-      <footer className="landing-footer">
-        <div className="landing-footer-inner">
-          <div>
-            <strong className="landing-footer-brand">Common Ground</strong>
-            <p>Geography-powered fan discovery</p>
-          </div>
-          <nav className="landing-footer-nav" aria-label="Footer">
-            <button className="landing-footer-link" type="button" onClick={() => onNavigate("/map")}>Map</button>
-            <button className="landing-footer-link" type="button" onClick={() => onNavigate("/collection")}>Collection</button>
-            <button className="landing-footer-link" type="button" onClick={() => onNavigate("/methodology")}>Methodology</button>
-          </nav>
-        </div>
-      </footer>
+      <AppFooter onNavigate={onNavigate} isLoggedIn={isLoggedIn} onLogout={onLogout} />
     </div>
   );
 }
