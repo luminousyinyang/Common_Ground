@@ -1,6 +1,7 @@
 import React from "react";
 import TopNav from "../components/navigation/TopNav.jsx";
 import Icon from "../components/common/Icon.jsx";
+import AppFooter from "../components/common/AppFooter.jsx";
 
 function LandingPage({ onNavigate, onLogin, onLogout, darkMode, onToggleDarkMode, onOpenHelp, authLoading, isLoggedIn, user }) {
   return (
@@ -73,19 +74,7 @@ function LandingPage({ onNavigate, onLogin, onLogout, darkMode, onToggleDarkMode
         </div>
       </section>
 
-      <footer className="landing-footer">
-        <div className="landing-footer-inner">
-          <div>
-            <strong className="landing-footer-brand">Common Ground</strong>
-            <p>Team USA hometown discovery tool</p>
-          </div>
-          <nav className="landing-footer-nav" aria-label="Footer">
-            <button className="landing-footer-link" type="button" onClick={() => onNavigate("/map")}>Map</button>
-            <button className="landing-footer-link" type="button" onClick={() => onNavigate("/collection")}>Collection</button>
-            <button className="landing-footer-link" type="button" onClick={isLoggedIn ? onLogout : () => onNavigate("/login")}>{isLoggedIn ? "Log out" : "Login"}</button>
-          </nav>
-        </div>
-      </footer>
+      <AppFooter onNavigate={onNavigate} isLoggedIn={isLoggedIn} onLogout={onLogout} />
     </div>
   );
 }
