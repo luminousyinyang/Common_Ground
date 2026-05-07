@@ -27,6 +27,16 @@ function MapProgressBar({ discovered, total }) {
   );
 }
 
+const TERRITORY_INSET = {
+  x: 956,
+  y: 456,
+  width: 146,
+  height: 118,
+  gap: 18,
+  paddingX: 12,
+  paddingY: 10
+};
+
 function RosterTooltip({ card, position }) {
   if (!card || !position) return null;
   const counts = getRosterCounts(card);
@@ -71,11 +81,21 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
     }),
     [cardsByCode, geoFeatures, projectedFeatureCodes]
   );
-  const territoryPath = useMemo(() => {
-    if (!territoryFeatures.length) return null;
-    const collection = { type: "FeatureCollection", features: territoryFeatures };
-    const projection = geoMercator().fitExtent([[30, 6], [142, 50]], collection);
-    return geoPath(projection);
+  const territoryLayouts = useMemo(() => {
+    return territoryFeatures.map((item) => {
+      const collection = { type: "FeatureCollection", features: [item] };
+      const projection = geoMercator().fitExtent(
+        [
+          [TERRITORY_INSET.paddingX, TERRITORY_INSET.paddingY],
+          [TERRITORY_INSET.width - TERRITORY_INSET.paddingX, TERRITORY_INSET.height - TERRITORY_INSET.paddingY]
+        ],
+        collection
+      );
+      return {
+        item,
+        path: geoPath(projection)
+      };
+    });
   }, [territoryFeatures]);
   const selectedCard = cardsByCode.get(selectedCode);
 
@@ -386,9 +406,9 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
                 })}
               </g>
             )}
-            {territoryPath && territoryFeatures.length > 0 && (
-              <g className="territory-inset-layer" transform="translate(846 510)">
-                {territoryFeatures.map((item, index) => {
+            {territoryLayouts.length > 0 && (
+              <g className="territory-inset-layer" transform={`translate(${TERRITORY_INSET.x} ${TERRITORY_INSET.y})`}>
+                {territoryLayouts.map(({ item, path: insetPath }, index) => {
                   const code = item.properties.stateCode;
                   const card = cardsByCode.get(code);
                   const counts = getRosterCounts(card);
@@ -404,7 +424,7 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
                       key={code}
                       className={className}
                       data-state-code={code}
-                      transform={`translate(${index * 150} 0)`}
+                      transform={`translate(${index * (TERRITORY_INSET.width + TERRITORY_INSET.gap)} 0)`}
                       role="button"
                       tabIndex={0}
                       aria-label={`View ${card.stateName} state insights — ${counts.olympic} Olympic, ${counts.paralympic} Paralympic athletes`}
@@ -430,8 +450,8 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
                         }
                       }}
                     >
-                      <rect className="territory-inset-hit" x="34" y="8" width="104" height="40" rx="6" />
-                      <path className="territory-inset-shape" d={territoryPath(item)} />
+                      <rect className="territory-inset-hit" x="0" y="0" width={TERRITORY_INSET.width} height={TERRITORY_INSET.height} rx="10" />
+                      <path className="territory-inset-shape" d={insetPath(item)} />
                     </g>
                   );
                 })}
