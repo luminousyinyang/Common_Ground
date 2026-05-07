@@ -5,7 +5,7 @@ import {
   briefingSections,
   compactPanelCopy,
   compactStateConnection,
-  datasetLabelForCard,
+  featuredPanelsForCard,
   featuredSportsIntro,
   getCardThemeName,
   getGeographySignals,
@@ -53,16 +53,24 @@ function lowerFirstCopy(value = "") {
 
 function StateChallengePanel({ card, onOpenChallenge, isUnlocked }) {
   const stateName = card?.stateName || "This state";
+  const featuredPanels = featuredPanelsForCard(card);
+  const isSinglePanel = featuredPanels.length === 1;
   const olympicCue = getPanelVisualCue(card?.olympicPanel);
   const paralympicCue = getPanelVisualCue(card?.paralympicPanel);
+  const onlyPanel = featuredPanels[0];
+  const onlyCue = onlyPanel ? getPanelVisualCue(onlyPanel) : "";
+  const onlyProgram = onlyPanel?.program === "paralympic" ? "Paralympic" : "Olympic";
   const traitName = lowerFirstCopy(plainTraitHeadline(card));
   const actionCopy = isUnlocked ? "Play anytime." : `Play to unlock the ${stateName} state card.`;
+  const challengeCopy = isSinglePanel
+    ? `${actionCopy} This quick challenge is inspired by ${onlyCue}, the featured ${onlyProgram} sport on this card. Get a feel for its featured sport trait: ${traitName}.`
+    : `${actionCopy} This quick challenge is inspired by ${olympicCue} and ${paralympicCue}, the featured sports on this card. Get a feel for their shared trait: ${traitName}.`;
 
   return (
     <section className="state-challenge-panel" aria-label={`${stateName} state challenge`}>
       <div className="state-challenge-copy">
         <span className="footer-panel-kicker">Fan Challenge</span>
-        <p>{actionCopy} This quick challenge is inspired by {olympicCue} and {paralympicCue}, the featured sports on this card. Get a feel for their shared trait: {traitName}.</p>
+        <p>{challengeCopy}</p>
       </div>
       <button className="primary-button state-challenge-button" type="button" onClick={onOpenChallenge}>
         Play Challenge
@@ -80,7 +88,7 @@ function SportPanel({ panel }) {
     .filter(([, , value]) => String(value || "").trim());
 
   return (
-    <section className="panel">
+    <section className={`panel ${panel.program}`}>
       <div className="panel-label">
         <span className={`program-tag ${panel.program}`}>{panelProgramLabel(panel)}</span>
       </div>
@@ -109,9 +117,10 @@ function SportPanel({ panel }) {
 }
 
 function FeaturedSportsIntro({ card }) {
+  const featuredPanels = featuredPanelsForCard(card);
   return (
     <section className="featured-sports-intro">
-      <span>Featured sport lenses</span>
+      <span>{featuredPanels.length === 1 ? "Featured sport lens" : "Featured sport lenses"}</span>
       <p>{featuredSportsIntro(card)}</p>
     </section>
   );
@@ -122,9 +131,7 @@ function SportMixSidePreview({ label, card, panel }) {
   const detail = sportMixPreviewDetail(card, panel, label.replace(/ sports$/i, ""));
 
   if (!allSports.length) {
-    return (
-      <p><strong>{label}:</strong> {panel?.sportFamily || "No sourced sport-family view"} appears in the {datasetLabelForCard(card)}.</p>
-    );
+    return null;
   }
 
   return <p><strong>{label}:</strong> {detail}</p>;
@@ -177,8 +184,8 @@ function SportMixSection({ card, value }) {
   const paralympicFeatured = panelFeaturedSportList(card?.paralympicPanel);
   const canShowAll = olympicSports.length > olympicFeatured.length || paralympicSports.length > paralympicFeatured.length;
   const groups = [
-    { label: "Olympic sports", sports: olympicSports },
-    { label: "Paralympic sports", sports: paralympicSports }
+    { label: "Olympic sports", sports: olympicSports, panel: card.olympicPanel },
+    { label: "Paralympic sports", sports: paralympicSports, panel: card.paralympicPanel }
   ].filter((group) => group.sports.length);
 
   useEffect(() => {
@@ -200,8 +207,9 @@ function SportMixSection({ card, value }) {
   return (
     <div className="sport-mix-block">
       <div className="sport-mix-preview-list">
-        <SportMixSidePreview label="Olympic sports" card={card} panel={card.olympicPanel} />
-        <SportMixSidePreview label="Paralympic sports" card={card} panel={card.paralympicPanel} />
+        {groups.map((group) => (
+          <SportMixSidePreview key={group.label} label={group.label} card={card} panel={group.panel} />
+        ))}
       </div>
       {canShowAll && (
         <button className="ghost-button small sport-mix-see-all-button" type="button" onClick={() => setShowAll(true)}>
@@ -368,6 +376,9 @@ function CompactCardBack({ card, briefing, onReadFullBriefing }) {
   const scrollRef = useRef(null);
   const [hasMoreToScroll, setHasMoreToScroll] = useState(false);
   const themeName = getCardThemeName(card);
+  const featuredPanels = featuredPanelsForCard(card);
+  const displayPanels = featuredPanels.length ? featuredPanels : [card.olympicPanel, card.paralympicPanel].filter(Boolean);
+  const isSinglePanel = displayPanels.length === 1;
   const olympicCue = getPanelVisualCue(card.olympicPanel);
   const paralympicCue = getPanelVisualCue(card.paralympicPanel);
 
@@ -426,13 +437,12 @@ function CompactCardBack({ card, briefing, onReadFullBriefing }) {
           <p>{themeName}</p>
         </header>
 
-        <div className="compact-lens-grid">
-          <CompactSportLens panel={card.olympicPanel} />
-          <CompactSportLens panel={card.paralympicPanel} />
+        <div className={`compact-lens-grid ${isSinglePanel ? "is-single-panel" : ""}`}>
+          {displayPanels.map((panel) => <CompactSportLens key={panel.program} panel={panel} />)}
         </div>
 
         <section className="compact-shared-block">
-          <span>Why these sports connect</span>
+          <span>{isSinglePanel ? "Featured sport trait" : "Why these sports connect"}</span>
           <strong>{plainTraitHeadline(card)}</strong>
           <p>{traitConnectionSentence(card, olympicCue, paralympicCue)}</p>
         </section>
@@ -501,6 +511,9 @@ function UnifiedStateCard({
   const flipTimers = useRef([]);
   const [hasMoreFullBackScroll, setHasMoreFullBackScroll] = useState(false);
   const counts = getRosterCounts(card);
+  const featuredPanels = featuredPanelsForCard(card);
+  const displayPanels = featuredPanels.length ? featuredPanels : [card.olympicPanel, card.paralympicPanel].filter(Boolean);
+  const isSinglePanel = displayPanels.length === 1;
   const olympicCue = getPanelVisualCue(card.olympicPanel);
   const paralympicCue = getPanelVisualCue(card.paralympicPanel);
 
@@ -658,13 +671,12 @@ function UnifiedStateCard({
                     </div>
                     <HometownAreasCard card={card} payload={briefing} compact />
                     <FeaturedSportsIntro card={card} />
-                    <div className="program-panel-grid">
-                      <SportPanel panel={card.olympicPanel} />
-                      <SportPanel panel={card.paralympicPanel} />
+                    <div className={`program-panel-grid ${isSinglePanel ? "is-single-panel" : ""}`}>
+                      {displayPanels.map((panel) => <SportPanel key={panel.program} panel={panel} />)}
                     </div>
                     <section className="trait-band">
                       <div className="trait-heading-copy">
-                        <h3>Why these sports connect</h3>
+                        <h3>{isSinglePanel ? "Featured Sport Trait" : "Why these sports connect"}</h3>
                         <p>{plainTraitHeadline(card)}</p>
                       </div>
                       <p className="trait-description">{traitConnectionSentence(card, olympicCue, paralympicCue)}</p>
