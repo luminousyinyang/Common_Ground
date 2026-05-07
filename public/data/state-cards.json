@@ -5,20 +5,8 @@
     "updatedAt": "2026-05-06",
     "dataScopes": [
       {
-        "id": "both",
-        "label": "Paris 2024 + Milano Cortina 2026",
-        "shortLabel": "Both",
-        "description": "Olympic Games Paris 2024, Paralympic Games Paris 2024, Olympic Winter Games Milano Cortina 2026, and Paralympic Winter Games Milano Cortina 2026 public rosters.",
-        "rosterSourceIds": [
-          "paris2024Olympic",
-          "paris2024Paralympic",
-          "milanoCortina2026Olympic",
-          "milanoCortina2026Paralympic"
-        ]
-      },
-      {
         "id": "paris2024",
-        "label": "Paris 2024",
+        "label": "Olympic Games Paris 2024",
         "shortLabel": "Paris 2024",
         "description": "Olympic Games Paris 2024 and Paralympic Games Paris 2024 public rosters.",
         "rosterSourceIds": [
@@ -28,10 +16,22 @@
       },
       {
         "id": "milanoCortina2026",
-        "label": "Milano Cortina 2026",
+        "label": "Olympic Winter Games Milano Cortina 2026",
         "shortLabel": "Milano Cortina 2026",
         "description": "Olympic Winter Games Milano Cortina 2026 and Paralympic Winter Games Milano Cortina 2026 public rosters.",
         "rosterSourceIds": [
+          "milanoCortina2026Olympic",
+          "milanoCortina2026Paralympic"
+        ]
+      },
+      {
+        "id": "both",
+        "label": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+        "shortLabel": "Both",
+        "description": "Olympic Games Paris 2024, Paralympic Games Paris 2024, Olympic Winter Games Milano Cortina 2026, and Paralympic Winter Games Milano Cortina 2026 public rosters.",
+        "rosterSourceIds": [
+          "paris2024Olympic",
+          "paris2024Paralympic",
           "milanoCortina2026Olympic",
           "milanoCortina2026Paralympic"
         ]

@@ -46,7 +46,7 @@ function SourceMethodPanel({ refs }) {
   );
 }
 
-function StateChallengePanel({ stateName, onOpenChallenge }) {
+function StateChallengePanel({ stateName, onOpenChallenge, isUnlocked }) {
   return (
     <section className="state-challenge-panel" aria-label={`${stateName} state challenge`}>
       <div className="state-challenge-copy">
@@ -487,7 +487,8 @@ function UnifiedStateCard({
   isBackExpanded,
   onBackExpandedChange,
   panelManifest = EMPTY_CARD_PANEL_MANIFEST,
-  onCollect
+  onCollect,
+  isUnlocked
 }) {
   const [flipped, setFlipped] = useState(false);
   const [displayBack, setDisplayBack] = useState(false);
@@ -679,7 +680,7 @@ function UnifiedStateCard({
                     </section>
                     <BriefingPanel payload={briefing} loading={briefingLoading} onRefresh={onRefreshBriefing} compact card={card} />
                     <SourceMethodPanel refs={sourceRefs} />
-                    <StateChallengePanel stateName={card.stateName} onOpenChallenge={onOpenChallenge} />
+                    <StateChallengePanel stateName={card.stateName} onOpenChallenge={onOpenChallenge} isUnlocked={isUnlocked} />
                   </div>
 
                   {hasMoreFullBackScroll && (

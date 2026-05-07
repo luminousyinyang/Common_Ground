@@ -93,6 +93,7 @@ function App() {
   const [loadError, setLoadError] = useState(null);
   const [isCardModalOpen, setIsCardModalOpen] = useState(false);
   const [discoveredCodes, setDiscoveredCodes] = useState(() => new Set());
+  const [playedCodes, setPlayedCodes] = useState(() => new Set());
   const [panelManifest, setPanelManifest] = useState(EMPTY_CARD_PANEL_MANIFEST);
   const [dataScope, setDataScope] = useState("paris2024");
   const [showCompleted, setShowCompleted] = useState(() => {
@@ -122,6 +123,21 @@ function App() {
       // Local storage is optional for the guest collection.
     }
   }, [discoveredCodes]);
+
+  useEffect(() => {
+    try {
+      const saved = JSON.parse(window.localStorage.getItem("common-ground-played") || "[]");
+      if (Array.isArray(saved) && saved.length) setPlayedCodes(new Set(saved));
+    } catch {
+      setPlayedCodes(new Set());
+    }
+  }, []);
+
+  useEffect(() => {
+    try {
+      window.localStorage.setItem("common-ground-played", JSON.stringify([...playedCodes]));
+    } catch {}
+  }, [playedCodes]);
 
   useEffect(() => {
     try {
@@ -271,6 +287,15 @@ function App() {
     });
   }
 
+  function markPlayed(code) {
+    setPlayedCodes((current) => {
+      const next = new Set(current);
+      next.add(code);
+      return next;
+    });
+    markDiscovered(code);
+  }
+
   function selectState(code, openCard = true) {
     setSelectedCode(code);
     if (openCard) setIsCardModalOpen(true);
@@ -382,6 +407,7 @@ function App() {
                 briefing={briefing}
                 onReturn={() => navigate("/map")}
                 panelManifest={activePanelManifest}
+                onGameComplete={() => markPlayed(selectedCode)}
               />
             )
           } />
@@ -403,6 +429,7 @@ function App() {
           onClose={() => setIsCardModalOpen(false)}
           panelManifest={activePanelManifest}
           onCollect={() => markDiscovered(selectedCode)}
+          isUnlocked={playedCodes.has(selectedCode)}
         />
       )}
     </>

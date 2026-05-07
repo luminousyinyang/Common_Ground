@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { getCardThemeLabel, plainTraitHeadline, titleBucket } from "../../lib/stateCard.js";
 import Icon from "../common/Icon.jsx";
 import CardArt from "../cards/CardArt.jsx";
@@ -58,21 +58,13 @@ function MiniStateCard({ card, discovered, onSelect, panelManifest }) {
   );
 }
 
-function CollectionView({ states, discoveredCodes, onSelect, panelManifest, isLoggedIn, onLogin }) {
+function CollectionView({ states, discoveredCodes, onSelect, panelManifest, isLoggedIn, authLoading, collectionSyncError, onLogin }) {
   const [activeRegion, setActiveRegion] = useState("all");
   const allDiscovered = states.filter((card) => discoveredCodes.has(card.stateCode));
   const allUndiscovered = states.filter((card) => !discoveredCodes.has(card.stateCode));
   const discoveredStates = filterByRegion(allDiscovered, activeRegion);
   const previewStates = filterByRegion(allUndiscovered, activeRegion).slice(0, 12);
   const remaining = allUndiscovered.length;
-
-  return (
-    <section className="collection-view">
-      {!isLoggedIn && (
-function CollectionView({ states, discoveredCodes, onSelect, panelManifest, isLoggedIn, authLoading, collectionSyncError, onLogin }) {
-  const discoveredStates = states.filter((card) => discoveredCodes.has(card.stateCode));
-  const previewStates = states.filter((card) => !discoveredCodes.has(card.stateCode)).slice(0, 12);
-  const remaining = states.length - discoveredStates.length;
 
   return (
     <section className="collection-view page-panel">
