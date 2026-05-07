@@ -10,7 +10,7 @@ function SignalLegend() {
       <span className="legend-item"><i className="signal-dot high" /><span>High representation</span></span>
       <span className="legend-item"><i className="signal-dot medium" /><span>Medium</span></span>
       <span className="legend-item"><i className="signal-dot low" /><span>Low</span></span>
-      <span className="legend-item"><i className="signal-dot insufficient_data" /><span>Limited data</span></span>
+      <span className="legend-item"><i className="signal-dot no-athletes" /><span>No athletes</span></span>
     </div>
   );
 }
@@ -40,6 +40,7 @@ const TERRITORY_INSET = {
 function RosterTooltip({ card, position }) {
   if (!card || !position) return null;
   const counts = getRosterCounts(card);
+  const hasAthletes = counts.total > 0;
 
   return (
     <div
@@ -48,9 +49,15 @@ function RosterTooltip({ card, position }) {
       aria-hidden="true"
     >
       <strong>{card.stateName}</strong>
-      <span>Olympic athletes: {counts.olympic}</span>
-      <span>Paralympic athletes: {counts.paralympic}</span>
-      <span>Total: {counts.total}</span>
+      {hasAthletes ? (
+        <>
+          <span>Olympic athletes: {counts.olympic}</span>
+          <span>Paralympic athletes: {counts.paralympic}</span>
+          <span>Total: {counts.total}</span>
+        </>
+      ) : (
+        <span>No athletes in this dataset</span>
+      )}
     </div>
   );
 }
@@ -64,6 +71,7 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
   const [filterOpen, setFilterOpen] = useState(false);
   const svgRef = useRef(null);
   const dragRef = useRef(null);
+  const pinchRef = useRef(null);
   const viewportRef = useRef(viewport);
   const suppressClickRef = useRef(false);
   const filterRef = useRef(null);
@@ -129,20 +137,53 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
     svg.addEventListener("wheel", onWheel, { passive: false });
 
     function onTouchStart(e) {
+      if (e.touches.length === 2) {
+        e.preventDefault();
+        dragRef.current = null;
+        setIsDragging(false);
+        const [t1, t2] = [e.touches[0], e.touches[1]];
+        pinchRef.current = {
+          distance: getTouchDistance(t1, t2),
+          midpoint: getTouchMidpoint(t1, t2),
+          viewport: { ...viewportRef.current },
+        };
+        return;
+      }
       if (e.touches.length !== 1) return;
       const t = e.touches[0];
       startDrag(t.clientX, t.clientY);
     }
     function onTouchMove(e) {
+      if (e.touches.length === 2 && pinchRef.current) {
+        e.preventDefault();
+        const [t1, t2] = [e.touches[0], e.touches[1]];
+        const newDist = getTouchDistance(t1, t2);
+        const newMid = getTouchMidpoint(t1, t2);
+        const { distance: initDist, midpoint: initMid, viewport: initVp } = pinchRef.current;
+        const ratio = newDist / initDist;
+        const newScale = clampScale(initVp.scale * ratio);
+        const initAnchor = clientToViewBox(initMid.x, initMid.y);
+        const mapX = (initAnchor.x - initVp.x) / initVp.scale;
+        const mapY = (initAnchor.y - initVp.y) / initVp.scale;
+        const curAnchor = clientToViewBox(newMid.x, newMid.y);
+        suppressClickRef.current = true;
+        setViewport({
+          scale: newScale,
+          x: curAnchor.x - mapX * newScale,
+          y: curAnchor.y - mapY * newScale,
+        });
+        return;
+      }
       if (!dragRef.current) return;
       e.preventDefault();
       const t = e.touches[0];
       updateDrag(t.clientX, t.clientY);
     }
-    function onTouchEnd() {
-      endDrag();
+    function onTouchEnd(e) {
+      if (!e || e.touches.length < 2) pinchRef.current = null;
+      if (!e || e.touches.length === 0) endDrag();
     }
-    svg.addEventListener("touchstart", onTouchStart, { passive: true });
+    svg.addEventListener("touchstart", onTouchStart, { passive: false });
     svg.addEventListener("touchmove", onTouchMove, { passive: false });
     svg.addEventListener("touchend", onTouchEnd);
     svg.addEventListener("touchcancel", onTouchEnd);
@@ -289,6 +330,16 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
     }
   }
 
+  function getTouchDistance(t1, t2) {
+    const dx = t1.clientX - t2.clientX;
+    const dy = t1.clientY - t2.clientY;
+    return Math.sqrt(dx * dx + dy * dy);
+  }
+
+  function getTouchMidpoint(t1, t2) {
+    return { x: (t1.clientX + t2.clientX) / 2, y: (t1.clientY + t2.clientY) / 2 };
+  }
+
   function startDrag(clientX, clientY) {
     const currentViewport = viewportRef.current;
     if (currentViewport.scale <= 1) return false;
@@ -380,10 +431,11 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
                 const card = cardsByCode.get(code);
                 const counts = getRosterCounts(card);
                 const signal = card?.hometownPresenceBucket || "insufficient_data";
+                const noAthletes = counts.total === 0;
                 const className = [
                   "state-path",
                   card ? "has-data" : "no-data",
-                  signal,
+                  noAthletes ? "no-athletes" : signal,
                   code === selectedCode ? "is-selected" : "",
                   discoveredCodes.has(code) ? "is-discovered" : ""
                 ].filter(Boolean).join(" ");
@@ -394,9 +446,9 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
                     className={className}
                     d={path(item)}
                     data-state-code={code}
-                    role={card ? "button" : "img"}
-                    tabIndex={card ? 0 : -1}
-                    aria-label={card ? `View ${card.stateName} state insights — ${counts.olympic} Olympic, ${counts.paralympic} Paralympic athletes` : `${item.properties.name} — no state data loaded`}
+                    role={card && !noAthletes ? "button" : "img"}
+                    tabIndex={card && !noAthletes ? 0 : -1}
+                    aria-label={card ? `${card.stateName} — ${noAthletes ? "no athletes in this dataset" : `${counts.olympic} Olympic, ${counts.paralympic} Paralympic athletes`}` : `${item.properties.name} — no state data loaded`}
                     onMouseEnter={(event) => describeFeature(item, event)}
                     onMouseMove={(event) => describeFeature(item, event)}
                     onFocus={() => describeFeature(item)}
@@ -406,7 +458,7 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
                     }}
                     onBlur={() => selectedCard && setHint(formatMapHint(selectedCard))}
                     onClick={(event) => {
-                      if (suppressClickRef.current) {
+                      if (suppressClickRef.current || noAthletes) {
                         event.preventDefault();
                         return;
                       }
@@ -446,10 +498,11 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
                   const code = item.properties.stateCode;
                   const card = cardsByCode.get(code);
                   const counts = getRosterCounts(card);
+                  const noAthletes = counts.total === 0;
                   const signal = card?.hometownPresenceBucket || "insufficient_data";
                   const className = [
                     "territory-inset",
-                    signal,
+                    noAthletes ? "no-athletes" : signal,
                     code === selectedCode ? "is-selected" : ""
                   ].filter(Boolean).join(" ");
 
@@ -459,9 +512,9 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
                       className={className}
                       data-state-code={code}
                       transform={`translate(${index * (TERRITORY_INSET.width + TERRITORY_INSET.gap)} 0)`}
-                      role="button"
-                      tabIndex={0}
-                      aria-label={`View ${card.stateName} state insights — ${counts.olympic} Olympic, ${counts.paralympic} Paralympic athletes`}
+                      role={noAthletes ? "img" : "button"}
+                      tabIndex={noAthletes ? -1 : 0}
+                      aria-label={`${card.stateName} — ${noAthletes ? "no athletes in this dataset" : `${counts.olympic} Olympic, ${counts.paralympic} Paralympic athletes`}`}
                       onMouseEnter={(event) => describeFeature(item, event)}
                       onMouseMove={(event) => describeFeature(item, event)}
                       onFocus={() => describeFeature(item)}
@@ -471,14 +524,14 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
                       }}
                       onBlur={() => selectedCard && setHint(formatMapHint(selectedCard))}
                       onClick={(event) => {
-                        if (suppressClickRef.current) {
+                        if (suppressClickRef.current || noAthletes) {
                           event.preventDefault();
                           return;
                         }
                         onSelect(card.stateCode);
                       }}
                       onKeyDown={(event) => {
-                        if (event.key === "Enter" || event.key === " ") {
+                        if (!noAthletes && (event.key === "Enter" || event.key === " ")) {
                           event.preventDefault();
                           onSelect(card.stateCode);
                         }

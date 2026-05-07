@@ -138,7 +138,22 @@
   opacity: 0.76;
 }
 
-.state-path.has-data {
+.state-path.no-athletes {
+  fill: var(--map-limited);
+  opacity: 0.28;
+  cursor: default;
+}
+
+.territory-inset.no-athletes {
+  cursor: default;
+}
+
+.territory-inset.no-athletes .territory-inset-shape {
+  fill: var(--map-limited);
+  opacity: 0.28;
+}
+
+.state-path.has-data:not(.no-athletes) {
   cursor: pointer;
 }
 
@@ -415,6 +430,11 @@
   height: 11px;
   border-radius: 3px;
   background: #7c8da5;
+  border: 1.5px solid rgba(0, 0, 0, 0.8);
+}
+
+html[data-surface="blacktop"] .signal-dot {
+  border-color: rgba(255, 255, 255, 0.8);
 }
 
 .signal-dot.high {
@@ -433,22 +453,26 @@
   background: var(--map-limited);
 }
 
+.signal-dot.no-athletes {
+  background: color-mix(in srgb, var(--map-limited) 28%, transparent);
+}
+
 @media (hover: hover) {
-  .state-path:hover {
+  .state-path:not(.no-athletes):hover {
     fill: #CEA04E;
     opacity: 1;
   }
 
-  .territory-inset:hover .territory-inset-shape {
+  .territory-inset:not(.no-athletes):hover .territory-inset-shape {
     fill: #CEA04E;
     opacity: 1;
   }
 
-  html[data-surface="blacktop"] .state-path:hover {
+  html[data-surface="blacktop"] .state-path:not(.no-athletes):hover {
     fill: #f5e9a0;
   }
 
-  html[data-surface="blacktop"] .territory-inset:hover .territory-inset-shape {
+  html[data-surface="blacktop"] .territory-inset:not(.no-athletes):hover .territory-inset-shape {
     fill: #f5e9a0;
   }
 
