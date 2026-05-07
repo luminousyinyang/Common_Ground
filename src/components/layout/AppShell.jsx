@@ -2,14 +2,18 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import TopNav from "../navigation/TopNav.jsx";
 
-function AppShell({ onNavigate, onLogin, darkMode, onToggleDarkMode }) {
+function AppShell({ onNavigate, onLogin, onLogout, darkMode, onToggleDarkMode, authLoading, isLoggedIn, user }) {
   return (
     <div className="app-frame-v2">
       <TopNav
         onNavigate={onNavigate}
         onLogin={onLogin}
+        onLogout={onLogout}
         darkMode={darkMode}
         onToggleDarkMode={onToggleDarkMode}
+        authLoading={authLoading}
+        isLoggedIn={isLoggedIn}
+        user={user}
       />
       <div className="workspace-v2">
         <main>
@@ -25,7 +29,7 @@ function AppShell({ onNavigate, onLogin, darkMode, onToggleDarkMode }) {
           <nav className="landing-footer-nav" aria-label="Footer">
             <button className="landing-footer-link" type="button" onClick={() => onNavigate("/map")}>Map</button>
             <button className="landing-footer-link" type="button" onClick={() => onNavigate("/collection")}>Collection</button>
-            <button className="landing-footer-link" type="button" onClick={() => onNavigate("/login")}>Login</button>
+            <button className="landing-footer-link" type="button" onClick={isLoggedIn ? onLogout : () => onNavigate("/login")}>{isLoggedIn ? "Log out" : "Login"}</button>
           </nav>
         </div>
       </footer>

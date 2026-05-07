@@ -2,3 +2,10 @@ node_modules
 .git
 .DS_Store
 npm-debug.log
+.env
+.env.*
+ServiceAccountKey.json
+*ServiceAccount*.json
+*service-account*.json
+*firebase-adminsdk*.json
+*credentials*.json

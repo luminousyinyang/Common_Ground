@@ -1,4 +1,22 @@
 /* ── Collection login gate ────────────────────────────── */
+.collection-auth-loading,
+.collection-sync-warning {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  margin: 0 0 var(--space-3);
+  padding: 12px 14px;
+  color: var(--copy);
+  background: var(--glass-strong);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.collection-sync-warning {
+  color: #6f2418;
+  background: color-mix(in srgb, var(--paralympic-tint) 72%, white);
+  border-color: color-mix(in srgb, #9d4d32 36%, transparent);
+}
+
 .collection-gate {
   position: relative;
   min-height: 560px;
