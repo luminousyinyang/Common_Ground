@@ -24,6 +24,8 @@ const cardCopyModel = process.env.CARD_COPY_MODEL || process.env.GEMINI_MODEL ||
 const vertexAuthMode = normalizeVertexAuthMode(process.env.VERTEX_AUTH_MODE || "auto");
 const imageMaxAttempts = positiveInteger(process.env.CARD_IMAGE_MAX_ATTEMPTS, 3);
 const imageRetryDelayMs = positiveInteger(process.env.CARD_IMAGE_RETRY_DELAY_MS, 5000);
+const vertexRequestMaxAttempts = positiveInteger(process.env.VERTEX_REQUEST_MAX_ATTEMPTS, Math.max(imageMaxAttempts, 8));
+const vertexRateLimitRetryDelayMs = positiveInteger(process.env.VERTEX_RATE_LIMIT_RETRY_DELAY_MS, 60000);
 const imageRequestTimeoutMs = positiveInteger(process.env.CARD_IMAGE_REQUEST_TIMEOUT_MS, 900000);
 const textRequestTimeoutMs = positiveInteger(process.env.CARD_COPY_REQUEST_TIMEOUT_MS, 120000);
 const PROMPT_VERSION = "common-ground-card-panel-v13-track-surface-logic";
@@ -227,7 +229,9 @@ if (args.dryRun) {
   process.exit(0);
 }
 
-const token = await getAccessToken();
+let vertexAccessToken = "";
+let vertexAccessTokenIssuedAt = 0;
+await refreshVertexAccessToken("startup");
 const manifest = await loadManifest();
 manifest.model = model;
 manifest.cardCopyModel = cardCopyModel;
@@ -301,7 +305,6 @@ for (const card of selectedCards) {
 
     const imageSourcePanel = !args.force && reusablePanel?.url ? reusablePanel : null;
     const cardBackCopy = await getOrGenerateCardBackCopy({
-      token,
       card: scopedCard,
       program,
       existingPanel: existingPanel || reusablePanel,
@@ -336,7 +339,6 @@ for (const card of selectedCards) {
 
     console.log(`Generating ${scopedCard.stateName} ${dataScope.id} ${program} panel with ${model}...`);
     const { imageBuffer, mimeType } = await generateGeminiImageWithRetry({
-      token,
       prompt,
       label: `${scopedCard.stateName} ${dataScope.id} ${program}`
     });
@@ -865,7 +867,7 @@ function currentPanelMetadata({ card, dataScope, program, prompt, copyPrompt, ca
   };
 }
 
-async function getOrGenerateCardBackCopy({ token, card, program, existingPanel, copyPrompt }) {
+async function getOrGenerateCardBackCopy({ card, program, existingPanel, copyPrompt }) {
   const copyPromptHash = hashText(copyPrompt);
   if (
     !args.force &&
@@ -884,7 +886,6 @@ async function getOrGenerateCardBackCopy({ token, card, program, existingPanel, 
 
   for (let attempt = 1; attempt <= imageMaxAttempts; attempt += 1) {
     const rawCopy = await generateGeminiJsonWithRetry({
-      token,
       prompt: validationPrompt,
       modelName: cardCopyModel,
       label: `${card.stateName} ${program} card-back copy`,
@@ -1047,30 +1048,35 @@ function stripRecordCounts(value) {
   );
 }
 
-async function generateGeminiJsonWithRetry({ token, prompt, modelName, label, timeoutMs }) {
+async function generateGeminiJsonWithRetry({ prompt, modelName, label, timeoutMs }) {
   let lastError;
 
-  for (let attempt = 1; attempt <= imageMaxAttempts; attempt += 1) {
+  for (let attempt = 1; attempt <= vertexRequestMaxAttempts; attempt += 1) {
     try {
-      return await generateGeminiJson({ token, prompt, modelName, timeoutMs });
+      return await generateGeminiJson({ prompt, modelName, timeoutMs });
     } catch (error) {
       lastError = error;
-      const retryable = isRetryableVertexImageError(error);
-      if (!retryable || attempt >= imageMaxAttempts) throw error;
-      const delayMs = imageRetryDelayMs * attempt;
-      console.warn(`${label} request failed on attempt ${attempt}/${imageMaxAttempts}: ${error.message}`);
-      console.warn(`Retrying in ${Math.round(delayMs / 1000)}s...`);
-      await sleep(delayMs);
+      const authRefreshable = isRefreshableVertexAuthError(error);
+      const retryable = authRefreshable || isRetryableVertexImageError(error);
+      if (!retryable || attempt >= vertexRequestMaxAttempts) throw error;
+      console.warn(`${label} request failed on attempt ${attempt}/${vertexRequestMaxAttempts}: ${error.message}`);
+      if (authRefreshable) {
+        await refreshVertexAccessToken("auth failure");
+      } else {
+        const delayMs = retryDelayForVertexError(error, attempt);
+        console.warn(`Retrying in ${Math.round(delayMs / 1000)}s...`);
+        await sleep(delayMs);
+      }
     }
   }
 
   throw lastError;
 }
 
-async function generateGeminiJson({ token, prompt, modelName, timeoutMs }) {
+async function generateGeminiJson({ prompt, modelName, timeoutMs }) {
   const response = await postVertexJson(vertexEndpointForModel(modelName), {
     headers: {
-      "Authorization": `Bearer ${token}`,
+      "Authorization": await vertexAuthorizationHeader(),
       "Content-Type": "application/json"
     },
     body: {
@@ -1251,30 +1257,35 @@ function joinList(items) {
   return `${values.slice(0, -1).join(", ")}, and ${values.at(-1)}`;
 }
 
-async function generateGeminiImageWithRetry({ token, prompt, label }) {
+async function generateGeminiImageWithRetry({ prompt, label }) {
   let lastError;
 
-  for (let attempt = 1; attempt <= imageMaxAttempts; attempt += 1) {
+  for (let attempt = 1; attempt <= vertexRequestMaxAttempts; attempt += 1) {
     try {
-      return await generateGeminiImage({ token, prompt });
+      return await generateGeminiImage({ prompt });
     } catch (error) {
       lastError = error;
-      const retryable = isRetryableVertexImageError(error);
-      if (!retryable || attempt >= imageMaxAttempts) {
+      const authRefreshable = isRefreshableVertexAuthError(error);
+      const retryable = authRefreshable || isRetryableVertexImageError(error);
+      if (!retryable || attempt >= vertexRequestMaxAttempts) {
         throw error;
       }
 
-      const delayMs = imageRetryDelayMs * attempt;
-      console.warn(`${label} image request failed on attempt ${attempt}/${imageMaxAttempts}: ${error.message}`);
-      console.warn(`Retrying in ${Math.round(delayMs / 1000)}s...`);
-      await sleep(delayMs);
+      console.warn(`${label} image request failed on attempt ${attempt}/${vertexRequestMaxAttempts}: ${error.message}`);
+      if (authRefreshable) {
+        await refreshVertexAccessToken("auth failure");
+      } else {
+        const delayMs = retryDelayForVertexError(error, attempt);
+        console.warn(`Retrying in ${Math.round(delayMs / 1000)}s...`);
+        await sleep(delayMs);
+      }
     }
   }
 
   throw lastError;
 }
 
-async function generateGeminiImage({ token, prompt }) {
+async function generateGeminiImage({ prompt }) {
   const endpoint = vertexEndpoint();
   const styleReferenceParts = loadStyleReferenceParts();
   const requestBody = {
@@ -1302,7 +1313,7 @@ async function generateGeminiImage({ token, prompt }) {
   };
   const response = await postVertexJson(endpoint, {
     headers: {
-      "Authorization": `Bearer ${token}`,
+      "Authorization": await vertexAuthorizationHeader(),
       "Content-Type": "application/json"
     },
     body: requestBody,
@@ -1415,6 +1426,17 @@ function isRetryableVertexImageError(error) {
     "ECONNREFUSED",
     "EAI_AGAIN"
   ].some((token) => message.includes(token) || causeCode.includes(token));
+}
+
+function isRefreshableVertexAuthError(error) {
+  const message = String(error?.message || "");
+  return error?.status === 401 || /\bUNAUTHENTICATED\b|ACCESS_TOKEN_TYPE_UNSUPPORTED|invalid authentication credentials/i.test(message);
+}
+
+function retryDelayForVertexError(error, attempt) {
+  const message = String(error?.message || "");
+  const isRateLimited = error?.status === 429 || /\bRESOURCE_EXHAUSTED\b|rate.?limit|quota/i.test(message);
+  return (isRateLimited ? vertexRateLimitRetryDelayMs : imageRetryDelayMs) * attempt;
 }
 
 function sleep(ms) {
@@ -1722,6 +1744,23 @@ async function accessTokenFromGcloud() {
     "No Vertex authentication was found.",
     "Run `gcloud auth login`, set VERTEX_ACCESS_TOKEN, or set VERTEX_AUTH_MODE=service_account with GOOGLE_APPLICATION_CREDENTIALS."
   ].join(" "));
+}
+
+async function refreshVertexAccessToken(reason = "refresh") {
+  if (vertexAccessToken) {
+    console.warn(`Refreshing Vertex access token after ${reason}.`);
+  }
+  vertexAccessToken = await getAccessToken();
+  vertexAccessTokenIssuedAt = Date.now();
+}
+
+async function vertexAuthorizationHeader() {
+  const tokenAgeMs = Date.now() - vertexAccessTokenIssuedAt;
+  const shouldRefresh = !vertexAccessToken || tokenAgeMs > 45 * 60 * 1000;
+  if (shouldRefresh) {
+    await refreshVertexAccessToken(vertexAccessToken ? "45 minutes of generator runtime" : "missing token");
+  }
+  return `Bearer ${vertexAccessToken}`;
 }
 
 function normalizeVertexAuthMode(rawMode) {
