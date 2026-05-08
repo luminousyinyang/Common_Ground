@@ -115,11 +115,14 @@ async function getFirebaseAdmin() {
       ]);
 
       const credentials = readGoogleApplicationCredentials();
-      const projectId = process.env.FIREBASE_PROJECT_ID || credentials?.project_id || process.env.GCLOUD_PROJECT || GOOGLE_CLOUD_PROJECT;
-      const app = getApps()[0] || initializeApp({
+      const projectId = process.env.FIREBASE_PROJECT_ID || process.env.VITE_FIREBASE_PROJECT_ID || credentials?.project_id || process.env.GCLOUD_PROJECT || GOOGLE_CLOUD_PROJECT;
+      const serviceAccountId = process.env.FIREBASE_ADMIN_SERVICE_ACCOUNT || credentials?.client_email || "";
+      const appOptions = {
         credential: applicationDefault(),
         projectId
-      });
+      };
+      if (serviceAccountId) appOptions.serviceAccountId = serviceAccountId;
+      const app = getApps()[0] || initializeApp(appOptions);
 
       return {
         auth: getAuth(app),

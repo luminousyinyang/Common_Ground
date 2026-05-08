@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Routes, Route, Navigate, useNavigate, useLocation } from "react-router-dom";
 import { feature } from "topojson-client";
 import {
@@ -62,6 +62,20 @@ function stateCardForScope(card, scopeId) {
   return {
     ...stripNestedScopes(scopedCard),
     dataScopeId: scopeId
+  };
+}
+
+function briefingKeyForCard(card) {
+  return card ? `${card.stateCode}:${card.dataScopeId || "both"}` : "";
+}
+
+function briefingPayloadForCard(payload, card) {
+  return {
+    ...payload,
+    stateCode: card.stateCode,
+    stateName: card.stateName,
+    dataScopeId: card.dataScopeId || "both",
+    briefingKey: briefingKeyForCard(card)
   };
 }
 
@@ -139,6 +153,7 @@ function App() {
   }, []);
 
   const [dataset, setDataset] = useState(null);
+  const briefingRequestRef = useRef(0);
   const [helpOpen, setHelpOpen] = useState(false);
   const [mapTopology, setMapTopology] = useState(null);
   const [geoTopology, setGeoTopology] = useState(null);
@@ -202,9 +217,9 @@ function App() {
 
 
   useEffect(() => {
-    if (!isLoggedIn || !user?.uid) {
+    if (!isLoggedIn || !user?.uid || sessionError) {
       setCollectionReadyUid(null);
-      setCollectionSyncError("");
+      setCollectionSyncError(sessionError || "");
       return undefined;
     }
 
@@ -228,10 +243,10 @@ function App() {
     return () => {
       cancelled = true;
     };
-  }, [isLoggedIn, user?.uid]);
+  }, [isLoggedIn, sessionError, user?.uid]);
 
   useEffect(() => {
-    if (!isLoggedIn || !user?.uid || collectionReadyUid !== user.uid) return undefined;
+    if (!isLoggedIn || !user?.uid || sessionError || collectionReadyUid !== user.uid) return undefined;
 
     const timeout = window.setTimeout(() => {
       saveUserCollection({ discoveredCodes, playedCodes })
@@ -240,7 +255,7 @@ function App() {
     }, 500);
 
     return () => window.clearTimeout(timeout);
-  }, [collectionReadyUid, discoveredCodes, isLoggedIn, playedCodes, user?.uid]);
+  }, [collectionReadyUid, discoveredCodes, isLoggedIn, playedCodes, sessionError, user?.uid]);
 
   useEffect(() => {
     const html = document.documentElement;
@@ -292,6 +307,8 @@ function App() {
     interaction: CARD_INTERACTION_PRESETS.find((p) => p.id === settings.cardInteraction) || CARD_INTERACTION_PRESETS[0],
     cardLayout: CARD_LAYOUT_PRESETS.find((p) => p.id === settings.cardLayout) || CARD_LAYOUT_PRESETS[0],
   }), [settings.cardOpenAnimation, settings.cardInteraction, settings.cardLayout]);
+  const selectedBriefingKey = briefingKeyForCard(selectedCard);
+  const activeBriefing = briefing?.briefingKey === selectedBriefingKey ? briefing : null;
 
   const globalSourceRefs = useMemo(() => (dataset?.meta?.sourceRefs || []).filter((ref) => ref.sourceType !== "teamusa"), [dataset]);
   const sourceRefs = selectedCard && dataset ? uniqueSourceRefs([...(selectedCard.sourceRefs || []), ...globalSourceRefs]) : [];
@@ -318,6 +335,8 @@ function App() {
 
   async function refreshBriefing(card = selectedCard) {
     if (!card) return;
+    const requestId = briefingRequestRef.current + 1;
+    briefingRequestRef.current = requestId;
     setBriefingLoading(true);
     setBriefing(null);
     try {
@@ -326,11 +345,13 @@ function App() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ stateSyncCardJson: card })
       });
-      setBriefing(payload);
+      if (requestId !== briefingRequestRef.current) return;
+      setBriefing(briefingPayloadForCard(payload, card));
     } catch (error) {
-      setBriefing(fallbackBriefing(card, error.message));
+      if (requestId !== briefingRequestRef.current) return;
+      setBriefing(briefingPayloadForCard(fallbackBriefing(card, error.message), card));
     } finally {
-      setBriefingLoading(false);
+      if (requestId === briefingRequestRef.current) setBriefingLoading(false);
     }
   }
 
@@ -464,7 +485,7 @@ function App() {
             appGuard || (
               <ChallengeView
                 card={selectedCard}
-                briefing={briefing}
+                briefing={activeBriefing}
                 onReturn={() => navigate("/map")}
                 panelManifest={activePanelManifest}
                 onGameComplete={() => markPlayed(selectedCode)}
@@ -490,7 +511,7 @@ function App() {
         <CardModal
           card={selectedCard}
           sourceRefs={sourceRefs}
-          briefing={briefing}
+          briefing={activeBriefing}
           briefingLoading={briefingLoading}
           onRefreshBriefing={() => refreshBriefing(selectedCard)}
           onOpenChallenge={() => {

@@ -14,8 +14,8 @@ fi
 PROJECT_ID="${GOOGLE_CLOUD_PROJECT:-$(gcloud config get-value project 2>/dev/null || true)}"
 REGION="${GOOGLE_CLOUD_REGION:-us-central1}"
 VERTEX_LOCATION="${GOOGLE_CLOUD_LOCATION:-global}"
-FIREBASE_PROJECT_ID="${FIREBASE_PROJECT_ID:-$PROJECT_ID}"
-FIREBASE_STORAGE_BUCKET="${FIREBASE_STORAGE_BUCKET:-}"
+FIREBASE_PROJECT_ID="${FIREBASE_PROJECT_ID:-${VITE_FIREBASE_PROJECT_ID:-$PROJECT_ID}}"
+FIREBASE_STORAGE_BUCKET="${FIREBASE_STORAGE_BUCKET:-${VITE_FIREBASE_STORAGE_BUCKET:-}}"
 SERVICE_NAME="${CLOUD_RUN_SERVICE:-common-ground}"
 REPOSITORY="${ARTIFACT_REGISTRY_REPOSITORY:-common-ground}"
 SERVICE_ACCOUNT_NAME="${CLOUD_RUN_SERVICE_ACCOUNT_NAME:-common-ground-vertex}"
@@ -53,6 +53,8 @@ gcloud services enable \
   cloudbuild.googleapis.com \
   artifactregistry.googleapis.com \
   aiplatform.googleapis.com \
+  iam.googleapis.com \
+  iamcredentials.googleapis.com \
   firebase.googleapis.com \
   firebaserules.googleapis.com \
   firebasestorage.googleapis.com \
@@ -64,6 +66,8 @@ gcloud services enable \
 if [[ "$FIREBASE_PROJECT_ID" != "$PROJECT_ID" ]]; then
   gcloud services enable \
     firebase.googleapis.com \
+    iam.googleapis.com \
+    iamcredentials.googleapis.com \
     firebaserules.googleapis.com \
     firebasestorage.googleapis.com \
     firestore.googleapis.com \
@@ -94,6 +98,12 @@ gcloud projects add-iam-policy-binding "$FIREBASE_PROJECT_ID" \
   --member="serviceAccount:${SERVICE_ACCOUNT_EMAIL}" \
   --role="roles/firebaseauth.admin" \
   --condition=None \
+  >/dev/null
+
+gcloud iam service-accounts add-iam-policy-binding "$SERVICE_ACCOUNT_EMAIL" \
+  --project "$PROJECT_ID" \
+  --member="serviceAccount:${SERVICE_ACCOUNT_EMAIL}" \
+  --role="roles/iam.serviceAccountTokenCreator" \
   >/dev/null
 
 for role in \
@@ -171,7 +181,7 @@ gcloud run deploy "$SERVICE_NAME" \
   --service-account "$SERVICE_ACCOUNT_EMAIL" \
   --allow-unauthenticated \
   --min "$CLOUD_RUN_MIN_INSTANCES" \
-  --set-env-vars "GOOGLE_CLOUD_PROJECT=${PROJECT_ID},GOOGLE_CLOUD_LOCATION=${VERTEX_LOCATION},GEMINI_MODEL=${GEMINI_MODEL},FIREBASE_PROJECT_ID=${FIREBASE_PROJECT_ID},FIREBASE_STORAGE_BUCKET=${FIREBASE_STORAGE_BUCKET},NODE_ENV=production"
+  --set-env-vars "GOOGLE_CLOUD_PROJECT=${PROJECT_ID},GOOGLE_CLOUD_LOCATION=${VERTEX_LOCATION},GEMINI_MODEL=${GEMINI_MODEL},FIREBASE_PROJECT_ID=${FIREBASE_PROJECT_ID},FIREBASE_STORAGE_BUCKET=${FIREBASE_STORAGE_BUCKET},FIREBASE_ADMIN_SERVICE_ACCOUNT=${SERVICE_ACCOUNT_EMAIL},NODE_ENV=production"
 
 gcloud run services describe "$SERVICE_NAME" \
   --project "$PROJECT_ID" \

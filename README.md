@@ -190,7 +190,7 @@ GOOGLE_APPLICATION_CREDENTIALS=/absolute/path/to/local-service-account.json
 FIREBASE_SESSION_DAYS=5
 ```
 
-For Cloud Run, do not ship a service-account JSON file. Use the attached service account with Firebase Auth/Firestore access and set the same `VITE_FIREBASE_*` values at build/deploy time. `FIREBASE_SESSION_DAYS` is interpreted as days, supports fractional values, and is clamped between Firebase's 5-minute and 2-week session-cookie limits.
+For Cloud Run, do not ship a service-account JSON file. Use the attached service account with Firebase Auth/Firestore access, token-signing access for Firebase session cookies, and set the same `VITE_FIREBASE_*` values at build/deploy time. If `FIREBASE_PROJECT_ID` is omitted, the deploy script uses `VITE_FIREBASE_PROJECT_ID` so the browser ID token audience matches Firebase Admin. `FIREBASE_SESSION_DAYS` is interpreted as days, supports fractional values, and is clamped between Firebase's 5-minute and 2-week session-cookie limits.
 
 Image generation can take several minutes on preview models. The generator uses a long request timeout by default; tune it with:
 
@@ -222,13 +222,14 @@ Deploy with the included script:
 npm run deploy:cloud-run
 ```
 
-The script reads `.env`, builds the app, enables required Google Cloud services, creates or reuses the `common-ground-vertex` service account, grants `roles/aiplatform.user`, builds the Docker image with Cloud Build, and deploys Cloud Run with:
+The script reads `.env`, builds the app, enables required Google Cloud services, creates or reuses the `common-ground-vertex` service account, grants Vertex, Firestore, Firebase Auth, Storage, and Firebase token-signing permissions, builds the Docker image with Cloud Build, and deploys Cloud Run with:
 
 ```bash
 GOOGLE_CLOUD_PROJECT=[PROJECT-ID]
 GOOGLE_CLOUD_LOCATION=global
 GEMINI_MODEL=gemini-3.1-pro-preview
 FIREBASE_STORAGE_BUCKET=[PROJECT-ID].firebasestorage.app
+FIREBASE_ADMIN_SERVICE_ACCOUNT=common-ground-vertex@[PROJECT-ID].iam.gserviceaccount.com
 CLOUD_RUN_MIN_INSTANCES=1
 ```
 

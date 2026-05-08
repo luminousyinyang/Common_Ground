@@ -10282,6 +10282,122 @@
             "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/mn/mn-olympic.png",
             "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/mn/mn-olympic.png",
             "firebaseCollection": "cardPanels"
+          },
+          "paralympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fmn%2Fmn-paralympic.png?alt=media&token=55e18523-f620-4e86-bda8-b018ae83261b",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T01:43:45.347Z",
+            "dataScopeId": "both",
+            "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "Minnesota paralympic Para Nordic Skiing",
+            "primarySportTag": "Para Nordic Skiing",
+            "topSportTags": [
+              "Para Nordic Skiing",
+              "Para Swimming",
+              "Wheelchair Basketball"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Para Nordic Skiing",
+              "moduleMix": [
+                "Gear/Setup",
+                "Pace Shift",
+                "Watch Hook"
+              ],
+              "subtitle": "Winter endurance · cross-country trails · adaptive equipment · rhythm control",
+              "qaFacts": {
+                "howItWorks": "Para Nordic skiing includes both cross-country races and biathlon events across snow-covered trails. Athletes compete in sitting, standing, or visually impaired categories using adaptive equipment like sit-skis or guides, and the fastest calculated time determines the winner.",
+                "watchValue": "Notice how the competitors establish a steady rhythm on the snow, balancing glide and pole strikes to keep momentum. The viewing hook is watching the transition from flat stretches to climbs, where the course forces an immediate adjustment in technique and pacing.",
+                "stateConnection": "Minnesota's cold winters, extensive forest trail networks, and long snow seasons could help fans understand why winter endurance stories fit this state card.",
+                "cardTrait": "Para Nordic skiing connects to Elevation Pace through the constant adjustment of cadence and pole strikes as athletes navigate changing snow conditions and terrain."
+              },
+              "factChips": [
+                "Cross-country and biathlon",
+                "Sit-ski and standing categories",
+                "Calculated time results",
+                "Pace and glide rhythm"
+              ],
+              "relatedTags": [
+                "Para Swimming",
+                "Wheelchair Basketball"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "7609591f9b9eb812843904a4a64edcd37a86e9bebe40c62a3cef152ef9abef5e",
+            "paletteTheme": "North Lake Ice",
+            "promptHash": "9d06a28c02134cf3df2661f5fc81c68419626b01f945179ab7eb59cef9df6881",
+            "notes": "",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fmn%2Fmn-paralympic.png?alt=media&token=55e18523-f620-4e86-bda8-b018ae83261b",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/mn/mn-paralympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/mn/mn-paralympic.png",
+            "firebaseCollection": "cardPanels"
+          }
+        },
+        "paris2024": {
+          "olympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fmn%2Fparis2024%2Fmn-paris2024-olympic.png?alt=media&token=1fce5100-6d9f-4fe7-b760-78b5b49ff534",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T02:14:38.024Z",
+            "dataScopeId": "paris2024",
+            "dataScopeLabel": "Olympic Games Paris 2024",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "Minnesota olympic Track and Field",
+            "primarySportTag": "Track and Field",
+            "topSportTags": [
+              "Track and Field",
+              "Cycling",
+              "Gymnastics"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Track and Field",
+              "moduleMix": [
+                "Rules Snapshot",
+                "Pace Shift",
+                "Watch Hook"
+              ],
+              "subtitle": "Track and road events · distance pacing · sprint mechanics",
+              "qaFacts": {
+                "howItWorks": "Track and field features a variety of running, jumping, and throwing events held on an oval track and an infield. The athlete with the fastest time in running events, or the highest or furthest mark in field events, wins the competition. For sprint races up to 400 meters, runners must stay entirely within their assigned lanes from start to finish.",
+                "watchValue": "Watch how runners manage the middle laps of a distance race. Instead of running at top speed the entire time, athletes tuck into a pack to draft off each other, waiting for the right lap to change their stride and surge toward the finish line.",
+                "stateConnection": "Minnesota's forests, open plains, and distinct seasons—including cold winters and snow—could help fans understand why outdoor running and pacing stories fit this state card.",
+                "cardTrait": "Track and field connects to Elevation Pace through the precise rhythm runners maintain, adjusting their stride and timing to match the distance ahead."
+              },
+              "factChips": [
+                "400m track oval",
+                "Pack running tactics",
+                "Assigned sprint lanes",
+                "Pace control"
+              ],
+              "relatedTags": [
+                "Cycling",
+                "Gymnastics"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "825215e02cf2d653c82bde42acd24e244231dbd012bd6ed9394e6e14e9174274",
+            "paletteTheme": "North Lake Ice",
+            "promptHash": "d4a24d367bc6f7710d089b70cbe4d7f2979343f6cd5b57d810292def31c70359",
+            "notes": "",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fmn%2Fparis2024%2Fmn-paris2024-olympic.png?alt=media&token=1fce5100-6d9f-4fe7-b760-78b5b49ff534",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/mn/paris2024/mn-paris2024-olympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/mn/paris2024/mn-paris2024-olympic.png",
+            "firebaseCollection": "cardPanels"
           }
         }
       },
@@ -10341,6 +10457,63 @@
         "firebaseProjectId": "common-ground-tests",
         "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/mn/mn-olympic.png",
         "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/mn/mn-olympic.png",
+        "firebaseCollection": "cardPanels"
+      },
+      "paralympic": {
+        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fmn%2Fmn-paralympic.png?alt=media&token=55e18523-f620-4e86-bda8-b018ae83261b",
+        "localUrl": null,
+        "model": "gemini-3-pro-image-preview",
+        "location": "global",
+        "mimeType": "image/png",
+        "generatedAt": "2026-05-08T01:43:45.347Z",
+        "dataScopeId": "both",
+        "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+        "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+        "promptSummary": "Minnesota paralympic Para Nordic Skiing",
+        "primarySportTag": "Para Nordic Skiing",
+        "topSportTags": [
+          "Para Nordic Skiing",
+          "Para Swimming",
+          "Wheelchair Basketball"
+        ],
+        "cardBackCopy": {
+          "featuredCue": "Para Nordic Skiing",
+          "moduleMix": [
+            "Gear/Setup",
+            "Pace Shift",
+            "Watch Hook"
+          ],
+          "subtitle": "Winter endurance · cross-country trails · adaptive equipment · rhythm control",
+          "qaFacts": {
+            "howItWorks": "Para Nordic skiing includes both cross-country races and biathlon events across snow-covered trails. Athletes compete in sitting, standing, or visually impaired categories using adaptive equipment like sit-skis or guides, and the fastest calculated time determines the winner.",
+            "watchValue": "Notice how the competitors establish a steady rhythm on the snow, balancing glide and pole strikes to keep momentum. The viewing hook is watching the transition from flat stretches to climbs, where the course forces an immediate adjustment in technique and pacing.",
+            "stateConnection": "Minnesota's cold winters, extensive forest trail networks, and long snow seasons could help fans understand why winter endurance stories fit this state card.",
+            "cardTrait": "Para Nordic skiing connects to Elevation Pace through the constant adjustment of cadence and pole strikes as athletes navigate changing snow conditions and terrain."
+          },
+          "factChips": [
+            "Cross-country and biathlon",
+            "Sit-ski and standing categories",
+            "Calculated time results",
+            "Pace and glide rhythm"
+          ],
+          "relatedTags": [
+            "Para Swimming",
+            "Wheelchair Basketball"
+          ],
+          "complianceWarnings": []
+        },
+        "cardBackCopySource": "gemini",
+        "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+        "cardBackCopyModel": "gemini-3.1-pro-preview",
+        "cardBackCopyPromptHash": "7609591f9b9eb812843904a4a64edcd37a86e9bebe40c62a3cef152ef9abef5e",
+        "paletteTheme": "North Lake Ice",
+        "promptHash": "9d06a28c02134cf3df2661f5fc81c68419626b01f945179ab7eb59cef9df6881",
+        "notes": "",
+        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fmn%2Fmn-paralympic.png?alt=media&token=55e18523-f620-4e86-bda8-b018ae83261b",
+        "storageBucket": "common-ground-tests.firebasestorage.app",
+        "firebaseProjectId": "common-ground-tests",
+        "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/mn/mn-paralympic.png",
+        "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/mn/mn-paralympic.png",
         "firebaseCollection": "cardPanels"
       }
     }
