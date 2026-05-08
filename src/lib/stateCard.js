@@ -231,9 +231,35 @@ export function formatHometownAreas(signals = []) {
   }));
 }
 
+function featuredSportContextsForReflection(card) {
+  return [
+    { program: "olympic", panel: card?.olympicPanel },
+    { program: "paralympic", panel: card?.paralympicPanel }
+  ].filter((entry) => hasSpecificSportCue(entry.panel)).map(({ program, panel }) => {
+    const sport = getPanelVisualCue(panel);
+    return {
+      sport,
+      example: traitExampleForProgram(card, program, sport)
+    };
+  });
+}
+
+function sportConnectionForReflection(card) {
+  const sports = featuredSportContextsForReflection(card);
+  if (sports.length === 1) {
+    return `For ${sports[0].sport}, fans can watch for ${sports[0].example}.`;
+  }
+  if (sports.length >= 2) {
+    return `For ${sports[0].sport}, fans can watch for ${sports[0].example}; for ${sports[1].sport}, they can watch for ${sports[1].example}.`;
+  }
+  return "That same trait can help fans notice timing, movement, and decisions in the featured sport context.";
+}
+
 export function fallbackGameReflection(card, result, reason = "The Gemini backend is not available from this dev server.") {
+  const gameExperience = getGameExperience(card);
+  const detail = result?.summary || "Your result is saved as a personal game result.";
   return {
-    reflection: `${result.summary} That could help you appreciate how ${connectionTraitDescription(card)} can matter across several sport families. This is a fan challenge only and does not measure ability or compare you with anyone.`,
+    reflection: `${detail} In this ${gameExperience.gameName}, that gives a fan-sized look at ${connectionTraitDescription(card)}. ${sportConnectionForReflection(card)} This is for appreciation only, not measurement or comparison.`,
     model: "safe-fallback",
     warnings: [reason]
   };

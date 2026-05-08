@@ -36,6 +36,7 @@ The app keeps Gemini calls server-side. In Cloud Run, the API uses Vertex AI thr
 GOOGLE_CLOUD_PROJECT=[PROJECT-ID]
 GOOGLE_CLOUD_LOCATION=global
 GEMINI_MODEL=gemini-3.1-pro-preview
+GAME_REFLECTION_MODEL=gemini-3.1-flash-lite
 ```
 
 Local development can use `gcloud auth login`, `VERTEX_ACCESS_TOKEN`, or an API-key fallback:
@@ -52,16 +53,18 @@ GEMINI_API_KEY=your_key npm run api
 GOOGLE_API_KEY=your_key npm run api
 ```
 
-Default model:
+Default models:
 
 ```text
-gemini-3.1-pro-preview
+State briefing: gemini-3.1-pro-preview
+Post-game reflection: gemini-3.1-flash-lite
 ```
 
 Override with:
 
 ```bash
 GEMINI_MODEL=gemini-3.1-pro-preview npm run api
+GAME_REFLECTION_MODEL=gemini-3-flash-preview npm run api
 ```
 
 Gemini-backed routes:
@@ -228,6 +231,7 @@ The script reads `.env`, builds the app, enables required Google Cloud services,
 GOOGLE_CLOUD_PROJECT=[PROJECT-ID]
 GOOGLE_CLOUD_LOCATION=global
 GEMINI_MODEL=gemini-3.1-pro-preview
+GAME_REFLECTION_MODEL=gemini-3.1-flash-lite
 FIREBASE_STORAGE_BUCKET=[PROJECT-ID].firebasestorage.app
 FIREBASE_ADMIN_SERVICE_ACCOUNT=common-ground-vertex@[PROJECT-ID].iam.gserviceaccount.com
 CLOUD_RUN_MIN_INSTANCES=1

@@ -16,6 +16,7 @@ const HOST = process.env.HOST || "127.0.0.1";
 const PUBLIC_DIR = path.join(__dirname, "public");
 const DIST_DIR = path.join(__dirname, "dist");
 const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-3.1-pro-preview";
+const GAME_REFLECTION_MODEL = process.env.GAME_REFLECTION_MODEL || process.env.GEMINI_GAME_MODEL || "gemini-3.1-flash-lite";
 const GOOGLE_CLOUD_PROJECT = process.env.GOOGLE_CLOUD_PROJECT || process.env.GCLOUD_PROJECT || "";
 const GOOGLE_CLOUD_LOCATION = process.env.GOOGLE_CLOUD_LOCATION || "global";
 const VERTEX_SCOPE = "https://www.googleapis.com/auth/cloud-platform";
@@ -307,7 +308,13 @@ function displaySportName(value) {
   return text;
 }
 
+function generatedGameExperienceForCard(cardOrTrait) {
+  return cardOrTrait?.gameExperience || cardOrTrait?.cardStory?.gameExperience || null;
+}
+
 function plainTraitDescription(cardOrTrait) {
+  const generated = generatedGameExperienceForCard(cardOrTrait);
+  if (String(generated?.sharedTraitDescription || "").trim()) return String(generated.sharedTraitDescription).trim();
   const trait = cardOrTrait?.sharedTrait || cardOrTrait || {};
   return String(trait.description || "The featured sports share a similar mix of timing, control, and adaptation.").trim();
 }
@@ -320,6 +327,9 @@ function connectionTraitDescription(cardOrTrait) {
 }
 
 function plainTraitHeadline(cardOrTrait) {
+  const generated = generatedGameExperienceForCard(cardOrTrait);
+  const generatedName = String(generated?.sharedTraitName || "").trim();
+  if (generatedName) return generatedName;
   const trait = cardOrTrait?.sharedTrait || cardOrTrait || {};
   const source = `${trait.name || ""} ${trait.description || ""}`.toLowerCase();
   const hasChangingContext = /\b(conditions?|surfaces?|transitions?|water|roads?|current|currents)\b/.test(source);
@@ -397,6 +407,40 @@ function sportTraitExample(visualCue, panel) {
 function panelSportList(panel) {
   const sports = panel?.allSportTags?.length ? panel.allSportTags : panel?.topSportTags;
   return (sports || []).map(displaySportName);
+}
+
+function featuredSportContexts(card) {
+  return featuredPanelEntries(card).map(({ program, label, panel }) => {
+    const sport = displaySportName(panel.primarySportTag || panel.topSportTags?.[0] || panel.sportFamily);
+    return {
+      program,
+      label,
+      sport,
+      example: traitExampleForProgram(card, program, sport)
+    };
+  });
+}
+
+function gameExperienceSummary(card) {
+  const generated = generatedGameExperienceForCard(card) || {};
+  return {
+    challengeType: generated.challengeType || card?.sharedTrait?.challengeType || "reaction_grid",
+    gameName: generated.gameName || card?.cardStory?.fanChallengeName || "Fan Challenge",
+    traitName: plainTraitHeadline(card),
+    traitDescription: plainTraitDescription(card),
+    gameIntro: generated.gameIntro || ""
+  };
+}
+
+function sportConnectionForReflection(card) {
+  const sports = featuredSportContexts(card);
+  if (sports.length === 1) {
+    return `For ${sports[0].sport}, fans can watch for ${sports[0].example}.`;
+  }
+  if (sports.length >= 2) {
+    return `For ${sports[0].sport}, fans can watch for ${sports[0].example}; for ${sports[1].sport}, they can watch for ${sports[1].example}.`;
+  }
+  return `That same trait can help fans notice timing, movement, and decisions in the featured sport context.`;
 }
 
 function panelFeaturedSportList(panel, limit = 3) {
@@ -496,8 +540,10 @@ function formatHometownAreas(signals = []) {
 
 function safeFallbackGameReflection(card, result, reason = "No live Gemini response was available.") {
   const detail = result?.summary || "Your result is saved as a personal game result.";
+  const game = gameExperienceSummary(card);
+  const sportConnection = sportConnectionForReflection(card);
   return {
-    reflection: `${detail} That could help you appreciate how ${connectionTraitDescription(card)} can matter across several sport families. This is a fan challenge only and does not measure ability or compare you with anyone.`,
+    reflection: `${detail} In this ${game.gameName}, that gives a fan-sized look at ${connectionTraitDescription(card)}. ${sportConnection} This is for appreciation only, not measurement or comparison.`,
     model: "safe-fallback",
     warnings: [reason]
   };
@@ -788,31 +834,48 @@ ${JSON.stringify(briefing, null, 2)}`;
 }
 
 function buildGamePrompt(card, result) {
+  const game = gameExperienceSummary(card);
+  const featuredSports = featuredSportContexts(card);
   return `You are writing a safe fan-game reflection for a Team USA x Google Cloud Hackathon project.
 
-Use only the provided plain sport connection and personal game result.
+Write a concise post-game reflection that does two things:
+1. Acknowledge the user's personal mini-game result in plain language.
+2. Connect the game action to the sport trait and the featured sport context.
+
+Use only the provided state, game, sport connection, featured sport, and personal game result data.
 Do not use coined trait names such as "Waterline Control"; explain the connection in plain language.
 Do not compare the user to athletes, Olympians, Paralympians, medalists, teams, training baselines, finish times, or competition scores.
 Do not call this a diagnostic, assessment, talent test, or athletic test.
 Use conditional fan-appreciation language.
+Use the featured sport names when provided.
+Keep the reflection to 2 short sentences, maximum 55 words total.
+Do not repeat the exact personal result sentence verbatim.
 Return valid JSON with fields:
 - reflection
 - warnings
 
-Plain sport connection:
-${plainTraitDescription(card)}
+State and game context:
+${JSON.stringify({
+  stateName: card.stateName,
+  gameName: game.gameName,
+  challengeType: game.challengeType,
+  traitName: game.traitName,
+  traitDescription: game.traitDescription,
+  gameIntro: game.gameIntro,
+  featuredSports
+}, null, 2)}
 
 Personal game result:
 ${JSON.stringify(result, null, 2)}`;
 }
 
-async function callGemini(prompt) {
-  if (GOOGLE_CLOUD_PROJECT) return callVertexGemini(prompt);
+async function callGemini(prompt, model = GEMINI_MODEL) {
+  if (GOOGLE_CLOUD_PROJECT) return callVertexGemini(prompt, model);
 
   const key = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
   if (!key) return null;
 
-  const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(GEMINI_MODEL)}:generateContent?key=${encodeURIComponent(key)}`;
+  const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(key)}`;
   const response = await fetch(endpoint, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -832,14 +895,14 @@ async function callGemini(prompt) {
 
   const data = await response.json();
   const text = data.candidates?.[0]?.content?.parts?.map((part) => part.text || "").join("\n") || "";
-  return { text, model: GEMINI_MODEL };
+  return { text, model };
 }
 
-function vertexEndpoint() {
+function vertexEndpoint(model = GEMINI_MODEL) {
   const host = GOOGLE_CLOUD_LOCATION === "global"
     ? "https://aiplatform.googleapis.com"
     : `https://${GOOGLE_CLOUD_LOCATION}-aiplatform.googleapis.com`;
-  return `${host}/v1/projects/${encodeURIComponent(GOOGLE_CLOUD_PROJECT)}/locations/${encodeURIComponent(GOOGLE_CLOUD_LOCATION)}/publishers/google/models/${encodeURIComponent(GEMINI_MODEL)}:generateContent`;
+  return `${host}/v1/projects/${encodeURIComponent(GOOGLE_CLOUD_PROJECT)}/locations/${encodeURIComponent(GOOGLE_CLOUD_LOCATION)}/publishers/google/models/${encodeURIComponent(model)}:generateContent`;
 }
 
 async function getVertexAccessToken() {
@@ -895,9 +958,9 @@ async function getGcloudAccessToken() {
   return null;
 }
 
-async function callVertexGemini(prompt) {
+async function callVertexGemini(prompt, model = GEMINI_MODEL) {
   const token = await getVertexAccessToken();
-  const response = await fetch(vertexEndpoint(), {
+  const response = await fetch(vertexEndpoint(model), {
     method: "POST",
     headers: {
       "Authorization": `Bearer ${token}`,
@@ -919,7 +982,7 @@ async function callVertexGemini(prompt) {
 
   const data = await response.json();
   const text = data.candidates?.[0]?.content?.parts?.map((part) => part.text || "").join("\n") || "";
-  return { text, model: `${GEMINI_MODEL} via Vertex AI` };
+  return { text, model: `${model} via Vertex AI` };
 }
 
 async function handleApi(req, res, url) {
@@ -1107,7 +1170,7 @@ async function handleApi(req, res, url) {
     const result = payload.result || {};
 
     try {
-      const gemini = await callGemini(buildGamePrompt(card, result));
+      const gemini = await callGemini(buildGamePrompt(card, result), GAME_REFLECTION_MODEL);
       if (!gemini) {
         sendJson(res, 200, safeFallbackGameReflection(card, result, "Set GEMINI_API_KEY or GOOGLE_API_KEY to enable live Gemini generation."));
         return true;
