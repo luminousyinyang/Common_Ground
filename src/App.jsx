@@ -548,7 +548,7 @@ function App() {
               <ChallengeView
                 card={selectedCard}
                 briefing={activeBriefing}
-                onReturn={() => navigate("/map")}
+                onReturn={() => { navigate("/map"); setIsCardModalOpen(true); }}
                 panelManifest={activePanelManifest}
                 onGameComplete={() => markPlayed(selectedCode)}
               />
