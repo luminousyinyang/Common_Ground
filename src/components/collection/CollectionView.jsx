@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import Icon from "../common/Icon.jsx";
 import CardArt from "../cards/CardArt.jsx";
+import { getRosterCounts } from "../../lib/stateCard.js";
 
 const REGIONS = [
   { id: "all", label: "All" },
@@ -23,6 +24,10 @@ function filterByRegion(cards, regionId) {
   if (regionId === "all") return cards;
   const codes = REGION_CODES[regionId];
   return cards.filter((card) => codes?.has(card.stateCode));
+}
+
+function hasCollectionData(card) {
+  return getRosterCounts(card).total > 0;
 }
 
 function MiniStateCard({ card, discovered, onSelect, panelManifest }) {
@@ -48,11 +53,13 @@ function MiniStateCard({ card, discovered, onSelect, panelManifest }) {
 
 function CollectionView({ states, discoveredCodes, onSelect, panelManifest, isLoggedIn, authLoading, collectionSyncError, onLogin }) {
   const [activeRegion, setActiveRegion] = useState("all");
-  const allDiscovered = states.filter((card) => discoveredCodes.has(card.stateCode));
-  const allUndiscovered = states.filter((card) => !discoveredCodes.has(card.stateCode));
+  const collectionStates = useMemo(() => states.filter(hasCollectionData), [states]);
+  const allDiscovered = collectionStates.filter((card) => discoveredCodes.has(card.stateCode));
+  const allUndiscovered = collectionStates.filter((card) => !discoveredCodes.has(card.stateCode));
   const discoveredStates = filterByRegion(allDiscovered, activeRegion);
   const previewStates = filterByRegion(allUndiscovered, activeRegion).slice(0, 12);
   const remaining = allUndiscovered.length;
+  const progressPct = collectionStates.length ? Math.round((allDiscovered.length / collectionStates.length) * 100) : 0;
 
   return (
     <section className="collection-view">
@@ -64,7 +71,7 @@ function CollectionView({ states, discoveredCodes, onSelect, panelManifest, isLo
           <div className="collection-gate-content">
             <span className="collection-gate-icon"><Icon name="cards" size={32} strokeWidth={1.3} /></span>
             <h2 className="collection-gate-title">Save your state insights</h2>
-            <p className="collection-gate-body">Create an account to save discovered state cards, track your progress across all 50 states, and return to your collection anytime.</p>
+            <p className="collection-gate-body">Create an account to save discovered state cards, track your progress across available state cards, and return to your collection anytime.</p>
             <button className="primary-button" type="button" onClick={onLogin}>Log in to Save Collection</button>
           </div>
           <div className="collection-gate-blur" aria-hidden="true">
@@ -75,7 +82,7 @@ function CollectionView({ states, discoveredCodes, onSelect, panelManifest, isLo
               </div>
             </div>
             <div className="card-grid">
-              {states.slice(0, 12).map((card) => (
+              {collectionStates.slice(0, 12).map((card) => (
                 <MiniStateCard key={card.stateCode} card={card} discovered={discoveredCodes.has(card.stateCode)} onSelect={() => {}} panelManifest={panelManifest} />
               ))}
             </div>
@@ -93,9 +100,9 @@ function CollectionView({ states, discoveredCodes, onSelect, panelManifest, isLo
           <p>Browse what you've discovered, compare patterns, and complete your collection.</p>
         </div>
         <div className="collection-progress-stack">
-          <span className="collection-count">{allDiscovered.length} / {states.length}</span>
+          <span className="collection-count">{allDiscovered.length} / {collectionStates.length}</span>
           <div className="collection-progress-track" aria-hidden="true">
-            <div className="collection-progress-fill" style={{ width: `${Math.round((allDiscovered.length / states.length) * 100)}%` }} />
+            <div className="collection-progress-fill" style={{ width: `${progressPct}%` }} />
           </div>
         </div>
       </div>

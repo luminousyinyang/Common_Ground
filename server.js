@@ -527,6 +527,64 @@ function sportConnectionForReflection(card) {
   return `That same trait can help fans notice timing, movement, and decisions in the featured sport context.`;
 }
 
+function resultMetricValue(result, labelPattern) {
+  const metric = (result?.metrics || []).find((item) => labelPattern.test(String(item?.label || "")));
+  return metric ? String(metric.value || "").trim() : "";
+}
+
+function gameResultHighlights(result = {}) {
+  const highlights = (result.metrics || [])
+    .map((metric) => `${metric.label}: ${metric.value}`)
+    .filter((value) => !/undefined|null/i.test(value));
+  if (!highlights.length && result.summary) highlights.push(result.summary);
+  return highlights.slice(0, 4);
+}
+
+function gameResultObservation(result = {}) {
+  if (result.type === "cadence_keeper") {
+    const rhythm = resultMetricValue(result, /rhythm/i) || `${result.stabilityScore || 0}%`;
+    const offset = resultMetricValue(result, /offset/i) || `${result.averageErrorMs || 0}ms`;
+    const bpm = resultMetricValue(result, /bpm/i) || result.bpm;
+    return `Your taps held ${rhythm} sync${bpm ? ` at ${bpm} BPM` : ""}, with about ${offset} of average offset, so the rhythm read as steady but still human.`;
+  }
+  if (result.type === "reaction_grid") {
+    const precision = resultMetricValue(result, /precision/i) || `${result.precisionScore || 0}%`;
+    const targets = resultMetricValue(result, /targets/i);
+    const decoys = resultMetricValue(result, /decoys/i);
+    return `Your run landed at ${precision} precision${targets ? ` with ${targets} targets hit` : ""}${decoys ? ` and ${decoys} decoys avoided` : ""}.`;
+  }
+  if (result.type === "precision_trace") {
+    const control = resultMetricValue(result, /line control/i) || `${result.traceScore || 0}%`;
+    const detours = resultMetricValue(result, /detours/i) || result.detours;
+    const breaks = resultMetricValue(result, /breaks/i) || result.lineBreaks;
+    return `Your trace showed ${control} line control${detours !== "" ? ` with ${detours} detours` : ""}${breaks !== "" ? ` and ${breaks} line breaks` : ""}.`;
+  }
+  if (result.type === "focus_hold") {
+    const survived = resultMetricValue(result, /survived/i);
+    const lives = resultMetricValue(result, /lives/i);
+    const score = resultMetricValue(result, /score/i) || `${result.readScore || 0}%`;
+    return `Your movement kept enough space to score ${score}${survived ? ` after ${survived}` : ""}${lives ? ` with ${lives} lives left` : ""}.`;
+  }
+  if (result.type === "pattern_scout") {
+    const score = resultMetricValue(result, /pattern score/i) || `${result.patternScore || 0}%`;
+    const resets = resultMetricValue(result, /resets/i) || result.misses;
+    const rounds = resultMetricValue(result, /rounds/i);
+    return `Your memory route finished at ${score}${rounds ? ` across ${rounds} rounds` : ""}${resets !== "" ? ` with ${resets} resets` : ""}.`;
+  }
+  return result.summary || "Your run is saved as a personal fan-game result.";
+}
+
+function sportConnectionForGameReflection(card) {
+  const sports = featuredSportContexts(card);
+  if (sports.length >= 2) {
+    return `In sports like ${sports[0].sport} and ${sports[1].sport}, athletes manage a real-sport version of that when they handle moments like ${sports[0].example} or ${sports[1].example}.`;
+  }
+  if (sports.length === 1) {
+    return `In sports like ${sports[0].sport}, athletes manage a real-sport version of that when they handle moments like ${sports[0].example}.`;
+  }
+  return "Athletes in the featured sport context manage a sharper version of that same timing, movement, and decision-making.";
+}
+
 function panelFeaturedSportList(panel, limit = 3) {
   const sports = panel?.topSportTags?.length ? panel.topSportTags : panelSportList(panel);
   return (sports || []).slice(0, limit).map(displaySportName);
@@ -623,11 +681,11 @@ function formatHometownAreas(signals = []) {
 }
 
 function safeFallbackGameReflection(card, result, reason = "No live Gemini response was available.") {
-  const detail = result?.summary || "Your result is saved as a personal game result.";
   const game = gameExperienceSummary(card);
-  const sportConnection = sportConnectionForReflection(card);
+  const detail = gameResultObservation(result).replace(/[.!?]+$/, "");
+  const sportConnection = sportConnectionForGameReflection(card);
   return {
-    reflection: `${detail} In this ${game.gameName}, that gives a fan-sized look at ${connectionTraitDescription(card)}. ${sportConnection} This is for appreciation only, not measurement or comparison.`,
+    reflection: `${detail}, which connects in ${card.stateName}'s ${game.gameName} to ${connectionTraitDescription(card)}. ${sportConnection}`,
     model: "safe-fallback",
     warnings: [reason]
   };
@@ -920,20 +978,27 @@ ${JSON.stringify(briefing, null, 2)}`;
 function buildGamePrompt(card, result) {
   const game = gameExperienceSummary(card);
   const featuredSports = featuredSportContexts(card);
+  const resultObservation = gameResultObservation(result);
+  const metricHighlights = gameResultHighlights(result);
   return `You are writing a safe fan-game reflection for a Team USA x Google Cloud Hackathon project.
 
-Write a concise post-game reflection that does two things:
-1. Acknowledge the user's personal mini-game result in plain language.
-2. Connect the game action to the sport trait and the featured sport context.
+Write a concise post-game reflection that does three things:
+1. Acknowledge the user's personal mini-game result using one concrete number from the result.
+2. Connect that result to the state card's sport trait in plain language.
+3. Relate the trait to what athletes manage in the featured sport context, without comparing the user to athletes.
 
 Use only the provided state, game, sport connection, featured sport, and personal game result data.
 Do not use coined trait names such as "Waterline Control"; explain the connection in plain language.
-Do not compare the user to athletes, Olympians, Paralympians, medalists, teams, training baselines, finish times, or competition scores.
+Do not say the user performed like an athlete. Do not compare the user to athletes, Olympians, Paralympians, medalists, teams, training baselines, finish times, or competition scores.
 Do not call this a diagnostic, assessment, talent test, or athletic test.
 Use conditional fan-appreciation language.
-Use the featured sport names when provided.
-Keep the reflection to 2 short sentences, maximum 55 words total.
+Mention ${card.stateName} naturally once.
+If one featured sport is provided, phrase it as "sports like [sport]" rather than making the trait sound exclusive to that sport.
+If two featured sports are provided, mention both sport names briefly.
+Use the word "athletes" once in the sport-connection sentence, but do not compare the user to athletes.
+Keep the reflection to 2 short sentences, maximum 45 words total.
 Do not repeat the exact personal result sentence verbatim.
+Avoid generic phrases like "This ability is helpful for athletes", "This consistency helps", or "throughout the challenge."
 Return valid JSON with fields:
 - reflection
 - warnings
@@ -946,7 +1011,9 @@ ${JSON.stringify({
   traitName: game.traitName,
   traitDescription: game.traitDescription,
   gameIntro: game.gameIntro,
-  featuredSports
+  featuredSports,
+  resultObservation,
+  metricHighlights
 }, null, 2)}
 
 Personal game result:
@@ -1338,7 +1405,12 @@ async function handleApi(req, res, url) {
       const parsed = JSON.parse(normalizeJsonText(gemini.text));
       const text = String(parsed.reflection || "");
       const unsafe = /\b(compare|diagnostic|assessment|athletic test|train like|baseline|medal|elite)\b/i.test(text);
-      if (unsafe) {
+      const missingState = card.stateName && !text.toLowerCase().includes(card.stateName.toLowerCase());
+      const missingMetric = !/\d/.test(text);
+      const missingAthleteConnection = !/\bathletes?\b/i.test(text);
+      const tooGeneric = /\bthis (ability|consistency|skill) (is )?helpful\b|\bthis consistency helps\b|\bhelps athletes\b|\bduring (?!sports like\b)/i.test(text)
+        || /\bthroughout the\b.*\bchallenge\b/i.test(text);
+      if (unsafe || missingState || missingMetric || missingAthleteConnection || tooGeneric) {
         sendJson(res, 200, safeFallbackGameReflection(card, result, "Gemini game reflection was replaced after local compliance validation."));
         return true;
       }

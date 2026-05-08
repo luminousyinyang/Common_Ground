@@ -255,11 +255,57 @@ function sportConnectionForReflection(card) {
   return "That same trait can help fans notice timing, movement, and decisions in the featured sport context.";
 }
 
+function resultMetricValue(result, labelPattern) {
+  const metric = (result?.metrics || []).find((item) => labelPattern.test(String(item?.label || "")));
+  return metric ? String(metric.value || "").trim() : "";
+}
+
+function gameResultObservation(result = {}) {
+  if (result.type === "cadence_keeper") {
+    const rhythm = resultMetricValue(result, /rhythm/i) || `${result.stabilityScore || 0}%`;
+    const offset = resultMetricValue(result, /offset/i) || `${result.averageErrorMs || 0}ms`;
+    const bpm = resultMetricValue(result, /bpm/i) || result.bpm;
+    return `Your taps held ${rhythm} sync${bpm ? ` at ${bpm} BPM` : ""}, with about ${offset} of average offset.`;
+  }
+  if (result.type === "reaction_grid") {
+    const precision = resultMetricValue(result, /precision/i) || `${result.precisionScore || 0}%`;
+    const targets = resultMetricValue(result, /targets/i);
+    return `Your run landed at ${precision} precision${targets ? ` with ${targets} targets hit` : ""}.`;
+  }
+  if (result.type === "precision_trace") {
+    const control = resultMetricValue(result, /line control/i) || `${result.traceScore || 0}%`;
+    const detours = resultMetricValue(result, /detours/i) || result.detours;
+    return `Your trace showed ${control} line control${detours !== "" ? ` with ${detours} detours` : ""}.`;
+  }
+  if (result.type === "focus_hold") {
+    const survived = resultMetricValue(result, /survived/i);
+    const score = resultMetricValue(result, /score/i) || `${result.readScore || 0}%`;
+    return `Your movement kept enough space to score ${score}${survived ? ` after ${survived}` : ""}.`;
+  }
+  if (result.type === "pattern_scout") {
+    const score = resultMetricValue(result, /pattern score/i) || `${result.patternScore || 0}%`;
+    const resets = resultMetricValue(result, /resets/i) || result.misses;
+    return `Your memory route finished at ${score}${resets !== "" ? ` with ${resets} resets` : ""}.`;
+  }
+  return result.summary || "Your run is saved as a personal fan-game result.";
+}
+
+function sportConnectionForGameReflection(card) {
+  const sports = featuredSportContextsForReflection(card);
+  if (sports.length >= 2) {
+    return `In sports like ${sports[0].sport} and ${sports[1].sport}, athletes manage a real-sport version of that when they handle moments like ${sports[0].example} or ${sports[1].example}.`;
+  }
+  if (sports.length === 1) {
+    return `In sports like ${sports[0].sport}, athletes manage a real-sport version of that when they handle moments like ${sports[0].example}.`;
+  }
+  return "Athletes in the featured sport context manage a sharper version of that same timing, movement, and decision-making.";
+}
+
 export function fallbackGameReflection(card, result, reason = "The Gemini backend is not available from this dev server.") {
   const gameExperience = getGameExperience(card);
-  const detail = result?.summary || "Your result is saved as a personal game result.";
+  const detail = gameResultObservation(result).replace(/[.!?]+$/, "");
   return {
-    reflection: `${detail} In this ${gameExperience.gameName}, that gives a fan-sized look at ${connectionTraitDescription(card)}. ${sportConnectionForReflection(card)} This is for appreciation only, not measurement or comparison.`,
+    reflection: `${detail}, which connects in ${card.stateName}'s ${gameExperience.gameName} to ${connectionTraitDescription(card)}. ${sportConnectionForGameReflection(card)}`,
     model: "safe-fallback",
     warnings: [reason]
   };

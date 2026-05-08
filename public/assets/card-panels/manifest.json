@@ -13445,6 +13445,176 @@
             "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/nm/nm-olympic.png",
             "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/nm/nm-olympic.png",
             "firebaseCollection": "cardPanels"
+          },
+          "paralympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnm%2Fnm-paralympic.png?alt=media&token=c3202cca-d9c5-4ae3-925a-eb38c5a1605f",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T15:04:50.919Z",
+            "dataScopeId": "both",
+            "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "New Mexico paralympic Para Nordic Skiing",
+            "primarySportTag": "Para Nordic Skiing",
+            "topSportTags": [
+              "Para Nordic Skiing",
+              "Sled Hockey"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Para Nordic Skiing",
+              "moduleMix": [
+                "Terrain/Environment Lens",
+                "Gear/Setup",
+                "Pace Shift"
+              ],
+              "subtitle": "Winter endurance · adaptive equipment · snow route navigation",
+              "qaFacts": {
+                "howItWorks": "Para Nordic Skiing includes cross-country skiing and biathlon events across snow-covered courses. Athletes use adaptive equipment like sit-skis or rely on guides, and the competitor with the fastest total race time wins.",
+                "watchValue": "The race changes rhythm constantly as competitors transition from climbing hills to gliding down slopes. Look for how skiers adjust their technique and equipment alignment to match the shifting snow conditions.",
+                "stateConnection": "New Mexico's mountain ranges and higher-elevation communities could help fans understand how winter environments and high-altitude settings connect to snow-sport stories.",
+                "cardTrait": "Para Nordic Skiing connects to Pattern Recognition through the way athletes read the snow surface, anticipating route changes and adjusting their glide path on the fly."
+              },
+              "factChips": [
+                "Cross-country and biathlon events",
+                "Sit-skis and visual guides",
+                "Fastest total time wins",
+                "Changing snow conditions"
+              ],
+              "relatedTags": [
+                "Sled Hockey"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "ca507f68a0c15760fe8013d5441792b11b1b4a6c290a22c7989bcf77838fa8ef",
+            "paletteTheme": "Desert Range",
+            "promptHash": "39921e3c971b380e4de1380b5d0e459bd0876087a14a7688c87d635f92c89363",
+            "notes": "",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnm%2Fnm-paralympic.png?alt=media&token=c3202cca-d9c5-4ae3-925a-eb38c5a1605f",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/nm/nm-paralympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/nm/nm-paralympic.png",
+            "firebaseCollection": "cardPanels"
+          }
+        },
+        "paris2024": {
+          "olympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnm%2Fparis2024%2Fnm-paris2024-olympic.png?alt=media&token=ab74341f-cf5e-4da4-b700-6098e6a5edbe",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T15:05:38.214Z",
+            "dataScopeId": "paris2024",
+            "dataScopeLabel": "Olympic Games Paris 2024",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "New Mexico olympic Skateboarding",
+            "primarySportTag": "Skateboarding",
+            "topSportTags": [
+              "Skateboarding",
+              "Track and Field"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Skateboarding",
+              "moduleMix": [
+                "Terrain/Environment Lens",
+                "Hidden Skill",
+                "Challenge Link"
+              ],
+              "subtitle": "Park and street courses · trick execution · flow and speed",
+              "qaFacts": {
+                "howItWorks": "Skaters compete in either street or park events, performing timed runs or individual tricks across stairs, rails, and bowls. A panel of judges scores each attempt based on trick difficulty, execution, and course flow, with the highest total score winning the event.",
+                "watchValue": "The easiest way to follow the action is by tracking the skater's line through the course. Notice how they link tricks together without losing speed, turning a scattered concrete layout into a continuous path of motion.",
+                "stateConnection": "New Mexico's dry climate, high desert environments, and mountain-adjacent communities could help fans understand how year-round outdoor access supports board-sport culture.",
+                "cardTrait": "Skateboarding connects to pattern recognition through the way riders memorize specific lines, spotting the exact angles and transitions needed to navigate a changing concrete layout."
+              },
+              "factChips": [
+                "Street and park events",
+                "Judged on difficulty and flow",
+                "Timed runs and trick attempts",
+                "Memorizing course lines"
+              ],
+              "relatedTags": [
+                "Track and Field"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "a8f0254bc07af49bc2377538dee01dd354a44654435ca7ab5b6756b6738ec2b9",
+            "paletteTheme": "Desert Range",
+            "promptHash": "272910822ae3a7b82e67cc144444316657ae78fe8e2c6c1d771f8bcae85aa159",
+            "notes": "",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnm%2Fparis2024%2Fnm-paris2024-olympic.png?alt=media&token=ab74341f-cf5e-4da4-b700-6098e6a5edbe",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/nm/paris2024/nm-paris2024-olympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/nm/paris2024/nm-paris2024-olympic.png",
+            "firebaseCollection": "cardPanels"
+          }
+        },
+        "milanoCortina2026": {
+          "paralympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnm%2Fnm-paralympic.png?alt=media&token=c3202cca-d9c5-4ae3-925a-eb38c5a1605f",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T15:04:50.919Z",
+            "dataScopeId": "milanoCortina2026",
+            "dataScopeLabel": "Olympic Winter Games Milano Cortina 2026",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "New Mexico paralympic Para Nordic Skiing",
+            "primarySportTag": "Para Nordic Skiing",
+            "topSportTags": [
+              "Para Nordic Skiing",
+              "Sled Hockey"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Para Nordic Skiing",
+              "moduleMix": [
+                "Terrain/Environment Lens",
+                "Gear/Setup",
+                "Pace Shift"
+              ],
+              "subtitle": "Winter endurance · adaptive equipment · snow route navigation",
+              "qaFacts": {
+                "howItWorks": "Para Nordic Skiing includes cross-country skiing and biathlon events across snow-covered courses. Athletes use adaptive equipment like sit-skis or rely on guides, and the competitor with the fastest total race time wins.",
+                "watchValue": "The race changes rhythm constantly as competitors transition from climbing hills to gliding down slopes. Look for how skiers adjust their technique and equipment alignment to match the shifting snow conditions.",
+                "stateConnection": "New Mexico's mountain ranges and higher-elevation communities could help fans understand how winter environments and high-altitude settings connect to snow-sport stories.",
+                "cardTrait": "Para Nordic Skiing connects to Pattern Recognition through the way athletes read the snow surface, anticipating route changes and adjusting their glide path on the fly."
+              },
+              "factChips": [
+                "Cross-country and biathlon events",
+                "Sit-skis and visual guides",
+                "Fastest total time wins",
+                "Changing snow conditions"
+              ],
+              "relatedTags": [
+                "Sled Hockey"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "ca507f68a0c15760fe8013d5441792b11b1b4a6c290a22c7989bcf77838fa8ef",
+            "paletteTheme": "Desert Range",
+            "promptHash": "39921e3c971b380e4de1380b5d0e459bd0876087a14a7688c87d635f92c89363",
+            "notes": "Reused generated panel because this data view matches an existing panel.",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnm%2Fnm-paralympic.png?alt=media&token=c3202cca-d9c5-4ae3-925a-eb38c5a1605f",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/nm/nm-paralympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/nm/nm-paralympic.png",
+            "firebaseCollection": "cardPanels",
+            "reusedFromDataScopeId": "both"
           }
         }
       },
@@ -13501,6 +13671,1230 @@
         "firebaseProjectId": "common-ground-tests",
         "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/nm/nm-olympic.png",
         "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/nm/nm-olympic.png",
+        "firebaseCollection": "cardPanels"
+      },
+      "paralympic": {
+        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnm%2Fnm-paralympic.png?alt=media&token=c3202cca-d9c5-4ae3-925a-eb38c5a1605f",
+        "localUrl": null,
+        "model": "gemini-3-pro-image-preview",
+        "location": "global",
+        "mimeType": "image/png",
+        "generatedAt": "2026-05-08T15:04:50.919Z",
+        "dataScopeId": "both",
+        "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+        "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+        "promptSummary": "New Mexico paralympic Para Nordic Skiing",
+        "primarySportTag": "Para Nordic Skiing",
+        "topSportTags": [
+          "Para Nordic Skiing",
+          "Sled Hockey"
+        ],
+        "cardBackCopy": {
+          "featuredCue": "Para Nordic Skiing",
+          "moduleMix": [
+            "Terrain/Environment Lens",
+            "Gear/Setup",
+            "Pace Shift"
+          ],
+          "subtitle": "Winter endurance · adaptive equipment · snow route navigation",
+          "qaFacts": {
+            "howItWorks": "Para Nordic Skiing includes cross-country skiing and biathlon events across snow-covered courses. Athletes use adaptive equipment like sit-skis or rely on guides, and the competitor with the fastest total race time wins.",
+            "watchValue": "The race changes rhythm constantly as competitors transition from climbing hills to gliding down slopes. Look for how skiers adjust their technique and equipment alignment to match the shifting snow conditions.",
+            "stateConnection": "New Mexico's mountain ranges and higher-elevation communities could help fans understand how winter environments and high-altitude settings connect to snow-sport stories.",
+            "cardTrait": "Para Nordic Skiing connects to Pattern Recognition through the way athletes read the snow surface, anticipating route changes and adjusting their glide path on the fly."
+          },
+          "factChips": [
+            "Cross-country and biathlon events",
+            "Sit-skis and visual guides",
+            "Fastest total time wins",
+            "Changing snow conditions"
+          ],
+          "relatedTags": [
+            "Sled Hockey"
+          ],
+          "complianceWarnings": []
+        },
+        "cardBackCopySource": "gemini",
+        "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+        "cardBackCopyModel": "gemini-3.1-pro-preview",
+        "cardBackCopyPromptHash": "ca507f68a0c15760fe8013d5441792b11b1b4a6c290a22c7989bcf77838fa8ef",
+        "paletteTheme": "Desert Range",
+        "promptHash": "39921e3c971b380e4de1380b5d0e459bd0876087a14a7688c87d635f92c89363",
+        "notes": "",
+        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnm%2Fnm-paralympic.png?alt=media&token=c3202cca-d9c5-4ae3-925a-eb38c5a1605f",
+        "storageBucket": "common-ground-tests.firebasestorage.app",
+        "firebaseProjectId": "common-ground-tests",
+        "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/nm/nm-paralympic.png",
+        "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/nm/nm-paralympic.png",
+        "firebaseCollection": "cardPanels"
+      }
+    },
+    "NY": {
+      "scopes": {
+        "both": {
+          "olympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fny%2Fny-olympic.png?alt=media&token=f60aa0f0-a46a-4a68-842f-1b8a7a0e8069",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T15:06:28.937Z",
+            "dataScopeId": "both",
+            "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "New York olympic Luge",
+            "primarySportTag": "Luge",
+            "topSportTags": [
+              "Ice Hockey",
+              "Luge",
+              "Soccer"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Luge",
+              "moduleMix": [
+                "Gear/Setup",
+                "Hidden Skill",
+                "Watch Hook"
+              ],
+              "subtitle": "Winter sliding sport · feet-first racing · precise steering",
+              "qaFacts": {
+                "howItWorks": "Luge is a winter sliding sport where athletes race down an icy track on a small sled, riding flat on their backs and feet first. The competitor with the fastest total time across multiple runs wins the event, and steering is done by applying subtle pressure with the calves and shoulders.",
+                "watchValue": "The speed gets easier to read when you watch the athlete's head position. Notice how they keep their helmets angled back to stay aerodynamic while still trying to track the upcoming curves.",
+                "stateConnection": "New York’s Adirondack mountains, four-season climate, and winter infrastructure could help fans understand why cold-weather sliding stories fit this state card.",
+                "cardTrait": "Luge connects to Line control through the precise, steady steering adjustments used to guide the sled smoothly along the fastest path down the ice."
+              },
+              "factChips": [
+                "Feet-first sliding",
+                "Calf and shoulder steering",
+                "Fastest total time wins",
+                "Aerodynamic body position"
+              ],
+              "relatedTags": [
+                "Ice Hockey",
+                "Soccer"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "3bb5ff9cd361790d483a76eba883bca74878a0b4d5c73b8e1f61f68354b67aa1",
+            "paletteTheme": "Metro Harbor",
+            "promptHash": "23337712c0ddf6aac26638fa61c80d09915ef03bed66b8a56d3b36629ea625b9",
+            "notes": "",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fny%2Fny-olympic.png?alt=media&token=f60aa0f0-a46a-4a68-842f-1b8a7a0e8069",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/ny/ny-olympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/ny/ny-olympic.png",
+            "firebaseCollection": "cardPanels"
+          },
+          "paralympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fny%2Fny-paralympic.png?alt=media&token=4216052c-3b37-4682-99c4-2537e6dcc504",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T15:07:19.328Z",
+            "dataScopeId": "both",
+            "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "New York paralympic Para Alpine Skiing",
+            "primarySportTag": "Para Alpine Skiing",
+            "topSportTags": [
+              "Para Track and Field",
+              "Para Alpine Skiing",
+              "Para Swimming"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Para Alpine Skiing",
+              "moduleMix": [
+                "Rules Snapshot",
+                "Gear/Setup",
+                "Watch Hook"
+              ],
+              "subtitle": "Downhill speed · gate navigation · adaptive winter equipment",
+              "qaFacts": {
+                "howItWorks": "Para alpine skiing features athletes racing down a snow-covered mountain course marked by colored gates. Competitors use adaptive equipment like sit-skis, outriggers, or sighted guides, and the skier who completes the layout with the fastest time wins.",
+                "watchValue": "Look for how skiers carve tight angles around the gates while carrying speed down the fall line. The fun is watching athletes hold a precise edge on icy slopes, steering smoothly instead of skidding to save fractions of a second.",
+                "stateConnection": "New York's Adirondack ranges and four-season climate could help fans understand why winter equipment sports and cold-weather mountain stories fit this state card.",
+                "cardTrait": "Para alpine skiing connects to Line Control through the way athletes trace a clean, steady path between downhill gates to maintain their momentum."
+              },
+              "factChips": [
+                "Fastest total time wins",
+                "Navigating colored gates",
+                "Sit-skis and outriggers",
+                "Sighted guides"
+              ],
+              "relatedTags": [
+                "Para Track and Field",
+                "Para Swimming"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "35b590ab16c2163011ec4ade0fc01b0129aaf3d6fd177d23025526e7c7361305",
+            "paletteTheme": "Metro Harbor",
+            "promptHash": "3c597117fa070c2e895944a23d8f601d6b7ede165e8340d720601726088b005d",
+            "notes": "",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fny%2Fny-paralympic.png?alt=media&token=4216052c-3b37-4682-99c4-2537e6dcc504",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/ny/ny-paralympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/ny/ny-paralympic.png",
+            "firebaseCollection": "cardPanels"
+          }
+        },
+        "paris2024": {
+          "olympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fny%2Fparis2024%2Fny-paris2024-olympic.png?alt=media&token=0f76fa25-2968-42b4-85b0-6f1faad3cab3",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T15:08:17.498Z",
+            "dataScopeId": "paris2024",
+            "dataScopeLabel": "Olympic Games Paris 2024",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "New York olympic Rowing",
+            "primarySportTag": "Rowing",
+            "topSportTags": [
+              "Soccer",
+              "Track and Field",
+              "Rowing"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Rowing",
+              "moduleMix": [
+                "Gear/Setup",
+                "Pace Shift",
+                "Watch Hook"
+              ],
+              "subtitle": "2,000-meter course · sweep and scull · synchronized rhythm",
+              "qaFacts": {
+                "howItWorks": "Crews propel a long, narrow boat across a 2,000-meter straight course, where the fastest total time takes the win. Athletes sit facing backward, using either one oar per person in sweep events or two oars in sculling to move the shell in a unified rhythm.",
+                "watchValue": "Notice how the stroke rate increases as boats approach the final 500 meters of the race. A perfectly synchronized crew keeps the boat completely level, making the movement look smooth even as the pace accelerates.",
+                "stateConnection": "New York's deep lakes in the Adirondacks, extensive river networks, and coastal access could help fans understand why water-based pace stories fit this state card.",
+                "cardTrait": "Rowing connects to Line Control through the steady, straight path a crew must hold on the water to avoid wasting distance, mirroring the guided cursor movement in the challenge."
+              },
+              "factChips": [
+                "2,000-meter straight course",
+                "Sweep or scull events",
+                "Synchronized stroke rate",
+                "Athletes face backward"
+              ],
+              "relatedTags": [
+                "Soccer",
+                "Track and Field"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "581ff262ec3f60fd32433d42f22e485181d81eb7b879287b3b947c6fa93ae98f",
+            "paletteTheme": "Metro Harbor",
+            "promptHash": "b099068819a4e056a9aa03c99f5a7350917b41eb0f8d1a6d5a8a6aa0734516cb",
+            "notes": "",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fny%2Fparis2024%2Fny-paris2024-olympic.png?alt=media&token=0f76fa25-2968-42b4-85b0-6f1faad3cab3",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/ny/paris2024/ny-paris2024-olympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/ny/paris2024/ny-paris2024-olympic.png",
+            "firebaseCollection": "cardPanels"
+          },
+          "paralympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fny%2Fparis2024%2Fny-paris2024-paralympic.png?alt=media&token=da07f5ca-195a-47b7-8ab9-e64f3849763a",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T15:09:40.997Z",
+            "dataScopeId": "paris2024",
+            "dataScopeLabel": "Olympic Games Paris 2024",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "New York paralympic Para-Rowing",
+            "primarySportTag": "Para-Rowing",
+            "topSportTags": [
+              "Para Track and Field",
+              "Para Swimming",
+              "Para Table Tennis"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Para-Rowing",
+              "moduleMix": [
+                "Gear/Setup",
+                "Pace Shift",
+                "Watch Hook"
+              ],
+              "subtitle": "Water endurance · 2,000m distance · synchronized rhythm",
+              "qaFacts": {
+                "howItWorks": "Boats race across a set distance, usually 2,000 meters, and the first crew to cross the finish line wins. The sport features single, double, or four-person boats where athletes face backward, using precise blade work to propel the shell forward.",
+                "watchValue": "The draw is the visual rhythm of the blades hitting the water. Notice how a crew maintains a steady stroke rate, blending individual timing into one seamless glide as they accelerate down the course.",
+                "stateConnection": "New York's access to the Atlantic coast, Great Lakes, and historic urban waterways could help fans understand why water-based pace stories fit this state card.",
+                "cardTrait": "Para-Rowing connects to Line control through the steady, synchronized movement used to keep the boat tracking straight down the racing lane."
+              },
+              "factChips": [
+                "2,000m race distance",
+                "Single, double, or four",
+                "Backward-facing movement",
+                "Synchronized stroke rate"
+              ],
+              "relatedTags": [
+                "Para Track and Field",
+                "Para Swimming",
+                "Para Table Tennis"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "474b1dbdd7d1e2a070f8da47ade0d3bb8d6e2236742cc21e8f468151bcb646d4",
+            "paletteTheme": "Metro Harbor",
+            "promptHash": "ce15b43a547d5752bbf4daa5f27f1d60a5dd01117a4e2ec22a57b4863837a60e",
+            "notes": "",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fny%2Fparis2024%2Fny-paris2024-paralympic.png?alt=media&token=da07f5ca-195a-47b7-8ab9-e64f3849763a",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/ny/paris2024/ny-paris2024-paralympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/ny/paris2024/ny-paris2024-paralympic.png",
+            "firebaseCollection": "cardPanels"
+          }
+        },
+        "milanoCortina2026": {
+          "olympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fny%2Fny-olympic.png?alt=media&token=f60aa0f0-a46a-4a68-842f-1b8a7a0e8069",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T15:06:28.937Z",
+            "dataScopeId": "milanoCortina2026",
+            "dataScopeLabel": "Olympic Winter Games Milano Cortina 2026",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "New York olympic Luge",
+            "primarySportTag": "Luge",
+            "topSportTags": [
+              "Ice Hockey",
+              "Luge",
+              "Soccer"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Luge",
+              "moduleMix": [
+                "Gear/Setup",
+                "Hidden Skill",
+                "Watch Hook"
+              ],
+              "subtitle": "Winter sliding sport · feet-first racing · precise steering",
+              "qaFacts": {
+                "howItWorks": "Luge is a winter sliding sport where athletes race down an icy track on a small sled, riding flat on their backs and feet first. The competitor with the fastest total time across multiple runs wins the event, and steering is done by applying subtle pressure with the calves and shoulders.",
+                "watchValue": "The speed gets easier to read when you watch the athlete's head position. Notice how they keep their helmets angled back to stay aerodynamic while still trying to track the upcoming curves.",
+                "stateConnection": "New York’s Adirondack mountains, four-season climate, and winter infrastructure could help fans understand why cold-weather sliding stories fit this state card.",
+                "cardTrait": "Luge connects to Line control through the precise, steady steering adjustments used to guide the sled smoothly along the fastest path down the ice."
+              },
+              "factChips": [
+                "Feet-first sliding",
+                "Calf and shoulder steering",
+                "Fastest total time wins",
+                "Aerodynamic body position"
+              ],
+              "relatedTags": [
+                "Ice Hockey",
+                "Soccer"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "3bb5ff9cd361790d483a76eba883bca74878a0b4d5c73b8e1f61f68354b67aa1",
+            "paletteTheme": "Metro Harbor",
+            "promptHash": "23337712c0ddf6aac26638fa61c80d09915ef03bed66b8a56d3b36629ea625b9",
+            "notes": "Reused generated panel because this data view matches an existing panel.",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fny%2Fny-olympic.png?alt=media&token=f60aa0f0-a46a-4a68-842f-1b8a7a0e8069",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/ny/ny-olympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/ny/ny-olympic.png",
+            "firebaseCollection": "cardPanels",
+            "reusedFromDataScopeId": "both"
+          },
+          "paralympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fny%2Fny-paralympic.png?alt=media&token=4216052c-3b37-4682-99c4-2537e6dcc504",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T15:07:19.328Z",
+            "dataScopeId": "milanoCortina2026",
+            "dataScopeLabel": "Olympic Winter Games Milano Cortina 2026",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "New York paralympic Para Alpine Skiing",
+            "primarySportTag": "Para Alpine Skiing",
+            "topSportTags": [
+              "Para Track and Field",
+              "Para Alpine Skiing",
+              "Para Swimming"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Para Alpine Skiing",
+              "moduleMix": [
+                "Rules Snapshot",
+                "Gear/Setup",
+                "Watch Hook"
+              ],
+              "subtitle": "Downhill speed · gate navigation · adaptive winter equipment",
+              "qaFacts": {
+                "howItWorks": "Para alpine skiing features athletes racing down a snow-covered mountain course marked by colored gates. Competitors use adaptive equipment like sit-skis, outriggers, or sighted guides, and the skier who completes the layout with the fastest time wins.",
+                "watchValue": "Look for how skiers carve tight angles around the gates while carrying speed down the fall line. The fun is watching athletes hold a precise edge on icy slopes, steering smoothly instead of skidding to save fractions of a second.",
+                "stateConnection": "New York's Adirondack ranges and four-season climate could help fans understand why winter equipment sports and cold-weather mountain stories fit this state card.",
+                "cardTrait": "Para alpine skiing connects to Line Control through the way athletes trace a clean, steady path between downhill gates to maintain their momentum."
+              },
+              "factChips": [
+                "Fastest total time wins",
+                "Navigating colored gates",
+                "Sit-skis and outriggers",
+                "Sighted guides"
+              ],
+              "relatedTags": [
+                "Para Track and Field",
+                "Para Swimming"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "35b590ab16c2163011ec4ade0fc01b0129aaf3d6fd177d23025526e7c7361305",
+            "paletteTheme": "Metro Harbor",
+            "promptHash": "3c597117fa070c2e895944a23d8f601d6b7ede165e8340d720601726088b005d",
+            "notes": "Reused generated panel because this data view matches an existing panel.",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fny%2Fny-paralympic.png?alt=media&token=4216052c-3b37-4682-99c4-2537e6dcc504",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/ny/ny-paralympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/ny/ny-paralympic.png",
+            "firebaseCollection": "cardPanels",
+            "reusedFromDataScopeId": "both"
+          }
+        }
+      },
+      "olympic": {
+        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fny%2Fny-olympic.png?alt=media&token=f60aa0f0-a46a-4a68-842f-1b8a7a0e8069",
+        "localUrl": null,
+        "model": "gemini-3-pro-image-preview",
+        "location": "global",
+        "mimeType": "image/png",
+        "generatedAt": "2026-05-08T15:06:28.937Z",
+        "dataScopeId": "both",
+        "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+        "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+        "promptSummary": "New York olympic Luge",
+        "primarySportTag": "Luge",
+        "topSportTags": [
+          "Ice Hockey",
+          "Luge",
+          "Soccer"
+        ],
+        "cardBackCopy": {
+          "featuredCue": "Luge",
+          "moduleMix": [
+            "Gear/Setup",
+            "Hidden Skill",
+            "Watch Hook"
+          ],
+          "subtitle": "Winter sliding sport · feet-first racing · precise steering",
+          "qaFacts": {
+            "howItWorks": "Luge is a winter sliding sport where athletes race down an icy track on a small sled, riding flat on their backs and feet first. The competitor with the fastest total time across multiple runs wins the event, and steering is done by applying subtle pressure with the calves and shoulders.",
+            "watchValue": "The speed gets easier to read when you watch the athlete's head position. Notice how they keep their helmets angled back to stay aerodynamic while still trying to track the upcoming curves.",
+            "stateConnection": "New York’s Adirondack mountains, four-season climate, and winter infrastructure could help fans understand why cold-weather sliding stories fit this state card.",
+            "cardTrait": "Luge connects to Line control through the precise, steady steering adjustments used to guide the sled smoothly along the fastest path down the ice."
+          },
+          "factChips": [
+            "Feet-first sliding",
+            "Calf and shoulder steering",
+            "Fastest total time wins",
+            "Aerodynamic body position"
+          ],
+          "relatedTags": [
+            "Ice Hockey",
+            "Soccer"
+          ],
+          "complianceWarnings": []
+        },
+        "cardBackCopySource": "gemini",
+        "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+        "cardBackCopyModel": "gemini-3.1-pro-preview",
+        "cardBackCopyPromptHash": "3bb5ff9cd361790d483a76eba883bca74878a0b4d5c73b8e1f61f68354b67aa1",
+        "paletteTheme": "Metro Harbor",
+        "promptHash": "23337712c0ddf6aac26638fa61c80d09915ef03bed66b8a56d3b36629ea625b9",
+        "notes": "",
+        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fny%2Fny-olympic.png?alt=media&token=f60aa0f0-a46a-4a68-842f-1b8a7a0e8069",
+        "storageBucket": "common-ground-tests.firebasestorage.app",
+        "firebaseProjectId": "common-ground-tests",
+        "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/ny/ny-olympic.png",
+        "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/ny/ny-olympic.png",
+        "firebaseCollection": "cardPanels"
+      },
+      "paralympic": {
+        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fny%2Fny-paralympic.png?alt=media&token=4216052c-3b37-4682-99c4-2537e6dcc504",
+        "localUrl": null,
+        "model": "gemini-3-pro-image-preview",
+        "location": "global",
+        "mimeType": "image/png",
+        "generatedAt": "2026-05-08T15:07:19.328Z",
+        "dataScopeId": "both",
+        "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+        "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+        "promptSummary": "New York paralympic Para Alpine Skiing",
+        "primarySportTag": "Para Alpine Skiing",
+        "topSportTags": [
+          "Para Track and Field",
+          "Para Alpine Skiing",
+          "Para Swimming"
+        ],
+        "cardBackCopy": {
+          "featuredCue": "Para Alpine Skiing",
+          "moduleMix": [
+            "Rules Snapshot",
+            "Gear/Setup",
+            "Watch Hook"
+          ],
+          "subtitle": "Downhill speed · gate navigation · adaptive winter equipment",
+          "qaFacts": {
+            "howItWorks": "Para alpine skiing features athletes racing down a snow-covered mountain course marked by colored gates. Competitors use adaptive equipment like sit-skis, outriggers, or sighted guides, and the skier who completes the layout with the fastest time wins.",
+            "watchValue": "Look for how skiers carve tight angles around the gates while carrying speed down the fall line. The fun is watching athletes hold a precise edge on icy slopes, steering smoothly instead of skidding to save fractions of a second.",
+            "stateConnection": "New York's Adirondack ranges and four-season climate could help fans understand why winter equipment sports and cold-weather mountain stories fit this state card.",
+            "cardTrait": "Para alpine skiing connects to Line Control through the way athletes trace a clean, steady path between downhill gates to maintain their momentum."
+          },
+          "factChips": [
+            "Fastest total time wins",
+            "Navigating colored gates",
+            "Sit-skis and outriggers",
+            "Sighted guides"
+          ],
+          "relatedTags": [
+            "Para Track and Field",
+            "Para Swimming"
+          ],
+          "complianceWarnings": []
+        },
+        "cardBackCopySource": "gemini",
+        "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+        "cardBackCopyModel": "gemini-3.1-pro-preview",
+        "cardBackCopyPromptHash": "35b590ab16c2163011ec4ade0fc01b0129aaf3d6fd177d23025526e7c7361305",
+        "paletteTheme": "Metro Harbor",
+        "promptHash": "3c597117fa070c2e895944a23d8f601d6b7ede165e8340d720601726088b005d",
+        "notes": "",
+        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fny%2Fny-paralympic.png?alt=media&token=4216052c-3b37-4682-99c4-2537e6dcc504",
+        "storageBucket": "common-ground-tests.firebasestorage.app",
+        "firebaseProjectId": "common-ground-tests",
+        "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/ny/ny-paralympic.png",
+        "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/ny/ny-paralympic.png",
+        "firebaseCollection": "cardPanels"
+      }
+    },
+    "NC": {
+      "scopes": {
+        "both": {
+          "olympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnc%2Fnc-olympic.png?alt=media&token=1deefcbf-5d1d-458c-a425-dfbf9ca7a79a",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T15:10:48.812Z",
+            "dataScopeId": "both",
+            "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "North Carolina olympic Canoe/Kayak",
+            "primarySportTag": "Canoe/Kayak",
+            "topSportTags": [
+              "Track and Field",
+              "Rugby",
+              "3x3 Basketball"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Canoe/Kayak",
+              "moduleMix": [
+                "Terrain/Environment Lens",
+                "Pace Shift",
+                "Hidden Skill"
+              ],
+              "subtitle": "Water navigation · paddle rhythm · line selection · pace control",
+              "qaFacts": {
+                "howItWorks": "Canoe and kayak events feature either flatwater sprints or whitewater slalom courses. The competitor with the fastest total time across the finish line wins. In slalom, paddlers navigate through a series of hanging gates, while sprint racers stay in designated straight lanes over set distances.",
+                "watchValue": "Notice how the boat interacts with the water's surface, whether gliding on a calm lane or cutting through turbulent rapids. The draw is watching paddlers adjust their stroke rate to keep their momentum steady without losing their chosen line.",
+                "stateConnection": "North Carolina's Atlantic coastline, Piedmont river systems, and Blue Ridge mountain rapids could help fans understand why water-based endurance stories fit this state card.",
+                "cardTrait": "Canoe and kayak connect to timing and space awareness as paddlers track the current and move into clear water to hold their speed as pressure shifts."
+              },
+              "factChips": [
+                "Sprint and slalom formats",
+                "Forward paddle strokes",
+                "Waterline navigation",
+                "Fastest total time wins"
+              ],
+              "relatedTags": [
+                "Track and Field",
+                "Rugby",
+                "3x3 Basketball"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "30f07f04ec0a9d5bdac53a249bf7b4c9f423616402ca422efe7a3f88220d0634",
+            "paletteTheme": "Coastal Current",
+            "promptHash": "96d176bc010d183dda6be6d6869ead4eb9a7c3affd6b055740368a58db06207b",
+            "notes": "",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnc%2Fnc-olympic.png?alt=media&token=1deefcbf-5d1d-458c-a425-dfbf9ca7a79a",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/nc/nc-olympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/nc/nc-olympic.png",
+            "firebaseCollection": "cardPanels"
+          },
+          "paralympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnc%2Fnc-paralympic.png?alt=media&token=f2de6099-5eda-4112-ab2f-51033baa7148",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T15:11:33.854Z",
+            "dataScopeId": "both",
+            "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "North Carolina paralympic Para triathlon",
+            "primarySportTag": "Paratriathlon",
+            "topSportTags": [
+              "Para Swimming",
+              "Sitting Volleyball",
+              "Para Judo"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Para triathlon",
+              "moduleMix": [
+                "Pace Shift",
+                "Watch Hook",
+                "Gear/Setup"
+              ],
+              "subtitle": "Swim, bike, run · transition timing · spatial pacing",
+              "qaFacts": {
+                "howItWorks": "Para triathlon is a continuous race consisting of a 750m swim, a 20km bike segment, and a 5km run. The competitor who finishes with the fastest total time wins, meaning the clock keeps running while athletes switch equipment in the transition zones.",
+                "watchValue": "The event completely changes rhythm as competitors move from the water to the road. Notice how athletes manage their speed and track open space while shifting into their cycling and running gear as the pack stretches out.",
+                "stateConnection": "North Carolina's Atlantic coastline, rolling Piedmont roads, and Blue Ridge mountain routes could show how outdoor endurance events fit this state card.",
+                "cardTrait": "Para triathlon connects to timing and space awareness because racers must constantly track open lanes, moving into clear room on the course while holding their focus across three different stages."
+              },
+              "factChips": [
+                "750m swim, 20km bike, 5km run",
+                "Fastest total time wins",
+                "Transition zone control",
+                "Adapting across three surfaces"
+              ],
+              "relatedTags": [
+                "Para Swimming",
+                "Sitting Volleyball",
+                "Para Judo"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "15c6ebbde849f91d1e1e4365906a3cde9e80c000f305f76cbf4810707aa44edb",
+            "paletteTheme": "Coastal Current",
+            "promptHash": "5fccc4cdbf66dc79b2be1deeff46f1a554a2a24bfcff0b207f8c22215bc95a58",
+            "notes": "",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnc%2Fnc-paralympic.png?alt=media&token=f2de6099-5eda-4112-ab2f-51033baa7148",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/nc/nc-paralympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/nc/nc-paralympic.png",
+            "firebaseCollection": "cardPanels"
+          }
+        },
+        "paris2024": {
+          "olympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnc%2Fnc-olympic.png?alt=media&token=1deefcbf-5d1d-458c-a425-dfbf9ca7a79a",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T15:10:48.812Z",
+            "dataScopeId": "paris2024",
+            "dataScopeLabel": "Olympic Games Paris 2024",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "North Carolina olympic Canoe/Kayak",
+            "primarySportTag": "Canoe/Kayak",
+            "topSportTags": [
+              "Track and Field",
+              "Rugby",
+              "3x3 Basketball"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Canoe/Kayak",
+              "moduleMix": [
+                "Terrain/Environment Lens",
+                "Pace Shift",
+                "Hidden Skill"
+              ],
+              "subtitle": "Water navigation · paddle rhythm · line selection · pace control",
+              "qaFacts": {
+                "howItWorks": "Canoe and kayak events feature either flatwater sprints or whitewater slalom courses. The competitor with the fastest total time across the finish line wins. In slalom, paddlers navigate through a series of hanging gates, while sprint racers stay in designated straight lanes over set distances.",
+                "watchValue": "Notice how the boat interacts with the water's surface, whether gliding on a calm lane or cutting through turbulent rapids. The draw is watching paddlers adjust their stroke rate to keep their momentum steady without losing their chosen line.",
+                "stateConnection": "North Carolina's Atlantic coastline, Piedmont river systems, and Blue Ridge mountain rapids could help fans understand why water-based endurance stories fit this state card.",
+                "cardTrait": "Canoe and kayak connect to timing and space awareness as paddlers track the current and move into clear water to hold their speed as pressure shifts."
+              },
+              "factChips": [
+                "Sprint and slalom formats",
+                "Forward paddle strokes",
+                "Waterline navigation",
+                "Fastest total time wins"
+              ],
+              "relatedTags": [
+                "Track and Field",
+                "Rugby",
+                "3x3 Basketball"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "30f07f04ec0a9d5bdac53a249bf7b4c9f423616402ca422efe7a3f88220d0634",
+            "paletteTheme": "Coastal Current",
+            "promptHash": "96d176bc010d183dda6be6d6869ead4eb9a7c3affd6b055740368a58db06207b",
+            "notes": "Reused generated panel because this data view matches an existing panel.",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnc%2Fnc-olympic.png?alt=media&token=1deefcbf-5d1d-458c-a425-dfbf9ca7a79a",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/nc/nc-olympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/nc/nc-olympic.png",
+            "firebaseCollection": "cardPanels",
+            "reusedFromDataScopeId": "both"
+          },
+          "paralympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnc%2Fnc-paralympic.png?alt=media&token=f2de6099-5eda-4112-ab2f-51033baa7148",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T15:11:33.854Z",
+            "dataScopeId": "paris2024",
+            "dataScopeLabel": "Olympic Games Paris 2024",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "North Carolina paralympic Para triathlon",
+            "primarySportTag": "Paratriathlon",
+            "topSportTags": [
+              "Para Swimming",
+              "Sitting Volleyball",
+              "Para Judo"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Para triathlon",
+              "moduleMix": [
+                "Pace Shift",
+                "Watch Hook",
+                "Gear/Setup"
+              ],
+              "subtitle": "Swim, bike, run · transition timing · spatial pacing",
+              "qaFacts": {
+                "howItWorks": "Para triathlon is a continuous race consisting of a 750m swim, a 20km bike segment, and a 5km run. The competitor who finishes with the fastest total time wins, meaning the clock keeps running while athletes switch equipment in the transition zones.",
+                "watchValue": "The event completely changes rhythm as competitors move from the water to the road. Notice how athletes manage their speed and track open space while shifting into their cycling and running gear as the pack stretches out.",
+                "stateConnection": "North Carolina's Atlantic coastline, rolling Piedmont roads, and Blue Ridge mountain routes could show how outdoor endurance events fit this state card.",
+                "cardTrait": "Para triathlon connects to timing and space awareness because racers must constantly track open lanes, moving into clear room on the course while holding their focus across three different stages."
+              },
+              "factChips": [
+                "750m swim, 20km bike, 5km run",
+                "Fastest total time wins",
+                "Transition zone control",
+                "Adapting across three surfaces"
+              ],
+              "relatedTags": [
+                "Para Swimming",
+                "Sitting Volleyball",
+                "Para Judo"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "15c6ebbde849f91d1e1e4365906a3cde9e80c000f305f76cbf4810707aa44edb",
+            "paletteTheme": "Coastal Current",
+            "promptHash": "5fccc4cdbf66dc79b2be1deeff46f1a554a2a24bfcff0b207f8c22215bc95a58",
+            "notes": "Reused generated panel because this data view matches an existing panel.",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnc%2Fnc-paralympic.png?alt=media&token=f2de6099-5eda-4112-ab2f-51033baa7148",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/nc/nc-paralympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/nc/nc-paralympic.png",
+            "firebaseCollection": "cardPanels",
+            "reusedFromDataScopeId": "both"
+          }
+        },
+        "milanoCortina2026": {
+          "paralympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnc%2FmilanoCortina2026%2Fnc-milanoCortina2026-paralympic.png?alt=media&token=f25ffe90-839d-43ad-a880-e49a85e8c1f8",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T15:13:00.004Z",
+            "dataScopeId": "milanoCortina2026",
+            "dataScopeLabel": "Olympic Winter Games Milano Cortina 2026",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "North Carolina paralympic Sled Hockey",
+            "primarySportTag": "Sled Hockey",
+            "topSportTags": [
+              "Sled Hockey"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Sled Hockey",
+              "moduleMix": [
+                "Gear/Setup",
+                "Watch Hook",
+                "Challenge Link"
+              ],
+              "subtitle": "Ice team sport · custom sleds · dual-purpose sticks · spatial control",
+              "qaFacts": {
+                "howItWorks": "Two teams of six play on an indoor ice rink, aiming to shoot the puck into the opponent's net to score the most goals. Athletes sit in custom sleds equipped with skate blades and use two short sticks to both propel themselves across the ice and handle the puck.",
+                "watchValue": "The game moves incredibly fast as players weave through heavy traffic while balancing on narrow blades. Notice how athletes seamlessly switch between digging their stick picks into the ice for speed and instantly receiving a pass.",
+                "stateConnection": "North Carolina's varied terrain, stretching from the Blue Ridge mountains to the Atlantic coast, alongside its indoor rink infrastructure, may suggest how winter team sports adapt within a humid climate.",
+                "cardTrait": "Sled hockey connects to timing and space awareness because players constantly scan the ice, tracking open zones and moving into clear room as defensive pressure shifts."
+              },
+              "factChips": [
+                "Six players per side",
+                "Two dual-purpose sticks",
+                "Blades mounted under sleds",
+                "Metal picks for propulsion"
+              ],
+              "relatedTags": [],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "1b71fff43ead9cf87af39618300c6c55029317036ffd117c38975dafb26e07d5",
+            "paletteTheme": "Coastal Current",
+            "promptHash": "e709ca78da1aa1f4d6686e04ef116c80546cad929dc7fcefdc192c23a4e7c385",
+            "notes": "",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnc%2FmilanoCortina2026%2Fnc-milanoCortina2026-paralympic.png?alt=media&token=f25ffe90-839d-43ad-a880-e49a85e8c1f8",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/nc/milanoCortina2026/nc-milanoCortina2026-paralympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/nc/milanoCortina2026/nc-milanoCortina2026-paralympic.png",
+            "firebaseCollection": "cardPanels"
+          }
+        }
+      },
+      "olympic": {
+        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnc%2Fnc-olympic.png?alt=media&token=1deefcbf-5d1d-458c-a425-dfbf9ca7a79a",
+        "localUrl": null,
+        "model": "gemini-3-pro-image-preview",
+        "location": "global",
+        "mimeType": "image/png",
+        "generatedAt": "2026-05-08T15:10:48.812Z",
+        "dataScopeId": "both",
+        "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+        "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+        "promptSummary": "North Carolina olympic Canoe/Kayak",
+        "primarySportTag": "Canoe/Kayak",
+        "topSportTags": [
+          "Track and Field",
+          "Rugby",
+          "3x3 Basketball"
+        ],
+        "cardBackCopy": {
+          "featuredCue": "Canoe/Kayak",
+          "moduleMix": [
+            "Terrain/Environment Lens",
+            "Pace Shift",
+            "Hidden Skill"
+          ],
+          "subtitle": "Water navigation · paddle rhythm · line selection · pace control",
+          "qaFacts": {
+            "howItWorks": "Canoe and kayak events feature either flatwater sprints or whitewater slalom courses. The competitor with the fastest total time across the finish line wins. In slalom, paddlers navigate through a series of hanging gates, while sprint racers stay in designated straight lanes over set distances.",
+            "watchValue": "Notice how the boat interacts with the water's surface, whether gliding on a calm lane or cutting through turbulent rapids. The draw is watching paddlers adjust their stroke rate to keep their momentum steady without losing their chosen line.",
+            "stateConnection": "North Carolina's Atlantic coastline, Piedmont river systems, and Blue Ridge mountain rapids could help fans understand why water-based endurance stories fit this state card.",
+            "cardTrait": "Canoe and kayak connect to timing and space awareness as paddlers track the current and move into clear water to hold their speed as pressure shifts."
+          },
+          "factChips": [
+            "Sprint and slalom formats",
+            "Forward paddle strokes",
+            "Waterline navigation",
+            "Fastest total time wins"
+          ],
+          "relatedTags": [
+            "Track and Field",
+            "Rugby",
+            "3x3 Basketball"
+          ],
+          "complianceWarnings": []
+        },
+        "cardBackCopySource": "gemini",
+        "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+        "cardBackCopyModel": "gemini-3.1-pro-preview",
+        "cardBackCopyPromptHash": "30f07f04ec0a9d5bdac53a249bf7b4c9f423616402ca422efe7a3f88220d0634",
+        "paletteTheme": "Coastal Current",
+        "promptHash": "96d176bc010d183dda6be6d6869ead4eb9a7c3affd6b055740368a58db06207b",
+        "notes": "",
+        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnc%2Fnc-olympic.png?alt=media&token=1deefcbf-5d1d-458c-a425-dfbf9ca7a79a",
+        "storageBucket": "common-ground-tests.firebasestorage.app",
+        "firebaseProjectId": "common-ground-tests",
+        "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/nc/nc-olympic.png",
+        "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/nc/nc-olympic.png",
+        "firebaseCollection": "cardPanels"
+      },
+      "paralympic": {
+        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnc%2Fnc-paralympic.png?alt=media&token=f2de6099-5eda-4112-ab2f-51033baa7148",
+        "localUrl": null,
+        "model": "gemini-3-pro-image-preview",
+        "location": "global",
+        "mimeType": "image/png",
+        "generatedAt": "2026-05-08T15:11:33.854Z",
+        "dataScopeId": "both",
+        "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+        "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+        "promptSummary": "North Carolina paralympic Para triathlon",
+        "primarySportTag": "Paratriathlon",
+        "topSportTags": [
+          "Para Swimming",
+          "Sitting Volleyball",
+          "Para Judo"
+        ],
+        "cardBackCopy": {
+          "featuredCue": "Para triathlon",
+          "moduleMix": [
+            "Pace Shift",
+            "Watch Hook",
+            "Gear/Setup"
+          ],
+          "subtitle": "Swim, bike, run · transition timing · spatial pacing",
+          "qaFacts": {
+            "howItWorks": "Para triathlon is a continuous race consisting of a 750m swim, a 20km bike segment, and a 5km run. The competitor who finishes with the fastest total time wins, meaning the clock keeps running while athletes switch equipment in the transition zones.",
+            "watchValue": "The event completely changes rhythm as competitors move from the water to the road. Notice how athletes manage their speed and track open space while shifting into their cycling and running gear as the pack stretches out.",
+            "stateConnection": "North Carolina's Atlantic coastline, rolling Piedmont roads, and Blue Ridge mountain routes could show how outdoor endurance events fit this state card.",
+            "cardTrait": "Para triathlon connects to timing and space awareness because racers must constantly track open lanes, moving into clear room on the course while holding their focus across three different stages."
+          },
+          "factChips": [
+            "750m swim, 20km bike, 5km run",
+            "Fastest total time wins",
+            "Transition zone control",
+            "Adapting across three surfaces"
+          ],
+          "relatedTags": [
+            "Para Swimming",
+            "Sitting Volleyball",
+            "Para Judo"
+          ],
+          "complianceWarnings": []
+        },
+        "cardBackCopySource": "gemini",
+        "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+        "cardBackCopyModel": "gemini-3.1-pro-preview",
+        "cardBackCopyPromptHash": "15c6ebbde849f91d1e1e4365906a3cde9e80c000f305f76cbf4810707aa44edb",
+        "paletteTheme": "Coastal Current",
+        "promptHash": "5fccc4cdbf66dc79b2be1deeff46f1a554a2a24bfcff0b207f8c22215bc95a58",
+        "notes": "",
+        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnc%2Fnc-paralympic.png?alt=media&token=f2de6099-5eda-4112-ab2f-51033baa7148",
+        "storageBucket": "common-ground-tests.firebasestorage.app",
+        "firebaseProjectId": "common-ground-tests",
+        "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/nc/nc-paralympic.png",
+        "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/nc/nc-paralympic.png",
+        "firebaseCollection": "cardPanels"
+      }
+    },
+    "ND": {
+      "scopes": {
+        "both": {
+          "olympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnd%2Fnd-olympic.png?alt=media&token=8d5ed43c-4299-4e95-8f3d-3ccae2041d91",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T15:16:42.019Z",
+            "dataScopeId": "both",
+            "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "North Dakota olympic Ice Hockey",
+            "primarySportTag": "Ice Hockey",
+            "topSportTags": [
+              "Ice Hockey"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Ice Hockey",
+              "moduleMix": [
+                "Rules Snapshot",
+                "Pace Shift",
+                "State Culture"
+              ],
+              "subtitle": "Winter team sport · goals in net · shifting ice space",
+              "qaFacts": {
+                "howItWorks": "Two teams of six—five skaters and one goaltender—play on an enclosed ice rink to score goals in the opponent's net. The team with the most goals at the end of three periods wins, and players must carefully time their entry into the attacking zone to avoid offsides and keep the play alive.",
+                "watchValue": "Ice hockey gets easier to follow when you watch the open ice instead of just the puck. The rhythm shifts constantly as teams cycle through line changes on the fly, creating sudden bursts of speed and new passing lanes.",
+                "stateConnection": "North Dakota's cold winters, northern plains, and frozen river valleys could help fans understand why ice-based team stories fit this state card.",
+                "cardTrait": "Ice hockey connects to Timing and Space Awareness through the way skaters track open ice and move into clear room as defensive pressure shifts during the Open Space Challenge."
+              },
+              "factChips": [
+                "5 skaters + 1 goaltender",
+                "Three 20-minute periods",
+                "On-the-fly line changes",
+                "Blue line offsides rule"
+              ],
+              "relatedTags": [],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "376ebf13c83d43254daf796a31e94db2600b26c4a99afbba93ae871580bb7e44",
+            "paletteTheme": "Coastal Current",
+            "promptHash": "429e9230d0bef58b9499cb94832c7ae198117a69a272189db199454e4e6a8acf",
+            "notes": "",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnd%2Fnd-olympic.png?alt=media&token=8d5ed43c-4299-4e95-8f3d-3ccae2041d91",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/nd/nd-olympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/nd/nd-olympic.png",
+            "firebaseCollection": "cardPanels"
+          }
+        },
+        "paris2024": {},
+        "milanoCortina2026": {
+          "olympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnd%2Fnd-olympic.png?alt=media&token=8d5ed43c-4299-4e95-8f3d-3ccae2041d91",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T15:16:42.019Z",
+            "dataScopeId": "milanoCortina2026",
+            "dataScopeLabel": "Olympic Winter Games Milano Cortina 2026",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "North Dakota olympic Ice Hockey",
+            "primarySportTag": "Ice Hockey",
+            "topSportTags": [
+              "Ice Hockey"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Ice Hockey",
+              "moduleMix": [
+                "Rules Snapshot",
+                "Pace Shift",
+                "State Culture"
+              ],
+              "subtitle": "Winter team sport · goals in net · shifting ice space",
+              "qaFacts": {
+                "howItWorks": "Two teams of six—five skaters and one goaltender—play on an enclosed ice rink to score goals in the opponent's net. The team with the most goals at the end of three periods wins, and players must carefully time their entry into the attacking zone to avoid offsides and keep the play alive.",
+                "watchValue": "Ice hockey gets easier to follow when you watch the open ice instead of just the puck. The rhythm shifts constantly as teams cycle through line changes on the fly, creating sudden bursts of speed and new passing lanes.",
+                "stateConnection": "North Dakota's cold winters, northern plains, and frozen river valleys could help fans understand why ice-based team stories fit this state card.",
+                "cardTrait": "Ice hockey connects to Timing and Space Awareness through the way skaters track open ice and move into clear room as defensive pressure shifts during the Open Space Challenge."
+              },
+              "factChips": [
+                "5 skaters + 1 goaltender",
+                "Three 20-minute periods",
+                "On-the-fly line changes",
+                "Blue line offsides rule"
+              ],
+              "relatedTags": [],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "376ebf13c83d43254daf796a31e94db2600b26c4a99afbba93ae871580bb7e44",
+            "paletteTheme": "Coastal Current",
+            "promptHash": "429e9230d0bef58b9499cb94832c7ae198117a69a272189db199454e4e6a8acf",
+            "notes": "Reused generated panel because this data view matches an existing panel.",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnd%2Fnd-olympic.png?alt=media&token=8d5ed43c-4299-4e95-8f3d-3ccae2041d91",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/nd/nd-olympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/nd/nd-olympic.png",
+            "firebaseCollection": "cardPanels",
+            "reusedFromDataScopeId": "both"
+          }
+        }
+      },
+      "olympic": {
+        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnd%2Fnd-olympic.png?alt=media&token=8d5ed43c-4299-4e95-8f3d-3ccae2041d91",
+        "localUrl": null,
+        "model": "gemini-3-pro-image-preview",
+        "location": "global",
+        "mimeType": "image/png",
+        "generatedAt": "2026-05-08T15:16:42.019Z",
+        "dataScopeId": "both",
+        "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+        "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+        "promptSummary": "North Dakota olympic Ice Hockey",
+        "primarySportTag": "Ice Hockey",
+        "topSportTags": [
+          "Ice Hockey"
+        ],
+        "cardBackCopy": {
+          "featuredCue": "Ice Hockey",
+          "moduleMix": [
+            "Rules Snapshot",
+            "Pace Shift",
+            "State Culture"
+          ],
+          "subtitle": "Winter team sport · goals in net · shifting ice space",
+          "qaFacts": {
+            "howItWorks": "Two teams of six—five skaters and one goaltender—play on an enclosed ice rink to score goals in the opponent's net. The team with the most goals at the end of three periods wins, and players must carefully time their entry into the attacking zone to avoid offsides and keep the play alive.",
+            "watchValue": "Ice hockey gets easier to follow when you watch the open ice instead of just the puck. The rhythm shifts constantly as teams cycle through line changes on the fly, creating sudden bursts of speed and new passing lanes.",
+            "stateConnection": "North Dakota's cold winters, northern plains, and frozen river valleys could help fans understand why ice-based team stories fit this state card.",
+            "cardTrait": "Ice hockey connects to Timing and Space Awareness through the way skaters track open ice and move into clear room as defensive pressure shifts during the Open Space Challenge."
+          },
+          "factChips": [
+            "5 skaters + 1 goaltender",
+            "Three 20-minute periods",
+            "On-the-fly line changes",
+            "Blue line offsides rule"
+          ],
+          "relatedTags": [],
+          "complianceWarnings": []
+        },
+        "cardBackCopySource": "gemini",
+        "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+        "cardBackCopyModel": "gemini-3.1-pro-preview",
+        "cardBackCopyPromptHash": "376ebf13c83d43254daf796a31e94db2600b26c4a99afbba93ae871580bb7e44",
+        "paletteTheme": "Coastal Current",
+        "promptHash": "429e9230d0bef58b9499cb94832c7ae198117a69a272189db199454e4e6a8acf",
+        "notes": "",
+        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnd%2Fnd-olympic.png?alt=media&token=8d5ed43c-4299-4e95-8f3d-3ccae2041d91",
+        "storageBucket": "common-ground-tests.firebasestorage.app",
+        "firebaseProjectId": "common-ground-tests",
+        "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/nd/nd-olympic.png",
+        "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/nd/nd-olympic.png",
+        "firebaseCollection": "cardPanels"
+      }
+    },
+    "OH": {
+      "scopes": {
+        "both": {
+          "olympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Foh%2Foh-olympic.png?alt=media&token=700d04cb-4770-4159-a26a-010fc23549d4",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T15:17:39.944Z",
+            "dataScopeId": "both",
+            "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "Ohio olympic Rowing",
+            "primarySportTag": "Rowing",
+            "topSportTags": [
+              "Track and Field",
+              "Freestyle Skiing",
+              "Ice Hockey"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Rowing",
+              "moduleMix": [
+                "Rules Snapshot",
+                "Pace Shift",
+                "Terrain/Environment Lens"
+              ],
+              "subtitle": "Water-based racing · synchronized strokes · 2,000-meter course",
+              "qaFacts": {
+                "howItWorks": "Crews race long, narrow boats across a straight 2,000-meter water course, aiming for the fastest total time. Rowers sit facing backward while moving forward, using synchronized oar strokes to propel the shell past the finish line.",
+                "watchValue": "The visual rhythm gets clearer when you watch the oars hit the water in perfect unison. It is fun to notice how a boat seems to glide smoothly between strokes, and how the stroke rate shifts during a final sprint.",
+                "stateConnection": "Ohio's river valleys, Great Lakes shoreline, and metro waterways could help fans understand why outdoor water-based pacing stories fit this state card.",
+                "cardTrait": "Rowing connects to Line Control through the precise, steady motion needed to keep a boat moving straight down a marked lane."
+              },
+              "factChips": [
+                "2,000-meter straight course",
+                "Synchronized oar strokes",
+                "Backward-facing athletes",
+                "Fastest total time wins"
+              ],
+              "relatedTags": [
+                "Track and Field",
+                "Freestyle Skiing",
+                "Ice Hockey"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "48ca8177241f6e3456841714c5b24b35ddb65c29f3e0b4928b908b17a0a775b9",
+            "paletteTheme": "Coastal Current",
+            "promptHash": "390e102235551a756fc6da49684215c6434d81025ee3104bd9031f78a2579734",
+            "notes": "",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Foh%2Foh-olympic.png?alt=media&token=700d04cb-4770-4159-a26a-010fc23549d4",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/oh/oh-olympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/oh/oh-olympic.png",
+            "firebaseCollection": "cardPanels"
+          }
+        }
+      },
+      "olympic": {
+        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Foh%2Foh-olympic.png?alt=media&token=700d04cb-4770-4159-a26a-010fc23549d4",
+        "localUrl": null,
+        "model": "gemini-3-pro-image-preview",
+        "location": "global",
+        "mimeType": "image/png",
+        "generatedAt": "2026-05-08T15:17:39.944Z",
+        "dataScopeId": "both",
+        "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+        "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+        "promptSummary": "Ohio olympic Rowing",
+        "primarySportTag": "Rowing",
+        "topSportTags": [
+          "Track and Field",
+          "Freestyle Skiing",
+          "Ice Hockey"
+        ],
+        "cardBackCopy": {
+          "featuredCue": "Rowing",
+          "moduleMix": [
+            "Rules Snapshot",
+            "Pace Shift",
+            "Terrain/Environment Lens"
+          ],
+          "subtitle": "Water-based racing · synchronized strokes · 2,000-meter course",
+          "qaFacts": {
+            "howItWorks": "Crews race long, narrow boats across a straight 2,000-meter water course, aiming for the fastest total time. Rowers sit facing backward while moving forward, using synchronized oar strokes to propel the shell past the finish line.",
+            "watchValue": "The visual rhythm gets clearer when you watch the oars hit the water in perfect unison. It is fun to notice how a boat seems to glide smoothly between strokes, and how the stroke rate shifts during a final sprint.",
+            "stateConnection": "Ohio's river valleys, Great Lakes shoreline, and metro waterways could help fans understand why outdoor water-based pacing stories fit this state card.",
+            "cardTrait": "Rowing connects to Line Control through the precise, steady motion needed to keep a boat moving straight down a marked lane."
+          },
+          "factChips": [
+            "2,000-meter straight course",
+            "Synchronized oar strokes",
+            "Backward-facing athletes",
+            "Fastest total time wins"
+          ],
+          "relatedTags": [
+            "Track and Field",
+            "Freestyle Skiing",
+            "Ice Hockey"
+          ],
+          "complianceWarnings": []
+        },
+        "cardBackCopySource": "gemini",
+        "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+        "cardBackCopyModel": "gemini-3.1-pro-preview",
+        "cardBackCopyPromptHash": "48ca8177241f6e3456841714c5b24b35ddb65c29f3e0b4928b908b17a0a775b9",
+        "paletteTheme": "Coastal Current",
+        "promptHash": "390e102235551a756fc6da49684215c6434d81025ee3104bd9031f78a2579734",
+        "notes": "",
+        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Foh%2Foh-olympic.png?alt=media&token=700d04cb-4770-4159-a26a-010fc23549d4",
+        "storageBucket": "common-ground-tests.firebasestorage.app",
+        "firebaseProjectId": "common-ground-tests",
+        "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/oh/oh-olympic.png",
+        "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/oh/oh-olympic.png",
         "firebaseCollection": "cardPanels"
       }
     }
