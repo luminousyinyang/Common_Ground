@@ -303,11 +303,18 @@ export default function GridMemory({ card, onResult }) {
               if (round >= TOTAL_ROUNDS) {
                 doneRef.current = true;
                 const label = misses === 0 ? "cleanly" : misses <= 3 ? "with a few resets" : "with extra scouting";
+                const patternScore = Math.max(0, Math.min(100, 100 - misses * 12));
                 setTimeout(() => onResult({
                   type: "pattern_scout",
                   summary: `You completed all ${TOTAL_ROUNDS} patterns ${label} with ${misses} wrong taps.`,
                   patternLabel: label,
+                  patternScore,
                   misses,
+                  metrics: [
+                    { label: "Pattern score", value: `${patternScore}%` },
+                    { label: "Resets", value: `${misses}` },
+                    { label: "Rounds", value: `${TOTAL_ROUNDS}` },
+                  ],
                 }), 600);
               } else {
                 setTimeout(() => {

@@ -28,6 +28,9 @@ const FIREBASE_SESSION_EXPIRES_IN_MS = Math.min(
   14 * 24 * 60 * 60 * 1000
 );
 const FIREBASE_SESSION_MAX_AGE_SECONDS = Math.round(FIREBASE_SESSION_EXPIRES_IN_MS / 1000);
+const SCORE_HISTORY_GAME_TYPES = new Set(["reaction_grid", "cadence_keeper", "precision_trace", "focus_hold", "pattern_scout"]);
+const DEFAULT_SCORE_HISTORY_LIMIT = 50;
+const MAX_SCORE_HISTORY_LIMIT = 100;
 
 let cachedDataset;
 let cachedStaticRoot;
@@ -279,6 +282,87 @@ function normalizeCodeList(value, dataset) {
         .filter((code) => allowed.has(code))
     )
   ];
+}
+
+function normalizeScoreHistoryGameType(value = "") {
+  const gameType = String(value || "").trim();
+  return SCORE_HISTORY_GAME_TYPES.has(gameType) ? gameType : "";
+}
+
+function scoreHistoryGameTypeFromUrl(url) {
+  const match = url.pathname.match(/^\/api\/score-history\/([^/]+)$/);
+  return normalizeScoreHistoryGameType(match ? decodeURIComponent(match[1]) : "");
+}
+
+function scoreHistoryLimitFromUrl(url) {
+  const requested = Number(url.searchParams.get("limit") || DEFAULT_SCORE_HISTORY_LIMIT);
+  if (!Number.isFinite(requested)) return DEFAULT_SCORE_HISTORY_LIMIT;
+  return Math.max(1, Math.min(MAX_SCORE_HISTORY_LIMIT, Math.round(requested)));
+}
+
+function asNumber(value) {
+  const number = Number(value);
+  return Number.isFinite(number) ? number : null;
+}
+
+function clampScoreHistoryScore(value) {
+  const number = asNumber(value);
+  if (number === null) return 0;
+  return Math.max(0, Math.min(100, Math.round(number)));
+}
+
+function scoreHistoryScoreForResult(gameType, result = {}) {
+  if (gameType === "reaction_grid") return clampScoreHistoryScore(result.precisionScore);
+  if (gameType === "cadence_keeper") return clampScoreHistoryScore(result.stabilityScore);
+  if (gameType === "precision_trace") return clampScoreHistoryScore(result.traceScore);
+  if (gameType === "focus_hold") return clampScoreHistoryScore(result.readScore);
+  if (gameType === "pattern_scout") {
+    const explicit = asNumber(result.patternScore);
+    if (explicit !== null) return clampScoreHistoryScore(explicit);
+    return clampScoreHistoryScore(100 - Number(result.misses || 0) * 12);
+  }
+  return clampScoreHistoryScore(result.score);
+}
+
+function timestampToIso(value) {
+  return value?.toDate?.()?.toISOString?.() || value || null;
+}
+
+function scoreHistoryEntryFromDoc(doc) {
+  const data = doc.data() || {};
+  return {
+    id: doc.id,
+    gameType: data.gameType || "",
+    score: clampScoreHistoryScore(data.score),
+    summary: String(data.summary || "").slice(0, 180),
+    stateCode: data.stateCode || "",
+    stateName: data.stateName || "",
+    createdAt: timestampToIso(data.createdAt),
+    updatedAt: timestampToIso(data.updatedAt)
+  };
+}
+
+function userScoreHistoryRuns(db, uid, gameType) {
+  return db
+    .collection("userGameScoreHistory")
+    .doc(uid)
+    .collection("games")
+    .doc(gameType)
+    .collection("runs");
+}
+
+async function loadScoreHistoryEntries(db, uid, gameType, limit = DEFAULT_SCORE_HISTORY_LIMIT) {
+  const snapshot = await db
+    .collection("userGameScoreHistory")
+    .doc(uid)
+    .collection("games")
+    .doc(gameType)
+    .collection("runs")
+    .orderBy("createdAt", "desc")
+    .limit(limit)
+    .get();
+
+  return snapshot.docs.map(scoreHistoryEntryFromDoc);
 }
 
 function normalizeJsonText(text) {
@@ -1034,6 +1118,81 @@ async function handleApi(req, res, url) {
   if (req.method === "DELETE" && url.pathname === "/api/auth/session") {
     clearSessionCookie(res);
     sendJson(res, 200, { ok: true });
+    return true;
+  }
+
+  const scoreHistoryGameType = scoreHistoryGameTypeFromUrl(url);
+  if (scoreHistoryGameType && (req.method === "GET" || req.method === "POST")) {
+    let user;
+    try {
+      user = await currentAuthUser(req);
+    } catch (error) {
+      clearSessionCookie(res);
+      sendJson(res, 401, { error: `Session is not valid: ${error.message}` });
+      return true;
+    }
+
+    if (!user) {
+      sendJson(res, 401, {
+        error: req.method === "GET"
+          ? "Log in to view your previous scores."
+          : "Log in to save your score."
+      });
+      return true;
+    }
+
+    if (req.method === "GET") {
+      try {
+        const { db } = await getFirebaseAdmin();
+        const entries = await loadScoreHistoryEntries(db, user.uid, scoreHistoryGameType, scoreHistoryLimitFromUrl(url));
+        sendJson(res, 200, { gameType: scoreHistoryGameType, entries });
+      } catch (error) {
+        sendJson(res, 500, { error: `Could not load score history: ${error.message}` });
+      }
+      return true;
+    }
+
+    try {
+      const body = await readBody(req);
+      const payload = body ? JSON.parse(body) : {};
+      const result = payload.result || {};
+      const score = scoreHistoryScoreForResult(scoreHistoryGameType, result);
+      const stateCode = String(payload.stateCode || "").toUpperCase().slice(0, 4);
+      const stateName = String(payload.stateName || "").trim().slice(0, 80);
+      const { db, FieldValue } = await getFirebaseAdmin();
+      const entryRef = await userScoreHistoryRuns(db, user.uid, scoreHistoryGameType).add({
+        gameType: scoreHistoryGameType,
+        score,
+        summary: String(result.summary || "").slice(0, 180),
+        stateCode,
+        stateName,
+        createdAt: FieldValue.serverTimestamp(),
+        updatedAt: FieldValue.serverTimestamp()
+      });
+      const nextSnapshot = await entryRef.get();
+      const entry = scoreHistoryEntryFromDoc(nextSnapshot);
+      const entries = await loadScoreHistoryEntries(db, user.uid, scoreHistoryGameType, scoreHistoryLimitFromUrl(url));
+
+      sendJson(res, 200, {
+        gameType: scoreHistoryGameType,
+        saved: true,
+        currentRunScore: score,
+        entry,
+        entries
+      });
+    } catch (error) {
+      sendJson(res, 500, { error: `Could not save score history: ${error.message}` });
+    }
+    return true;
+  }
+
+  if (url.pathname.startsWith("/api/score-history/")) {
+    sendJson(res, 400, { error: "Unsupported score history game type." });
+    return true;
+  }
+
+  if (url.pathname.startsWith("/api/leaderboards/")) {
+    sendJson(res, 410, { error: "Public leaderboards have been replaced by private score history." });
     return true;
   }
 

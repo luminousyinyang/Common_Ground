@@ -1,12 +1,18 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { GAME_TYPE_LABELS } from "../../lib/constants.js";
 import {
+  loadScoreHistory,
+  makeLocalScoreHistoryRun,
+  saveScoreHistoryRun
+} from "../../lib/scoreHistory.js";
+import {
   fallbackGameReflection,
   getGameExperience,
   getJson,
   plainTraitDescription,
   plainTraitHeadline
 } from "../../lib/stateCard.js";
+import { useAuth } from "../../auth/AuthContext.jsx";
 import CardArt from "../cards/CardArt.jsx";
 import TargetBurst from "./games/TargetBurst.jsx";
 import WaveRider from "./games/WaveRider.jsx";
@@ -22,19 +28,145 @@ function ChallengeGame({ challengeType, card, onResult, gameExperience }) {
   return <TargetBurst card={card} onResult={onResult} gameExperience={gameExperience} />;
 }
 
+function formatScoreTimestamp(value) {
+  const date = value ? new Date(value) : new Date();
+  if (Number.isNaN(date.getTime())) return "Recently";
+  return new Intl.DateTimeFormat(undefined, {
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit"
+  }).format(date);
+}
+
+function scoreHistoryRows(entries = [], currentRun = null) {
+  const rows = [...(entries || [])];
+  if (currentRun && !rows.some((entry) => entry.id === currentRun.id)) rows.unshift(currentRun);
+  return rows.sort((a, b) => {
+    const aTime = Date.parse(a.createdAt || a.updatedAt || "");
+    const bTime = Date.parse(b.createdAt || b.updatedAt || "");
+    return (Number.isFinite(bTime) ? bTime : 0) - (Number.isFinite(aTime) ? aTime : 0);
+  });
+}
+
+function ScoreHistoryPanel({ entries, currentRun, gameLabel, isLoggedIn, loading, error, status }) {
+  const [visibleCount, setVisibleCount] = useState(5);
+  const rows = scoreHistoryRows(entries, currentRun);
+  const visibleRows = rows.slice(0, visibleCount);
+
+  useEffect(() => {
+    setVisibleCount(5);
+  }, [gameLabel, rows.length]);
+
+  return (
+    <section className="score-history-panel" aria-label={`${gameLabel} previous scores`}>
+      <div className="score-history-heading">
+        <div>
+          <p className="eyebrow">Previous scores</p>
+          <h4>{gameLabel}</h4>
+        </div>
+        {loading ? <span>Loading...</span> : null}
+      </div>
+      {!isLoggedIn ? (
+        <p className="score-history-note">Log in to save this run to your previous scores.</p>
+      ) : status ? (
+        <p className="score-history-note">{status}</p>
+      ) : null}
+      {error ? <p className="score-history-note is-error">{error}</p> : null}
+      {isLoggedIn && visibleRows.length ? (
+        <>
+          <ol className="score-history-list">
+            {visibleRows.map((entry) => (
+              <li
+                key={entry.id}
+                className={`score-history-row ${currentRun?.id === entry.id || entry.isUnsaved ? "is-current" : ""}`}
+              >
+                <strong>{Math.round(Number(entry.score || 0))}%</strong>
+                <span>{formatScoreTimestamp(entry.createdAt || entry.updatedAt)}</span>
+                <small>{entry.summary || (entry.stateName ? `Played from ${entry.stateName}` : "Saved run")}</small>
+              </li>
+            ))}
+          </ol>
+          {rows.length > visibleRows.length ? (
+            <button className="ghost-button small" type="button" onClick={() => setVisibleCount((count) => count + 5)}>
+              Show more
+            </button>
+          ) : null}
+        </>
+      ) : isLoggedIn && !loading ? (
+        <p className="score-history-empty">No saved scores for this game type yet.</p>
+      ) : null}
+    </section>
+  );
+}
+
 function ChallengeView({ card, briefing, onReturn, panelManifest, onGameComplete }) {
+  const { isLoggedIn } = useAuth();
   const [started, setStarted] = useState(false);
   const [result, setResult] = useState(null);
   const [reflection, setReflection] = useState(null);
+  const [scoreHistoryEntries, setScoreHistoryEntries] = useState([]);
+  const [currentScoreHistoryRun, setCurrentScoreHistoryRun] = useState(null);
+  const [scoreHistoryLoading, setScoreHistoryLoading] = useState(false);
+  const [scoreHistoryError, setScoreHistoryError] = useState("");
+  const [scoreHistoryStatus, setScoreHistoryStatus] = useState("");
   const gameExperience = getGameExperience(card);
   const challengeType = gameExperience.challengeType || "reaction_grid";
   const connectionHeadline = gameExperience.sharedTraitName || plainTraitHeadline(card);
   const connectionDescription = gameExperience.sharedTraitDescription || plainTraitDescription(card);
 
+  const updateScoreHistory = useCallback(async (nextResult) => {
+    const gameType = nextResult.type || challengeType;
+    setScoreHistoryLoading(true);
+    setScoreHistoryError("");
+
+    if (!isLoggedIn) {
+      setScoreHistoryEntries([]);
+      setCurrentScoreHistoryRun(makeLocalScoreHistoryRun({
+        result: nextResult,
+        card,
+        gameType,
+        isUnsaved: true
+      }));
+      setScoreHistoryStatus("");
+      setScoreHistoryLoading(false);
+      return;
+    }
+
+    setScoreHistoryStatus("Saving to your previous scores...");
+    try {
+      const payload = await saveScoreHistoryRun({ gameType, result: nextResult, card });
+      setScoreHistoryEntries(payload.entries || []);
+      setCurrentScoreHistoryRun(payload.entry || makeLocalScoreHistoryRun({
+        result: nextResult,
+        card,
+        gameType
+      }));
+      setScoreHistoryStatus("");
+    } catch (error) {
+      setScoreHistoryError(error.message);
+      try {
+        const payload = await loadScoreHistory(gameType);
+        setScoreHistoryEntries(payload.entries || []);
+      } catch {
+        setScoreHistoryEntries([]);
+      }
+      setCurrentScoreHistoryRun(makeLocalScoreHistoryRun({
+        result: nextResult,
+        card,
+        gameType,
+        isUnsaved: true
+      }));
+    } finally {
+      setScoreHistoryLoading(false);
+    }
+  }, [card, challengeType, isLoggedIn]);
+
   const onResult = useCallback(async (nextResult) => {
     setResult(nextResult);
     setStarted(false);
     onGameComplete?.();
+    updateScoreHistory(nextResult);
     try {
       const payload = await getJson("/api/gemini/game-reflection", {
         method: "POST",
@@ -45,17 +177,28 @@ function ChallengeView({ card, briefing, onReturn, panelManifest, onGameComplete
     } catch (error) {
       setReflection(fallbackGameReflection(card, nextResult, error.message));
     }
-  }, [card]);
+  }, [card, updateScoreHistory]);
+
+  useEffect(() => {
+    if (result && isLoggedIn && currentScoreHistoryRun?.isUnsaved) updateScoreHistory(result);
+  }, [currentScoreHistoryRun?.isUnsaved, isLoggedIn, result, updateScoreHistory]);
 
   useEffect(() => {
     setStarted(false);
     setResult(null);
     setReflection(null);
+    setScoreHistoryEntries([]);
+    setCurrentScoreHistoryRun(null);
+    setScoreHistoryError("");
+    setScoreHistoryStatus("");
   }, [card.stateCode]);
 
   function start() {
     setResult(null);
     setReflection(null);
+    setCurrentScoreHistoryRun(null);
+    setScoreHistoryError("");
+    setScoreHistoryStatus("");
     setStarted(true);
   }
 
@@ -104,6 +247,15 @@ function ChallengeView({ card, briefing, onReturn, panelManifest, onGameComplete
                 </div>
               ) : null}
               <p>{reflection ? reflection.reflection : "Generating safe game reflection..."}</p>
+              <ScoreHistoryPanel
+                entries={scoreHistoryEntries}
+                currentRun={currentScoreHistoryRun}
+                gameLabel={GAME_TYPE_LABELS[challengeType] || challengeType.replaceAll("_", " ")}
+                isLoggedIn={isLoggedIn}
+                loading={scoreHistoryLoading}
+                error={scoreHistoryError}
+                status={scoreHistoryStatus}
+              />
             </div>
           )}
         </section>

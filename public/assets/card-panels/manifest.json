@@ -1,7 +1,7 @@
 {
   "model": "gemini-3-pro-image-preview",
   "location": "global",
-  "updatedAt": "2026-05-08T12:22:16.657Z",
+  "updatedAt": "2026-05-08T14:26:18.631Z",
   "states": {
     "CO": {
       "olympic": {
@@ -2479,6 +2479,415 @@
         "complianceWarnings": [],
         "visualTheme": "Open lanes",
         "backgroundPromptBrief": "A layered game backdrop with lanes, spacing cues, and soft pressure markers for an open-lane reading challenge."
+      },
+      "scopes": {
+        "both": {
+          "olympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fmt%2Fmt-olympic.png?alt=media&token=924d7b08-5017-4351-979d-dc9e91767caa",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T14:31:43.105Z",
+            "dataScopeId": "both",
+            "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "Montana olympic Ice Hockey",
+            "primarySportTag": "Ice Hockey",
+            "topSportTags": [
+              "Archery",
+              "Ice Hockey",
+              "Shooting"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Ice Hockey",
+              "moduleMix": [
+                "Rules Snapshot",
+                "Watch Hook",
+                "Pace Shift"
+              ],
+              "subtitle": "Winter team sport · goals in net · line changes on the fly · spatial control",
+              "qaFacts": {
+                "howItWorks": "Two teams of six players skate on a rink, aiming to shoot a hard rubber puck into the opponent's net. The team with the most goals at the end of three 20-minute periods wins the game, and teams can substitute players on the fly while the action continues.",
+                "watchValue": "Instead of just following the puck, watch the skaters away from the play. The tension spikes when you notice how attackers glide into open passing lanes just a fraction of a second before a sudden shot.",
+                "stateConnection": "Montana's cold winters, Rocky Mountain environment, and large outdoor landscapes could help fans understand why ice-based team stories fit this state card.",
+                "cardTrait": "Ice hockey connects to timing and space awareness because skaters must constantly track open ice and hold their focus to receive passes as defensive pressure shifts."
+              },
+              "factChips": [
+                "6 players per team on ice",
+                "Three 20-minute periods",
+                "Line changes on the fly",
+                "Puck control and spacing"
+              ],
+              "relatedTags": [
+                "Archery",
+                "Shooting"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "31e23ee8ae6f2a3472be9019604e06406f9475f045e69c1c0c910eb97a1f714d",
+            "paletteTheme": "Mountain Snow",
+            "promptHash": "c18f65929f8994ba2fa9ae60bfa5c2b9d7306953d8d6988a8080a2489a1cdc53",
+            "notes": "",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fmt%2Fmt-olympic.png?alt=media&token=924d7b08-5017-4351-979d-dc9e91767caa",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/mt/mt-olympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/mt/mt-olympic.png",
+            "firebaseCollection": "cardPanels"
+          },
+          "paralympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fmt%2Fmt-paralympic.png?alt=media&token=7c1517fd-caf7-45e0-8087-1f71d3ce15ff",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T14:32:55.115Z",
+            "dataScopeId": "both",
+            "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "Montana paralympic Para Nordic Skiing",
+            "primarySportTag": "Para Nordic Skiing",
+            "topSportTags": [
+              "Para Nordic Skiing",
+              "Para Biathlon",
+              "Wheelchair Curling"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Para Nordic Skiing",
+              "moduleMix": [
+                "Gear/Setup",
+                "Pace Shift",
+                "Terrain/Environment Lens"
+              ],
+              "subtitle": "Winter racing · adaptive equipment · continuous glide · trail pacing",
+              "qaFacts": {
+                "howItWorks": "Para Nordic Skiing is a winter racing event where athletes travel across snow-covered trails using skis or sit-skis. The competitor who completes the set course distance with the fastest total time wins, using specialized poles to generate forward momentum on the snow.",
+                "watchValue": "The rhythm of the race changes constantly as competitors transition from steep climbs to fast descents. Look for how athletes adjust their technique and pole planting to carry momentum through the curves of the trail.",
+                "stateConnection": "Montana's cold winters, Rocky Mountain trails, and large outdoor landscapes could help fans understand why winter endurance sports appear associated with this state.",
+                "cardTrait": "Navigating a Nordic course connects to timing and space awareness, as skiers must read the open snow ahead and hold their focus to find the clearest line through the trees."
+              },
+              "factChips": [
+                "Fastest total time wins",
+                "Adaptive sit-skis and poles",
+                "Varying trail distances",
+                "Momentum through descents"
+              ],
+              "relatedTags": [
+                "Para Biathlon",
+                "Wheelchair Curling"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "296a468556386acc6d55903abf89a8b8af4aef756c2300f5631939ea022a2032",
+            "paletteTheme": "Mountain Snow",
+            "promptHash": "7761195b112531f066130c9355bbe5e62e6e4fd6061c82638e867024a00d650c",
+            "notes": "",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fmt%2Fmt-paralympic.png?alt=media&token=7c1517fd-caf7-45e0-8087-1f71d3ce15ff",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/mt/mt-paralympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/mt/mt-paralympic.png",
+            "firebaseCollection": "cardPanels"
+          }
+        },
+        "paris2024": {
+          "olympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fmt%2Fparis2024%2Fmt-paris2024-olympic.png?alt=media&token=eadea80f-9d04-440c-b7f4-a6f49921d984",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T14:37:02.546Z",
+            "dataScopeId": "paris2024",
+            "dataScopeLabel": "Olympic Games Paris 2024",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "Montana olympic Archery",
+            "primarySportTag": "Archery",
+            "topSportTags": [
+              "Archery",
+              "Shooting",
+              "Swimming"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Archery",
+              "moduleMix": [
+                "Rules Snapshot",
+                "Watch Hook",
+                "State Culture"
+              ],
+              "subtitle": "Target precision · wind reading · steady release",
+              "qaFacts": {
+                "howItWorks": "Archers shoot arrows at a target set 70 meters away, aiming for the 10-point center ring. Matches are often decided by a set system where the highest score in a short grouping of arrows earns set points, and a strict time clock keeps the pace moving.",
+                "watchValue": "Watch the brief pause right before the release. The tension builds in that quiet moment as competitors adjust for shifting outdoor wind conditions while holding a steady aim.",
+                "stateConnection": "Montana's large outdoor landscapes and high plains could help fans understand why focus-driven target sports align with the state's athletic environment.",
+                "cardTrait": "Archery connects to Line Control through the steady, guided movement of aiming and releasing an arrow on a precise path."
+              },
+              "factChips": [
+                "70-meter target distance",
+                "Set system scoring",
+                "Wind adjustment",
+                "Time limit per arrow"
+              ],
+              "relatedTags": [
+                "Shooting",
+                "Swimming"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "0101b00e88ef62e3d1f8cf5171b78f88e4cd16fb51a0bba32f00c67fc52400e4",
+            "paletteTheme": "Mountain Snow",
+            "promptHash": "13a1c9323969201d9d17d7f1e0c3f2205537bdfcd95d50a50a3903282de77ef0",
+            "notes": "",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fmt%2Fparis2024%2Fmt-paris2024-olympic.png?alt=media&token=eadea80f-9d04-440c-b7f4-a6f49921d984",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/mt/paris2024/mt-paris2024-olympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/mt/paris2024/mt-paris2024-olympic.png",
+            "firebaseCollection": "cardPanels"
+          }
+        },
+        "milanoCortina2026": {
+          "olympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fmt%2Fmt-olympic.png?alt=media&token=924d7b08-5017-4351-979d-dc9e91767caa",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T14:31:43.105Z",
+            "dataScopeId": "milanoCortina2026",
+            "dataScopeLabel": "Olympic Winter Games Milano Cortina 2026",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "Montana olympic Ice Hockey",
+            "primarySportTag": "Ice Hockey",
+            "topSportTags": [
+              "Archery",
+              "Ice Hockey",
+              "Shooting"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Ice Hockey",
+              "moduleMix": [
+                "Rules Snapshot",
+                "Watch Hook",
+                "Pace Shift"
+              ],
+              "subtitle": "Winter team sport · goals in net · line changes on the fly · spatial control",
+              "qaFacts": {
+                "howItWorks": "Two teams of six players skate on a rink, aiming to shoot a hard rubber puck into the opponent's net. The team with the most goals at the end of three 20-minute periods wins the game, and teams can substitute players on the fly while the action continues.",
+                "watchValue": "Instead of just following the puck, watch the skaters away from the play. The tension spikes when you notice how attackers glide into open passing lanes just a fraction of a second before a sudden shot.",
+                "stateConnection": "Montana's cold winters, Rocky Mountain environment, and large outdoor landscapes could help fans understand why ice-based team stories fit this state card.",
+                "cardTrait": "Ice hockey connects to timing and space awareness because skaters must constantly track open ice and hold their focus to receive passes as defensive pressure shifts."
+              },
+              "factChips": [
+                "6 players per team on ice",
+                "Three 20-minute periods",
+                "Line changes on the fly",
+                "Puck control and spacing"
+              ],
+              "relatedTags": [
+                "Archery",
+                "Shooting"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "31e23ee8ae6f2a3472be9019604e06406f9475f045e69c1c0c910eb97a1f714d",
+            "paletteTheme": "Mountain Snow",
+            "promptHash": "c18f65929f8994ba2fa9ae60bfa5c2b9d7306953d8d6988a8080a2489a1cdc53",
+            "notes": "Reused generated panel because this data view matches an existing panel.",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fmt%2Fmt-olympic.png?alt=media&token=924d7b08-5017-4351-979d-dc9e91767caa",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/mt/mt-olympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/mt/mt-olympic.png",
+            "firebaseCollection": "cardPanels",
+            "reusedFromDataScopeId": "both"
+          },
+          "paralympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fmt%2Fmt-paralympic.png?alt=media&token=7c1517fd-caf7-45e0-8087-1f71d3ce15ff",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T14:32:55.115Z",
+            "dataScopeId": "milanoCortina2026",
+            "dataScopeLabel": "Olympic Winter Games Milano Cortina 2026",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "Montana paralympic Para Nordic Skiing",
+            "primarySportTag": "Para Nordic Skiing",
+            "topSportTags": [
+              "Para Nordic Skiing",
+              "Para Biathlon",
+              "Wheelchair Curling"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Para Nordic Skiing",
+              "moduleMix": [
+                "Gear/Setup",
+                "Pace Shift",
+                "Terrain/Environment Lens"
+              ],
+              "subtitle": "Winter racing · adaptive equipment · continuous glide · trail pacing",
+              "qaFacts": {
+                "howItWorks": "Para Nordic Skiing is a winter racing event where athletes travel across snow-covered trails using skis or sit-skis. The competitor who completes the set course distance with the fastest total time wins, using specialized poles to generate forward momentum on the snow.",
+                "watchValue": "The rhythm of the race changes constantly as competitors transition from steep climbs to fast descents. Look for how athletes adjust their technique and pole planting to carry momentum through the curves of the trail.",
+                "stateConnection": "Montana's cold winters, Rocky Mountain trails, and large outdoor landscapes could help fans understand why winter endurance sports appear associated with this state.",
+                "cardTrait": "Navigating a Nordic course connects to timing and space awareness, as skiers must read the open snow ahead and hold their focus to find the clearest line through the trees."
+              },
+              "factChips": [
+                "Fastest total time wins",
+                "Adaptive sit-skis and poles",
+                "Varying trail distances",
+                "Momentum through descents"
+              ],
+              "relatedTags": [
+                "Para Biathlon",
+                "Wheelchair Curling"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "296a468556386acc6d55903abf89a8b8af4aef756c2300f5631939ea022a2032",
+            "paletteTheme": "Mountain Snow",
+            "promptHash": "7761195b112531f066130c9355bbe5e62e6e4fd6061c82638e867024a00d650c",
+            "notes": "Reused generated panel because this data view matches an existing panel.",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fmt%2Fmt-paralympic.png?alt=media&token=7c1517fd-caf7-45e0-8087-1f71d3ce15ff",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/mt/mt-paralympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/mt/mt-paralympic.png",
+            "firebaseCollection": "cardPanels",
+            "reusedFromDataScopeId": "both"
+          }
+        }
+      },
+      "olympic": {
+        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fmt%2Fmt-olympic.png?alt=media&token=924d7b08-5017-4351-979d-dc9e91767caa",
+        "localUrl": null,
+        "model": "gemini-3-pro-image-preview",
+        "location": "global",
+        "mimeType": "image/png",
+        "generatedAt": "2026-05-08T14:31:43.105Z",
+        "dataScopeId": "both",
+        "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+        "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+        "promptSummary": "Montana olympic Ice Hockey",
+        "primarySportTag": "Ice Hockey",
+        "topSportTags": [
+          "Archery",
+          "Ice Hockey",
+          "Shooting"
+        ],
+        "cardBackCopy": {
+          "featuredCue": "Ice Hockey",
+          "moduleMix": [
+            "Rules Snapshot",
+            "Watch Hook",
+            "Pace Shift"
+          ],
+          "subtitle": "Winter team sport · goals in net · line changes on the fly · spatial control",
+          "qaFacts": {
+            "howItWorks": "Two teams of six players skate on a rink, aiming to shoot a hard rubber puck into the opponent's net. The team with the most goals at the end of three 20-minute periods wins the game, and teams can substitute players on the fly while the action continues.",
+            "watchValue": "Instead of just following the puck, watch the skaters away from the play. The tension spikes when you notice how attackers glide into open passing lanes just a fraction of a second before a sudden shot.",
+            "stateConnection": "Montana's cold winters, Rocky Mountain environment, and large outdoor landscapes could help fans understand why ice-based team stories fit this state card.",
+            "cardTrait": "Ice hockey connects to timing and space awareness because skaters must constantly track open ice and hold their focus to receive passes as defensive pressure shifts."
+          },
+          "factChips": [
+            "6 players per team on ice",
+            "Three 20-minute periods",
+            "Line changes on the fly",
+            "Puck control and spacing"
+          ],
+          "relatedTags": [
+            "Archery",
+            "Shooting"
+          ],
+          "complianceWarnings": []
+        },
+        "cardBackCopySource": "gemini",
+        "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+        "cardBackCopyModel": "gemini-3.1-pro-preview",
+        "cardBackCopyPromptHash": "31e23ee8ae6f2a3472be9019604e06406f9475f045e69c1c0c910eb97a1f714d",
+        "paletteTheme": "Mountain Snow",
+        "promptHash": "c18f65929f8994ba2fa9ae60bfa5c2b9d7306953d8d6988a8080a2489a1cdc53",
+        "notes": "",
+        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fmt%2Fmt-olympic.png?alt=media&token=924d7b08-5017-4351-979d-dc9e91767caa",
+        "storageBucket": "common-ground-tests.firebasestorage.app",
+        "firebaseProjectId": "common-ground-tests",
+        "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/mt/mt-olympic.png",
+        "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/mt/mt-olympic.png",
+        "firebaseCollection": "cardPanels"
+      },
+      "paralympic": {
+        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fmt%2Fmt-paralympic.png?alt=media&token=7c1517fd-caf7-45e0-8087-1f71d3ce15ff",
+        "localUrl": null,
+        "model": "gemini-3-pro-image-preview",
+        "location": "global",
+        "mimeType": "image/png",
+        "generatedAt": "2026-05-08T14:32:55.115Z",
+        "dataScopeId": "both",
+        "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+        "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+        "promptSummary": "Montana paralympic Para Nordic Skiing",
+        "primarySportTag": "Para Nordic Skiing",
+        "topSportTags": [
+          "Para Nordic Skiing",
+          "Para Biathlon",
+          "Wheelchair Curling"
+        ],
+        "cardBackCopy": {
+          "featuredCue": "Para Nordic Skiing",
+          "moduleMix": [
+            "Gear/Setup",
+            "Pace Shift",
+            "Terrain/Environment Lens"
+          ],
+          "subtitle": "Winter racing · adaptive equipment · continuous glide · trail pacing",
+          "qaFacts": {
+            "howItWorks": "Para Nordic Skiing is a winter racing event where athletes travel across snow-covered trails using skis or sit-skis. The competitor who completes the set course distance with the fastest total time wins, using specialized poles to generate forward momentum on the snow.",
+            "watchValue": "The rhythm of the race changes constantly as competitors transition from steep climbs to fast descents. Look for how athletes adjust their technique and pole planting to carry momentum through the curves of the trail.",
+            "stateConnection": "Montana's cold winters, Rocky Mountain trails, and large outdoor landscapes could help fans understand why winter endurance sports appear associated with this state.",
+            "cardTrait": "Navigating a Nordic course connects to timing and space awareness, as skiers must read the open snow ahead and hold their focus to find the clearest line through the trees."
+          },
+          "factChips": [
+            "Fastest total time wins",
+            "Adaptive sit-skis and poles",
+            "Varying trail distances",
+            "Momentum through descents"
+          ],
+          "relatedTags": [
+            "Para Biathlon",
+            "Wheelchair Curling"
+          ],
+          "complianceWarnings": []
+        },
+        "cardBackCopySource": "gemini",
+        "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+        "cardBackCopyModel": "gemini-3.1-pro-preview",
+        "cardBackCopyPromptHash": "296a468556386acc6d55903abf89a8b8af4aef756c2300f5631939ea022a2032",
+        "paletteTheme": "Mountain Snow",
+        "promptHash": "7761195b112531f066130c9355bbe5e62e6e4fd6061c82638e867024a00d650c",
+        "notes": "",
+        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fmt%2Fmt-paralympic.png?alt=media&token=7c1517fd-caf7-45e0-8087-1f71d3ce15ff",
+        "storageBucket": "common-ground-tests.firebasestorage.app",
+        "firebaseProjectId": "common-ground-tests",
+        "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/mt/mt-paralympic.png",
+        "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/mt/mt-paralympic.png",
+        "firebaseCollection": "cardPanels"
       }
     },
     "AK": {
@@ -11587,6 +11996,1511 @@
         "firebaseProjectId": "common-ground-tests",
         "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/mo/mo-paralympic.png",
         "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/mo/mo-paralympic.png",
+        "firebaseCollection": "cardPanels"
+      }
+    },
+    "NE": {
+      "scopes": {
+        "both": {
+          "olympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fne%2Fne-olympic.png?alt=media&token=f2cc724a-37cc-4762-930e-da24cfc205de",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T14:38:00.657Z",
+            "dataScopeId": "both",
+            "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "Nebraska olympic Track and Field",
+            "primarySportTag": "Track and Field",
+            "topSportTags": [
+              "Basketball",
+              "Soccer",
+              "Track and Field"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Track and Field",
+              "moduleMix": [
+                "Pace Shift",
+                "Terrain/Environment Lens",
+                "Watch Hook"
+              ],
+              "subtitle": "Running and field events · pace strategy · fastest time wins",
+              "qaFacts": {
+                "howItWorks": "Track and field features a mix of running, jumping, and throwing events held on an oval track or infield area. In track races, the objective is to complete the set distance with the fastest total time, while field events measure the furthest distance or highest clearance. A beginner-friendly rule in sprint events is that runners must stay entirely within their designated lanes, while longer races allow competitors to merge toward the inside track.",
+                "watchValue": "Watch how distance runners manage their speed over multiple laps, holding back early before accelerating in the final stretch. The event gets easier to read when you notice exactly when a runner decides to break from the pack and change the rhythm of the race.",
+                "stateConnection": "Nebraska's Great Plains, wide open terrain, and wind exposure could help fans understand the outdoor environment where endurance and pace-control sports often take shape.",
+                "cardTrait": "Track and field connects to Rhythm and Pacing through the steady cadence runners maintain before shifting gears to reach the finish line."
+              },
+              "factChips": [
+                "Fastest total time wins",
+                "Lane discipline in sprints",
+                "Pace shifts in distance",
+                "Oval track and infield"
+              ],
+              "relatedTags": [
+                "Basketball",
+                "Soccer"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "baa0083c27f70f8e68f1b09ec3635c99026ddf101b9547ee38ff16c7c926efa4",
+            "paletteTheme": "Coastal Current",
+            "promptHash": "e56eaf42a8cf4e097c542aef15d9939e1ee7a9fc14d27083b149372ca261210f",
+            "notes": "",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fne%2Fne-olympic.png?alt=media&token=f2cc724a-37cc-4762-930e-da24cfc205de",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/ne/ne-olympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/ne/ne-olympic.png",
+            "firebaseCollection": "cardPanels"
+          },
+          "paralympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fne%2Fne-paralympic.png?alt=media&token=bb3ffb6e-297b-43b7-bbc2-fde651a6bf41",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T14:42:38.172Z",
+            "dataScopeId": "both",
+            "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "Nebraska paralympic Para Track and Field",
+            "primarySportTag": "Para Track and Field",
+            "topSportTags": [
+              "Para Track and Field",
+              "Wheelchair Basketball"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Para Track and Field",
+              "moduleMix": [
+                "Watch Hook",
+                "Pace Shift",
+                "Terrain/Environment Lens"
+              ],
+              "subtitle": "Track and field events · adaptive equipment · race strategy",
+              "qaFacts": {
+                "howItWorks": "Para track and field features running, throwing, and jumping events adapted across various classifications. The competitor with the fastest total race time on the track or the furthest mark in the field wins.",
+                "watchValue": "Notice how racers adjust their stride or wheel push rate to manage energy over different distances. The fun is watching the tactical shifts as competitors position themselves for the final stretch.",
+                "stateConnection": "Nebraska's open terrain, Great Plains geography, and wind exposure could help fans understand why outdoor endurance and pacing stories fit this state card.",
+                "cardTrait": "Para track and field connects to Rhythm and pacing through the steady cadence athletes use to time their movements and cross the finish line."
+              },
+              "factChips": [
+                "Track and field events",
+                "Pace management",
+                "Adaptive equipment",
+                "Distance strategy"
+              ],
+              "relatedTags": [
+                "Wheelchair Basketball"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "d0402072a981f353e4155683183d40f9f037a5ca5df63c431ea5370a0a4b430d",
+            "paletteTheme": "Coastal Current",
+            "promptHash": "151a50f2105689c663a12d41b05999b42cabbd4d604215a8e57d5379452efd33",
+            "notes": "",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fne%2Fne-paralympic.png?alt=media&token=bb3ffb6e-297b-43b7-bbc2-fde651a6bf41",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/ne/ne-paralympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/ne/ne-paralympic.png",
+            "firebaseCollection": "cardPanels"
+          }
+        },
+        "paris2024": {
+          "olympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fne%2Fne-olympic.png?alt=media&token=f2cc724a-37cc-4762-930e-da24cfc205de",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T14:38:00.657Z",
+            "dataScopeId": "paris2024",
+            "dataScopeLabel": "Olympic Games Paris 2024",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "Nebraska olympic Track and Field",
+            "primarySportTag": "Track and Field",
+            "topSportTags": [
+              "Basketball",
+              "Soccer",
+              "Track and Field"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Track and Field",
+              "moduleMix": [
+                "Pace Shift",
+                "Terrain/Environment Lens",
+                "Watch Hook"
+              ],
+              "subtitle": "Running and field events · pace strategy · fastest time wins",
+              "qaFacts": {
+                "howItWorks": "Track and field features a mix of running, jumping, and throwing events held on an oval track or infield area. In track races, the objective is to complete the set distance with the fastest total time, while field events measure the furthest distance or highest clearance. A beginner-friendly rule in sprint events is that runners must stay entirely within their designated lanes, while longer races allow competitors to merge toward the inside track.",
+                "watchValue": "Watch how distance runners manage their speed over multiple laps, holding back early before accelerating in the final stretch. The event gets easier to read when you notice exactly when a runner decides to break from the pack and change the rhythm of the race.",
+                "stateConnection": "Nebraska's Great Plains, wide open terrain, and wind exposure could help fans understand the outdoor environment where endurance and pace-control sports often take shape.",
+                "cardTrait": "Track and field connects to Rhythm and Pacing through the steady cadence runners maintain before shifting gears to reach the finish line."
+              },
+              "factChips": [
+                "Fastest total time wins",
+                "Lane discipline in sprints",
+                "Pace shifts in distance",
+                "Oval track and infield"
+              ],
+              "relatedTags": [
+                "Basketball",
+                "Soccer"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "baa0083c27f70f8e68f1b09ec3635c99026ddf101b9547ee38ff16c7c926efa4",
+            "paletteTheme": "Coastal Current",
+            "promptHash": "e56eaf42a8cf4e097c542aef15d9939e1ee7a9fc14d27083b149372ca261210f",
+            "notes": "Reused generated panel because this data view matches an existing panel.",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fne%2Fne-olympic.png?alt=media&token=f2cc724a-37cc-4762-930e-da24cfc205de",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/ne/ne-olympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/ne/ne-olympic.png",
+            "firebaseCollection": "cardPanels",
+            "reusedFromDataScopeId": "both"
+          },
+          "paralympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fne%2Fne-paralympic.png?alt=media&token=bb3ffb6e-297b-43b7-bbc2-fde651a6bf41",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T14:42:38.172Z",
+            "dataScopeId": "paris2024",
+            "dataScopeLabel": "Olympic Games Paris 2024",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "Nebraska paralympic Para Track and Field",
+            "primarySportTag": "Para Track and Field",
+            "topSportTags": [
+              "Para Track and Field",
+              "Wheelchair Basketball"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Para Track and Field",
+              "moduleMix": [
+                "Watch Hook",
+                "Pace Shift",
+                "Terrain/Environment Lens"
+              ],
+              "subtitle": "Track and field events · adaptive equipment · race strategy",
+              "qaFacts": {
+                "howItWorks": "Para track and field features running, throwing, and jumping events adapted across various classifications. The competitor with the fastest total race time on the track or the furthest mark in the field wins.",
+                "watchValue": "Notice how racers adjust their stride or wheel push rate to manage energy over different distances. The fun is watching the tactical shifts as competitors position themselves for the final stretch.",
+                "stateConnection": "Nebraska's open terrain, Great Plains geography, and wind exposure could help fans understand why outdoor endurance and pacing stories fit this state card.",
+                "cardTrait": "Para track and field connects to Rhythm and pacing through the steady cadence athletes use to time their movements and cross the finish line."
+              },
+              "factChips": [
+                "Track and field events",
+                "Pace management",
+                "Adaptive equipment",
+                "Distance strategy"
+              ],
+              "relatedTags": [
+                "Wheelchair Basketball"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "d0402072a981f353e4155683183d40f9f037a5ca5df63c431ea5370a0a4b430d",
+            "paletteTheme": "Coastal Current",
+            "promptHash": "151a50f2105689c663a12d41b05999b42cabbd4d604215a8e57d5379452efd33",
+            "notes": "Reused generated panel because this data view matches an existing panel.",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fne%2Fne-paralympic.png?alt=media&token=bb3ffb6e-297b-43b7-bbc2-fde651a6bf41",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/ne/ne-paralympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/ne/ne-paralympic.png",
+            "firebaseCollection": "cardPanels",
+            "reusedFromDataScopeId": "both"
+          }
+        },
+        "milanoCortina2026": {}
+      },
+      "olympic": {
+        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fne%2Fne-olympic.png?alt=media&token=f2cc724a-37cc-4762-930e-da24cfc205de",
+        "localUrl": null,
+        "model": "gemini-3-pro-image-preview",
+        "location": "global",
+        "mimeType": "image/png",
+        "generatedAt": "2026-05-08T14:38:00.657Z",
+        "dataScopeId": "both",
+        "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+        "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+        "promptSummary": "Nebraska olympic Track and Field",
+        "primarySportTag": "Track and Field",
+        "topSportTags": [
+          "Basketball",
+          "Soccer",
+          "Track and Field"
+        ],
+        "cardBackCopy": {
+          "featuredCue": "Track and Field",
+          "moduleMix": [
+            "Pace Shift",
+            "Terrain/Environment Lens",
+            "Watch Hook"
+          ],
+          "subtitle": "Running and field events · pace strategy · fastest time wins",
+          "qaFacts": {
+            "howItWorks": "Track and field features a mix of running, jumping, and throwing events held on an oval track or infield area. In track races, the objective is to complete the set distance with the fastest total time, while field events measure the furthest distance or highest clearance. A beginner-friendly rule in sprint events is that runners must stay entirely within their designated lanes, while longer races allow competitors to merge toward the inside track.",
+            "watchValue": "Watch how distance runners manage their speed over multiple laps, holding back early before accelerating in the final stretch. The event gets easier to read when you notice exactly when a runner decides to break from the pack and change the rhythm of the race.",
+            "stateConnection": "Nebraska's Great Plains, wide open terrain, and wind exposure could help fans understand the outdoor environment where endurance and pace-control sports often take shape.",
+            "cardTrait": "Track and field connects to Rhythm and Pacing through the steady cadence runners maintain before shifting gears to reach the finish line."
+          },
+          "factChips": [
+            "Fastest total time wins",
+            "Lane discipline in sprints",
+            "Pace shifts in distance",
+            "Oval track and infield"
+          ],
+          "relatedTags": [
+            "Basketball",
+            "Soccer"
+          ],
+          "complianceWarnings": []
+        },
+        "cardBackCopySource": "gemini",
+        "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+        "cardBackCopyModel": "gemini-3.1-pro-preview",
+        "cardBackCopyPromptHash": "baa0083c27f70f8e68f1b09ec3635c99026ddf101b9547ee38ff16c7c926efa4",
+        "paletteTheme": "Coastal Current",
+        "promptHash": "e56eaf42a8cf4e097c542aef15d9939e1ee7a9fc14d27083b149372ca261210f",
+        "notes": "",
+        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fne%2Fne-olympic.png?alt=media&token=f2cc724a-37cc-4762-930e-da24cfc205de",
+        "storageBucket": "common-ground-tests.firebasestorage.app",
+        "firebaseProjectId": "common-ground-tests",
+        "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/ne/ne-olympic.png",
+        "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/ne/ne-olympic.png",
+        "firebaseCollection": "cardPanels"
+      },
+      "paralympic": {
+        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fne%2Fne-paralympic.png?alt=media&token=bb3ffb6e-297b-43b7-bbc2-fde651a6bf41",
+        "localUrl": null,
+        "model": "gemini-3-pro-image-preview",
+        "location": "global",
+        "mimeType": "image/png",
+        "generatedAt": "2026-05-08T14:42:38.172Z",
+        "dataScopeId": "both",
+        "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+        "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+        "promptSummary": "Nebraska paralympic Para Track and Field",
+        "primarySportTag": "Para Track and Field",
+        "topSportTags": [
+          "Para Track and Field",
+          "Wheelchair Basketball"
+        ],
+        "cardBackCopy": {
+          "featuredCue": "Para Track and Field",
+          "moduleMix": [
+            "Watch Hook",
+            "Pace Shift",
+            "Terrain/Environment Lens"
+          ],
+          "subtitle": "Track and field events · adaptive equipment · race strategy",
+          "qaFacts": {
+            "howItWorks": "Para track and field features running, throwing, and jumping events adapted across various classifications. The competitor with the fastest total race time on the track or the furthest mark in the field wins.",
+            "watchValue": "Notice how racers adjust their stride or wheel push rate to manage energy over different distances. The fun is watching the tactical shifts as competitors position themselves for the final stretch.",
+            "stateConnection": "Nebraska's open terrain, Great Plains geography, and wind exposure could help fans understand why outdoor endurance and pacing stories fit this state card.",
+            "cardTrait": "Para track and field connects to Rhythm and pacing through the steady cadence athletes use to time their movements and cross the finish line."
+          },
+          "factChips": [
+            "Track and field events",
+            "Pace management",
+            "Adaptive equipment",
+            "Distance strategy"
+          ],
+          "relatedTags": [
+            "Wheelchair Basketball"
+          ],
+          "complianceWarnings": []
+        },
+        "cardBackCopySource": "gemini",
+        "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+        "cardBackCopyModel": "gemini-3.1-pro-preview",
+        "cardBackCopyPromptHash": "d0402072a981f353e4155683183d40f9f037a5ca5df63c431ea5370a0a4b430d",
+        "paletteTheme": "Coastal Current",
+        "promptHash": "151a50f2105689c663a12d41b05999b42cabbd4d604215a8e57d5379452efd33",
+        "notes": "",
+        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fne%2Fne-paralympic.png?alt=media&token=bb3ffb6e-297b-43b7-bbc2-fde651a6bf41",
+        "storageBucket": "common-ground-tests.firebasestorage.app",
+        "firebaseProjectId": "common-ground-tests",
+        "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/ne/ne-paralympic.png",
+        "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/ne/ne-paralympic.png",
+        "firebaseCollection": "cardPanels"
+      }
+    },
+    "NV": {
+      "scopes": {
+        "both": {
+          "olympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnv%2Fnv-olympic.png?alt=media&token=5152f4c1-60ef-42d6-8be5-664041d00918",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T14:44:48.114Z",
+            "dataScopeId": "both",
+            "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "Nevada olympic Swimming",
+            "primarySportTag": "Swimming",
+            "topSportTags": [
+              "Swimming",
+              "Badminton",
+              "Cycling"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Swimming",
+              "moduleMix": [
+                "Rules Snapshot",
+                "Pace Shift",
+                "State Culture"
+              ],
+              "subtitle": "Aquatic racing · varied stroke styles · fastest total time wins",
+              "qaFacts": {
+                "howItWorks": "Swimming is a pool racing sport where athletes compete across various distances and stroke styles, such as freestyle, backstroke, breaststroke, and butterfly. The competitor or relay team with the fastest total race time wins, and swimmers must stay strictly within their designated lanes from start to finish.",
+                "watchValue": "The rhythm of the race shifts depending on the stroke and the distance. Notice how swimmers manage their breathing patterns and execute underwater turns to gain a slight edge when the field is tightly grouped.",
+                "stateConnection": "Nevada's high-elevation valleys and arid Great Basin climate could help fans understand how indoor aquatic centers provide vital training spaces within a dry desert environment.",
+                "cardTrait": "Swimming connects to timing and space awareness through the precise execution of turns and stroke rates, where athletes track their position in the water while holding focus during the race."
+              },
+              "factChips": [
+                "Fastest total time wins",
+                "Four competitive stroke styles",
+                "Underwater turn execution",
+                "Strict lane boundaries"
+              ],
+              "relatedTags": [
+                "Badminton",
+                "Cycling"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "5d8a6d4875e1b25715aa4b4321bfca2ee4dbe73625ab197b8ade5510cf4d1a26",
+            "paletteTheme": "Coastal Current",
+            "promptHash": "b0dd9942a730cc7a22cd7e7f11c2e98e385604bf8082f260070bf3b2a166ef38",
+            "notes": "",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnv%2Fnv-olympic.png?alt=media&token=5152f4c1-60ef-42d6-8be5-664041d00918",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/nv/nv-olympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/nv/nv-olympic.png",
+            "firebaseCollection": "cardPanels"
+          }
+        },
+        "paris2024": {
+          "olympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnv%2Fnv-olympic.png?alt=media&token=5152f4c1-60ef-42d6-8be5-664041d00918",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T14:44:48.114Z",
+            "dataScopeId": "paris2024",
+            "dataScopeLabel": "Olympic Games Paris 2024",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "Nevada olympic Swimming",
+            "primarySportTag": "Swimming",
+            "topSportTags": [
+              "Swimming",
+              "Badminton",
+              "Cycling"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Swimming",
+              "moduleMix": [
+                "Rules Snapshot",
+                "Pace Shift",
+                "State Culture"
+              ],
+              "subtitle": "Aquatic racing · varied stroke styles · fastest total time wins",
+              "qaFacts": {
+                "howItWorks": "Swimming is a pool racing sport where athletes compete across various distances and stroke styles, such as freestyle, backstroke, breaststroke, and butterfly. The competitor or relay team with the fastest total race time wins, and swimmers must stay strictly within their designated lanes from start to finish.",
+                "watchValue": "The rhythm of the race shifts depending on the stroke and the distance. Notice how swimmers manage their breathing patterns and execute underwater turns to gain a slight edge when the field is tightly grouped.",
+                "stateConnection": "Nevada's high-elevation valleys and arid Great Basin climate could help fans understand how indoor aquatic centers provide vital training spaces within a dry desert environment.",
+                "cardTrait": "Swimming connects to timing and space awareness through the precise execution of turns and stroke rates, where athletes track their position in the water while holding focus during the race."
+              },
+              "factChips": [
+                "Fastest total time wins",
+                "Four competitive stroke styles",
+                "Underwater turn execution",
+                "Strict lane boundaries"
+              ],
+              "relatedTags": [
+                "Badminton",
+                "Cycling"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "5d8a6d4875e1b25715aa4b4321bfca2ee4dbe73625ab197b8ade5510cf4d1a26",
+            "paletteTheme": "Coastal Current",
+            "promptHash": "b0dd9942a730cc7a22cd7e7f11c2e98e385604bf8082f260070bf3b2a166ef38",
+            "notes": "Reused generated panel because this data view matches an existing panel.",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnv%2Fnv-olympic.png?alt=media&token=5152f4c1-60ef-42d6-8be5-664041d00918",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/nv/nv-olympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/nv/nv-olympic.png",
+            "firebaseCollection": "cardPanels",
+            "reusedFromDataScopeId": "both"
+          }
+        },
+        "milanoCortina2026": {}
+      },
+      "olympic": {
+        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnv%2Fnv-olympic.png?alt=media&token=5152f4c1-60ef-42d6-8be5-664041d00918",
+        "localUrl": null,
+        "model": "gemini-3-pro-image-preview",
+        "location": "global",
+        "mimeType": "image/png",
+        "generatedAt": "2026-05-08T14:44:48.114Z",
+        "dataScopeId": "both",
+        "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+        "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+        "promptSummary": "Nevada olympic Swimming",
+        "primarySportTag": "Swimming",
+        "topSportTags": [
+          "Swimming",
+          "Badminton",
+          "Cycling"
+        ],
+        "cardBackCopy": {
+          "featuredCue": "Swimming",
+          "moduleMix": [
+            "Rules Snapshot",
+            "Pace Shift",
+            "State Culture"
+          ],
+          "subtitle": "Aquatic racing · varied stroke styles · fastest total time wins",
+          "qaFacts": {
+            "howItWorks": "Swimming is a pool racing sport where athletes compete across various distances and stroke styles, such as freestyle, backstroke, breaststroke, and butterfly. The competitor or relay team with the fastest total race time wins, and swimmers must stay strictly within their designated lanes from start to finish.",
+            "watchValue": "The rhythm of the race shifts depending on the stroke and the distance. Notice how swimmers manage their breathing patterns and execute underwater turns to gain a slight edge when the field is tightly grouped.",
+            "stateConnection": "Nevada's high-elevation valleys and arid Great Basin climate could help fans understand how indoor aquatic centers provide vital training spaces within a dry desert environment.",
+            "cardTrait": "Swimming connects to timing and space awareness through the precise execution of turns and stroke rates, where athletes track their position in the water while holding focus during the race."
+          },
+          "factChips": [
+            "Fastest total time wins",
+            "Four competitive stroke styles",
+            "Underwater turn execution",
+            "Strict lane boundaries"
+          ],
+          "relatedTags": [
+            "Badminton",
+            "Cycling"
+          ],
+          "complianceWarnings": []
+        },
+        "cardBackCopySource": "gemini",
+        "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+        "cardBackCopyModel": "gemini-3.1-pro-preview",
+        "cardBackCopyPromptHash": "5d8a6d4875e1b25715aa4b4321bfca2ee4dbe73625ab197b8ade5510cf4d1a26",
+        "paletteTheme": "Coastal Current",
+        "promptHash": "b0dd9942a730cc7a22cd7e7f11c2e98e385604bf8082f260070bf3b2a166ef38",
+        "notes": "",
+        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnv%2Fnv-olympic.png?alt=media&token=5152f4c1-60ef-42d6-8be5-664041d00918",
+        "storageBucket": "common-ground-tests.firebasestorage.app",
+        "firebaseProjectId": "common-ground-tests",
+        "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/nv/nv-olympic.png",
+        "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/nv/nv-olympic.png",
+        "firebaseCollection": "cardPanels"
+      }
+    },
+    "NH": {
+      "scopes": {
+        "both": {
+          "olympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnh%2Fnh-olympic.png?alt=media&token=52afa1ba-b716-404e-b708-1335fb639428",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T14:45:35.765Z",
+            "dataScopeId": "both",
+            "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "New Hampshire olympic Biathlon",
+            "primarySportTag": "Biathlon",
+            "topSportTags": [
+              "Biathlon",
+              "Diving",
+              "Freestyle Skiing"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Biathlon",
+              "moduleMix": [
+                "Pace Shift",
+                "Watch Hook",
+                "Terrain/Environment Lens"
+              ],
+              "subtitle": "Cross-country skiing · rifle marksmanship · penalty loops · pace control",
+              "qaFacts": {
+                "howItWorks": "Biathlon is a winter race combining cross-country skiing with rifle marksmanship. Competitors ski loops and stop at a shooting range to hit five small targets, where missed shots result in penalty loops or added time, and the fastest overall finish wins.",
+                "watchValue": "The tension spikes the moment athletes glide into the shooting range. Watch how they shift from a heavy, rhythmic ski stride into complete stillness, trying to steady their breathing before pulling the trigger.",
+                "stateConnection": "New Hampshire's cold winters, dense forests, and the snowy terrain of the White Mountains may suggest why outdoor winter endurance events fit the context of this state card.",
+                "cardTrait": "Biathlon connects to line control through the steady, deliberate movement used to guide a rifle sight onto a distant target between ski laps."
+              },
+              "factChips": [
+                "Cross-country skiing",
+                "Rifle marksmanship",
+                "Five-target shooting range",
+                "Penalty loops for misses"
+              ],
+              "relatedTags": [
+                "Diving",
+                "Freestyle Skiing"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "f87962c17974fef30c150abb12037e2929de8da261c40ed76f689b151ca9cc88",
+            "paletteTheme": "Coastal Current",
+            "promptHash": "525ae496ae0130fbc879ece7fa72040d972ecf1fd0d8452a4864a5b4f3d3c5ef",
+            "notes": "",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnh%2Fnh-olympic.png?alt=media&token=52afa1ba-b716-404e-b708-1335fb639428",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/nh/nh-olympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/nh/nh-olympic.png",
+            "firebaseCollection": "cardPanels"
+          },
+          "paralympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnh%2Fnh-paralympic.png?alt=media&token=d72a6b1a-6f52-4f68-959c-f908f0294e2d",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T14:46:50.691Z",
+            "dataScopeId": "both",
+            "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "New Hampshire paralympic Para Track and Field",
+            "primarySportTag": "Para Track and Field",
+            "topSportTags": [
+              "Para Track and Field"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Para Track and Field",
+              "moduleMix": [
+                "Rules Snapshot",
+                "Pace Shift",
+                "State Culture"
+              ],
+              "subtitle": "Adaptive racing · pace control · track and road events",
+              "qaFacts": {
+                "howItWorks": "Para track and field features running, wheelchair racing, and throwing events held in stadiums or on roads. Athletes compete in specific classifications based on their adaptation, and the competitor who crosses the line first or achieves the furthest distance wins.",
+                "watchValue": "The races get easier to read when you watch the athletes navigate the curves of the track. The excitement comes from seeing how competitors adjust their rhythm and positioning as they approach the final straightaway.",
+                "stateConnection": "New Hampshire's White Mountains, forested trails, and distinct four-season climate could help fans understand why outdoor endurance and pace-focused sports fit this state card.",
+                "cardTrait": "Para track and field connects to Line control through the steady movement and exact positioning athletes use to hold their lane during a race."
+              },
+              "factChips": [
+                "Track and road events",
+                "Wheelchair racing",
+                "Classification categories",
+                "Pace and rhythm"
+              ],
+              "relatedTags": [],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "b71de0d4d342c3ccc4011132b0772959dfa0e3afffecb8966ee24975662ce3d7",
+            "paletteTheme": "Coastal Current",
+            "promptHash": "5aacae37c04fade98a80279621368c3129acc260e9e14bc6a2f7b10a232ef9b6",
+            "notes": "",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnh%2Fnh-paralympic.png?alt=media&token=d72a6b1a-6f52-4f68-959c-f908f0294e2d",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/nh/nh-paralympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/nh/nh-paralympic.png",
+            "firebaseCollection": "cardPanels"
+          }
+        },
+        "paris2024": {
+          "olympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnh%2Fparis2024%2Fnh-paris2024-olympic.png?alt=media&token=5df61110-5bd7-4818-8bd6-a1d6da0fcf57",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T14:47:44.137Z",
+            "dataScopeId": "paris2024",
+            "dataScopeLabel": "Olympic Games Paris 2024",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "New Hampshire olympic Rowing",
+            "primarySportTag": "Rowing",
+            "topSportTags": [
+              "Diving",
+              "Rowing"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Rowing",
+              "moduleMix": [
+                "Rules Snapshot",
+                "Watch Hook",
+                "Pace Shift"
+              ],
+              "subtitle": "Water-based racing · synchronized strokes · straight-line speed",
+              "qaFacts": {
+                "howItWorks": "Rowing is a straight-line water race where crews propel a boat backward down a 2,000-meter course. The boat that crosses the finish line with the fastest total time wins, and crews must stay entirely within their designated lane from start to finish.",
+                "watchValue": "The visual rhythm of the boat reveals how well a crew is working together. Watch the moment the oars enter the water; a clean, synchronized catch moves the shell forward smoothly, while uneven splashing indicates lost momentum.",
+                "stateConnection": "New Hampshire's deep lakes, compact coastline, and forested waterways could help fans understand why outdoor pacing and water-based endurance stories fit this state card.",
+                "cardTrait": "Rowing connects to Line Control through the way crews must hold a perfectly straight path down the course, using steady movement and subtle steering to avoid drifting."
+              },
+              "factChips": [
+                "2,000-meter course",
+                "Designated racing lanes",
+                "Synchronized oar placement",
+                "Backward-facing propulsion"
+              ],
+              "relatedTags": [
+                "Diving"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "a2fae6d9f37f191e13e0bde1a231aff23fdf05b1d0a6dc1e0f5ce6cf29e4873d",
+            "paletteTheme": "Coastal Current",
+            "promptHash": "e457b75c03dcbaf0ace8a75b8ce0eac73011d4f85cd877071a47cb12cb34ed0f",
+            "notes": "",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnh%2Fparis2024%2Fnh-paris2024-olympic.png?alt=media&token=5df61110-5bd7-4818-8bd6-a1d6da0fcf57",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/nh/paris2024/nh-paris2024-olympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/nh/paris2024/nh-paris2024-olympic.png",
+            "firebaseCollection": "cardPanels"
+          },
+          "paralympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnh%2Fnh-paralympic.png?alt=media&token=d72a6b1a-6f52-4f68-959c-f908f0294e2d",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T14:46:50.691Z",
+            "dataScopeId": "paris2024",
+            "dataScopeLabel": "Olympic Games Paris 2024",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "New Hampshire paralympic Para Track and Field",
+            "primarySportTag": "Para Track and Field",
+            "topSportTags": [
+              "Para Track and Field"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Para Track and Field",
+              "moduleMix": [
+                "Rules Snapshot",
+                "Pace Shift",
+                "State Culture"
+              ],
+              "subtitle": "Adaptive racing · pace control · track and road events",
+              "qaFacts": {
+                "howItWorks": "Para track and field features running, wheelchair racing, and throwing events held in stadiums or on roads. Athletes compete in specific classifications based on their adaptation, and the competitor who crosses the line first or achieves the furthest distance wins.",
+                "watchValue": "The races get easier to read when you watch the athletes navigate the curves of the track. The excitement comes from seeing how competitors adjust their rhythm and positioning as they approach the final straightaway.",
+                "stateConnection": "New Hampshire's White Mountains, forested trails, and distinct four-season climate could help fans understand why outdoor endurance and pace-focused sports fit this state card.",
+                "cardTrait": "Para track and field connects to Line control through the steady movement and exact positioning athletes use to hold their lane during a race."
+              },
+              "factChips": [
+                "Track and road events",
+                "Wheelchair racing",
+                "Classification categories",
+                "Pace and rhythm"
+              ],
+              "relatedTags": [],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "b71de0d4d342c3ccc4011132b0772959dfa0e3afffecb8966ee24975662ce3d7",
+            "paletteTheme": "Coastal Current",
+            "promptHash": "5aacae37c04fade98a80279621368c3129acc260e9e14bc6a2f7b10a232ef9b6",
+            "notes": "Reused generated panel because this data view matches an existing panel.",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnh%2Fnh-paralympic.png?alt=media&token=d72a6b1a-6f52-4f68-959c-f908f0294e2d",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/nh/nh-paralympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/nh/nh-paralympic.png",
+            "firebaseCollection": "cardPanels",
+            "reusedFromDataScopeId": "both"
+          }
+        },
+        "milanoCortina2026": {
+          "olympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnh%2Fnh-olympic.png?alt=media&token=52afa1ba-b716-404e-b708-1335fb639428",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T14:45:35.765Z",
+            "dataScopeId": "milanoCortina2026",
+            "dataScopeLabel": "Olympic Winter Games Milano Cortina 2026",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "New Hampshire olympic Biathlon",
+            "primarySportTag": "Biathlon",
+            "topSportTags": [
+              "Biathlon",
+              "Diving",
+              "Freestyle Skiing"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Biathlon",
+              "moduleMix": [
+                "Pace Shift",
+                "Watch Hook",
+                "Terrain/Environment Lens"
+              ],
+              "subtitle": "Cross-country skiing · rifle marksmanship · penalty loops · pace control",
+              "qaFacts": {
+                "howItWorks": "Biathlon is a winter race combining cross-country skiing with rifle marksmanship. Competitors ski loops and stop at a shooting range to hit five small targets, where missed shots result in penalty loops or added time, and the fastest overall finish wins.",
+                "watchValue": "The tension spikes the moment athletes glide into the shooting range. Watch how they shift from a heavy, rhythmic ski stride into complete stillness, trying to steady their breathing before pulling the trigger.",
+                "stateConnection": "New Hampshire's cold winters, dense forests, and the snowy terrain of the White Mountains may suggest why outdoor winter endurance events fit the context of this state card.",
+                "cardTrait": "Biathlon connects to line control through the steady, deliberate movement used to guide a rifle sight onto a distant target between ski laps."
+              },
+              "factChips": [
+                "Cross-country skiing",
+                "Rifle marksmanship",
+                "Five-target shooting range",
+                "Penalty loops for misses"
+              ],
+              "relatedTags": [
+                "Diving",
+                "Freestyle Skiing"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "f87962c17974fef30c150abb12037e2929de8da261c40ed76f689b151ca9cc88",
+            "paletteTheme": "Coastal Current",
+            "promptHash": "525ae496ae0130fbc879ece7fa72040d972ecf1fd0d8452a4864a5b4f3d3c5ef",
+            "notes": "Reused generated panel because this data view matches an existing panel.",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnh%2Fnh-olympic.png?alt=media&token=52afa1ba-b716-404e-b708-1335fb639428",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/nh/nh-olympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/nh/nh-olympic.png",
+            "firebaseCollection": "cardPanels",
+            "reusedFromDataScopeId": "both"
+          }
+        }
+      },
+      "olympic": {
+        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnh%2Fnh-olympic.png?alt=media&token=52afa1ba-b716-404e-b708-1335fb639428",
+        "localUrl": null,
+        "model": "gemini-3-pro-image-preview",
+        "location": "global",
+        "mimeType": "image/png",
+        "generatedAt": "2026-05-08T14:45:35.765Z",
+        "dataScopeId": "both",
+        "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+        "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+        "promptSummary": "New Hampshire olympic Biathlon",
+        "primarySportTag": "Biathlon",
+        "topSportTags": [
+          "Biathlon",
+          "Diving",
+          "Freestyle Skiing"
+        ],
+        "cardBackCopy": {
+          "featuredCue": "Biathlon",
+          "moduleMix": [
+            "Pace Shift",
+            "Watch Hook",
+            "Terrain/Environment Lens"
+          ],
+          "subtitle": "Cross-country skiing · rifle marksmanship · penalty loops · pace control",
+          "qaFacts": {
+            "howItWorks": "Biathlon is a winter race combining cross-country skiing with rifle marksmanship. Competitors ski loops and stop at a shooting range to hit five small targets, where missed shots result in penalty loops or added time, and the fastest overall finish wins.",
+            "watchValue": "The tension spikes the moment athletes glide into the shooting range. Watch how they shift from a heavy, rhythmic ski stride into complete stillness, trying to steady their breathing before pulling the trigger.",
+            "stateConnection": "New Hampshire's cold winters, dense forests, and the snowy terrain of the White Mountains may suggest why outdoor winter endurance events fit the context of this state card.",
+            "cardTrait": "Biathlon connects to line control through the steady, deliberate movement used to guide a rifle sight onto a distant target between ski laps."
+          },
+          "factChips": [
+            "Cross-country skiing",
+            "Rifle marksmanship",
+            "Five-target shooting range",
+            "Penalty loops for misses"
+          ],
+          "relatedTags": [
+            "Diving",
+            "Freestyle Skiing"
+          ],
+          "complianceWarnings": []
+        },
+        "cardBackCopySource": "gemini",
+        "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+        "cardBackCopyModel": "gemini-3.1-pro-preview",
+        "cardBackCopyPromptHash": "f87962c17974fef30c150abb12037e2929de8da261c40ed76f689b151ca9cc88",
+        "paletteTheme": "Coastal Current",
+        "promptHash": "525ae496ae0130fbc879ece7fa72040d972ecf1fd0d8452a4864a5b4f3d3c5ef",
+        "notes": "",
+        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnh%2Fnh-olympic.png?alt=media&token=52afa1ba-b716-404e-b708-1335fb639428",
+        "storageBucket": "common-ground-tests.firebasestorage.app",
+        "firebaseProjectId": "common-ground-tests",
+        "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/nh/nh-olympic.png",
+        "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/nh/nh-olympic.png",
+        "firebaseCollection": "cardPanels"
+      },
+      "paralympic": {
+        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnh%2Fnh-paralympic.png?alt=media&token=d72a6b1a-6f52-4f68-959c-f908f0294e2d",
+        "localUrl": null,
+        "model": "gemini-3-pro-image-preview",
+        "location": "global",
+        "mimeType": "image/png",
+        "generatedAt": "2026-05-08T14:46:50.691Z",
+        "dataScopeId": "both",
+        "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+        "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+        "promptSummary": "New Hampshire paralympic Para Track and Field",
+        "primarySportTag": "Para Track and Field",
+        "topSportTags": [
+          "Para Track and Field"
+        ],
+        "cardBackCopy": {
+          "featuredCue": "Para Track and Field",
+          "moduleMix": [
+            "Rules Snapshot",
+            "Pace Shift",
+            "State Culture"
+          ],
+          "subtitle": "Adaptive racing · pace control · track and road events",
+          "qaFacts": {
+            "howItWorks": "Para track and field features running, wheelchair racing, and throwing events held in stadiums or on roads. Athletes compete in specific classifications based on their adaptation, and the competitor who crosses the line first or achieves the furthest distance wins.",
+            "watchValue": "The races get easier to read when you watch the athletes navigate the curves of the track. The excitement comes from seeing how competitors adjust their rhythm and positioning as they approach the final straightaway.",
+            "stateConnection": "New Hampshire's White Mountains, forested trails, and distinct four-season climate could help fans understand why outdoor endurance and pace-focused sports fit this state card.",
+            "cardTrait": "Para track and field connects to Line control through the steady movement and exact positioning athletes use to hold their lane during a race."
+          },
+          "factChips": [
+            "Track and road events",
+            "Wheelchair racing",
+            "Classification categories",
+            "Pace and rhythm"
+          ],
+          "relatedTags": [],
+          "complianceWarnings": []
+        },
+        "cardBackCopySource": "gemini",
+        "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+        "cardBackCopyModel": "gemini-3.1-pro-preview",
+        "cardBackCopyPromptHash": "b71de0d4d342c3ccc4011132b0772959dfa0e3afffecb8966ee24975662ce3d7",
+        "paletteTheme": "Coastal Current",
+        "promptHash": "5aacae37c04fade98a80279621368c3129acc260e9e14bc6a2f7b10a232ef9b6",
+        "notes": "",
+        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnh%2Fnh-paralympic.png?alt=media&token=d72a6b1a-6f52-4f68-959c-f908f0294e2d",
+        "storageBucket": "common-ground-tests.firebasestorage.app",
+        "firebaseProjectId": "common-ground-tests",
+        "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/nh/nh-paralympic.png",
+        "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/nh/nh-paralympic.png",
+        "firebaseCollection": "cardPanels"
+      }
+    },
+    "NJ": {
+      "scopes": {
+        "both": {
+          "olympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnj%2Fnj-olympic.png?alt=media&token=ed63a4f7-8012-4d25-8b86-c705360c00e2",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T14:48:35.300Z",
+            "dataScopeId": "both",
+            "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "New Jersey olympic Track and Field",
+            "primarySportTag": "Track and Field",
+            "topSportTags": [
+              "Track and Field",
+              "Fencing",
+              "Soccer"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Track and Field",
+              "moduleMix": [
+                "Pace Shift",
+                "Watch Hook",
+                "Terrain/Environment Lens"
+              ],
+              "subtitle": "Paced endurance · track and road events · tactical positioning",
+              "qaFacts": {
+                "howItWorks": "Track and field includes running, jumping, and throwing events across a stadium layout or road course. The competitor with the fastest time, highest jump, or furthest throw in their specific event wins, and runners must stay in their designated lanes during short sprints to avoid disqualification.",
+                "watchValue": "Notice how runners shift their stride length and positioning as a race develops. The tension spikes when athletes make their final move off the curve, changing gears from a controlled rhythm to an all-out sprint.",
+                "stateConnection": "New Jersey's dense urban corridors, coastal plains, and seasonal climate may suggest how varied outdoor environments support year-round running and endurance events.",
+                "cardTrait": "Track and field connects to pattern recognition through the way runners anticipate tactical shifts, memorize lap splits, and adjust their route positioning as the pack changes shape."
+              },
+              "factChips": [
+                "Sprints, middle, and long distance",
+                "Lane discipline",
+                "Tactical pace shifts",
+                "Track and road surfaces"
+              ],
+              "relatedTags": [
+                "Fencing",
+                "Soccer"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "4e138353784c6cae97ad1a3a19ef9b93f5616a11c7f7e4dd5277d56b0f11013b",
+            "paletteTheme": "Coastal Current",
+            "promptHash": "fff8b691c9ecacdcddedb978a478d58de72067006502de35686d900771087ebb",
+            "notes": "",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnj%2Fnj-olympic.png?alt=media&token=ed63a4f7-8012-4d25-8b86-c705360c00e2",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/nj/nj-olympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/nj/nj-olympic.png",
+            "firebaseCollection": "cardPanels"
+          },
+          "paralympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnj%2Fnj-paralympic.png?alt=media&token=6c9aad65-e895-4769-9d75-8921a9e50861",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T14:49:25.957Z",
+            "dataScopeId": "both",
+            "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "New Jersey paralympic Paracanoe",
+            "primarySportTag": "Paracanoe",
+            "topSportTags": [
+              "Sled Hockey",
+              "Para Alpine Skiing",
+              "Para Swimming"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Paracanoe",
+              "moduleMix": [
+                "Rules Snapshot",
+                "Pace Shift",
+                "Terrain/Environment Lens"
+              ],
+              "subtitle": "Straight-line sprint · adaptive boats · blade rhythm · water pacing",
+              "qaFacts": {
+                "howItWorks": "Paracanoe is a flatwater sprint race where competitors navigate a 200-meter straight-line course. Athletes race in either a kayak using a double-blade paddle or a va'a outrigger canoe using a single-blade paddle. The boat with the fastest time across the finish line wins, and strict lane assignments mean racers focus entirely on their own stroke efficiency rather than dodging opponents.",
+                "watchValue": "Races are short and fast, making the opening seconds critical. Watch how the stroke rate shifts from rapid, choppy acceleration off the starting block into a longer, rhythmic glide at top speed.",
+                "stateConnection": "New Jersey's Atlantic coastline, coastal plains, and seasonal waterways may suggest a natural setting for outdoor water-pacing stories on this state card.",
+                "cardTrait": "Paracanoe connects to Pattern recognition through the precise, repetitive stroke cycle athletes use to read and react to subtle changes in the water's surface."
+              },
+              "factChips": [
+                "200-meter sprint distance",
+                "Kayak or Va'a outrigger boats",
+                "Straight-line lane format",
+                "Flatwater racing"
+              ],
+              "relatedTags": [
+                "Sled Hockey",
+                "Para Alpine Skiing",
+                "Para Swimming"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "2147d7efaed18916cf9bd7e7dd386f501eb15d5630de56ff5c492ca469f41ac3",
+            "paletteTheme": "Coastal Current",
+            "promptHash": "25889373e16347313388fd0dfa3bfe099ad0a2ee085d6f664cdf2414faea6dcd",
+            "notes": "",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnj%2Fnj-paralympic.png?alt=media&token=6c9aad65-e895-4769-9d75-8921a9e50861",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/nj/nj-paralympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/nj/nj-paralympic.png",
+            "firebaseCollection": "cardPanels"
+          }
+        },
+        "paris2024": {
+          "olympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnj%2Fnj-olympic.png?alt=media&token=ed63a4f7-8012-4d25-8b86-c705360c00e2",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T14:48:35.300Z",
+            "dataScopeId": "paris2024",
+            "dataScopeLabel": "Olympic Games Paris 2024",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "New Jersey olympic Track and Field",
+            "primarySportTag": "Track and Field",
+            "topSportTags": [
+              "Track and Field",
+              "Fencing",
+              "Soccer"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Track and Field",
+              "moduleMix": [
+                "Pace Shift",
+                "Watch Hook",
+                "Terrain/Environment Lens"
+              ],
+              "subtitle": "Paced endurance · track and road events · tactical positioning",
+              "qaFacts": {
+                "howItWorks": "Track and field includes running, jumping, and throwing events across a stadium layout or road course. The competitor with the fastest time, highest jump, or furthest throw in their specific event wins, and runners must stay in their designated lanes during short sprints to avoid disqualification.",
+                "watchValue": "Notice how runners shift their stride length and positioning as a race develops. The tension spikes when athletes make their final move off the curve, changing gears from a controlled rhythm to an all-out sprint.",
+                "stateConnection": "New Jersey's dense urban corridors, coastal plains, and seasonal climate may suggest how varied outdoor environments support year-round running and endurance events.",
+                "cardTrait": "Track and field connects to pattern recognition through the way runners anticipate tactical shifts, memorize lap splits, and adjust their route positioning as the pack changes shape."
+              },
+              "factChips": [
+                "Sprints, middle, and long distance",
+                "Lane discipline",
+                "Tactical pace shifts",
+                "Track and road surfaces"
+              ],
+              "relatedTags": [
+                "Fencing",
+                "Soccer"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "4e138353784c6cae97ad1a3a19ef9b93f5616a11c7f7e4dd5277d56b0f11013b",
+            "paletteTheme": "Coastal Current",
+            "promptHash": "fff8b691c9ecacdcddedb978a478d58de72067006502de35686d900771087ebb",
+            "notes": "Reused generated panel because this data view matches an existing panel.",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnj%2Fnj-olympic.png?alt=media&token=ed63a4f7-8012-4d25-8b86-c705360c00e2",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/nj/nj-olympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/nj/nj-olympic.png",
+            "firebaseCollection": "cardPanels",
+            "reusedFromDataScopeId": "both"
+          },
+          "paralympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnj%2Fparis2024%2Fnj-paris2024-paralympic.png?alt=media&token=5dc07572-240c-4698-8efd-a7e6d775dc2e",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T14:50:17.447Z",
+            "dataScopeId": "paris2024",
+            "dataScopeLabel": "Olympic Games Paris 2024",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "New Jersey paralympic Para Track and Field",
+            "primarySportTag": "Para Track and Field",
+            "topSportTags": [
+              "Para Swimming",
+              "Para Track and Field"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Para Track and Field",
+              "moduleMix": [
+                "Rules Snapshot",
+                "Pace Shift",
+                "Watch Hook"
+              ],
+              "subtitle": "Track and field events · adaptive classifications · pace control",
+              "qaFacts": {
+                "howItWorks": "Para track and field spans running, jumping, and throwing events organized by athlete classification. Competitors aim for the fastest time on the track or the furthest mark in the field, often using specialized gear like racing wheelchairs, running blades, or tethered guides.",
+                "watchValue": "Look for the subtle changes in rhythm during longer track events. The tension builds when you watch how racers read the pack, adjusting their push rate or stride to set up a late breakaway.",
+                "stateConnection": "New Jersey's dense urban corridors, coastal plain, and seasonal climate could help fans understand the varied environments where adaptive running and wheeling communities share local roads and tracks.",
+                "cardTrait": "Para track and field connects to pattern recognition as athletes learn the layout of a track or road course, remembering specific curves and straightaways to adjust their pacing patterns."
+              },
+              "factChips": [
+                "Running, jumping, throwing",
+                "Adaptive classifications",
+                "Racing wheelchairs",
+                "Tethered guides"
+              ],
+              "relatedTags": [
+                "Para Swimming"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "4fd5432db1cc8f657fe0fc64131a1677983886cb0c98ab37cac3a817eacf9775",
+            "paletteTheme": "Coastal Current",
+            "promptHash": "97abb9a4d1b9536cee106ad8518bac183dc11a6e284be32d23240258d37a4216",
+            "notes": "",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnj%2Fparis2024%2Fnj-paris2024-paralympic.png?alt=media&token=5dc07572-240c-4698-8efd-a7e6d775dc2e",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/nj/paris2024/nj-paris2024-paralympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/nj/paris2024/nj-paris2024-paralympic.png",
+            "firebaseCollection": "cardPanels"
+          }
+        },
+        "milanoCortina2026": {
+          "olympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnj%2FmilanoCortina2026%2Fnj-milanoCortina2026-olympic.png?alt=media&token=d208f49f-c319-4d98-b083-40964264dced",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T14:51:26.911Z",
+            "dataScopeId": "milanoCortina2026",
+            "dataScopeLabel": "Olympic Winter Games Milano Cortina 2026",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "New Jersey olympic Snowboarding",
+            "primarySportTag": "Snowboarding",
+            "topSportTags": [
+              "Snowboarding",
+              "Figure Skating",
+              "Skeleton"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Snowboarding",
+              "moduleMix": [
+                "Gear/Setup",
+                "Hidden Skill",
+                "Watch Hook"
+              ],
+              "subtitle": "Winter equipment sport · judged runs and timed races · edge control",
+              "qaFacts": {
+                "howItWorks": "Snowboarding features both timed races down a mountain course and judged freestyle competitions in a halfpipe or terrain park. In freestyle events, a panel scores runs based on trick difficulty, execution, and height, while race events simply crown the rider with the fastest descent.",
+                "watchValue": "Look for how competitors use the metal edges of their board to carve up icy walls or navigate tight downhill gates. The visual thrill comes from watching an athlete link multiple jumps or turns together in one fluid, unbroken sequence.",
+                "stateConnection": "New Jersey's seasonal winter climate and nearby access to snowy terrain could help fans understand how winter equipment sports fit into the state's athletic story.",
+                "cardTrait": "Snowboarding connects to Line control through the way riders carve precise paths in the snow, tracing exact lines to set up their next jump or navigate a course."
+              },
+              "factChips": [
+                "Judged freestyle events",
+                "Timed downhill racing",
+                "Metal edge carving",
+                "Winter equipment sport"
+              ],
+              "relatedTags": [
+                "Figure Skating",
+                "Skeleton"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "c42a6e026e68b5e407070d443608aeb7d5b310c666b6d549ca189294feb8a209",
+            "paletteTheme": "Coastal Current",
+            "promptHash": "13636e0c753f68d3af2f8200fd698caf5ea07d0f01598a1223760beb21c54dff",
+            "notes": "",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnj%2FmilanoCortina2026%2Fnj-milanoCortina2026-olympic.png?alt=media&token=d208f49f-c319-4d98-b083-40964264dced",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/nj/milanoCortina2026/nj-milanoCortina2026-olympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/nj/milanoCortina2026/nj-milanoCortina2026-olympic.png",
+            "firebaseCollection": "cardPanels"
+          },
+          "paralympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnj%2FmilanoCortina2026%2Fnj-milanoCortina2026-paralympic.png?alt=media&token=e2a7b061-20b6-405b-9e32-a759b90065f5",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T14:52:39.391Z",
+            "dataScopeId": "milanoCortina2026",
+            "dataScopeLabel": "Olympic Winter Games Milano Cortina 2026",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "New Jersey paralympic Para Alpine Skiing",
+            "primarySportTag": "Para Alpine Skiing",
+            "topSportTags": [
+              "Sled Hockey",
+              "Para Alpine Skiing",
+              "Paracanoe"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Para Alpine Skiing",
+              "moduleMix": [
+                "Rules Snapshot",
+                "Watch Hook",
+                "Challenge Link"
+              ],
+              "subtitle": "Winter mountain racing · adaptive equipment · fastest descent wins",
+              "qaFacts": {
+                "howItWorks": "Para alpine skiing involves racing down a snow-covered mountain course marked by gates. Competitors use adaptive gear like sit-skis or outriggers depending on their classification, and the athlete with the fastest total descent time wins. Missing a gate results in disqualification, so precision matters just as much as speed.",
+                "watchValue": "The thrill comes from watching athletes hold a tight edge on steep, icy slopes where one tiny mistake costs valuable fractions of a second. Notice how they shift their body weight to carve through turns and keep their racing line.",
+                "stateConnection": "New Jersey's seasonal climate and proximity to regional winter resorts could help fans understand how winter equipment sports find a foothold near dense urban corridors.",
+                "cardTrait": "Para alpine skiing connects to Line control through the way athletes must trace a flawless, high-speed path between gates to shave time off the clock."
+              },
+              "factChips": [
+                "Downhill and slalom events",
+                "Sit-skis and outriggers",
+                "Fastest descent time wins",
+                "Navigating gated courses"
+              ],
+              "relatedTags": [
+                "Sled Hockey",
+                "Paracanoe"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "76532bfb00907dd3d795d820a1f958c70af88a07ed0adefd1dffa615d24b8136",
+            "paletteTheme": "Coastal Current",
+            "promptHash": "a9e81f1becbce4d1551d9ea9211cf46731c6eac96b485611f355d328118cd0dc",
+            "notes": "",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnj%2FmilanoCortina2026%2Fnj-milanoCortina2026-paralympic.png?alt=media&token=e2a7b061-20b6-405b-9e32-a759b90065f5",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/nj/milanoCortina2026/nj-milanoCortina2026-paralympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/nj/milanoCortina2026/nj-milanoCortina2026-paralympic.png",
+            "firebaseCollection": "cardPanels"
+          }
+        }
+      },
+      "olympic": {
+        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnj%2Fnj-olympic.png?alt=media&token=ed63a4f7-8012-4d25-8b86-c705360c00e2",
+        "localUrl": null,
+        "model": "gemini-3-pro-image-preview",
+        "location": "global",
+        "mimeType": "image/png",
+        "generatedAt": "2026-05-08T14:48:35.300Z",
+        "dataScopeId": "both",
+        "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+        "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+        "promptSummary": "New Jersey olympic Track and Field",
+        "primarySportTag": "Track and Field",
+        "topSportTags": [
+          "Track and Field",
+          "Fencing",
+          "Soccer"
+        ],
+        "cardBackCopy": {
+          "featuredCue": "Track and Field",
+          "moduleMix": [
+            "Pace Shift",
+            "Watch Hook",
+            "Terrain/Environment Lens"
+          ],
+          "subtitle": "Paced endurance · track and road events · tactical positioning",
+          "qaFacts": {
+            "howItWorks": "Track and field includes running, jumping, and throwing events across a stadium layout or road course. The competitor with the fastest time, highest jump, or furthest throw in their specific event wins, and runners must stay in their designated lanes during short sprints to avoid disqualification.",
+            "watchValue": "Notice how runners shift their stride length and positioning as a race develops. The tension spikes when athletes make their final move off the curve, changing gears from a controlled rhythm to an all-out sprint.",
+            "stateConnection": "New Jersey's dense urban corridors, coastal plains, and seasonal climate may suggest how varied outdoor environments support year-round running and endurance events.",
+            "cardTrait": "Track and field connects to pattern recognition through the way runners anticipate tactical shifts, memorize lap splits, and adjust their route positioning as the pack changes shape."
+          },
+          "factChips": [
+            "Sprints, middle, and long distance",
+            "Lane discipline",
+            "Tactical pace shifts",
+            "Track and road surfaces"
+          ],
+          "relatedTags": [
+            "Fencing",
+            "Soccer"
+          ],
+          "complianceWarnings": []
+        },
+        "cardBackCopySource": "gemini",
+        "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+        "cardBackCopyModel": "gemini-3.1-pro-preview",
+        "cardBackCopyPromptHash": "4e138353784c6cae97ad1a3a19ef9b93f5616a11c7f7e4dd5277d56b0f11013b",
+        "paletteTheme": "Coastal Current",
+        "promptHash": "fff8b691c9ecacdcddedb978a478d58de72067006502de35686d900771087ebb",
+        "notes": "",
+        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnj%2Fnj-olympic.png?alt=media&token=ed63a4f7-8012-4d25-8b86-c705360c00e2",
+        "storageBucket": "common-ground-tests.firebasestorage.app",
+        "firebaseProjectId": "common-ground-tests",
+        "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/nj/nj-olympic.png",
+        "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/nj/nj-olympic.png",
+        "firebaseCollection": "cardPanels"
+      },
+      "paralympic": {
+        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnj%2Fnj-paralympic.png?alt=media&token=6c9aad65-e895-4769-9d75-8921a9e50861",
+        "localUrl": null,
+        "model": "gemini-3-pro-image-preview",
+        "location": "global",
+        "mimeType": "image/png",
+        "generatedAt": "2026-05-08T14:49:25.957Z",
+        "dataScopeId": "both",
+        "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+        "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+        "promptSummary": "New Jersey paralympic Paracanoe",
+        "primarySportTag": "Paracanoe",
+        "topSportTags": [
+          "Sled Hockey",
+          "Para Alpine Skiing",
+          "Para Swimming"
+        ],
+        "cardBackCopy": {
+          "featuredCue": "Paracanoe",
+          "moduleMix": [
+            "Rules Snapshot",
+            "Pace Shift",
+            "Terrain/Environment Lens"
+          ],
+          "subtitle": "Straight-line sprint · adaptive boats · blade rhythm · water pacing",
+          "qaFacts": {
+            "howItWorks": "Paracanoe is a flatwater sprint race where competitors navigate a 200-meter straight-line course. Athletes race in either a kayak using a double-blade paddle or a va'a outrigger canoe using a single-blade paddle. The boat with the fastest time across the finish line wins, and strict lane assignments mean racers focus entirely on their own stroke efficiency rather than dodging opponents.",
+            "watchValue": "Races are short and fast, making the opening seconds critical. Watch how the stroke rate shifts from rapid, choppy acceleration off the starting block into a longer, rhythmic glide at top speed.",
+            "stateConnection": "New Jersey's Atlantic coastline, coastal plains, and seasonal waterways may suggest a natural setting for outdoor water-pacing stories on this state card.",
+            "cardTrait": "Paracanoe connects to Pattern recognition through the precise, repetitive stroke cycle athletes use to read and react to subtle changes in the water's surface."
+          },
+          "factChips": [
+            "200-meter sprint distance",
+            "Kayak or Va'a outrigger boats",
+            "Straight-line lane format",
+            "Flatwater racing"
+          ],
+          "relatedTags": [
+            "Sled Hockey",
+            "Para Alpine Skiing",
+            "Para Swimming"
+          ],
+          "complianceWarnings": []
+        },
+        "cardBackCopySource": "gemini",
+        "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+        "cardBackCopyModel": "gemini-3.1-pro-preview",
+        "cardBackCopyPromptHash": "2147d7efaed18916cf9bd7e7dd386f501eb15d5630de56ff5c492ca469f41ac3",
+        "paletteTheme": "Coastal Current",
+        "promptHash": "25889373e16347313388fd0dfa3bfe099ad0a2ee085d6f664cdf2414faea6dcd",
+        "notes": "",
+        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnj%2Fnj-paralympic.png?alt=media&token=6c9aad65-e895-4769-9d75-8921a9e50861",
+        "storageBucket": "common-ground-tests.firebasestorage.app",
+        "firebaseProjectId": "common-ground-tests",
+        "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/nj/nj-paralympic.png",
+        "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/nj/nj-paralympic.png",
+        "firebaseCollection": "cardPanels"
+      }
+    },
+    "NM": {
+      "scopes": {
+        "both": {
+          "olympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnm%2Fnm-olympic.png?alt=media&token=50ce670c-03fd-4642-8998-2457d7cf25a0",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T14:53:36.491Z",
+            "dataScopeId": "both",
+            "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "New Mexico olympic Track and Field",
+            "primarySportTag": "Track and Field",
+            "topSportTags": [
+              "Skateboarding",
+              "Track and Field"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Track and Field",
+              "moduleMix": [
+                "Watch Hook",
+                "Pace Shift",
+                "Terrain/Environment Lens"
+              ],
+              "subtitle": "Pacing and positioning · lane discipline · distance control",
+              "qaFacts": {
+                "howItWorks": "Track and field includes running, jumping, and throwing events held on an oval track and a central infield. In track races, athletes cover set distances and the first to cross the finish line wins, while field events are won by clearing the highest bar or throwing an implement the farthest.",
+                "watchValue": "Distance events become easier to read when you watch the pack instead of just the leader. Notice how runners constantly adjust their position, shifting their rhythm and waiting for the exact moment to break away from the group.",
+                "stateConnection": "New Mexico's high desert trails, mountain ranges, and higher-elevation communities could help fans understand why outdoor endurance and pace control stories fit this state card.",
+                "cardTrait": "Track and field connects to Pattern Recognition through the way runners read the shifting layout of a pack, anticipating moves and finding a clear route to the finish line."
+              },
+              "factChips": [
+                "Oval track and infield",
+                "Pace and positioning",
+                "Distance control",
+                "Sprint mechanics"
+              ],
+              "relatedTags": [
+                "Skateboarding"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "ccf87ec71a5c06f4d81c16f23327329d3b4d1405a4b014c590cba91d9e14a199",
+            "paletteTheme": "Desert Range",
+            "promptHash": "f6533c23cb429ffddcc500bde91afdc891e8e9efb48ed15bb3a9fd4ad19c3d91",
+            "notes": "",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnm%2Fnm-olympic.png?alt=media&token=50ce670c-03fd-4642-8998-2457d7cf25a0",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/nm/nm-olympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/nm/nm-olympic.png",
+            "firebaseCollection": "cardPanels"
+          }
+        }
+      },
+      "olympic": {
+        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnm%2Fnm-olympic.png?alt=media&token=50ce670c-03fd-4642-8998-2457d7cf25a0",
+        "localUrl": null,
+        "model": "gemini-3-pro-image-preview",
+        "location": "global",
+        "mimeType": "image/png",
+        "generatedAt": "2026-05-08T14:53:36.491Z",
+        "dataScopeId": "both",
+        "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+        "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+        "promptSummary": "New Mexico olympic Track and Field",
+        "primarySportTag": "Track and Field",
+        "topSportTags": [
+          "Skateboarding",
+          "Track and Field"
+        ],
+        "cardBackCopy": {
+          "featuredCue": "Track and Field",
+          "moduleMix": [
+            "Watch Hook",
+            "Pace Shift",
+            "Terrain/Environment Lens"
+          ],
+          "subtitle": "Pacing and positioning · lane discipline · distance control",
+          "qaFacts": {
+            "howItWorks": "Track and field includes running, jumping, and throwing events held on an oval track and a central infield. In track races, athletes cover set distances and the first to cross the finish line wins, while field events are won by clearing the highest bar or throwing an implement the farthest.",
+            "watchValue": "Distance events become easier to read when you watch the pack instead of just the leader. Notice how runners constantly adjust their position, shifting their rhythm and waiting for the exact moment to break away from the group.",
+            "stateConnection": "New Mexico's high desert trails, mountain ranges, and higher-elevation communities could help fans understand why outdoor endurance and pace control stories fit this state card.",
+            "cardTrait": "Track and field connects to Pattern Recognition through the way runners read the shifting layout of a pack, anticipating moves and finding a clear route to the finish line."
+          },
+          "factChips": [
+            "Oval track and infield",
+            "Pace and positioning",
+            "Distance control",
+            "Sprint mechanics"
+          ],
+          "relatedTags": [
+            "Skateboarding"
+          ],
+          "complianceWarnings": []
+        },
+        "cardBackCopySource": "gemini",
+        "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+        "cardBackCopyModel": "gemini-3.1-pro-preview",
+        "cardBackCopyPromptHash": "ccf87ec71a5c06f4d81c16f23327329d3b4d1405a4b014c590cba91d9e14a199",
+        "paletteTheme": "Desert Range",
+        "promptHash": "f6533c23cb429ffddcc500bde91afdc891e8e9efb48ed15bb3a9fd4ad19c3d91",
+        "notes": "",
+        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fnm%2Fnm-olympic.png?alt=media&token=50ce670c-03fd-4642-8998-2457d7cf25a0",
+        "storageBucket": "common-ground-tests.firebasestorage.app",
+        "firebaseProjectId": "common-ground-tests",
+        "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/nm/nm-olympic.png",
+        "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/nm/nm-olympic.png",
         "firebaseCollection": "cardPanels"
       }
     }

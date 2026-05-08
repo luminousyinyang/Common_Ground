@@ -49,6 +49,44 @@ const FALLBACK_DATA_SCOPES = [
     description: "Olympic Winter Games Milano Cortina 2026 and Paralympic Winter Games Milano Cortina 2026 public rosters."
   }
 ];
+const DEFAULT_STATE_CODE = "CO";
+const DEFAULT_DATA_SCOPE = "paris2024";
+const SELECTED_STATE_STORAGE_KEY = "common-ground-selected-state";
+const DATA_SCOPE_STORAGE_KEY = "common-ground-data-scope";
+
+function normalizeStateCode(value = "") {
+  const code = String(value || "").trim().toUpperCase();
+  return /^[A-Z]{2}$/.test(code) ? code : "";
+}
+
+function readStoredValue(key, fallback = "") {
+  try {
+    return window.localStorage.getItem(key) || fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+function writeStoredValue(key, value) {
+  try {
+    window.localStorage.setItem(key, value);
+  } catch {
+    // Local storage is optional.
+  }
+}
+
+function searchParam(search, key) {
+  return new URLSearchParams(search || "").get(key) || "";
+}
+
+function challengePathFor(code, scopeId) {
+  const params = new URLSearchParams();
+  const stateCode = normalizeStateCode(code);
+  if (stateCode) params.set("state", stateCode);
+  if (scopeId) params.set("scope", scopeId);
+  const query = params.toString();
+  return query ? `/challenge?${query}` : "/challenge";
+}
 
 function stripNestedScopes(card) {
   if (!card) return card;
@@ -157,7 +195,11 @@ function App() {
   const [helpOpen, setHelpOpen] = useState(false);
   const [mapTopology, setMapTopology] = useState(null);
   const [geoTopology, setGeoTopology] = useState(null);
-  const [selectedCode, setSelectedCode] = useState("CO");
+  const [selectedCode, setSelectedCode] = useState(() => (
+    normalizeStateCode(searchParam(location.search, "state"))
+    || normalizeStateCode(readStoredValue(SELECTED_STATE_STORAGE_KEY))
+    || DEFAULT_STATE_CODE
+  ));
   const [briefing, setBriefing] = useState(null);
   const [briefingLoading, setBriefingLoading] = useState(false);
   const [loadError, setLoadError] = useState(null);
@@ -165,7 +207,10 @@ function App() {
   const [discoveredCodes, setDiscoveredCodes] = useState(() => new Set());
   const [playedCodes, setPlayedCodes] = useState(() => new Set());
   const [panelManifest, setPanelManifest] = useState(EMPTY_CARD_PANEL_MANIFEST);
-  const [dataScope, setDataScope] = useState("paris2024");
+  const [dataScope, setDataScope] = useState(() => (
+    searchParam(location.search, "scope")
+    || readStoredValue(DATA_SCOPE_STORAGE_KEY, DEFAULT_DATA_SCOPE)
+  ));
   const [showCompleted, setShowCompleted] = useState(() => {
     try {
       const saved = window.localStorage.getItem("common-ground-show-completed");
@@ -214,6 +259,22 @@ function App() {
       window.localStorage.setItem("common-ground-show-completed", String(showCompleted));
     } catch {}
   }, [showCompleted]);
+
+  useEffect(() => {
+    writeStoredValue(SELECTED_STATE_STORAGE_KEY, selectedCode);
+  }, [selectedCode]);
+
+  useEffect(() => {
+    writeStoredValue(DATA_SCOPE_STORAGE_KEY, dataScope);
+  }, [dataScope]);
+
+  useEffect(() => {
+    if (location.pathname !== "/challenge") return;
+    const code = normalizeStateCode(searchParam(location.search, "state"));
+    const scope = searchParam(location.search, "scope");
+    if (code && code !== selectedCode) setSelectedCode(code);
+    if (scope && scope !== dataScope) setDataScope(scope);
+  }, [dataScope, location.pathname, location.search, selectedCode]);
 
 
   useEffect(() => {
@@ -382,9 +443,10 @@ function App() {
   }
 
   function navigate(path) {
+    const nextPath = path === "/challenge" ? challengePathFor(selectedCode, activeDataScope) : path;
     setIsCardModalOpen(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
-    routerNavigate(path);
+    routerNavigate(nextPath);
   }
 
   async function handleLogout() {

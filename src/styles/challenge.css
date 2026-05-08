@@ -81,6 +81,86 @@
   font-weight: 720;
 }
 
+.score-history-panel {
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--line);
+}
+
+.score-history-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+
+.score-history-heading h4 {
+  margin: 2px 0 0;
+  font-size: 1rem;
+  line-height: 1.05;
+}
+
+.score-history-heading span,
+.score-history-note,
+.score-history-empty {
+  color: var(--copy);
+  font-size: 0.9rem;
+}
+
+.score-history-note {
+  margin: 0 0 var(--space-2);
+}
+
+.score-history-note.is-error {
+  color: #c46b58;
+}
+
+.score-history-list {
+  display: grid;
+  gap: 8px;
+  list-style: none;
+  max-height: 260px;
+  margin: 0 0 var(--space-2);
+  padding: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.score-history-row {
+  display: grid;
+  grid-template-columns: auto minmax(9rem, 1fr);
+  gap: 8px 12px;
+  align-items: center;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--paper) 30%, transparent);
+}
+
+.score-history-row.is-current {
+  border-color: color-mix(in srgb, var(--gold) 62%, var(--line));
+  background: color-mix(in srgb, var(--gold) 14%, transparent);
+}
+
+.score-history-row strong {
+  color: var(--ink);
+  font-size: 1.05rem;
+}
+
+.score-history-row span {
+  color: var(--copy);
+  font-size: 0.9rem;
+  font-weight: 760;
+  text-align: right;
+}
+
+.score-history-row small {
+  grid-column: 1 / -1;
+  color: var(--copy);
+  line-height: 1.35;
+}
+
 .game-board {
   min-height: 360px;
   border: 1px solid var(--line);
