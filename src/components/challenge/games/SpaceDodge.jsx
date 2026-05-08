@@ -17,10 +17,21 @@ function makeRng(seed) {
   };
 }
 
+function makeRandomSeedPart() {
+  const cryptoApi = globalThis.crypto;
+  if (cryptoApi?.getRandomValues) {
+    const values = new Uint32Array(1);
+    cryptoApi.getRandomValues(values);
+    return values[0] >>> 0;
+  }
+  const highResolutionTime = Math.floor((globalThis.performance?.now?.() || 0) * 1000);
+  return ((Date.now() >>> 0) ^ highResolutionTime ^ Math.floor(Math.random() * 0xffffffff)) >>> 0;
+}
+
 function makeSeed(card) {
   const code = card?.stateCode || "XX";
   const hash = code.split("").reduce((a, c, i) => a + c.charCodeAt(0) * (i + 1), 7);
-  return ((Date.now() & 0xffff) ^ hash) >>> 0;
+  return (makeRandomSeedPart() ^ Math.imul(hash, 2654435761) ^ (Date.now() >>> 0)) >>> 0;
 }
 
 const PALETTES = [

@@ -31,10 +31,10 @@ const GAME_EXPERIENCE_VERSION = "common-ground-game-experience-v3-shared-trait-e
 let firebaseClientsPromise;
 
 const GAME_TYPES = {
-  reaction_grid: "Focus Window: tap only when a moving signal crosses the target timing window.",
-  cadence_keeper: "Rhythm Shift: steady tapping while target counts change between 1s, 1.5s, and 2s.",
-  precision_trace: "Controlled cursor path, line reading, and fine movement choices.",
-  focus_hold: "Open Lane: choose the lane that will stay most open after pressure areas shift.",
+  reaction_grid: "Focus Window: tap clean target rings as they appear, avoid X-mark decoys, and score more for centered hits.",
+  cadence_keeper: "Rhythm Shift: press Space or click when moving orbs reach the timing line; BPM is freshly randomized each run.",
+  precision_trace: "Precision Trace: press and hold, then drag along the active line through numbered checkpoints.",
+  focus_hold: "Open Space: move into open space while pressure areas cross the board.",
   pattern_scout: "Watching, remembering, and replaying a short visual route."
 };
 
@@ -481,14 +481,16 @@ function assignmentFromExistingGameExperience(existing, card) {
       : challengeType === "reaction_grid"
         ? "Focus Window Challenge"
         : challengeType === "focus_hold"
-          ? "Open Lane Challenge"
+          ? "Open Space Challenge"
         : existing.gameName || card.cardStory?.fanChallengeName,
     gameIntro: challengeType === "cadence_keeper"
-      ? "Tap through 1s, 1.5s, and 2s counts and see how steady your personal rhythm stays."
+      ? "Press Space or click as each orb reaches the timing line. Each run uses a fresh tempo and tracks your timing offset."
       : challengeType === "reaction_grid"
-        ? "Tap only when the moving signal crosses the focus window; early and late taps count against your precision."
+        ? "Tap the clean target rings as they appear; avoid X-mark decoys. Centered hits score more."
+        : challengeType === "precision_trace"
+          ? "Press and hold on point 1, then trace the line through each numbered checkpoint. Drifting away or lifting off adds detours."
         : challengeType === "focus_hold"
-          ? "Pick the lane that will stay most open after pressure shifts. Ten rounds track best-lane reads and decision time."
+          ? "Move the circle into open space while pressure areas cross the board. Stay clear for 20 seconds and protect your lives."
       : existing.gameIntro || `Try a short fan challenge inspired by ${String(sharedTraitName || "state sync").toLowerCase()}.`,
     visualTheme: existing.theme || card.cardStory?.themeName || card.sharedTrait?.name || "State game surface",
     backgroundPromptBrief: existing.backgroundPromptBrief || `A rough fan-atlas mini-game backdrop built around ${existing.theme || card.cardStory?.themeName || card.sharedTrait?.name || "the state card theme"}.`,
@@ -537,22 +539,22 @@ Return only the image.`;
 function gameBackgroundDirectionForAssignment(assignment) {
   if (assignment.challengeType === "cadence_keeper") {
     return [
-      "Rhythm Shift background must be a rhythm-playing surface, not a general state landscape.",
-      "The rendered game places a large circular tap pad in the center and a horizontal progress meter near the lower part of the board. Compose around those overlays.",
-      "Keep the central 45% of the image quiet, low-contrast, and mostly open: a calm circular water basin or soft seafoam halo with subtle concentric ripple rings only.",
-      "Use repeated, evenly spaced wave crests, current bands, pool-lane curves, and soft pulse arcs to communicate steady tempo and timing.",
+      "Rhythm Shift background must support timing moving orbs against a vertical line, not a general state landscape.",
+      "The rendered game places a vertical timing line on the left, numbered orbs moving across the board, and a horizontal progress meter near the lower part of the board. Compose around those overlays.",
+      "Keep the orb path quiet, low-contrast, and mostly open: a calm water band, soft current lane, or subtle rhythm field.",
+      "Use repeated, evenly spaced wave crests, current bands, pool-lane curves, and soft pulse arcs to communicate tempo and timing.",
       "If the selected state card centers water rhythm, make the core scene an abstract pool-meets-coast water surface: shallow current bands, lane-rope rhythm, passing arcs, and a gentle shoreline curve.",
-      "Place richer sport and state cues only near the far edges: small abstract water-polo ball/goal shapes, distant coast/mountain/desert silhouettes, or transition-route curves. Keep them away from the tap pad and progress meter.",
-      "Avoid literal roads, city street grids, map tiles, scenic postcard mountains, busy swimmers, full people, and sports equipment directly under the progress meter.",
-      "The result should feel like the user is tapping on the steady pulse of water: readable rhythm first, California context second."
+      "Place richer sport and state cues only near the far edges: small abstract water-polo ball/goal shapes, distant coast/mountain/desert silhouettes, or transition-route curves. Keep them away from the timing line, orb path, and progress meter.",
+      "Avoid literal roads, city street grids, map tiles, scenic postcard mountains, busy swimmers, full people, and sports equipment directly under the orb path or progress meter.",
+      "The result should feel like the user is timing moving cues on a steady pulse: readable rhythm first, state context second."
     ].join("\n- ");
   }
 
   if (assignment.challengeType === "reaction_grid") {
     return [
-      "Focus Window background should support a clean horizontal timing track and quick target recognition.",
+      "Focus Window background should support clean expanding target rings and X-mark decoy recognition.",
       "Keep a calm center and arrange edge detail as broad field/court zones, peripheral motion cues, and clean contrast blocks.",
-      "Avoid tiny repeating texture or target-like decorations that could be confused with interactive cells."
+      "Avoid tiny repeating texture, ring marks, X marks, or target-like decorations that could be confused with interactive targets."
     ].join("\n- ");
   }
 
@@ -566,7 +568,7 @@ function gameBackgroundDirectionForAssignment(assignment) {
 
   if (assignment.challengeType === "focus_hold") {
     return [
-      "Open Lane background should support choosing open lanes while pressure zones shift.",
+      "Open Space background should support a clear dodge-and-hold interaction while pressure zones cross the board.",
       "Use soft concentric fields, calm terrain bands, or target-range atmosphere around the edges while leaving the center spacious.",
       "Avoid many bullseyes, dots, or small high-contrast objects that could compete with the focus zone."
     ].join("\n- ");

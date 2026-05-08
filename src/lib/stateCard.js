@@ -233,7 +233,7 @@ export function formatHometownAreas(signals = []) {
 
 export function fallbackGameReflection(card, result, reason = "The Gemini backend is not available from this dev server.") {
   return {
-    reflection: `${result.summary} That could help you appreciate how ${lowerFirst(plainTraitDescription(card))} can matter across several sport families. This is a fan challenge only and does not measure ability or compare you with anyone.`,
+    reflection: `${result.summary} That could help you appreciate how ${connectionTraitDescription(card)} can matter across several sport families. This is a fan challenge only and does not measure ability or compare you with anyone.`,
     model: "safe-fallback",
     warnings: [reason]
   };
@@ -751,7 +751,7 @@ export function getGameExperience(card) {
     : challengeType === "reaction_grid"
       ? "Focus Window Challenge"
       : challengeType === "focus_hold"
-        ? "Open Lane Challenge"
+        ? "Open Space Challenge"
     : generatedGameName || `${GAME_TYPE_LABELS[challengeType] || "State Sync"} Challenge`;
   return {
     version: generated?.version,
@@ -759,15 +759,19 @@ export function getGameExperience(card) {
     challengeType,
     gameName,
     gameIntro: challengeType === "cadence_keeper"
-      ? "Tap through 1s, 1.5s, and 2s counts and see how steady your personal rhythm stays."
+      ? "Press Space or click as each orb reaches the timing line. Each run uses a fresh tempo and tracks your timing offset."
       : challengeType === "reaction_grid"
-        ? "Tap only when the moving signal crosses the focus window; early and late taps count against your precision."
+        ? "Tap the clean target rings as they appear; avoid X-mark decoys. Centered hits score more."
+        : challengeType === "precision_trace"
+          ? "Press and hold on point 1, then trace the line through each numbered checkpoint. Drifting away or lifting off adds detours."
         : challengeType === "focus_hold"
-          ? "Pick the lane that will stay most open after pressure shifts. Ten rounds track best-lane reads and decision time."
+          ? "Move the circle into open space while pressure areas cross the board. Stay clear for 20 seconds and protect your lives."
       : generated?.gameIntro,
     sharedTraitName: challengeType === "focus_hold" ? (generated?.sharedTraitName || "Timing and space awareness") : plainTraitHeadline(card),
     sharedTraitDescription: challengeType === "focus_hold"
-      ? (generated?.sharedTraitDescription || "Reading pressure and choosing open space as conditions shift.")
+      ? (generated?.sharedTraitDescription || "Tracking open space and moving into clear room as pressure shifts.")
+      : challengeType === "reaction_grid"
+        ? (generated?.sharedTraitDescription || "Spot clean target rings, avoid X-marked decoys, and tap close to center.")
       : generated?.sharedTraitDescription || card.sharedTrait?.description,
     background: generated?.background || null,
     theme: generated?.theme || null

@@ -150,13 +150,13 @@ const TRAITS = [
   {
     match: /Team|Aquatic/,
     name: "Timing and space awareness",
-    description: "Reading open space and choosing the best lane as pressure shifts.",
+    description: "Tracking open space and moving into clear room as pressure shifts.",
     challengeType: "focus_hold"
   },
   {
     match: /Precision/,
     name: "Line control",
-    description: "Following a controlled path with steady movement and few detours.",
+    description: "Guiding the cursor along a controlled line with steady movement.",
     challengeType: "precision_trace"
   },
   {
@@ -168,19 +168,19 @@ const TRAITS = [
   {
     match: /Endurance|Winter/,
     name: "Rhythm and pacing",
-    description: "Holding a steady count as pace and conditions change.",
+    description: "Keeping time as moving cues reach a target.",
     challengeType: "cadence_keeper"
   },
   {
     match: /Power/,
     name: "Focus and precision",
-    description: "Recognizing a timing window and responding cleanly under changing focus cues.",
+    description: "Spot clean target rings, avoid X-marked decoys, and tap close to center.",
     challengeType: "reaction_grid"
   },
   {
     match: /.+/,
     name: "Focus and precision",
-    description: "Recognizing a timing window and responding cleanly under changing focus cues.",
+    description: "Spot clean target rings, avoid X-marked decoys, and tap close to center.",
     challengeType: "reaction_grid"
   }
 ];
@@ -894,14 +894,14 @@ function chooseSharedTraitForFeatured(olympicFeatured, paralympicFeatured, olymp
   if (tags.has("team") || tags.has("spatial") || (tags.has("water") && tags.has("balance"))) {
     return {
       name: "Timing and space awareness",
-      description: "Reading open space and choosing the best lane as pressure shifts.",
+      description: "Tracking open space and moving into clear room as pressure shifts.",
       challengeType: "focus_hold"
     };
   }
   if (tags.has("precision") || tags.has("focus")) {
     return {
       name: "Line control",
-      description: "Following a controlled path with steady movement and few detours.",
+      description: "Guiding the cursor along a controlled line with steady movement.",
       challengeType: "precision_trace"
     };
   }
@@ -915,14 +915,14 @@ function chooseSharedTraitForFeatured(olympicFeatured, paralympicFeatured, olymp
   if (tags.has("water") && (tags.has("pace") || tags.has("rhythm") || tags.has("balance"))) {
     return {
       name: "Rhythm and pacing",
-      description: "Holding a steady count as pace and conditions change.",
+      description: "Keeping time as moving cues reach a target.",
       challengeType: "cadence_keeper"
     };
   }
   if (tags.has("winter") || tags.has("mountain")) {
     return {
       name: "Rhythm and pacing",
-      description: "Holding a steady count as pace and conditions change.",
+      description: "Keeping time as moving cues reach a target.",
       challengeType: "cadence_keeper"
     };
   }
@@ -950,7 +950,7 @@ function geographySignalLabels(geographySnapshot) {
 
 function fanChallengeName(themeName, sharedTrait) {
   if (sharedTrait?.challengeType === "cadence_keeper") return "Rhythm Shift Challenge";
-  if (sharedTrait?.challengeType === "focus_hold") return "Open Lane Challenge";
+  if (sharedTrait?.challengeType === "focus_hold") return "Open Space Challenge";
   if (sharedTrait?.challengeType === "precision_trace") return "Precision Trace Challenge";
   if (sharedTrait?.challengeType === "pattern_scout") return "Pattern Scout Challenge";
   if (sharedTrait?.challengeType === "reaction_grid") return "Focus Window Challenge";

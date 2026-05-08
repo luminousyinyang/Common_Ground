@@ -1,8 +1,13 @@
 import React, { useEffect, useRef } from "react";
 
-const WAYPOINT_COUNT = 8;
+const WAYPOINT_COUNT_OPTIONS = [7, 8, 9];
 const MARGIN = 70;
-const STAR_R = 22;
+const STAR_R = 20;
+const START_TOLERANCE = 34;
+const TRACE_TOLERANCE = 34;
+const FINISH_TOLERANCE = 30;
+const MAX_PROGRESS_STEP = 0.25;
+const DETOUR_COOLDOWN_MS = 450;
 
 function makeRng(seed) {
   let s = seed >>> 0;
@@ -12,10 +17,21 @@ function makeRng(seed) {
   };
 }
 
+function makeRandomSeedPart() {
+  const cryptoApi = globalThis.crypto;
+  if (cryptoApi?.getRandomValues) {
+    const values = new Uint32Array(1);
+    cryptoApi.getRandomValues(values);
+    return values[0] >>> 0;
+  }
+  const highResolutionTime = Math.floor((globalThis.performance?.now?.() || 0) * 1000);
+  return ((Date.now() >>> 0) ^ highResolutionTime ^ Math.floor(Math.random() * 0xffffffff)) >>> 0;
+}
+
 function makeSeed(card) {
   const code = card?.stateCode || "XX";
   const hash = code.split("").reduce((a, c, i) => a + c.charCodeAt(0) * (i + 1), 7);
-  return ((Date.now() & 0xffff) ^ hash) >>> 0;
+  return (makeRandomSeedPart() ^ Math.imul(hash, 2654435761) ^ (Date.now() >>> 0)) >>> 0;
 }
 
 function drawStarPath(ctx, cx, cy, r, points = 5) {
@@ -28,6 +44,31 @@ function drawStarPath(ctx, cx, cy, r, points = 5) {
     else ctx.lineTo(cx + Math.cos(angle) * radius, cy + Math.sin(angle) * radius);
   }
   ctx.closePath();
+}
+
+function clamp(value, min, max) {
+  return Math.min(max, Math.max(min, value));
+}
+
+function distanceBetween(a, b) {
+  return Math.hypot(a.x - b.x, a.y - b.y);
+}
+
+function segmentInfo(point, start, end) {
+  const dx = end.x - start.x;
+  const dy = end.y - start.y;
+  const lenSq = dx * dx + dy * dy || 1;
+  const rawT = ((point.x - start.x) * dx + (point.y - start.y) * dy) / lenSq;
+  const t = clamp(rawT, 0, 1);
+  const projected = {
+    x: start.x + dx * t,
+    y: start.y + dy * t
+  };
+  return {
+    t,
+    projected,
+    distance: distanceBetween(point, projected)
+  };
 }
 
 const PALETTES = [
@@ -115,32 +156,42 @@ export default function StarPath({ card, onResult }) {
     const seed = makeSeed(card);
     const rng = makeRng(seed);
     const pal = PALETTES[Math.floor(rng() * PALETTES.length)];
+    const waypointCount = WAYPOINT_COUNT_OPTIONS[Math.floor(rng() * WAYPOINT_COUNT_OPTIONS.length)];
 
     const doneRef = { current: false };
     let rafId = 0;
     let redFlashTimer = 0;
     let detours = 0;
+    let lineBreaks = 0;
     let currentStep = 0;
+    let tracing = false;
+    let activePointerId = null;
+    let segmentProgress = 0;
+    let nextDetourAt = 0;
     const startTime = performance.now();
 
-    // Generate waypoint positions (no overlap)
+    // Generate a left-to-right route with enough variation to feel fresh but still traceable.
     const waypoints = [];
-    const minDist = 80;
-    let attempts = 0;
-    while (waypoints.length < WAYPOINT_COUNT && attempts < 2000) {
-      attempts++;
-      const x = MARGIN + rng() * (W - MARGIN * 2);
-      const y = MARGIN + rng() * (H - 80 - MARGIN * 2);
-      let ok = true;
-      for (const w of waypoints) {
-        if (Math.hypot(x - w.x, y - w.y) < minDist) { ok = false; break; }
-      }
-      if (ok) {
-        waypoints.push({ x, y, visited: false });
-      }
+    const routeTop = MARGIN + 18;
+    const routeBottom = Math.max(routeTop + 90, H - 95);
+    const routeWidth = Math.max(160, W - MARGIN * 2);
+    const stepX = routeWidth / Math.max(1, waypointCount - 1);
+    const direction = rng() > 0.18 ? 1 : -1;
+    let previousY = routeTop + rng() * (routeBottom - routeTop);
+    for (let i = 0; i < waypointCount; i++) {
+      const orderIndex = direction === 1 ? i : waypointCount - 1 - i;
+      const jitterX = i === 0 || i === waypointCount - 1 ? 0 : (rng() - 0.5) * stepX * 0.52;
+      const x = clamp(MARGIN + orderIndex * stepX + jitterX, MARGIN, W - MARGIN);
+      const yTarget = routeTop + rng() * (routeBottom - routeTop);
+      const y = clamp(previousY * 0.42 + yTarget * 0.58, routeTop, routeBottom);
+      previousY = y;
+      waypoints.push({ x, y, visited: false });
     }
 
+    const idealDistance = waypoints.slice(1).reduce((sum, waypoint, index) => sum + distanceBetween(waypoints[index], waypoint), 0);
+
     const bursts = [];
+    const tracePoints = [];
 
     function spawnBurst(x, y, color) {
       for (let i = 0; i < 10; i++) {
@@ -158,51 +209,138 @@ export default function StarPath({ card, onResult }) {
       }
     }
 
-    function handleClick(e) {
-      if (doneRef.current) return;
+    function pointFromEvent(e) {
       const rect = canvas.getBoundingClientRect();
-      const cx = e.clientX - rect.left;
-      const cy = e.clientY - rect.top;
+      return {
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top
+      };
+    }
 
-      for (let i = 0; i < waypoints.length; i++) {
-        const w = waypoints[i];
-        const dist = Math.hypot(cx - w.x, cy - w.y);
-        if (dist <= STAR_R + 8) {
-          if (i === currentStep) {
-            // Correct
-            w.visited = true;
-            spawnBurst(w.x, w.y, pal.accent);
-            currentStep++;
-            if (currentStep >= WAYPOINT_COUNT && !doneRef.current) {
-              doneRef.current = true;
-              const label = detours <= 1 ? "clean" : detours <= 4 ? "steady" : "exploratory";
-              setTimeout(() => onResult({
-                type: "precision_trace",
-                summary: `You traced the star path ${label}: ${detours} wrong taps.`,
-                traceLabel: label,
-                detours,
-              }), 500);
-            }
-          } else {
-            // Wrong
-            detours++;
-            redFlashTimer = 18;
-          }
-          return;
-        }
+    function addDetour(now = performance.now()) {
+      if (now < nextDetourAt || doneRef.current) return;
+      detours++;
+      redFlashTimer = 18;
+      nextDetourAt = now + DETOUR_COOLDOWN_MS;
+    }
+
+    function completeTrace() {
+      if (doneRef.current) return;
+      doneRef.current = true;
+      const driftPenalty = detours * 8 + lineBreaks * 6;
+      const traceScore = Math.round(Math.max(0, Math.min(100, 100 - driftPenalty)));
+      const label = traceScore >= 88 ? "cleanly" : traceScore >= 72 ? "steadily" : traceScore >= 52 ? "with some drift" : "with lots of drift";
+      setTimeout(() => onResult({
+        type: "precision_trace",
+        summary: `You traced the line ${label}: ${detours} detours and ${lineBreaks} ${lineBreaks === 1 ? "line break" : "line breaks"}.`,
+        traceLabel: label,
+        traceScore,
+        detours,
+        lineBreaks,
+        idealDistance: Math.round(idealDistance),
+        metrics: [
+          { label: "Line control", value: `${traceScore}%` },
+          { label: "Detours", value: `${detours}` },
+          { label: "Line breaks", value: `${lineBreaks}` },
+        ],
+        conditionBreakdown: [],
+      }), 500);
+    }
+
+    function markWaypoint(index) {
+      const waypoint = waypoints[index];
+      if (!waypoint || waypoint.visited) return;
+      waypoint.visited = true;
+      spawnBurst(waypoint.x, waypoint.y, pal.accent);
+    }
+
+    function handleTracePoint(point, now = performance.now()) {
+      if (doneRef.current) return;
+      if (currentStep <= 0 || currentStep >= waypoints.length) return;
+      tracePoints.push(point);
+      if (tracePoints.length > 600) tracePoints.shift();
+
+      // Self-crossing routes are fine: only the segment currently being traced can advance.
+      const start = waypoints[currentStep - 1];
+      const end = waypoints[currentStep];
+      const info = segmentInfo(point, start, end);
+      if (info.distance > TRACE_TOLERANCE) {
+        addDetour(now);
+        return;
+      }
+
+      const nextProgress = info.t >= segmentProgress - 0.04
+        ? Math.min(info.t, segmentProgress + MAX_PROGRESS_STEP)
+        : segmentProgress;
+      segmentProgress = Math.max(segmentProgress, nextProgress);
+
+      if (segmentProgress >= 0.9 && distanceBetween(point, end) <= FINISH_TOLERANCE + TRACE_TOLERANCE * 0.25) {
+        markWaypoint(currentStep);
+        currentStep++;
+        segmentProgress = 0;
+        if (currentStep >= waypoints.length) completeTrace();
       }
     }
 
-    function onTouch(e) {
+    function beginTrace(point, pointerId, now = performance.now()) {
+      if (doneRef.current) return;
+      activePointerId = pointerId;
+      tracing = true;
+      canvas.setPointerCapture?.(pointerId);
+      tracePoints.push(point);
+      if (currentStep === 0) {
+        markWaypoint(0);
+        currentStep = 1;
+        segmentProgress = 0;
+      }
+    }
+
+    function handlePointerDown(e) {
       e.preventDefault();
-      if (e.changedTouches.length > 0) {
-        const t = e.changedTouches[0];
-        handleClick({ clientX: t.clientX, clientY: t.clientY });
+      if (doneRef.current) return;
+      const point = pointFromEvent(e);
+      const now = performance.now();
+      if (currentStep === 0) {
+        if (distanceBetween(point, waypoints[0]) <= START_TOLERANCE) beginTrace(point, e.pointerId, now);
+        else addDetour(now);
+        return;
+      }
+
+      if (currentStep >= waypoints.length) return;
+      const start = waypoints[currentStep - 1];
+      const end = waypoints[currentStep];
+      const info = segmentInfo(point, start, end);
+      const canResume = distanceBetween(point, start) <= START_TOLERANCE || (info.distance <= TRACE_TOLERANCE && info.t <= segmentProgress + 0.2);
+      if (canResume) {
+        beginTrace(point, e.pointerId, now);
+        handleTracePoint(point, now);
+      } else {
+        addDetour(now);
       }
     }
 
-    canvas.addEventListener("click", handleClick);
-    canvas.addEventListener("touchend", onTouch, { passive: false });
+    function handlePointerMove(e) {
+      if (e.pointerId !== activePointerId || !tracing) return;
+      e.preventDefault();
+      handleTracePoint(pointFromEvent(e), performance.now());
+    }
+
+    function handlePointerUp(e) {
+      if (e.pointerId !== activePointerId) return;
+      e.preventDefault();
+      canvas.releasePointerCapture?.(e.pointerId);
+      activePointerId = null;
+      if (tracing && currentStep > 0 && currentStep < waypoints.length && !doneRef.current) {
+        lineBreaks++;
+        redFlashTimer = 10;
+      }
+      tracing = false;
+    }
+
+    canvas.addEventListener("pointerdown", handlePointerDown);
+    canvas.addEventListener("pointermove", handlePointerMove);
+    canvas.addEventListener("pointerup", handlePointerUp);
+    canvas.addEventListener("pointercancel", handlePointerUp);
 
     function drawPath() {
       if (waypoints.length < 2) return;
@@ -216,13 +354,48 @@ export default function StarPath({ card, onResult }) {
       }
       ctx.stroke();
       ctx.setLineDash([]);
+
+      if (currentStep > 0) {
+        ctx.strokeStyle = pal.primary + "CC";
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.moveTo(waypoints[0].x, waypoints[0].y);
+        for (let i = 1; i < currentStep; i++) {
+          ctx.lineTo(waypoints[i].x, waypoints[i].y);
+        }
+        if (currentStep < waypoints.length && segmentProgress > 0) {
+          const start = waypoints[currentStep - 1];
+          const end = waypoints[currentStep];
+          ctx.lineTo(
+            start.x + (end.x - start.x) * segmentProgress,
+            start.y + (end.y - start.y) * segmentProgress
+          );
+        }
+        ctx.stroke();
+      }
+    }
+
+    function drawTrace() {
+      if (tracePoints.length < 2) return;
+      ctx.strokeStyle = pal.hit + "AA";
+      ctx.lineWidth = 3;
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+      ctx.beginPath();
+      ctx.moveTo(tracePoints[0].x, tracePoints[0].y);
+      for (let i = 1; i < tracePoints.length; i++) {
+        ctx.lineTo(tracePoints[i].x, tracePoints[i].y);
+      }
+      ctx.stroke();
+      ctx.lineCap = "butt";
+      ctx.lineJoin = "miter";
     }
 
     function drawWaypoints(now) {
       const t = (now - startTime) / 600;
       for (let i = 0; i < waypoints.length; i++) {
         const w = waypoints[i];
-        const isActive = i === currentStep;
+        const isActive = currentStep === 0 ? i === 0 : i === currentStep;
         const isVisited = w.visited;
 
         let scale = 1;
@@ -285,16 +458,21 @@ export default function StarPath({ card, onResult }) {
       ctx.fillStyle = pal.text;
       ctx.font = `bold 12px ${labelFont}`;
       ctx.textAlign = "left";
-      ctx.fillText(`Step ${Math.min(currentStep + 1, WAYPOINT_COUNT)} of ${WAYPOINT_COUNT}`, 18, 22);
+      const prompt = currentStep === 0
+        ? "Press and hold on 1"
+        : currentStep >= waypoints.length
+        ? "Trace complete"
+        : `Trace to ${currentStep + 1} of ${waypoints.length}`;
+      ctx.fillText(prompt, 18, 22);
 
       ctx.textAlign = "right";
-      ctx.fillText(`Wrong taps: ${detours}`, W - 18, 22);
+      ctx.fillText(`Detours: ${detours}  Breaks: ${lineBreaks}`, W - 18, 22);
 
       // Progress dots at bottom
       const dotSpacing = 22;
-      const totalDotW = WAYPOINT_COUNT * dotSpacing;
+      const totalDotW = waypoints.length * dotSpacing;
       const startX = W / 2 - totalDotW / 2 + dotSpacing / 2;
-      for (let i = 0; i < WAYPOINT_COUNT; i++) {
+      for (let i = 0; i < waypoints.length; i++) {
         const x = startX + i * dotSpacing;
         const y = H - 16;
         const filled = i < currentStep;
@@ -320,6 +498,7 @@ export default function StarPath({ card, onResult }) {
       }
 
       drawPath();
+      drawTrace();
       drawWaypoints(now);
       drawBursts();
       drawHUD();
@@ -336,15 +515,17 @@ export default function StarPath({ card, onResult }) {
 
     return () => {
       cancelAnimationFrame(rafId);
-      canvas.removeEventListener("click", handleClick);
-      canvas.removeEventListener("touchend", onTouch);
+      canvas.removeEventListener("pointerdown", handlePointerDown);
+      canvas.removeEventListener("pointermove", handlePointerMove);
+      canvas.removeEventListener("pointerup", handlePointerUp);
+      canvas.removeEventListener("pointercancel", handlePointerUp);
     };
   }, [card, onResult]);
 
   return (
     <canvas
       ref={canvasRef}
-      style={{ width: "100%", height: "100%", display: "block" }}
+      style={{ width: "100%", height: "100%", display: "block", touchAction: "none" }}
     />
   );
 }

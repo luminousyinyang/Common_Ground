@@ -1,9 +1,11 @@
 import React, { useEffect, useRef } from "react";
 
-const TOTAL_TARGETS = 13;
-const GOOD_COUNT = 10;
-const DECOY_COUNT = 3;
-const LIFESPAN_MS = 1600;
+const GOOD_COUNT_OPTIONS = [9, 10, 11];
+const DECOY_COUNT_OPTIONS = [3, 4];
+const MIN_LIFESPAN_MS = 1350;
+const LIFESPAN_VARIANCE_MS = 520;
+const MIN_STAGGER_MS = 330;
+const STAGGER_VARIANCE_MS = 300;
 
 function makeRng(seed) {
   let s = seed >>> 0;
@@ -13,10 +15,25 @@ function makeRng(seed) {
   };
 }
 
+function makeRandomSeedPart() {
+  const cryptoApi = globalThis.crypto;
+  if (cryptoApi?.getRandomValues) {
+    const values = new Uint32Array(1);
+    cryptoApi.getRandomValues(values);
+    return values[0] >>> 0;
+  }
+  const highResolutionTime = Math.floor((globalThis.performance?.now?.() || 0) * 1000);
+  return ((Date.now() >>> 0) ^ highResolutionTime ^ Math.floor(Math.random() * 0xffffffff)) >>> 0;
+}
+
+function randomChoice(items, rng) {
+  return items[Math.floor(rng() * items.length)];
+}
+
 function makeSeed(card) {
   const code = card?.stateCode || "XX";
   const hash = code.split("").reduce((a, c, i) => a + c.charCodeAt(0) * (i + 1), 7);
-  return ((Date.now() & 0xffff) ^ hash) >>> 0;
+  return (makeRandomSeedPart() ^ Math.imul(hash, 2654435761) ^ (Date.now() >>> 0)) >>> 0;
 }
 
 const PALETTES = [
@@ -104,6 +121,12 @@ export default function TargetBurst({ card, onResult }) {
     const seed = makeSeed(card);
     const rng = makeRng(seed);
     const pal = PALETTES[Math.floor(rng() * PALETTES.length)];
+    const goodCount = randomChoice(GOOD_COUNT_OPTIONS, rng);
+    const decoyCount = randomChoice(DECOY_COUNT_OPTIONS, rng);
+    const totalTargets = goodCount + decoyCount;
+    const lifespanMs = MIN_LIFESPAN_MS + Math.floor(rng() * LIFESPAN_VARIANCE_MS);
+    const staggerBaseMs = MIN_STAGGER_MS + Math.floor(rng() * 120);
+    const staggerVarianceMs = 180 + Math.floor(rng() * STAGGER_VARIANCE_MS);
 
     const doneRef = { current: false };
     let rafId = 0;
@@ -111,8 +134,8 @@ export default function TargetBurst({ card, onResult }) {
 
     // Build targets
     const types = [];
-    for (let i = 0; i < GOOD_COUNT; i++) types.push("good");
-    for (let i = 0; i < DECOY_COUNT; i++) types.push("decoy");
+    for (let i = 0; i < goodCount; i++) types.push("good");
+    for (let i = 0; i < decoyCount; i++) types.push("decoy");
     // Shuffle
     for (let i = types.length - 1; i > 0; i--) {
       const j = Math.floor(rng() * (i + 1));
@@ -120,18 +143,36 @@ export default function TargetBurst({ card, onResult }) {
     }
 
     const delays = [];
-    let acc = 0;
-    for (let i = 0; i < TOTAL_TARGETS; i++) {
-      acc += 400 + Math.floor(rng() * 281); // 400-680ms stagger
+    let acc = 220 + Math.floor(rng() * 260);
+    for (let i = 0; i < totalTargets; i++) {
+      acc += staggerBaseMs + Math.floor(rng() * staggerVarianceMs);
       delays.push(acc);
     }
 
-    const targets = types.map((type, i) => {
-      const margin = 60;
-      const x = margin + rng() * (W - margin * 2);
-      const y = margin + rng() * (H - 80 - margin * 2);
+    const targets = [];
+    types.forEach((type, i) => {
       const maxR = 36 + rng() * 18;
-      return { type, x, y, maxR, delay: delays[i], state: "waiting", hitScore: 0, hitTime: 0 };
+      const margin = Math.max(56, maxR + 16);
+      const playTop = 54;
+      const playBottom = Math.max(playTop + 120, H - 58);
+      let x = margin + rng() * Math.max(1, W - margin * 2);
+      let y = playTop + rng() * Math.max(1, playBottom - playTop);
+
+      for (let attempt = 0; attempt < 22; attempt++) {
+        const nextX = margin + rng() * Math.max(1, W - margin * 2);
+        const nextY = playTop + rng() * Math.max(1, playBottom - playTop);
+        const clear = targets.every((target) => {
+          if (Math.abs(delays[i] - target.delay) > lifespanMs * 0.6) return true;
+          return Math.hypot(nextX - target.x, nextY - target.y) > maxR + target.maxR + 24;
+        });
+        if (clear) {
+          x = nextX;
+          y = nextY;
+          break;
+        }
+      }
+
+      targets.push({ type, x, y, maxR, delay: delays[i], state: "waiting", hitScore: 0, hitTime: 0 });
     });
 
     let hits = 0;
@@ -160,7 +201,7 @@ export default function TargetBurst({ card, onResult }) {
     function getRadius(target, now) {
       const elapsed = now - startTime - target.delay;
       if (elapsed < 0) return 0;
-      const progress = Math.min(elapsed / LIFESPAN_MS, 1);
+      const progress = Math.min(elapsed / lifespanMs, 1);
       return progress * target.maxR;
     }
 
@@ -208,7 +249,7 @@ export default function TargetBurst({ card, onResult }) {
       const r = getRadius(t, now);
       if (r <= 0) return;
       const elapsed = now - startTime - t.delay;
-      const progress = elapsed / LIFESPAN_MS;
+      const progress = elapsed / lifespanMs;
       const alpha = progress > 0.8 ? 1 - (progress - 0.8) / 0.2 : 1;
 
       if (t.type === "good") {
@@ -294,7 +335,7 @@ export default function TargetBurst({ card, onResult }) {
           else waitingCount++;
         }
         if (t.state === "active") {
-          if (tElapsed >= LIFESPAN_MS) {
+          if (tElapsed >= lifespanMs) {
             t.state = "expired";
             if (t.type === "good") misses++;
           } else {
@@ -320,7 +361,7 @@ export default function TargetBurst({ card, onResult }) {
       drawParticles();
 
       const finishedTargets = targets.filter(t => t.state === "hit" || t.state === "expired").length;
-      drawProgressBar(TOTAL_TARGETS - finishedTargets, TOTAL_TARGETS);
+      drawProgressBar(totalTargets - finishedTargets, totalTargets);
 
       // Score HUD
       ctx.fillStyle = pal.text;
@@ -328,7 +369,7 @@ export default function TargetBurst({ card, onResult }) {
       ctx.textAlign = "left";
       ctx.fillText(`Score: ${earnedPts}`, 20, 20);
       ctx.textAlign = "right";
-      ctx.fillText(`Hits: ${hits}/${GOOD_COUNT}`, W - 20, 20);
+      ctx.fillText(`Hits: ${hits}/${goodCount}`, W - 20, 20);
 
       // Grain overlay
       ctx.globalAlpha = 0.07;
@@ -338,18 +379,18 @@ export default function TargetBurst({ card, onResult }) {
       const allDone = targets.every(t => t.state === "hit" || t.state === "expired");
       if (allDone && particles.length === 0 && !doneRef.current) {
         doneRef.current = true;
-        const pct = Math.round(Math.min(100, Math.max(0, (earnedPts / (GOOD_COUNT * 10)) * 100)));
-        const decoyAvoided = DECOY_COUNT - decoyHits;
+        const pct = Math.round(Math.min(100, Math.max(0, (earnedPts / (goodCount * 10)) * 100)));
+        const decoyAvoided = decoyCount - decoyHits;
         const result = {
           type: "reaction_grid",
-          summary: `You hit ${hits} of ${GOOD_COUNT} targets and avoided ${decoyAvoided} of ${DECOY_COUNT} decoys. Precision: ${pct}%.`,
+          summary: `You hit ${hits} of ${goodCount} targets and avoided ${decoyAvoided} of ${decoyCount} decoys. Precision: ${pct}%.`,
           precisionScore: pct,
           hits,
           misses,
           metrics: [
             { label: "Precision", value: `${pct}%` },
-            { label: "Targets hit", value: `${hits}/${GOOD_COUNT}` },
-            { label: "Decoys avoided", value: `${decoyAvoided}/${DECOY_COUNT}` },
+            { label: "Targets hit", value: `${hits}/${goodCount}` },
+            { label: "Decoys avoided", value: `${decoyAvoided}/${decoyCount}` },
           ],
           conditionBreakdown: [],
         };

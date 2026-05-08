@@ -5,6 +5,7 @@ const ROUND_SEQUENCES = [3, 4, 5, 4];
 const TOTAL_ROUNDS = ROUND_SEQUENCES.length;
 const PREVIEW_ON_MS = 550;
 const PREVIEW_OFF_MS = 200;
+const PREVIEW_START_DELAY_MS = 300;
 
 function makeRng(seed) {
   let s = seed >>> 0;
@@ -14,10 +15,44 @@ function makeRng(seed) {
   };
 }
 
+function makeRandomSeedPart() {
+  const cryptoApi = globalThis.crypto;
+  if (cryptoApi?.getRandomValues) {
+    const values = new Uint32Array(1);
+    cryptoApi.getRandomValues(values);
+    return values[0] >>> 0;
+  }
+  const highResolutionTime = Math.floor((globalThis.performance?.now?.() || 0) * 1000);
+  return ((Date.now() >>> 0) ^ highResolutionTime ^ Math.floor(Math.random() * 0xffffffff)) >>> 0;
+}
+
 function makeSeed(card) {
   const code = card?.stateCode || "XX";
   const hash = code.split("").reduce((a, c, i) => a + c.charCodeAt(0) * (i + 1), 7);
-  return ((Date.now() & 0xffff) ^ hash) >>> 0;
+  return (makeRandomSeedPart() ^ Math.imul(hash, 2654435761) ^ (Date.now() >>> 0)) >>> 0;
+}
+
+function shuffledCopy(items, rng) {
+  const next = [...items];
+  for (let i = next.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [next[i], next[j]] = [next[j], next[i]];
+  }
+  return next;
+}
+
+function makeSequence(length, rng) {
+  const sequence = [];
+  let previous = -1;
+  for (let i = 0; i < length; i++) {
+    let tileId = Math.floor(rng() * TILE_COUNT);
+    if (tileId === previous) {
+      tileId = (tileId + 1 + Math.floor(rng() * (TILE_COUNT - 1))) % TILE_COUNT;
+    }
+    sequence.push(tileId);
+    previous = tileId;
+  }
+  return sequence;
 }
 
 const PALETTES = [
@@ -170,27 +205,22 @@ export default function GridMemory({ card, onResult }) {
     const seed = makeSeed(card);
     const rng = makeRng(seed);
     const pal = PALETTES[Math.floor(rng() * PALETTES.length)];
+    const tiles = shuffledCopy(TILES, rng);
 
     const doneRef = { current: false };
     let rafId = 0;
     const startTime = performance.now();
 
-    // Generate all sequences
-    const sequences = ROUND_SEQUENCES.map(len =>
-      Array.from({ length: len }, () => Math.floor(rng() * TILE_COUNT))
-    );
+    const sequences = shuffledCopy(ROUND_SEQUENCES, rng).map((length) => makeSequence(length, rng));
 
     let round = 0;
     let phase = "preview";
-    let previewIndex = 0;
-    let previewPhaseStart = performance.now() + 600;
+    let previewPhaseStart = performance.now() + PREVIEW_START_DELAY_MS;
     let inputStep = 0;
     let misses = 0;
 
     // Visual state per tile
     const tileState = Array.from({ length: TILE_COUNT }, () => ({
-      lit: false,
-      litUntil: 0,
       greenFlash: 0,
     }));
 
@@ -221,8 +251,7 @@ export default function GridMemory({ card, onResult }) {
 
     function startPreview(now) {
       phase = "preview";
-      previewIndex = 0;
-      previewPhaseStart = now;
+      previewPhaseStart = now + PREVIEW_START_DELAY_MS;
       phaseLabel = "Watch";
     }
 
@@ -232,13 +261,26 @@ export default function GridMemory({ card, onResult }) {
       phaseLabel = "Your turn";
     }
 
-    function advancePreview(now) {
+    function getPreviewTileId(now) {
+      if (phase !== "preview" || round >= TOTAL_ROUNDS) return null;
       const seq = sequences[round];
-      if (previewIndex < seq.length) {
-        const tileId = seq[previewIndex];
-        tileState[tileId].lit = true;
-        tileState[tileId].litUntil = now + PREVIEW_ON_MS;
-      }
+      const elapsed = now - previewPhaseStart;
+      if (elapsed < 0) return null;
+
+      const stepDuration = PREVIEW_ON_MS + PREVIEW_OFF_MS;
+      const currentPreviewIndex = Math.floor(elapsed / stepDuration);
+      if (currentPreviewIndex < 0 || currentPreviewIndex >= seq.length) return null;
+
+      const stepElapsed = elapsed - currentPreviewIndex * stepDuration;
+      return stepElapsed < PREVIEW_ON_MS ? seq[currentPreviewIndex] : null;
+    }
+
+    function updatePreview(now) {
+      if (phase !== "preview" || round >= TOTAL_ROUNDS) return;
+      const seq = sequences[round];
+      const stepDuration = PREVIEW_ON_MS + PREVIEW_OFF_MS;
+      const elapsed = now - previewPhaseStart;
+      if (elapsed >= seq.length * stepDuration + 200) startInput();
     }
 
     function handleClick(e) {
@@ -300,13 +342,13 @@ export default function GridMemory({ card, onResult }) {
 
     startPreview(startTime);
 
-    function drawTiles(now) {
+    function drawTiles(now, previewTileId) {
       for (let i = 0; i < TILE_COUNT; i++) {
         const tr = getTileRect(i);
-        const tile = TILES[i];
+        const tile = tiles[i];
         const ts = tileState[i];
 
-        const isLit = ts.lit && ts.litUntil > now;
+        const isLit = previewTileId === i;
         const greenFlash = ts.greenFlash > 0;
 
         ctx.save();
@@ -352,8 +394,6 @@ export default function GridMemory({ card, onResult }) {
 
         // Decrement green flash
         if (ts.greenFlash > 0) ts.greenFlash--;
-        // Expire lit
-        if (ts.lit && ts.litUntil <= now) ts.lit = false;
 
         ctx.restore();
       }
@@ -428,6 +468,9 @@ export default function GridMemory({ card, onResult }) {
     }
 
     function frame(now) {
+      updatePreview(now);
+      const previewTileId = getPreviewTileId(now);
+
       // Screen shake
       if (screenShakeFrames > 0) {
         screenShakeOffset.x = (rng() - 0.5) * 8;
@@ -442,7 +485,7 @@ export default function GridMemory({ card, onResult }) {
       ctx.translate(screenShakeOffset.x, screenShakeOffset.y);
 
       drawBg(ctx, W, H, pal);
-      drawTiles(now);
+      drawTiles(now, previewTileId);
       drawParticles();
 
       // Red tint on wrong (earthy tone)
@@ -459,27 +502,6 @@ export default function GridMemory({ card, onResult }) {
       ctx.globalAlpha = 0.07;
       ctx.drawImage(grain, 0, 0, W, H);
       ctx.globalAlpha = 1;
-
-      // Preview phase logic
-      if (phase === "preview" && round < TOTAL_ROUNDS) {
-        const seq = sequences[round];
-        const elapsed = now - previewPhaseStart;
-        const stepDuration = PREVIEW_ON_MS + PREVIEW_OFF_MS;
-        const currentPreviewIndex = Math.floor(elapsed / stepDuration);
-
-        if (currentPreviewIndex !== previewIndex && currentPreviewIndex < seq.length) {
-          previewIndex = currentPreviewIndex;
-          advancePreview(now);
-        } else if (previewIndex === 0 && elapsed >= 0 && elapsed < stepDuration) {
-          if (!tileState[seq[0]].lit) {
-            advancePreview(now);
-          }
-        }
-
-        if (elapsed >= seq.length * stepDuration + 200) {
-          startInput();
-        }
-      }
 
       if (!doneRef.current) {
         rafId = requestAnimationFrame(frame);

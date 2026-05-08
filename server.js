@@ -497,7 +497,7 @@ function formatHometownAreas(signals = []) {
 function safeFallbackGameReflection(card, result, reason = "No live Gemini response was available.") {
   const detail = result?.summary || "Your result is saved as a personal game result.";
   return {
-    reflection: `${detail} That could help you appreciate how ${lowerFirst(plainTraitDescription(card))} can matter across several sport families. This is a fan challenge only and does not measure ability or compare you with anyone.`,
+    reflection: `${detail} That could help you appreciate how ${connectionTraitDescription(card)} can matter across several sport families. This is a fan challenge only and does not measure ability or compare you with anyone.`,
     model: "safe-fallback",
     warnings: [reason]
   };

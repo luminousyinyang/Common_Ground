@@ -231,7 +231,6 @@ if (args.dryRun) {
 
 let vertexAccessToken = "";
 let vertexAccessTokenIssuedAt = 0;
-await refreshVertexAccessToken("startup");
 const manifest = await loadManifest();
 manifest.model = model;
 manifest.cardCopyModel = cardCopyModel;
@@ -249,6 +248,12 @@ for (const card of selectedCards) {
     manifest.states[scopedCard.stateCode].scopes[dataScope.id] ||= {};
 
     for (const program of args.programs) {
+    const panel = programPanel(scopedCard, program);
+    if (!panelHasSourcedSport(panel)) {
+      console.log(`Skipping ${scopedCard.stateCode} ${dataScope.id} ${program}; no sourced ${program} sport for this dataset.`);
+      continue;
+    }
+
     const filename = panelFilename(scopedCard, dataScope.id, program);
     const outPath = path.join(outputDir, filename);
     const localUrl = `/assets/card-panels/${filename}`;
@@ -257,7 +262,6 @@ for (const card of selectedCards) {
     const copyPromptHash = hashText(copyPrompt);
 
     const existingPanel = manifestPanelForScope(manifest, scopedCard.stateCode, dataScope.id, program);
-    const panel = programPanel(scopedCard, program);
     const currentPrimarySport = panel.primarySportTag || null;
     const alreadyGenerated = panelCanProvideImage(existingPanel) &&
       panelMatchesCardProgram(scopedCard, program, existingPanel) &&
@@ -385,6 +389,7 @@ function parseArgs(argv) {
     dryRun: false,
     firebase: false,
     force: false,
+    strictCopyPromptHash: false,
     noLocal: false,
     dataScopes: ["both", "paris2024", "milanoCortina2026"],
     programs: ["olympic", "paralympic"],
@@ -397,6 +402,7 @@ function parseArgs(argv) {
     else if (arg === "--dry-run") parsed.dryRun = true;
     else if (arg === "--firebase") parsed.firebase = true;
     else if (arg === "--force") parsed.force = true;
+    else if (arg === "--strict-copy-prompt-hash") parsed.strictCopyPromptHash = true;
     else if (arg === "--no-local") parsed.noLocal = true;
     else if (arg === "--data-scope" || arg === "--data-scopes") parsed.dataScopes = parseDataScopeList(argv[index += 1]);
     else if (arg.startsWith("--data-scope=")) parsed.dataScopes = parseDataScopeList(arg.slice("--data-scope=".length));
@@ -515,18 +521,28 @@ function panelMatchesCardProgram(card, program, panel) {
   return Boolean(currentSport && generatedSport && currentSport === generatedSport);
 }
 
+function panelHasSourcedSport(panel) {
+  return Boolean(
+    panel?.primarySportTag ||
+    panel?.topSportTags?.length ||
+    panel?.allSportTags?.length ||
+    Number(panel?.sourceAthleteCount || 0) > 0
+  );
+}
+
 function panelCanProvideImage(panel) {
   return Boolean(panel?.url && panel.promptVersion === PROMPT_VERSION);
 }
 
 function panelHasCurrentCardBackCopy(panel, copyPromptHash) {
-  return Boolean(
+  const hasCurrentCopy = Boolean(
     panel?.cardBackCopy &&
     panel.cardBackCopySource === "gemini" &&
     panel.cardBackCopyVersion === CARD_BACK_COPY_VERSION &&
-    panel.cardBackCopyModel === cardCopyModel &&
-    panel.cardBackCopyPromptHash === copyPromptHash
+    panel.cardBackCopyModel === cardCopyModel
   );
+  if (!hasCurrentCopy) return false;
+  return !args.strictCopyPromptHash || panel.cardBackCopyPromptHash === copyPromptHash;
 }
 
 function findReusablePanelForScope({ manifest, card, dataScopeId, program }) {

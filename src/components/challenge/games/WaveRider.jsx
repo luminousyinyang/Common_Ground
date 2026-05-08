@@ -1,14 +1,16 @@
 import React, { useEffect, useRef } from "react";
 
 const ORB_COUNT = 14;
-const LEAD_IN_MS = 1200;
-const TRAVEL_MS = 1300;
+const MIN_LEAD_IN_MS = 950;
+const LEAD_IN_VARIANCE_MS = 350;
+const MIN_TRAVEL_MS = 1180;
+const TRAVEL_VARIANCE_MS = 260;
 const HIT_ZONE_X = 70;
 const ORB_START_X = 460;
 const PERFECT_MS = 60;
 const GOOD_MS = 130;
 const OK_MS = 220;
-const BPM_OPTIONS = [65, 72, 80, 88];
+const BPM_OPTIONS = [62, 68, 74, 80, 86, 92];
 
 function makeRng(seed) {
   let s = seed >>> 0;
@@ -18,10 +20,21 @@ function makeRng(seed) {
   };
 }
 
+function makeRandomSeedPart() {
+  const cryptoApi = globalThis.crypto;
+  if (cryptoApi?.getRandomValues) {
+    const values = new Uint32Array(1);
+    cryptoApi.getRandomValues(values);
+    return values[0] >>> 0;
+  }
+  const highResolutionTime = Math.floor((globalThis.performance?.now?.() || 0) * 1000);
+  return ((Date.now() >>> 0) ^ highResolutionTime ^ Math.floor(Math.random() * 0xffffffff)) >>> 0;
+}
+
 function makeSeed(card) {
   const code = card?.stateCode || "XX";
   const hash = code.split("").reduce((a, c, i) => a + c.charCodeAt(0) * (i + 1), 7);
-  return ((Date.now() & 0xffff) ^ hash) >>> 0;
+  return (makeRandomSeedPart() ^ Math.imul(hash, 2654435761) ^ (Date.now() >>> 0)) >>> 0;
 }
 
 const PALETTES = [
@@ -111,15 +124,21 @@ export default function WaveRider({ card, onResult }) {
     const pal = PALETTES[Math.floor(rng() * PALETTES.length)];
     const bpm = BPM_OPTIONS[Math.floor(rng() * BPM_OPTIONS.length)];
     const intervalMs = (60 / bpm) * 1000;
+    const leadInMs = MIN_LEAD_IN_MS + Math.floor(rng() * LEAD_IN_VARIANCE_MS);
+    const travelMs = MIN_TRAVEL_MS + Math.floor(rng() * TRAVEL_VARIANCE_MS);
+    const hitZoneX = Math.min(HIT_ZONE_X, W * 0.18);
+    const orbStartX = Math.max(ORB_START_X, W - 28);
+    const orbY = H * (0.48 + rng() * 0.08);
 
     const doneRef = { current: false };
     let rafId = 0;
-    const startTime = performance.now();
+    let gameStarted = false;
+    let startTime = 0;
 
-    // Build orbs: targetTime = beat_index * intervalMs + LEAD_IN_MS
+    // Build orbs: targetTime = beat_index * intervalMs + leadInMs
     const orbs = Array.from({ length: ORB_COUNT }, (_, i) => ({
       index: i,
-      targetTime: LEAD_IN_MS + i * intervalMs,
+      targetTime: leadInMs + i * intervalMs,
       scored: false,
       expired: false,
       score: 0,
@@ -137,17 +156,31 @@ export default function WaveRider({ card, onResult }) {
 
     const ripples = [];
 
+    function beginGame(now = performance.now()) {
+      if (gameStarted) return;
+      gameStarted = true;
+      startTime = now;
+    }
+
+    function elapsedFor(now) {
+      return gameStarted ? now - startTime : 0;
+    }
+
     function getOrbX(orb, now) {
-      const elapsed = now - startTime;
+      const elapsed = elapsedFor(now);
       const t = elapsed - orb.targetTime;
-      const progress = (t + TRAVEL_MS) / TRAVEL_MS;
-      return ORB_START_X + (HIT_ZONE_X - ORB_START_X) * progress;
+      const progress = (t + travelMs) / travelMs;
+      return orbStartX + (hitZoneX - orbStartX) * progress;
     }
 
     function handleInput() {
       if (doneRef.current) return;
       const now = performance.now();
-      const elapsed = now - startTime;
+      if (!gameStarted) {
+        beginGame(now);
+        return;
+      }
+      const elapsed = elapsedFor(now);
 
       let best = null;
       let bestErr = Infinity;
@@ -171,12 +204,15 @@ export default function WaveRider({ card, onResult }) {
         errorSum += err;
         scoredCount++;
         if (late) lateCount++;
-        ripples.push({ x: HIT_ZONE_X, y: H * 0.52, r: 8, maxR: 40, life: 1, color: pal.hit });
+        ripples.push({ x: hitZoneX, y: orbY, r: 8, maxR: 40, life: 1, color: pal.hit });
       }
     }
 
     function onKey(e) {
-      if (e.code === "Space") { e.preventDefault(); handleInput(); }
+      if (e.code === "Space") {
+        e.preventDefault();
+        if (!e.repeat) handleInput();
+      }
     }
     function onClick() { handleInput(); }
     function onTouch(e) { e.preventDefault(); handleInput(); }
@@ -187,7 +223,7 @@ export default function WaveRider({ card, onResult }) {
 
     function drawWaves(now) {
       // Animated sine waves layered on top of the bg hills
-      const t = (now - startTime) / 1000;
+      const t = (gameStarted ? now - startTime : now * 0.4) / 1000;
       for (let wave = 0; wave < 2; wave++) {
         const color = wave === 0 ? pal.hill1 : pal.hill2;
         const yBase = H * 0.6 + wave * 12;
@@ -210,20 +246,21 @@ export default function WaveRider({ card, onResult }) {
     function drawHitZone() {
       // Flat vertical bar indicator
       ctx.fillStyle = pal.hit + "22";
-      ctx.fillRect(HIT_ZONE_X - 18, 40, 36, H * 0.55);
+      ctx.fillRect(hitZoneX - 18, 40, 36, H * 0.55);
 
       ctx.strokeStyle = pal.hit + "99";
       ctx.lineWidth = 2;
       ctx.setLineDash([6, 4]);
       ctx.beginPath();
-      ctx.moveTo(HIT_ZONE_X, 40);
-      ctx.lineTo(HIT_ZONE_X, H * 0.58);
+      ctx.moveTo(hitZoneX, 40);
+      ctx.lineTo(hitZoneX, H * 0.58);
       ctx.stroke();
       ctx.setLineDash([]);
     }
 
     function drawOrbs(now) {
-      const elapsed = now - startTime;
+      if (!gameStarted) return;
+      const elapsed = elapsedFor(now);
       for (const orb of orbs) {
         if (orb.scored || orb.expired) continue;
         if (elapsed > orb.targetTime + OK_MS + 100) {
@@ -233,7 +270,7 @@ export default function WaveRider({ card, onResult }) {
         }
         const x = getOrbX(orb, now);
         if (x < 0 || x > W + 20) continue;
-        const y = H * 0.52;
+        const y = orbY;
         const r = 14;
 
         ctx.beginPath();
@@ -266,9 +303,30 @@ export default function WaveRider({ card, onResult }) {
       }
     }
 
+    function drawReadyPrompt() {
+      const centerY = H * 0.48;
+      ctx.fillStyle = pal.text;
+      ctx.font = `bold 18px ${displayFont}`;
+      ctx.textAlign = "center";
+      ctx.fillText("Press Space or click to begin", W / 2, centerY - 18);
+
+      ctx.fillStyle = pal.text;
+      ctx.font = `12px ${labelFont}`;
+      ctx.fillText("Then tap each orb as it reaches the vertical line.", W / 2, centerY + 10);
+
+      ctx.fillStyle = pal.muted;
+      ctx.font = `bold 11px ${labelFont}`;
+      ctx.fillText(`${bpm} BPM this run`, W / 2, centerY + 34);
+    }
+
     function drawHUD(now) {
-      const elapsed = now - startTime;
-      const beat = Math.floor((elapsed - LEAD_IN_MS) / intervalMs);
+      if (!gameStarted) {
+        drawReadyPrompt();
+        return;
+      }
+
+      const elapsed = elapsedFor(now);
+      const beat = Math.floor((elapsed - leadInMs) / intervalMs);
       const progress = (orbs.filter(o => o.scored || o.expired).length) / ORB_COUNT;
 
       ctx.fillStyle = pal.text;
@@ -298,11 +356,11 @@ export default function WaveRider({ card, onResult }) {
       ctx.fillText(`${totalPts} pts`, W / 2, 22);
 
       // Tap hint
-      if (elapsed < LEAD_IN_MS) {
+      if (elapsed < leadInMs) {
         ctx.fillStyle = pal.muted;
         ctx.font = `12px ${labelFont}`;
         ctx.textAlign = "center";
-        ctx.fillText("Tap SPACE or click when orbs reach the line", W / 2, H / 2);
+        ctx.fillText("Get ready: tap when the first orb reaches the line", W / 2, H / 2);
       }
     }
 
@@ -321,9 +379,9 @@ export default function WaveRider({ card, onResult }) {
 
       const allDone = orbs.every(o => o.scored || o.expired);
       const lastOrbTime = orbs[ORB_COUNT - 1].targetTime + OK_MS + 500;
-      const elapsed = now - startTime;
+      const elapsed = elapsedFor(now);
 
-      if ((allDone || elapsed > lastOrbTime + 500) && !doneRef.current) {
+      if (gameStarted && (allDone || elapsed > lastOrbTime + 500) && !doneRef.current) {
         doneRef.current = true;
         const pct = Math.round(Math.min(100, Math.max(0, (totalPts / (ORB_COUNT * 10)) * 100)));
         const avgErr = scoredCount > 0 ? Math.round(errorSum / scoredCount) : 0;

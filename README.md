@@ -82,7 +82,7 @@ If no key is present, the server returns compliance-safe fallback copy.
 - Expanded card briefing includes top city-level hometown areas when aggregate public athlete counts support the state view.
 - Guest "My Sport Cards" collection of discovered states, with no forced login.
 - Gemini state briefing and game reflection endpoints with local validation and fallback copy.
-- Focus Window, Rhythm Shift, and Open Lane fan challenges.
+- Focus Window, Rhythm Shift, and Open Space fan challenges.
 - Methodology page with source labels, excluded-row policy, and counts breakdown.
 - Cloud Run-ready server and Dockerfile.
 
