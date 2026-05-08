@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ACTIVE_CARD_EXPERIENCE } from "../../lib/constants.js";
 import UnifiedStateCard from "./UnifiedStateCard.jsx";
 
@@ -12,9 +12,11 @@ function CardModal({
   onClose,
   panelManifest,
   onCollect,
-  isUnlocked
+  isUnlocked,
+  defaultFlipped = false,
+  defaultIsBackExpanded = false,
 }) {
-  const [isBackExpanded, setIsBackExpanded] = useState(false);
+  const [isBackExpanded, setIsBackExpanded] = useState(defaultIsBackExpanded);
   const { openAnimation, interaction, cardLayout } = ACTIVE_CARD_EXPERIENCE;
 
   useEffect(() => {
@@ -25,7 +27,14 @@ function CardModal({
     return () => window.removeEventListener("keydown", onKey);
   }, [onClose]);
 
+  const prevModalCodeRef = useRef(null);
   useEffect(() => {
+    if (prevModalCodeRef.current === null) {
+      prevModalCodeRef.current = card.stateCode;
+      return;
+    }
+    if (prevModalCodeRef.current === card.stateCode) return;
+    prevModalCodeRef.current = card.stateCode;
     setIsBackExpanded(false);
   }, [card.stateCode]);
 
@@ -48,6 +57,7 @@ function CardModal({
           panelManifest={panelManifest}
           onCollect={onCollect}
           isUnlocked={isUnlocked}
+          initialFlipped={defaultFlipped}
         />
       </div>
     </div>

@@ -498,10 +498,11 @@ function UnifiedStateCard({
   onBackExpandedChange,
   panelManifest = EMPTY_CARD_PANEL_MANIFEST,
   onCollect,
-  isUnlocked
+  isUnlocked,
+  initialFlipped = false,
 }) {
-  const [flipped, setFlipped] = useState(false);
-  const [displayBack, setDisplayBack] = useState(false);
+  const [flipped, setFlipped] = useState(initialFlipped);
+  const [displayBack, setDisplayBack] = useState(initialFlipped);
   const [flipPhase, setFlipPhase] = useState(null); // null | "out" | "in"
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const [mousePos, setMousePos] = useState({ x: 50, y: 50, angle: 120 });
@@ -517,7 +518,14 @@ function UnifiedStateCard({
   const olympicCue = getPanelVisualCue(card.olympicPanel);
   const paralympicCue = getPanelVisualCue(card.paralympicPanel);
 
+  const prevCardCodeRef = useRef(null);
   useEffect(() => {
+    if (prevCardCodeRef.current === null) {
+      prevCardCodeRef.current = card.stateCode;
+      return;
+    }
+    if (prevCardCodeRef.current === card.stateCode) return;
+    prevCardCodeRef.current = card.stateCode;
     flipTimers.current.forEach(clearTimeout);
     flipTimers.current = [];
     setFlipped(false);
@@ -683,7 +691,7 @@ function UnifiedStateCard({
                     </section>
                     <BriefingPanel payload={briefing} loading={briefingLoading} onRefresh={onRefreshBriefing} compact card={card} />
                     <SourceMethodPanel refs={sourceRefs} />
-                    <StateChallengePanel card={card} onOpenChallenge={onOpenChallenge} isUnlocked={isUnlocked} />
+                    <StateChallengePanel card={card} onOpenChallenge={() => onOpenChallenge?.({ flipped, isBackExpanded })} isUnlocked={isUnlocked} />
                   </div>
 
                   {hasMoreFullBackScroll && (
@@ -708,7 +716,7 @@ function UnifiedStateCard({
         <button className="ghost-button" type="button" onClick={toggleFlip}>
           {flipped ? "Flip to art" : "Flip to data"}
         </button>
-        <button className="primary-button" type="button" onClick={onOpenChallenge}>Play Challenge</button>
+        <button className="primary-button" type="button" onClick={() => onOpenChallenge?.({ flipped, isBackExpanded })}>Play Challenge</button>
       </div>
     </section>
   );
