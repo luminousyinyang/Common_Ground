@@ -14836,6 +14836,239 @@
             "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/oh/oh-olympic.png",
             "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/oh/oh-olympic.png",
             "firebaseCollection": "cardPanels"
+          },
+          "paralympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Foh%2Foh-paralympic.png?alt=media&token=93e25436-b491-4a42-8d50-2f6f69f635d3",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T15:21:48.723Z",
+            "dataScopeId": "both",
+            "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "Ohio paralympic Para triathlon",
+            "primarySportTag": "Paratriathlon",
+            "topSportTags": [
+              "Para Track and Field",
+              "Paratriathlon",
+              "Paracanoe"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Para triathlon",
+              "moduleMix": [
+                "Terrain/Environment Lens",
+                "Gear/Setup",
+                "Pace Shift"
+              ],
+              "subtitle": "Swim, bike, and run · transition control · fastest total time wins",
+              "qaFacts": {
+                "howItWorks": "Para triathlon is a three-stage race consisting of a 750m swim, a 20km bike segment, and a 5km run. The competitor with the fastest total race time in their event wins, and the clock keeps running during the transitions between stages.",
+                "watchValue": "Watch how the race rhythm changes completely across the three segments. The tension builds as athletes adjust their pacing and equipment—like moving from a handcycle to a racing wheelchair—while trying to hold a steady line against the clock.",
+                "stateConnection": "Ohio's Great Lakes shoreline, river valleys, and broad urban access could help fans understand why outdoor endurance sports fit this state card.",
+                "cardTrait": "Para triathlon connects to Line control through the steady pacing and precise steering athletes use to navigate changing road and water conditions."
+              },
+              "factChips": [
+                "750m swim, 20km bike, 5km run",
+                "Fastest total time wins",
+                "Active transition zones",
+                "Adaptive equipment variations"
+              ],
+              "relatedTags": [
+                "Para Track and Field",
+                "Paracanoe"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "c01c215453414426c3fa796ddd2690c118184eae18e5f93cdd16ef82ccd310a6",
+            "paletteTheme": "Coastal Current",
+            "promptHash": "cfdd4fa3b19f7b5921f02cf9fcdc98a83aef8b54e8d4edfe9b74eba13398e6af",
+            "notes": "",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Foh%2Foh-paralympic.png?alt=media&token=93e25436-b491-4a42-8d50-2f6f69f635d3",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/oh/oh-paralympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/oh/oh-paralympic.png",
+            "firebaseCollection": "cardPanels"
+          }
+        },
+        "paris2024": {
+          "olympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Foh%2Foh-olympic.png?alt=media&token=700d04cb-4770-4159-a26a-010fc23549d4",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T15:17:39.944Z",
+            "dataScopeId": "paris2024",
+            "dataScopeLabel": "Olympic Games Paris 2024",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "Ohio olympic Rowing",
+            "primarySportTag": "Rowing",
+            "topSportTags": [
+              "Track and Field",
+              "Freestyle Skiing",
+              "Ice Hockey"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Rowing",
+              "moduleMix": [
+                "Rules Snapshot",
+                "Pace Shift",
+                "Terrain/Environment Lens"
+              ],
+              "subtitle": "Water-based racing · synchronized strokes · 2,000-meter course",
+              "qaFacts": {
+                "howItWorks": "Crews race long, narrow boats across a straight 2,000-meter water course, aiming for the fastest total time. Rowers sit facing backward while moving forward, using synchronized oar strokes to propel the shell past the finish line.",
+                "watchValue": "The visual rhythm gets clearer when you watch the oars hit the water in perfect unison. It is fun to notice how a boat seems to glide smoothly between strokes, and how the stroke rate shifts during a final sprint.",
+                "stateConnection": "Ohio's river valleys, Great Lakes shoreline, and metro waterways could help fans understand why outdoor water-based pacing stories fit this state card.",
+                "cardTrait": "Rowing connects to Line Control through the precise, steady motion needed to keep a boat moving straight down a marked lane."
+              },
+              "factChips": [
+                "2,000-meter straight course",
+                "Synchronized oar strokes",
+                "Backward-facing athletes",
+                "Fastest total time wins"
+              ],
+              "relatedTags": [
+                "Track and Field",
+                "Freestyle Skiing",
+                "Ice Hockey"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "48ca8177241f6e3456841714c5b24b35ddb65c29f3e0b4928b908b17a0a775b9",
+            "paletteTheme": "Coastal Current",
+            "promptHash": "390e102235551a756fc6da49684215c6434d81025ee3104bd9031f78a2579734",
+            "notes": "Reused generated panel because this data view matches an existing panel.",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Foh%2Foh-olympic.png?alt=media&token=700d04cb-4770-4159-a26a-010fc23549d4",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/oh/oh-olympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/oh/oh-olympic.png",
+            "firebaseCollection": "cardPanels",
+            "reusedFromDataScopeId": "both"
+          },
+          "paralympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Foh%2Foh-paralympic.png?alt=media&token=93e25436-b491-4a42-8d50-2f6f69f635d3",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T15:21:48.723Z",
+            "dataScopeId": "paris2024",
+            "dataScopeLabel": "Olympic Games Paris 2024",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "Ohio paralympic Para triathlon",
+            "primarySportTag": "Paratriathlon",
+            "topSportTags": [
+              "Para Track and Field",
+              "Paratriathlon",
+              "Paracanoe"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Para triathlon",
+              "moduleMix": [
+                "Terrain/Environment Lens",
+                "Gear/Setup",
+                "Pace Shift"
+              ],
+              "subtitle": "Swim, bike, and run · transition control · fastest total time wins",
+              "qaFacts": {
+                "howItWorks": "Para triathlon is a three-stage race consisting of a 750m swim, a 20km bike segment, and a 5km run. The competitor with the fastest total race time in their event wins, and the clock keeps running during the transitions between stages.",
+                "watchValue": "Watch how the race rhythm changes completely across the three segments. The tension builds as athletes adjust their pacing and equipment—like moving from a handcycle to a racing wheelchair—while trying to hold a steady line against the clock.",
+                "stateConnection": "Ohio's Great Lakes shoreline, river valleys, and broad urban access could help fans understand why outdoor endurance sports fit this state card.",
+                "cardTrait": "Para triathlon connects to Line control through the steady pacing and precise steering athletes use to navigate changing road and water conditions."
+              },
+              "factChips": [
+                "750m swim, 20km bike, 5km run",
+                "Fastest total time wins",
+                "Active transition zones",
+                "Adaptive equipment variations"
+              ],
+              "relatedTags": [
+                "Para Track and Field",
+                "Paracanoe"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "c01c215453414426c3fa796ddd2690c118184eae18e5f93cdd16ef82ccd310a6",
+            "paletteTheme": "Coastal Current",
+            "promptHash": "cfdd4fa3b19f7b5921f02cf9fcdc98a83aef8b54e8d4edfe9b74eba13398e6af",
+            "notes": "Reused generated panel because this data view matches an existing panel.",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Foh%2Foh-paralympic.png?alt=media&token=93e25436-b491-4a42-8d50-2f6f69f635d3",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/oh/oh-paralympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/oh/oh-paralympic.png",
+            "firebaseCollection": "cardPanels",
+            "reusedFromDataScopeId": "both"
+          }
+        },
+        "milanoCortina2026": {
+          "olympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Foh%2FmilanoCortina2026%2Foh-milanoCortina2026-olympic.png?alt=media&token=4788691e-4500-47cd-9f12-b01e3d012a5d",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T15:22:45.053Z",
+            "dataScopeId": "milanoCortina2026",
+            "dataScopeLabel": "Olympic Winter Games Milano Cortina 2026",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "Ohio olympic Freestyle Skiing",
+            "primarySportTag": "Freestyle Skiing",
+            "topSportTags": [
+              "Freestyle Skiing",
+              "Ice Hockey"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Freestyle Skiing",
+              "moduleMix": [
+                "Rules Snapshot",
+                "Watch Hook",
+                "Terrain/Environment Lens"
+              ],
+              "subtitle": "Winter equipment · aerial maneuvers · technical terrain · judged scoring",
+              "qaFacts": {
+                "howItWorks": "Freestyle skiing features events like moguls, aerials, halfpipe, and slopestyle where athletes navigate technical terrain and execute mid-air maneuvers. Depending on the discipline, competitors either race head-to-head to cross the finish line first or receive scores based on trick difficulty, execution, and amplitude. In the judged formats, a clean, stable landing is heavily weighted in the final result.",
+                "watchValue": "The fun is watching how skiers use the lip of a jump or the rhythm of a mogul line to launch into complex rotations. Notice how they spot their landings early while upside down, turning fast spins into a smooth return to the snow.",
+                "stateConnection": "Ohio's humid continental climate, river valleys, and seasonal winter weather could help fans understand how regions with varying terrain connect to winter equipment sports.",
+                "cardTrait": "Freestyle skiing connects to Line Control through the exact paths athletes trace up the walls of a halfpipe or down a mogul course to set up their next jump."
+              },
+              "factChips": [
+                "Judged on execution and difficulty",
+                "Moguls, aerials, and park events",
+                "Clean landings maximize event scores",
+                "Winter equipment sport family"
+              ],
+              "relatedTags": [
+                "Ice Hockey"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "20db66f84462106ab08615d721c26cb2c963ab9f4af93056f674949c2784b24c",
+            "paletteTheme": "Coastal Current",
+            "promptHash": "cca1aac32005172b5f7f631bd108161b56180687441fa8f00de1d2782107bf37",
+            "notes": "",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Foh%2FmilanoCortina2026%2Foh-milanoCortina2026-olympic.png?alt=media&token=4788691e-4500-47cd-9f12-b01e3d012a5d",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/oh/milanoCortina2026/oh-milanoCortina2026-olympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/oh/milanoCortina2026/oh-milanoCortina2026-olympic.png",
+            "firebaseCollection": "cardPanels"
           }
         }
       },
@@ -14895,6 +15128,394 @@
         "firebaseProjectId": "common-ground-tests",
         "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/oh/oh-olympic.png",
         "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/oh/oh-olympic.png",
+        "firebaseCollection": "cardPanels"
+      },
+      "paralympic": {
+        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Foh%2Foh-paralympic.png?alt=media&token=93e25436-b491-4a42-8d50-2f6f69f635d3",
+        "localUrl": null,
+        "model": "gemini-3-pro-image-preview",
+        "location": "global",
+        "mimeType": "image/png",
+        "generatedAt": "2026-05-08T15:21:48.723Z",
+        "dataScopeId": "both",
+        "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+        "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+        "promptSummary": "Ohio paralympic Para triathlon",
+        "primarySportTag": "Paratriathlon",
+        "topSportTags": [
+          "Para Track and Field",
+          "Paratriathlon",
+          "Paracanoe"
+        ],
+        "cardBackCopy": {
+          "featuredCue": "Para triathlon",
+          "moduleMix": [
+            "Terrain/Environment Lens",
+            "Gear/Setup",
+            "Pace Shift"
+          ],
+          "subtitle": "Swim, bike, and run · transition control · fastest total time wins",
+          "qaFacts": {
+            "howItWorks": "Para triathlon is a three-stage race consisting of a 750m swim, a 20km bike segment, and a 5km run. The competitor with the fastest total race time in their event wins, and the clock keeps running during the transitions between stages.",
+            "watchValue": "Watch how the race rhythm changes completely across the three segments. The tension builds as athletes adjust their pacing and equipment—like moving from a handcycle to a racing wheelchair—while trying to hold a steady line against the clock.",
+            "stateConnection": "Ohio's Great Lakes shoreline, river valleys, and broad urban access could help fans understand why outdoor endurance sports fit this state card.",
+            "cardTrait": "Para triathlon connects to Line control through the steady pacing and precise steering athletes use to navigate changing road and water conditions."
+          },
+          "factChips": [
+            "750m swim, 20km bike, 5km run",
+            "Fastest total time wins",
+            "Active transition zones",
+            "Adaptive equipment variations"
+          ],
+          "relatedTags": [
+            "Para Track and Field",
+            "Paracanoe"
+          ],
+          "complianceWarnings": []
+        },
+        "cardBackCopySource": "gemini",
+        "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+        "cardBackCopyModel": "gemini-3.1-pro-preview",
+        "cardBackCopyPromptHash": "c01c215453414426c3fa796ddd2690c118184eae18e5f93cdd16ef82ccd310a6",
+        "paletteTheme": "Coastal Current",
+        "promptHash": "cfdd4fa3b19f7b5921f02cf9fcdc98a83aef8b54e8d4edfe9b74eba13398e6af",
+        "notes": "",
+        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Foh%2Foh-paralympic.png?alt=media&token=93e25436-b491-4a42-8d50-2f6f69f635d3",
+        "storageBucket": "common-ground-tests.firebasestorage.app",
+        "firebaseProjectId": "common-ground-tests",
+        "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/oh/oh-paralympic.png",
+        "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/oh/oh-paralympic.png",
+        "firebaseCollection": "cardPanels"
+      }
+    },
+    "OK": {
+      "scopes": {
+        "both": {
+          "olympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fok%2Fok-olympic.png?alt=media&token=038349d8-c27b-4e99-9730-52e363838e97",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T15:24:12.752Z",
+            "dataScopeId": "both",
+            "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "Oklahoma olympic Track and Field",
+            "primarySportTag": "Track and Field",
+            "topSportTags": [
+              "Track and Field"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Track and Field",
+              "moduleMix": [
+                "Rules Snapshot",
+                "Pace Shift",
+                "Terrain/Environment Lens"
+              ],
+              "subtitle": "Stadium and road events · pacing strategy · stride control",
+              "qaFacts": {
+                "howItWorks": "Track and field includes running, jumping, and throwing events held on a stadium oval or open roads. In running events, the first athlete to cross the line wins, and competitors must carefully control their cadence over set distances while obeying lane assignments during sprints.",
+                "watchValue": "The rhythm of a race changes depending on the distance, making the pack movement a tactical puzzle. Watch how a sudden acceleration on the back stretch or a deliberate slowdown in the middle laps forces the entire field to adjust their stride.",
+                "stateConnection": "Oklahoma's southern plains, open wind exposure, and rolling terrain may suggest why outdoor pacing and distance running stories fit this state card.",
+                "cardTrait": "Track and field connects to Rhythm and pacing by showing how athletes lock into a steady stride pattern, much like keeping time as moving cues reach a target."
+              },
+              "factChips": [
+                "Staggered sprint starts",
+                "Pace and cadence control",
+                "Tactical pack running",
+                "Relay baton exchanges"
+              ],
+              "relatedTags": [],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "2cfa012285a11ad1a3704725cf7c1c26b428ba4a162dbe5fb8923f6825249de6",
+            "paletteTheme": "Metro Court",
+            "promptHash": "1cb1c3e4f79064813237b7676ead7af93d9462bb4c615575d3bed576c9dd827f",
+            "notes": "",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fok%2Fok-olympic.png?alt=media&token=038349d8-c27b-4e99-9730-52e363838e97",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/ok/ok-olympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/ok/ok-olympic.png",
+            "firebaseCollection": "cardPanels"
+          },
+          "paralympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fok%2Fok-paralympic.png?alt=media&token=5030b22b-da6c-4640-aab1-8ce3f102ccb8",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T15:24:57.737Z",
+            "dataScopeId": "both",
+            "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "Oklahoma paralympic Para Track and Field",
+            "primarySportTag": "Para Track and Field",
+            "topSportTags": [
+              "Para Track and Field",
+              "Sitting Volleyball"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Para Track and Field",
+              "moduleMix": [
+                "Rules Snapshot",
+                "Pace Shift",
+                "Terrain/Environment Lens"
+              ],
+              "subtitle": "Track and field events · adaptive equipment · pace strategy · race to the line",
+              "qaFacts": {
+                "howItWorks": "Para track and field features running, jumping, and throwing events across the stadium. Athletes compete alongside others in specific classifications, and the objective is straightforward: track events are won by the fastest time across the finish line, while field events are won by achieving the furthest distance or highest mark.",
+                "watchValue": "Notice how racers shift their stride and rhythm when moving from the straightaway into the curve. The fun is watching competitors time their final kick, changing their cadence to pass opponents right before the finish.",
+                "stateConnection": "Oklahoma's southern plains, rolling terrain, and open wind exposure could help fans understand why outdoor pacing and endurance stories fit this state card.",
+                "cardTrait": "Para track and field connects to Rhythm and pacing through the steady cadence athletes keep as they navigate the track and time their final push."
+              },
+              "factChips": [
+                "Track and field events",
+                "Classification categories",
+                "Distance and sprint races",
+                "Adaptive equipment"
+              ],
+              "relatedTags": [
+                "Sitting Volleyball"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "61a09090b4d8cc57641a3d62e31e73d942605ff31471d5b8e74b7d095e736d87",
+            "paletteTheme": "Metro Court",
+            "promptHash": "89c03c15a87512672162386d93a4c33d961fb6055bd2e239c0298ac0db88430e",
+            "notes": "",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fok%2Fok-paralympic.png?alt=media&token=5030b22b-da6c-4640-aab1-8ce3f102ccb8",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/ok/ok-paralympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/ok/ok-paralympic.png",
+            "firebaseCollection": "cardPanels"
+          }
+        },
+        "paris2024": {
+          "olympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fok%2Fok-olympic.png?alt=media&token=038349d8-c27b-4e99-9730-52e363838e97",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T15:24:12.752Z",
+            "dataScopeId": "paris2024",
+            "dataScopeLabel": "Olympic Games Paris 2024",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "Oklahoma olympic Track and Field",
+            "primarySportTag": "Track and Field",
+            "topSportTags": [
+              "Track and Field"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Track and Field",
+              "moduleMix": [
+                "Rules Snapshot",
+                "Pace Shift",
+                "Terrain/Environment Lens"
+              ],
+              "subtitle": "Stadium and road events · pacing strategy · stride control",
+              "qaFacts": {
+                "howItWorks": "Track and field includes running, jumping, and throwing events held on a stadium oval or open roads. In running events, the first athlete to cross the line wins, and competitors must carefully control their cadence over set distances while obeying lane assignments during sprints.",
+                "watchValue": "The rhythm of a race changes depending on the distance, making the pack movement a tactical puzzle. Watch how a sudden acceleration on the back stretch or a deliberate slowdown in the middle laps forces the entire field to adjust their stride.",
+                "stateConnection": "Oklahoma's southern plains, open wind exposure, and rolling terrain may suggest why outdoor pacing and distance running stories fit this state card.",
+                "cardTrait": "Track and field connects to Rhythm and pacing by showing how athletes lock into a steady stride pattern, much like keeping time as moving cues reach a target."
+              },
+              "factChips": [
+                "Staggered sprint starts",
+                "Pace and cadence control",
+                "Tactical pack running",
+                "Relay baton exchanges"
+              ],
+              "relatedTags": [],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "2cfa012285a11ad1a3704725cf7c1c26b428ba4a162dbe5fb8923f6825249de6",
+            "paletteTheme": "Metro Court",
+            "promptHash": "1cb1c3e4f79064813237b7676ead7af93d9462bb4c615575d3bed576c9dd827f",
+            "notes": "Reused generated panel because this data view matches an existing panel.",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fok%2Fok-olympic.png?alt=media&token=038349d8-c27b-4e99-9730-52e363838e97",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/ok/ok-olympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/ok/ok-olympic.png",
+            "firebaseCollection": "cardPanels",
+            "reusedFromDataScopeId": "both"
+          },
+          "paralympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fok%2Fok-paralympic.png?alt=media&token=5030b22b-da6c-4640-aab1-8ce3f102ccb8",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T15:24:57.737Z",
+            "dataScopeId": "paris2024",
+            "dataScopeLabel": "Olympic Games Paris 2024",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "Oklahoma paralympic Para Track and Field",
+            "primarySportTag": "Para Track and Field",
+            "topSportTags": [
+              "Para Track and Field",
+              "Sitting Volleyball"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Para Track and Field",
+              "moduleMix": [
+                "Rules Snapshot",
+                "Pace Shift",
+                "Terrain/Environment Lens"
+              ],
+              "subtitle": "Track and field events · adaptive equipment · pace strategy · race to the line",
+              "qaFacts": {
+                "howItWorks": "Para track and field features running, jumping, and throwing events across the stadium. Athletes compete alongside others in specific classifications, and the objective is straightforward: track events are won by the fastest time across the finish line, while field events are won by achieving the furthest distance or highest mark.",
+                "watchValue": "Notice how racers shift their stride and rhythm when moving from the straightaway into the curve. The fun is watching competitors time their final kick, changing their cadence to pass opponents right before the finish.",
+                "stateConnection": "Oklahoma's southern plains, rolling terrain, and open wind exposure could help fans understand why outdoor pacing and endurance stories fit this state card.",
+                "cardTrait": "Para track and field connects to Rhythm and pacing through the steady cadence athletes keep as they navigate the track and time their final push."
+              },
+              "factChips": [
+                "Track and field events",
+                "Classification categories",
+                "Distance and sprint races",
+                "Adaptive equipment"
+              ],
+              "relatedTags": [
+                "Sitting Volleyball"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "61a09090b4d8cc57641a3d62e31e73d942605ff31471d5b8e74b7d095e736d87",
+            "paletteTheme": "Metro Court",
+            "promptHash": "89c03c15a87512672162386d93a4c33d961fb6055bd2e239c0298ac0db88430e",
+            "notes": "Reused generated panel because this data view matches an existing panel.",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fok%2Fok-paralympic.png?alt=media&token=5030b22b-da6c-4640-aab1-8ce3f102ccb8",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/ok/ok-paralympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/ok/ok-paralympic.png",
+            "firebaseCollection": "cardPanels",
+            "reusedFromDataScopeId": "both"
+          }
+        }
+      },
+      "olympic": {
+        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fok%2Fok-olympic.png?alt=media&token=038349d8-c27b-4e99-9730-52e363838e97",
+        "localUrl": null,
+        "model": "gemini-3-pro-image-preview",
+        "location": "global",
+        "mimeType": "image/png",
+        "generatedAt": "2026-05-08T15:24:12.752Z",
+        "dataScopeId": "both",
+        "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+        "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+        "promptSummary": "Oklahoma olympic Track and Field",
+        "primarySportTag": "Track and Field",
+        "topSportTags": [
+          "Track and Field"
+        ],
+        "cardBackCopy": {
+          "featuredCue": "Track and Field",
+          "moduleMix": [
+            "Rules Snapshot",
+            "Pace Shift",
+            "Terrain/Environment Lens"
+          ],
+          "subtitle": "Stadium and road events · pacing strategy · stride control",
+          "qaFacts": {
+            "howItWorks": "Track and field includes running, jumping, and throwing events held on a stadium oval or open roads. In running events, the first athlete to cross the line wins, and competitors must carefully control their cadence over set distances while obeying lane assignments during sprints.",
+            "watchValue": "The rhythm of a race changes depending on the distance, making the pack movement a tactical puzzle. Watch how a sudden acceleration on the back stretch or a deliberate slowdown in the middle laps forces the entire field to adjust their stride.",
+            "stateConnection": "Oklahoma's southern plains, open wind exposure, and rolling terrain may suggest why outdoor pacing and distance running stories fit this state card.",
+            "cardTrait": "Track and field connects to Rhythm and pacing by showing how athletes lock into a steady stride pattern, much like keeping time as moving cues reach a target."
+          },
+          "factChips": [
+            "Staggered sprint starts",
+            "Pace and cadence control",
+            "Tactical pack running",
+            "Relay baton exchanges"
+          ],
+          "relatedTags": [],
+          "complianceWarnings": []
+        },
+        "cardBackCopySource": "gemini",
+        "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+        "cardBackCopyModel": "gemini-3.1-pro-preview",
+        "cardBackCopyPromptHash": "2cfa012285a11ad1a3704725cf7c1c26b428ba4a162dbe5fb8923f6825249de6",
+        "paletteTheme": "Metro Court",
+        "promptHash": "1cb1c3e4f79064813237b7676ead7af93d9462bb4c615575d3bed576c9dd827f",
+        "notes": "",
+        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fok%2Fok-olympic.png?alt=media&token=038349d8-c27b-4e99-9730-52e363838e97",
+        "storageBucket": "common-ground-tests.firebasestorage.app",
+        "firebaseProjectId": "common-ground-tests",
+        "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/ok/ok-olympic.png",
+        "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/ok/ok-olympic.png",
+        "firebaseCollection": "cardPanels"
+      },
+      "paralympic": {
+        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fok%2Fok-paralympic.png?alt=media&token=5030b22b-da6c-4640-aab1-8ce3f102ccb8",
+        "localUrl": null,
+        "model": "gemini-3-pro-image-preview",
+        "location": "global",
+        "mimeType": "image/png",
+        "generatedAt": "2026-05-08T15:24:57.737Z",
+        "dataScopeId": "both",
+        "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+        "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+        "promptSummary": "Oklahoma paralympic Para Track and Field",
+        "primarySportTag": "Para Track and Field",
+        "topSportTags": [
+          "Para Track and Field",
+          "Sitting Volleyball"
+        ],
+        "cardBackCopy": {
+          "featuredCue": "Para Track and Field",
+          "moduleMix": [
+            "Rules Snapshot",
+            "Pace Shift",
+            "Terrain/Environment Lens"
+          ],
+          "subtitle": "Track and field events · adaptive equipment · pace strategy · race to the line",
+          "qaFacts": {
+            "howItWorks": "Para track and field features running, jumping, and throwing events across the stadium. Athletes compete alongside others in specific classifications, and the objective is straightforward: track events are won by the fastest time across the finish line, while field events are won by achieving the furthest distance or highest mark.",
+            "watchValue": "Notice how racers shift their stride and rhythm when moving from the straightaway into the curve. The fun is watching competitors time their final kick, changing their cadence to pass opponents right before the finish.",
+            "stateConnection": "Oklahoma's southern plains, rolling terrain, and open wind exposure could help fans understand why outdoor pacing and endurance stories fit this state card.",
+            "cardTrait": "Para track and field connects to Rhythm and pacing through the steady cadence athletes keep as they navigate the track and time their final push."
+          },
+          "factChips": [
+            "Track and field events",
+            "Classification categories",
+            "Distance and sprint races",
+            "Adaptive equipment"
+          ],
+          "relatedTags": [
+            "Sitting Volleyball"
+          ],
+          "complianceWarnings": []
+        },
+        "cardBackCopySource": "gemini",
+        "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+        "cardBackCopyModel": "gemini-3.1-pro-preview",
+        "cardBackCopyPromptHash": "61a09090b4d8cc57641a3d62e31e73d942605ff31471d5b8e74b7d095e736d87",
+        "paletteTheme": "Metro Court",
+        "promptHash": "89c03c15a87512672162386d93a4c33d961fb6055bd2e239c0298ac0db88430e",
+        "notes": "",
+        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fok%2Fok-paralympic.png?alt=media&token=5030b22b-da6c-4640-aab1-8ce3f102ccb8",
+        "storageBucket": "common-ground-tests.firebasestorage.app",
+        "firebaseProjectId": "common-ground-tests",
+        "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/ok/ok-paralympic.png",
+        "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/ok/ok-paralympic.png",
         "firebaseCollection": "cardPanels"
       }
     }
