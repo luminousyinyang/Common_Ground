@@ -119,18 +119,18 @@
         "firebaseCollection": "cardPanels"
       },
       "gameExperience": {
-        "version": "common-ground-game-experience-v2-style-references",
+        "version": "common-ground-game-experience-v3-shared-trait-examples",
         "source": "gemini",
         "stateCode": "CO",
         "stateName": "Colorado",
         "challengeType": "cadence_keeper",
-        "sharedTraitName": "Steady Pace Control",
-        "sharedTraitDescription": "Finding and holding a consistent rhythm when navigating changing outdoor conditions.",
-        "gameName": "Pace Keeper Challenge",
-        "gameIntro": "Keep the rhythm steady by tapping to the beat, celebrating the pacing skills of endurance athletes.",
-        "theme": "Abstract mountain trail topography",
-        "backgroundPromptBrief": "A stylized, abstract background featuring gentle topographic lines and subtle mountain silhouettes to evoke outdoor trails.",
-        "whyThisGame": "The cadence keeper game highlights the steady rhythm and pacing that are central to endurance sports like track and field and paratriathlon.",
+        "sharedTraitName": "Rhythm and pacing",
+        "sharedTraitDescription": "Holding a steady count as pace and conditions change.",
+        "gameName": "Rhythm Shift Challenge",
+        "gameIntro": "Tap through 1s, 1.5s, and 2s counts and see how steady your personal rhythm stays.",
+        "theme": "Pace marks",
+        "backgroundPromptBrief": "A layered game backdrop with count marks and subtle motion lines for a rhythm-shift timing challenge.",
+        "whyThisGame": "Rhythm Shift fits cards about steady pacing and adapting to changing timing conditions.",
         "darkModeNotes": "Highlight rhythm targets in bright teal against a dark slate background to ensure clear visibility.",
         "lightModeNotes": "Use bold navy blue for rhythm targets on a soft white or light gray topographic background for high contrast.",
         "background": {
@@ -151,7 +151,8 @@
         "location": "global",
         "generatedAt": "2026-05-05T16:12:38.324Z",
         "promptHash": "29bd2c6443d96d683206a60e447980f3b9a6eb4557d17b15346b9c8dfa1743ff",
-        "complianceWarnings": []
+        "complianceWarnings": [],
+        "visualTheme": "Pace marks"
       },
       "scopes": {
         "both": {
@@ -623,39 +624,28 @@
         "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026"
       },
       "gameExperience": {
-        "version": "common-ground-game-experience-v2-style-references",
+        "version": "common-ground-game-experience-v3-shared-trait-examples",
         "source": "gemini",
         "stateCode": "CA",
         "stateName": "California",
-        "challengeType": "cadence_keeper",
-        "sharedTraitName": "Waterline Rhythm",
-        "sharedTraitDescription": "Maintaining a steady pace and controlled timing when conditions are constantly shifting.",
-        "gameName": "Coastal Cadence Challenge",
-        "gameIntro": "Tap to the steady rhythm of the waves and see if you can keep the pace as the current shifts!",
-        "theme": "Abstract coastal waves",
-        "backgroundPromptBrief": "A rough fan-atlas mini-game backdrop built around Abstract coastal waves.",
-        "whyThisGame": "The cadence_keeper game perfectly captures the steady pacing and rhythmic timing essential to both water polo and paratriathlon.",
+        "challengeType": "focus_hold",
+        "sharedTraitName": "Timing and space awareness",
+        "sharedTraitDescription": "Reading open space and choosing the best lane as pressure shifts.",
+        "gameName": "Open Lane Challenge",
+        "gameIntro": "Pick the lane that will stay most open after pressure shifts. Ten rounds track best-lane reads and decision time.",
+        "theme": "Open lanes",
+        "backgroundPromptBrief": "A layered game backdrop with lanes, spacing cues, and soft pressure markers for an open-lane reading challenge.",
+        "whyThisGame": "Open Lane fits cards about reading space and choosing where movement has room.",
         "darkModeNotes": "Use deep ocean blues and glowing teal accents to ensure the rhythm markers stand out.",
         "lightModeNotes": "Use bright aqua and soft sand tones with high-contrast navy markers for clear visibility.",
-        "background": {
-          "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/game-backgrounds%2Fcommon-ground-game-experience-v2-style-references%2Fca%2Fca-cadence_keeper.png?alt=media&token=d0b6a8fb-65ca-4936-bead-5a920f71fc8c",
-          "localUrl": null,
-          "mimeType": "image/png",
-          "model": "gemini-3.1-flash-image-preview",
-          "location": "global",
-          "promptHash": "3dcb684e07893df7bcf55d344f97a89016c1460a13137e7e454dfc71f5d52b8e",
-          "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/game-backgrounds%2Fcommon-ground-game-experience-v2-style-references%2Fca%2Fca-cadence_keeper.png?alt=media&token=d0b6a8fb-65ca-4936-bead-5a920f71fc8c",
-          "storageBucket": "common-ground-tests.firebasestorage.app",
-          "firebaseProjectId": "common-ground-tests",
-          "storagePath": "game-backgrounds/common-ground-game-experience-v2-style-references/ca/ca-cadence_keeper.png",
-          "gsUri": "gs://common-ground-tests.firebasestorage.app/game-backgrounds/common-ground-game-experience-v2-style-references/ca/ca-cadence_keeper.png"
-        },
+        "background": null,
         "assignmentModel": "gemini-3.1-pro-preview",
         "backgroundModel": "gemini-3.1-flash-image-preview",
         "location": "global",
         "generatedAt": "2026-05-05T15:53:55.384Z",
         "promptHash": "3dcb684e07893df7bcf55d344f97a89016c1460a13137e7e454dfc71f5d52b8e",
-        "complianceWarnings": []
+        "complianceWarnings": [],
+        "visualTheme": "Open lanes"
       },
       "scopes": {
         "both": {
@@ -1032,42 +1022,47 @@
         "promptSummary": "Washington paralympic Endurance / Pace Control + Precision / Focus",
         "paletteTheme": "Cascade Rain",
         "notes": ""
+      },
+      "gameExperience": {
+        "version": "common-ground-game-experience-v3-shared-trait-examples",
+        "source": "deterministic-diversity-pass",
+        "stateCode": "WA",
+        "stateName": "Washington",
+        "challengeType": "focus_hold",
+        "sharedTraitName": "Timing and space awareness",
+        "sharedTraitDescription": "Reading open space and choosing the best lane as pressure shifts.",
+        "gameName": "Open Lane Challenge",
+        "gameIntro": "Pick the lane that will stay most open after pressure shifts. Ten rounds track best-lane reads and decision time.",
+        "theme": "Open lanes",
+        "visualTheme": "Open lanes",
+        "backgroundPromptBrief": "A layered game backdrop with lanes, spacing cues, and soft pressure markers for an open-lane reading challenge.",
+        "whyThisGame": "Open Lane fits cards about reading space and choosing where movement has room."
       }
     },
     "AL": {
       "gameExperience": {
-        "version": "common-ground-game-experience-v1",
+        "version": "common-ground-game-experience-v3-shared-trait-examples",
         "source": "gemini",
         "stateCode": "AL",
         "stateName": "Alabama",
-        "challengeType": "reaction_grid",
-        "sharedTraitName": "Spatial Timing",
-        "sharedTraitDescription": "Fast recognition, clean timing, and attention to changing space across sport families.",
-        "gameName": "Field Vision Grid",
-        "gameIntro": "Tap the targets as they appear to celebrate the quick decision-making seen in fast-paced team sports!",
-        "theme": "Lush river valley greens",
-        "whyThisGame": "The reaction grid mirrors the fast spatial recognition and quick decision-making essential in team sports like soccer.",
+        "challengeType": "focus_hold",
+        "sharedTraitName": "Timing and space awareness",
+        "sharedTraitDescription": "Reading open space and choosing the best lane as pressure shifts.",
+        "gameName": "Open Lane Challenge",
+        "gameIntro": "Pick the lane that will stay most open after pressure shifts. Ten rounds track best-lane reads and decision time.",
+        "theme": "Open lanes",
+        "whyThisGame": "Open Lane fits cards about reading space and choosing where movement has room.",
         "darkModeNotes": "Use glowing neon green for active targets to ensure high contrast against dark backgrounds.",
         "lightModeNotes": "Use deep forest green for active targets to stand out clearly on lighter backgrounds.",
-        "background": {
-          "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/game-backgrounds%2Fcommon-ground-game-experience-v1%2Fal%2Fal-reaction_grid.png?alt=media&token=7f4a437c-e893-46e1-a5e4-0b4b9fb5b659",
-          "localUrl": null,
-          "mimeType": "image/png",
-          "model": "gemini-3-pro-image-preview",
-          "location": "global",
-          "promptHash": "c9832895198f3869dae5137acbcf118ac7f0becbf079be332ece175c8e440446",
-          "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/game-backgrounds%2Fcommon-ground-game-experience-v1%2Fal%2Fal-reaction_grid.png?alt=media&token=7f4a437c-e893-46e1-a5e4-0b4b9fb5b659",
-          "storageBucket": "common-ground-tests.firebasestorage.app",
-          "firebaseProjectId": "common-ground-tests",
-          "storagePath": "game-backgrounds/common-ground-game-experience-v1/al/al-reaction_grid.png",
-          "gsUri": "gs://common-ground-tests.firebasestorage.app/game-backgrounds/common-ground-game-experience-v1/al/al-reaction_grid.png"
-        },
+        "background": null,
         "assignmentModel": "gemini-3.1-pro-preview",
         "backgroundModel": "gemini-3-pro-image-preview",
         "location": "global",
         "generatedAt": "2026-05-04T19:19:22.468Z",
         "promptHash": "c9832895198f3869dae5137acbcf118ac7f0becbf079be332ece175c8e440446",
-        "complianceWarnings": []
+        "complianceWarnings": [],
+        "visualTheme": "Open lanes",
+        "backgroundPromptBrief": "A layered game backdrop with lanes, spacing cues, and soft pressure markers for an open-lane reading challenge."
       },
       "scopes": {
         "both": {
@@ -1516,17 +1511,17 @@
     },
     "HI": {
       "gameExperience": {
-        "version": "common-ground-game-experience-v1",
+        "version": "common-ground-game-experience-v3-shared-trait-examples",
         "source": "gemini",
         "stateCode": "HI",
         "stateName": "Hawaii",
         "challengeType": "focus_hold",
-        "sharedTraitName": "Spatial Timing",
-        "sharedTraitDescription": "Celebrate the ability to maintain focus and balance as spaces and conditions shift.",
-        "gameName": "Dynamic Focus Hold",
-        "gameIntro": "Keep your cursor inside the moving zone to celebrate the spatial awareness seen in volleyball and surfing.",
-        "theme": "Tropical coastal court",
-        "whyThisGame": "The focus_hold mechanic captures the continuous spatial tracking and balance required in both volleyball and surfing, matching the state's spatial timing trait.",
+        "sharedTraitName": "Timing and space awareness",
+        "sharedTraitDescription": "Reading open space and choosing the best lane as pressure shifts.",
+        "gameName": "Open Lane Challenge",
+        "gameIntro": "Pick the lane that will stay most open after pressure shifts. Ten rounds track best-lane reads and decision time.",
+        "theme": "Open lanes",
+        "whyThisGame": "Open Lane fits cards about reading space and choosing where movement has room.",
         "darkModeNotes": "Use deep ocean blues and glowing teal for the moving focus zone to ensure high contrast.",
         "lightModeNotes": "Use bright sand and clear water tones, with a distinct dark blue outline for the focus zone.",
         "background": {
@@ -1547,7 +1542,9 @@
         "location": "global",
         "generatedAt": "2026-05-04T19:21:51.042Z",
         "promptHash": "55e15a32c191797859581566bfbef4d1c442b503bfc62fa7efbbbba5129f3acd",
-        "complianceWarnings": []
+        "complianceWarnings": [],
+        "visualTheme": "Open lanes",
+        "backgroundPromptBrief": "A layered game backdrop with lanes, spacing cues, and soft pressure markers for an open-lane reading challenge."
       },
       "scopes": {
         "both": {
@@ -1983,17 +1980,17 @@
     },
     "KS": {
       "gameExperience": {
-        "version": "common-ground-game-experience-v1",
+        "version": "common-ground-game-experience-v3-shared-trait-examples",
         "source": "gemini",
         "stateCode": "KS",
         "stateName": "Kansas",
         "challengeType": "precision_trace",
-        "sharedTraitName": "Focus and Precision",
-        "sharedTraitDescription": "Celebrate the steady control and sharp focus required to excel in precision sports.",
-        "gameName": "Focus Line Challenge",
-        "gameIntro": "Trace the path steadily to celebrate the incredible focus and control seen in precision sports.",
-        "theme": "Open plains wind lines",
-        "whyThisGame": "The precision_trace mechanic perfectly mirrors the steady hand and deep focus celebrated in Para Archery and the card's 'Focus Lines' theme.",
+        "sharedTraitName": "Line control",
+        "sharedTraitDescription": "Following a controlled path with steady movement and few detours.",
+        "gameName": "Precision Trace Challenge",
+        "gameIntro": "Follow the numbered path as cleanly as you can; extra detours count against the trace.",
+        "theme": "Trace line",
+        "whyThisGame": "Precision Trace fits cards about controlled paths, steady lines, and careful movement.",
         "darkModeNotes": "Use glowing amber or soft gold lines against a deep twilight background for clear path visibility.",
         "lightModeNotes": "Use crisp navy or deep green lines against a soft, sunlit background to ensure high contrast.",
         "background": {
@@ -2014,7 +2011,9 @@
         "location": "global",
         "generatedAt": "2026-05-04T19:42:45.621Z",
         "promptHash": "216e2c04f309a3c125a25a1c3f3a386469fb33ad732b26db9dd3eed20986254b",
-        "complianceWarnings": []
+        "complianceWarnings": [],
+        "visualTheme": "Trace line",
+        "backgroundPromptBrief": "A clean game backdrop with route lines and checkpoint marks for a precision tracing challenge."
       },
       "scopes": {
         "both": {
@@ -2458,38 +2457,28 @@
     },
     "MT": {
       "gameExperience": {
-        "version": "common-ground-game-experience-v1",
+        "version": "common-ground-game-experience-v3-shared-trait-examples",
         "source": "gemini",
         "stateCode": "MT",
         "stateName": "Montana",
         "challengeType": "focus_hold",
-        "sharedTraitName": "Focus Timing",
-        "sharedTraitDescription": "Clean recognition, controlled timing, and repeatable focus under changing conditions.",
-        "gameName": "High Plains Focus",
-        "gameIntro": "Keep your cursor steady within the moving target zone to celebrate the intense concentration of precision sports.",
-        "theme": "Frosty mountain target range",
-        "whyThisGame": "The focus_hold challenge mirrors the steady concentration and aim required in precision sports like archery, set against a mountain-inspired backdrop.",
+        "sharedTraitName": "Timing and space awareness",
+        "sharedTraitDescription": "Reading open space and choosing the best lane as pressure shifts.",
+        "gameName": "Open Lane Challenge",
+        "gameIntro": "Pick the lane that will stay most open after pressure shifts. Ten rounds track best-lane reads and decision time.",
+        "theme": "Open lanes",
+        "whyThisGame": "Open Lane fits cards about reading space and choosing where movement has room.",
         "darkModeNotes": "Use deep twilight blues and crisp white target outlines for high contrast.",
         "lightModeNotes": "Use pale icy blues and dark navy target outlines to ensure visibility.",
-        "background": {
-          "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/game-backgrounds%2Fcommon-ground-game-experience-v1%2Fmt%2Fmt-focus_hold.png?alt=media&token=6f1b4b2f-dc22-4259-94d1-bf6a2676fca2",
-          "localUrl": null,
-          "mimeType": "image/png",
-          "model": "gemini-3.1-flash-image-preview",
-          "location": "global",
-          "promptHash": "f3b9b87bdb2c67cd0d0ba516b6904d54aff7c02d29b0bee00658e0ad8d4afe74",
-          "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/game-backgrounds%2Fcommon-ground-game-experience-v1%2Fmt%2Fmt-focus_hold.png?alt=media&token=6f1b4b2f-dc22-4259-94d1-bf6a2676fca2",
-          "storageBucket": "common-ground-tests.firebasestorage.app",
-          "firebaseProjectId": "common-ground-tests",
-          "storagePath": "game-backgrounds/common-ground-game-experience-v1/mt/mt-focus_hold.png",
-          "gsUri": "gs://common-ground-tests.firebasestorage.app/game-backgrounds/common-ground-game-experience-v1/mt/mt-focus_hold.png"
-        },
+        "background": null,
         "assignmentModel": "gemini-3.1-pro-preview",
         "backgroundModel": "gemini-3.1-flash-image-preview",
         "location": "global",
         "generatedAt": "2026-05-04T20:17:04.996Z",
         "promptHash": "f3b9b87bdb2c67cd0d0ba516b6904d54aff7c02d29b0bee00658e0ad8d4afe74",
-        "complianceWarnings": []
+        "complianceWarnings": [],
+        "visualTheme": "Open lanes",
+        "backgroundPromptBrief": "A layered game backdrop with lanes, spacing cues, and soft pressure markers for an open-lane reading challenge."
       }
     },
     "AK": {
@@ -2932,6 +2921,21 @@
         "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/ak/ak-paralympic.png",
         "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/ak/ak-paralympic.png",
         "firebaseCollection": "cardPanels"
+      },
+      "gameExperience": {
+        "version": "common-ground-game-experience-v3-shared-trait-examples",
+        "source": "deterministic-diversity-pass",
+        "stateCode": "AK",
+        "stateName": "Alaska",
+        "challengeType": "cadence_keeper",
+        "sharedTraitName": "Rhythm and pacing",
+        "sharedTraitDescription": "Holding a steady count as pace and conditions change.",
+        "gameName": "Rhythm Shift Challenge",
+        "gameIntro": "Tap through 1s, 1.5s, and 2s counts and see how steady your personal rhythm stays.",
+        "theme": "Pace marks",
+        "visualTheme": "Pace marks",
+        "backgroundPromptBrief": "A layered game backdrop with count marks and subtle motion lines for a rhythm-shift timing challenge.",
+        "whyThisGame": "Rhythm Shift fits cards about steady pacing and adapting to changing timing conditions."
       }
     },
     "AZ": {
@@ -3389,6 +3393,21 @@
         "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/az/az-paralympic.png",
         "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/az/az-paralympic.png",
         "firebaseCollection": "cardPanels"
+      },
+      "gameExperience": {
+        "version": "common-ground-game-experience-v3-shared-trait-examples",
+        "source": "deterministic-diversity-pass",
+        "stateCode": "AZ",
+        "stateName": "Arizona",
+        "challengeType": "reaction_grid",
+        "sharedTraitName": "Focus and precision",
+        "sharedTraitDescription": "Recognizing a timing window and responding cleanly under changing focus cues.",
+        "gameName": "Focus Window Challenge",
+        "gameIntro": "Tap only when the moving signal crosses the focus window; early and late taps count against your precision.",
+        "theme": "Focus window",
+        "visualTheme": "Focus window",
+        "backgroundPromptBrief": "A focused game backdrop with clear target windows and timing markers for a precision-timing challenge.",
+        "whyThisGame": "Focus Window fits cards about quick recognition and precise timing."
       }
     },
     "AR": {
@@ -3821,6 +3840,21 @@
         "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/ar/ar-paralympic.png",
         "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/ar/ar-paralympic.png",
         "firebaseCollection": "cardPanels"
+      },
+      "gameExperience": {
+        "version": "common-ground-game-experience-v3-shared-trait-examples",
+        "source": "deterministic-diversity-pass",
+        "stateCode": "AR",
+        "stateName": "Arkansas",
+        "challengeType": "focus_hold",
+        "sharedTraitName": "Timing and space awareness",
+        "sharedTraitDescription": "Reading open space and choosing the best lane as pressure shifts.",
+        "gameName": "Open Lane Challenge",
+        "gameIntro": "Pick the lane that will stay most open after pressure shifts. Ten rounds track best-lane reads and decision time.",
+        "theme": "Open lanes",
+        "visualTheme": "Open lanes",
+        "backgroundPromptBrief": "A layered game backdrop with lanes, spacing cues, and soft pressure markers for an open-lane reading challenge.",
+        "whyThisGame": "Open Lane fits cards about reading space and choosing where movement has room."
       }
     },
     "CT": {
@@ -4289,6 +4323,21 @@
         "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/ct/ct-paralympic.png",
         "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/ct/ct-paralympic.png",
         "firebaseCollection": "cardPanels"
+      },
+      "gameExperience": {
+        "version": "common-ground-game-experience-v3-shared-trait-examples",
+        "source": "deterministic-diversity-pass",
+        "stateCode": "CT",
+        "stateName": "Connecticut",
+        "challengeType": "precision_trace",
+        "sharedTraitName": "Line control",
+        "sharedTraitDescription": "Following a controlled path with steady movement and few detours.",
+        "gameName": "Precision Trace Challenge",
+        "gameIntro": "Follow the numbered path as cleanly as you can; extra detours count against the trace.",
+        "theme": "Trace line",
+        "visualTheme": "Trace line",
+        "backgroundPromptBrief": "A clean game backdrop with route lines and checkpoint marks for a precision tracing challenge.",
+        "whyThisGame": "Precision Trace fits cards about controlled paths, steady lines, and careful movement."
       }
     },
     "DE": {
@@ -4715,6 +4764,21 @@
         "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/de/de-paralympic.png",
         "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/de/de-paralympic.png",
         "firebaseCollection": "cardPanels"
+      },
+      "gameExperience": {
+        "version": "common-ground-game-experience-v3-shared-trait-examples",
+        "source": "deterministic-diversity-pass",
+        "stateCode": "DE",
+        "stateName": "Delaware",
+        "challengeType": "focus_hold",
+        "sharedTraitName": "Timing and space awareness",
+        "sharedTraitDescription": "Reading open space and choosing the best lane as pressure shifts.",
+        "gameName": "Open Lane Challenge",
+        "gameIntro": "Pick the lane that will stay most open after pressure shifts. Ten rounds track best-lane reads and decision time.",
+        "theme": "Open lanes",
+        "visualTheme": "Open lanes",
+        "backgroundPromptBrief": "A layered game backdrop with lanes, spacing cues, and soft pressure markers for an open-lane reading challenge.",
+        "whyThisGame": "Open Lane fits cards about reading space and choosing where movement has room."
       }
     },
     "FL": {
@@ -5184,6 +5248,21 @@
         "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/fl/fl-paralympic.png",
         "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/fl/fl-paralympic.png",
         "firebaseCollection": "cardPanels"
+      },
+      "gameExperience": {
+        "version": "common-ground-game-experience-v3-shared-trait-examples",
+        "source": "deterministic-diversity-pass",
+        "stateCode": "FL",
+        "stateName": "Florida",
+        "challengeType": "cadence_keeper",
+        "sharedTraitName": "Rhythm and pacing",
+        "sharedTraitDescription": "Holding a steady count as pace and conditions change.",
+        "gameName": "Rhythm Shift Challenge",
+        "gameIntro": "Tap through 1s, 1.5s, and 2s counts and see how steady your personal rhythm stays.",
+        "theme": "Pace marks",
+        "visualTheme": "Pace marks",
+        "backgroundPromptBrief": "A layered game backdrop with count marks and subtle motion lines for a rhythm-shift timing challenge.",
+        "whyThisGame": "Rhythm Shift fits cards about steady pacing and adapting to changing timing conditions."
       }
     },
     "GA": {
@@ -5640,6 +5719,21 @@
         "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/ga/ga-paralympic.png",
         "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/ga/ga-paralympic.png",
         "firebaseCollection": "cardPanels"
+      },
+      "gameExperience": {
+        "version": "common-ground-game-experience-v3-shared-trait-examples",
+        "source": "deterministic-diversity-pass",
+        "stateCode": "GA",
+        "stateName": "Georgia",
+        "challengeType": "cadence_keeper",
+        "sharedTraitName": "Rhythm and pacing",
+        "sharedTraitDescription": "Holding a steady count as pace and conditions change.",
+        "gameName": "Rhythm Shift Challenge",
+        "gameIntro": "Tap through 1s, 1.5s, and 2s counts and see how steady your personal rhythm stays.",
+        "theme": "Pace marks",
+        "visualTheme": "Pace marks",
+        "backgroundPromptBrief": "A layered game backdrop with count marks and subtle motion lines for a rhythm-shift timing challenge.",
+        "whyThisGame": "Rhythm Shift fits cards about steady pacing and adapting to changing timing conditions."
       }
     },
     "ID": {
@@ -6104,6 +6198,21 @@
         "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/id/id-paralympic.png",
         "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/id/id-paralympic.png",
         "firebaseCollection": "cardPanels"
+      },
+      "gameExperience": {
+        "version": "common-ground-game-experience-v3-shared-trait-examples",
+        "source": "deterministic-diversity-pass",
+        "stateCode": "ID",
+        "stateName": "Idaho",
+        "challengeType": "cadence_keeper",
+        "sharedTraitName": "Rhythm and pacing",
+        "sharedTraitDescription": "Holding a steady count as pace and conditions change.",
+        "gameName": "Rhythm Shift Challenge",
+        "gameIntro": "Tap through 1s, 1.5s, and 2s counts and see how steady your personal rhythm stays.",
+        "theme": "Pace marks",
+        "visualTheme": "Pace marks",
+        "backgroundPromptBrief": "A layered game backdrop with count marks and subtle motion lines for a rhythm-shift timing challenge.",
+        "whyThisGame": "Rhythm Shift fits cards about steady pacing and adapting to changing timing conditions."
       }
     },
     "IL": {
@@ -6575,6 +6684,21 @@
         "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/il/il-paralympic.png",
         "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/il/il-paralympic.png",
         "firebaseCollection": "cardPanels"
+      },
+      "gameExperience": {
+        "version": "common-ground-game-experience-v3-shared-trait-examples",
+        "source": "deterministic-diversity-pass",
+        "stateCode": "IL",
+        "stateName": "Illinois",
+        "challengeType": "pattern_scout",
+        "sharedTraitName": "Pattern recognition",
+        "sharedTraitDescription": "Remembering short route patterns as the layout changes.",
+        "gameName": "Pattern Scout Challenge",
+        "gameIntro": "Watch a short four-tile route, then repeat it from memory as the pattern changes.",
+        "theme": "Route pattern",
+        "visualTheme": "Route pattern",
+        "backgroundPromptBrief": "A layered game backdrop with route tiles and repeated pattern cues for a memory challenge.",
+        "whyThisGame": "Pattern Scout fits cards about route reading, sequence memory, and adapting to changing layouts."
       }
     },
     "IN": {
@@ -7031,6 +7155,21 @@
         "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/in/in-paralympic.png",
         "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/in/in-paralympic.png",
         "firebaseCollection": "cardPanels"
+      },
+      "gameExperience": {
+        "version": "common-ground-game-experience-v3-shared-trait-examples",
+        "source": "deterministic-diversity-pass",
+        "stateCode": "IN",
+        "stateName": "Indiana",
+        "challengeType": "cadence_keeper",
+        "sharedTraitName": "Rhythm and pacing",
+        "sharedTraitDescription": "Holding a steady count as pace and conditions change.",
+        "gameName": "Rhythm Shift Challenge",
+        "gameIntro": "Tap through 1s, 1.5s, and 2s counts and see how steady your personal rhythm stays.",
+        "theme": "Pace marks",
+        "visualTheme": "Pace marks",
+        "backgroundPromptBrief": "A layered game backdrop with count marks and subtle motion lines for a rhythm-shift timing challenge.",
+        "whyThisGame": "Rhythm Shift fits cards about steady pacing and adapting to changing timing conditions."
       }
     },
     "IA": {
@@ -7485,6 +7624,21 @@
         "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/ia/ia-paralympic.png",
         "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/ia/ia-paralympic.png",
         "firebaseCollection": "cardPanels"
+      },
+      "gameExperience": {
+        "version": "common-ground-game-experience-v3-shared-trait-examples",
+        "source": "deterministic-diversity-pass",
+        "stateCode": "IA",
+        "stateName": "Iowa",
+        "challengeType": "precision_trace",
+        "sharedTraitName": "Line control",
+        "sharedTraitDescription": "Following a controlled path with steady movement and few detours.",
+        "gameName": "Precision Trace Challenge",
+        "gameIntro": "Follow the numbered path as cleanly as you can; extra detours count against the trace.",
+        "theme": "Trace line",
+        "visualTheme": "Trace line",
+        "backgroundPromptBrief": "A clean game backdrop with route lines and checkpoint marks for a precision tracing challenge.",
+        "whyThisGame": "Precision Trace fits cards about controlled paths, steady lines, and careful movement."
       }
     },
     "KY": {
@@ -7949,6 +8103,21 @@
         "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/ky/ky-paralympic.png",
         "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/ky/ky-paralympic.png",
         "firebaseCollection": "cardPanels"
+      },
+      "gameExperience": {
+        "version": "common-ground-game-experience-v3-shared-trait-examples",
+        "source": "deterministic-diversity-pass",
+        "stateCode": "KY",
+        "stateName": "Kentucky",
+        "challengeType": "pattern_scout",
+        "sharedTraitName": "Pattern recognition",
+        "sharedTraitDescription": "Remembering short route patterns as the layout changes.",
+        "gameName": "Pattern Scout Challenge",
+        "gameIntro": "Watch a short four-tile route, then repeat it from memory as the pattern changes.",
+        "theme": "Route pattern",
+        "visualTheme": "Route pattern",
+        "backgroundPromptBrief": "A layered game backdrop with route tiles and repeated pattern cues for a memory challenge.",
+        "whyThisGame": "Pattern Scout fits cards about route reading, sequence memory, and adapting to changing layouts."
       }
     },
     "LA": {
@@ -8388,6 +8557,21 @@
         "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/la/la-paralympic.png",
         "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/la/la-paralympic.png",
         "firebaseCollection": "cardPanels"
+      },
+      "gameExperience": {
+        "version": "common-ground-game-experience-v3-shared-trait-examples",
+        "source": "deterministic-diversity-pass",
+        "stateCode": "LA",
+        "stateName": "Louisiana",
+        "challengeType": "pattern_scout",
+        "sharedTraitName": "Pattern recognition",
+        "sharedTraitDescription": "Remembering short route patterns as the layout changes.",
+        "gameName": "Pattern Scout Challenge",
+        "gameIntro": "Watch a short four-tile route, then repeat it from memory as the pattern changes.",
+        "theme": "Route pattern",
+        "visualTheme": "Route pattern",
+        "backgroundPromptBrief": "A layered game backdrop with route tiles and repeated pattern cues for a memory challenge.",
+        "whyThisGame": "Pattern Scout fits cards about route reading, sequence memory, and adapting to changing layouts."
       }
     },
     "ME": {
@@ -8827,6 +9011,21 @@
         "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/me/me-paralympic.png",
         "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/me/me-paralympic.png",
         "firebaseCollection": "cardPanels"
+      },
+      "gameExperience": {
+        "version": "common-ground-game-experience-v3-shared-trait-examples",
+        "source": "deterministic-diversity-pass",
+        "stateCode": "ME",
+        "stateName": "Maine",
+        "challengeType": "pattern_scout",
+        "sharedTraitName": "Pattern recognition",
+        "sharedTraitDescription": "Remembering short route patterns as the layout changes.",
+        "gameName": "Pattern Scout Challenge",
+        "gameIntro": "Watch a short four-tile route, then repeat it from memory as the pattern changes.",
+        "theme": "Route pattern",
+        "visualTheme": "Route pattern",
+        "backgroundPromptBrief": "A layered game backdrop with route tiles and repeated pattern cues for a memory challenge.",
+        "whyThisGame": "Pattern Scout fits cards about route reading, sequence memory, and adapting to changing layouts."
       }
     },
     "MD": {
@@ -9285,6 +9484,21 @@
         "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/md/md-paralympic.png",
         "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/md/md-paralympic.png",
         "firebaseCollection": "cardPanels"
+      },
+      "gameExperience": {
+        "version": "common-ground-game-experience-v3-shared-trait-examples",
+        "source": "deterministic-diversity-pass",
+        "stateCode": "MD",
+        "stateName": "Maryland",
+        "challengeType": "cadence_keeper",
+        "sharedTraitName": "Rhythm and pacing",
+        "sharedTraitDescription": "Holding a steady count as pace and conditions change.",
+        "gameName": "Rhythm Shift Challenge",
+        "gameIntro": "Tap through 1s, 1.5s, and 2s counts and see how steady your personal rhythm stays.",
+        "theme": "Pace marks",
+        "visualTheme": "Pace marks",
+        "backgroundPromptBrief": "A layered game backdrop with count marks and subtle motion lines for a rhythm-shift timing challenge.",
+        "whyThisGame": "Rhythm Shift fits cards about steady pacing and adapting to changing timing conditions."
       }
     },
     "MA": {
@@ -9753,6 +9967,21 @@
         "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/ma/ma-paralympic.png",
         "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/ma/ma-paralympic.png",
         "firebaseCollection": "cardPanels"
+      },
+      "gameExperience": {
+        "version": "common-ground-game-experience-v3-shared-trait-examples",
+        "source": "deterministic-diversity-pass",
+        "stateCode": "MA",
+        "stateName": "Massachusetts",
+        "challengeType": "precision_trace",
+        "sharedTraitName": "Line control",
+        "sharedTraitDescription": "Following a controlled path with steady movement and few detours.",
+        "gameName": "Precision Trace Challenge",
+        "gameIntro": "Follow the numbered path as cleanly as you can; extra detours count against the trace.",
+        "theme": "Trace line",
+        "visualTheme": "Trace line",
+        "backgroundPromptBrief": "A clean game backdrop with route lines and checkpoint marks for a precision tracing challenge.",
+        "whyThisGame": "Precision Trace fits cards about controlled paths, steady lines, and careful movement."
       }
     },
     "MI": {
@@ -10220,6 +10449,21 @@
         "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/mi/mi-paralympic.png",
         "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/mi/mi-paralympic.png",
         "firebaseCollection": "cardPanels"
+      },
+      "gameExperience": {
+        "version": "common-ground-game-experience-v3-shared-trait-examples",
+        "source": "deterministic-diversity-pass",
+        "stateCode": "MI",
+        "stateName": "Michigan",
+        "challengeType": "precision_trace",
+        "sharedTraitName": "Line control",
+        "sharedTraitDescription": "Following a controlled path with steady movement and few detours.",
+        "gameName": "Precision Trace Challenge",
+        "gameIntro": "Follow the numbered path as cleanly as you can; extra detours count against the trace.",
+        "theme": "Trace line",
+        "visualTheme": "Trace line",
+        "backgroundPromptBrief": "A clean game backdrop with route lines and checkpoint marks for a precision tracing challenge.",
+        "whyThisGame": "Precision Trace fits cards about controlled paths, steady lines, and careful movement."
       }
     },
     "MN": {
@@ -10515,6 +10759,21 @@
         "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/mn/mn-paralympic.png",
         "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/mn/mn-paralympic.png",
         "firebaseCollection": "cardPanels"
+      },
+      "gameExperience": {
+        "version": "common-ground-game-experience-v3-shared-trait-examples",
+        "source": "deterministic-diversity-pass",
+        "stateCode": "MN",
+        "stateName": "Minnesota",
+        "challengeType": "cadence_keeper",
+        "sharedTraitName": "Rhythm and pacing",
+        "sharedTraitDescription": "Holding a steady count as pace and conditions change.",
+        "gameName": "Rhythm Shift Challenge",
+        "gameIntro": "Tap through 1s, 1.5s, and 2s counts and see how steady your personal rhythm stays.",
+        "theme": "Pace marks",
+        "visualTheme": "Pace marks",
+        "backgroundPromptBrief": "A layered game backdrop with count marks and subtle motion lines for a rhythm-shift timing challenge.",
+        "whyThisGame": "Rhythm Shift fits cards about steady pacing and adapting to changing timing conditions."
       }
     }
   },

@@ -148,21 +148,39 @@ const SPORT_FAMILY_RULES = [
 
 const TRAITS = [
   {
-    match: /Endurance|Aquatic|Winter/,
-    name: "Rhythm and Pace Control",
-    description: "Steady timing, controlled effort, and repeatable rhythm across different sport environments.",
+    match: /Team|Aquatic/,
+    name: "Timing and space awareness",
+    description: "Reading open space and choosing the best lane as pressure shifts.",
+    challengeType: "focus_hold"
+  },
+  {
+    match: /Precision/,
+    name: "Line control",
+    description: "Following a controlled path with steady movement and few detours.",
+    challengeType: "precision_trace"
+  },
+  {
+    match: /Balance|Mixed/,
+    name: "Pattern recognition",
+    description: "Remembering short route patterns as the layout changes.",
+    challengeType: "pattern_scout"
+  },
+  {
+    match: /Endurance|Winter/,
+    name: "Rhythm and pacing",
+    description: "Holding a steady count as pace and conditions change.",
     challengeType: "cadence_keeper"
   },
   {
-    match: /Precision|Team/,
-    name: "Spatial Timing",
-    description: "Fast recognition, clean timing, and attention to changing space across sport families.",
+    match: /Power/,
+    name: "Focus and precision",
+    description: "Recognizing a timing window and responding cleanly under changing focus cues.",
     challengeType: "reaction_grid"
   },
   {
-    match: /Balance|Power|Mixed/,
-    name: "Control Under Pressure",
-    description: "Focused choices, body control, and well-timed actions in short windows.",
+    match: /.+/,
+    name: "Focus and precision",
+    description: "Recognizing a timing window and responding cleanly under changing focus cues.",
     challengeType: "reaction_grid"
   }
 ];
@@ -873,32 +891,39 @@ function applyFeaturedSport(panel, featured) {
 
 function chooseSharedTraitForFeatured(olympicFeatured, paralympicFeatured, olympicPanel, paralympicPanel) {
   const tags = new Set([...(olympicFeatured?.themeTags || []), ...(paralympicFeatured?.themeTags || [])]);
+  if (tags.has("team") || tags.has("spatial") || (tags.has("water") && tags.has("balance"))) {
+    return {
+      name: "Timing and space awareness",
+      description: "Reading open space and choosing the best lane as pressure shifts.",
+      challengeType: "focus_hold"
+    };
+  }
+  if (tags.has("precision") || tags.has("focus")) {
+    return {
+      name: "Line control",
+      description: "Following a controlled path with steady movement and few detours.",
+      challengeType: "precision_trace"
+    };
+  }
+  if (tags.has("route") || tags.has("pattern") || tags.has("technical")) {
+    return {
+      name: "Pattern recognition",
+      description: "Remembering short route patterns as the layout changes.",
+      challengeType: "pattern_scout"
+    };
+  }
   if (tags.has("water") && (tags.has("pace") || tags.has("rhythm") || tags.has("balance"))) {
     return {
-      name: "Rhythm in changing conditions",
-      description: "Timing, spacing, and controlled rhythm when movement conditions keep changing.",
+      name: "Rhythm and pacing",
+      description: "Holding a steady count as pace and conditions change.",
       challengeType: "cadence_keeper"
     };
   }
   if (tags.has("winter") || tags.has("mountain")) {
     return {
-      name: "Elevation Pace",
-      description: "Steady pacing and controlled decisions across terrain, weather, and equipment demands.",
+      name: "Rhythm and pacing",
+      description: "Holding a steady count as pace and conditions change.",
       challengeType: "cadence_keeper"
-    };
-  }
-  if (tags.has("precision") || tags.has("focus")) {
-    return {
-      name: "Focus Timing",
-      description: "Clean recognition, controlled timing, and repeatable focus under changing conditions.",
-      challengeType: "reaction_grid"
-    };
-  }
-  if (tags.has("team") || tags.has("spatial")) {
-    return {
-      name: "Spatial Timing",
-      description: "Fast recognition, clean timing, and attention to changing space across sport families.",
-      challengeType: "reaction_grid"
     };
   }
   return chooseSharedTrait(olympicPanel, paralympicPanel);
@@ -924,10 +949,11 @@ function geographySignalLabels(geographySnapshot) {
 }
 
 function fanChallengeName(themeName, sharedTrait) {
-  if (/coastal|water|rhythm/i.test(themeName) && sharedTrait?.challengeType === "cadence_keeper") return "Rhythm Shift Challenge";
-  if (/elevation|cold|pace/i.test(themeName)) return "Pace Control Challenge";
-  if (/focus/i.test(themeName) || sharedTrait?.challengeType === "reaction_grid") return "Focus Window Challenge";
-  if (/city|spatial/i.test(themeName) || /spatial/i.test(sharedTrait?.name || "")) return "Spatial Timing Challenge";
+  if (sharedTrait?.challengeType === "cadence_keeper") return "Rhythm Shift Challenge";
+  if (sharedTrait?.challengeType === "focus_hold") return "Open Lane Challenge";
+  if (sharedTrait?.challengeType === "precision_trace") return "Precision Trace Challenge";
+  if (sharedTrait?.challengeType === "pattern_scout") return "Pattern Scout Challenge";
+  if (sharedTrait?.challengeType === "reaction_grid") return "Focus Window Challenge";
   return `${sharedTrait?.name || "State Sync"} Challenge`;
 }
 

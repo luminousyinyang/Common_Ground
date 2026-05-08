@@ -31,7 +31,9 @@ const ABSTRACT_TRAIT_NAMES = [
   "Spatial Timing",
   "Focus and Precision",
   "Focus Timing",
-  "Control Under Pressure"
+  "Control Under Pressure",
+  "Elevation Pace",
+  "Signal Discovery"
 ];
 
 const ABSTRACT_CARD_THEME_NAMES = [
@@ -763,9 +765,9 @@ export function getGameExperience(card) {
         : challengeType === "focus_hold"
           ? "Pick the lane that will stay most open after pressure shifts. Ten rounds track best-lane reads and decision time."
       : generated?.gameIntro,
-    sharedTraitName: challengeType === "focus_hold" ? "Finding open lanes" : plainTraitHeadline(card),
+    sharedTraitName: challengeType === "focus_hold" ? (generated?.sharedTraitName || "Timing and space awareness") : plainTraitHeadline(card),
     sharedTraitDescription: challengeType === "focus_hold"
-      ? "Reading pressure and choosing open space as conditions shift."
+      ? (generated?.sharedTraitDescription || "Reading pressure and choosing open space as conditions shift.")
       : generated?.sharedTraitDescription || card.sharedTrait?.description,
     background: generated?.background || null,
     theme: generated?.theme || null
