@@ -22,11 +22,25 @@ function makeSeed(card) {
   return ((Date.now() & 0xffff) ^ hash) >>> 0;
 }
 
+const PALETTES = [
+  { bg:"#EDE8DF", hill1:"#7A9E7E", hill2:"#A8C4A8", blob:"#D4C48A", dots:"#5A7A5E",
+    primary:"#C8543C", secondary:"#6B8C6E", accent:"#D4A850", text:"#2C3A2E", muted:"#7A8A7E", hit:"#4A7A9B" },
+  { bg:"#F0E8DC", hill1:"#C8634C", hill2:"#E0A090", blob:"#E8D4A8", dots:"#B84030",
+    primary:"#4A7A9B", secondary:"#C8634C", accent:"#E8B860", text:"#2A1E18", muted:"#8A6A60", hit:"#7A9E4A" },
+  { bg:"#E4ECF0", hill1:"#5B8FA8", hill2:"#8BB8D0", blob:"#C8D8B0", dots:"#3A6A88",
+    primary:"#2C5F7A", secondary:"#7A9E4A", accent:"#D48C40", text:"#1A2C38", muted:"#5A7888", hit:"#C8543C" },
+  { bg:"#EDEAE2", hill1:"#8BA888", hill2:"#BCC8B4", blob:"#D8A87A", dots:"#6A8A68",
+    primary:"#C47840", secondary:"#4A7A6A", accent:"#8BA888", text:"#28241C", muted:"#6A7060", hit:"#5B8FA8" },
+];
+
+// Earthy tile colors: terracotta, dusty blue, amber, sage
+const TILE_COLORS = ["#C8543C", "#5B8FA8", "#D4A850", "#7A9E7E"];
+
 const TILES = [
-  { id: 0, color: "#ff7766", icon: "star", label: "Coral" },
-  { id: 1, color: "#44cccc", icon: "diamond", label: "Teal" },
-  { id: 2, color: "#ffcc44", icon: "triangle", label: "Amber" },
-  { id: 3, color: "#bb66ff", icon: "circle", label: "Violet" },
+  { id: 0, color: TILE_COLORS[0], icon: "star",     label: "Terracotta" },
+  { id: 1, color: TILE_COLORS[1], icon: "diamond",  label: "Blue" },
+  { id: 2, color: TILE_COLORS[2], icon: "triangle", label: "Amber" },
+  { id: 3, color: TILE_COLORS[3], icon: "circle",   label: "Sage" },
 ];
 
 // Tile layout: 2x2 grid centered
@@ -51,7 +65,6 @@ function drawIcon(ctx, icon, cx, cy, size, color) {
   ctx.fillStyle = color;
   ctx.strokeStyle = color;
   ctx.lineWidth = 2.5;
-  ctx.shadowBlur = 0;
   if (icon === "star") {
     const r = size;
     const ir = r * 0.42;
@@ -86,6 +99,58 @@ function drawIcon(ctx, icon, cx, cy, size, color) {
   }
 }
 
+// Grain texture generated once
+function buildGrain(w, h) {
+  const oc = document.createElement("canvas");
+  oc.width = w; oc.height = h;
+  const oc2 = oc.getContext("2d");
+  const id = oc2.createImageData(w, h);
+  for (let i = 0; i < id.data.length; i += 4) {
+    const v = Math.floor(Math.random() * 255);
+    id.data[i] = v; id.data[i + 1] = v; id.data[i + 2] = v; id.data[i + 3] = 22;
+  }
+  oc2.putImageData(id, 0, 0);
+  return oc;
+}
+
+// Organic landscape background
+function drawBg(ctx, w, h, pal) {
+  ctx.fillStyle = pal.bg;
+  ctx.fillRect(0, 0, w, h);
+
+  // Bottom hill layer 1 (back)
+  ctx.fillStyle = pal.hill2;
+  ctx.beginPath();
+  ctx.moveTo(0, h);
+  ctx.bezierCurveTo(w * 0.1, h * 0.74, w * 0.3, h * 0.88, w * 0.52, h * 0.80);
+  ctx.bezierCurveTo(w * 0.72, h * 0.72, w * 0.88, h * 0.84, w, h * 0.76);
+  ctx.lineTo(w, h); ctx.closePath(); ctx.fill();
+
+  // Bottom hill layer 2 (front)
+  ctx.fillStyle = pal.hill1;
+  ctx.beginPath();
+  ctx.moveTo(0, h);
+  ctx.bezierCurveTo(w * 0.18, h * 0.84, w * 0.42, h * 0.96, w * 0.65, h * 0.90);
+  ctx.bezierCurveTo(w * 0.82, h * 0.85, w * 0.92, h * 0.94, w, h * 0.88);
+  ctx.lineTo(w, h); ctx.closePath(); ctx.fill();
+
+  // Top-right blob accent
+  ctx.fillStyle = pal.blob + "99";
+  ctx.beginPath();
+  ctx.ellipse(w * 0.88, h * 0.14, w * 0.13, h * 0.11, 0.5, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Dot grid (top-left area)
+  ctx.fillStyle = pal.dots + "66";
+  for (let r = 0; r < 4; r++) {
+    for (let c = 0; c < 5; c++) {
+      ctx.beginPath();
+      ctx.arc(w * 0.06 + c * 10, h * 0.12 + r * 10, 1.8, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+}
+
 export default function GridMemory({ card, onResult }) {
   const canvasRef = useRef(null);
 
@@ -96,8 +161,11 @@ export default function GridMemory({ card, onResult }) {
     canvas.height = H;
     const ctx = canvas.getContext("2d");
 
+    const grain = buildGrain(W, H);
+
     const seed = makeSeed(card);
     const rng = makeRng(seed);
+    const pal = PALETTES[Math.floor(rng() * PALETTES.length)];
 
     const doneRef = { current: false };
     let rafId = 0;
@@ -109,9 +177,9 @@ export default function GridMemory({ card, onResult }) {
     );
 
     let round = 0;
-    let phase = "preview"; // "preview" | "input"
+    let phase = "preview";
     let previewIndex = 0;
-    let previewPhaseStart = performance.now() + 600; // short delay before first preview
+    let previewPhaseStart = performance.now() + 600;
     let inputStep = 0;
     let misses = 0;
 
@@ -132,7 +200,6 @@ export default function GridMemory({ card, onResult }) {
       const rect = getTileRect(tileId);
       const cx = rect.x + rect.w / 2;
       const cy = rect.y + rect.h / 2;
-      const color = TILES[tileId].color;
       for (let i = 0; i < 10; i++) {
         const angle = (Math.PI * 2 * i) / 10 + rng() * 0.3;
         const speed = 1.5 + rng() * 3;
@@ -143,7 +210,7 @@ export default function GridMemory({ card, onResult }) {
           life: 1,
           decay: 0.045 + rng() * 0.03,
           r: 2 + rng() * 2.5,
-          color,
+          color: pal.accent,
         });
       }
     }
@@ -162,7 +229,6 @@ export default function GridMemory({ card, onResult }) {
     }
 
     function advancePreview(now) {
-      // Light up tile previewIndex
       const seq = sequences[round];
       if (previewIndex < seq.length) {
         const tileId = seq[previewIndex];
@@ -188,7 +254,6 @@ export default function GridMemory({ card, onResult }) {
             spawnParticles(i);
             inputStep++;
             if (inputStep >= seq.length) {
-              // Round complete
               round++;
               if (round >= TOTAL_ROUNDS) {
                 doneRef.current = true;
@@ -200,7 +265,6 @@ export default function GridMemory({ card, onResult }) {
                   misses,
                 }), 600);
               } else {
-                // Start next round preview
                 setTimeout(() => {
                   startPreview(performance.now());
                 }, 800);
@@ -212,8 +276,8 @@ export default function GridMemory({ card, onResult }) {
             // Wrong
             misses++;
             screenShakeFrames = 6;
-            redTintAlpha = 0.35;
-            inputStep = 0; // Reset to start of sequence for this round
+            redTintAlpha = 0.25;
+            inputStep = 0;
           }
           return;
         }
@@ -231,16 +295,7 @@ export default function GridMemory({ card, onResult }) {
     canvas.addEventListener("click", handleClick);
     canvas.addEventListener("touchend", onTouch, { passive: false });
 
-    // Start first preview shortly
     startPreview(startTime);
-
-    function drawBg() {
-      const grad = ctx.createLinearGradient(0, 0, 0, H);
-      grad.addColorStop(0, "#080810");
-      grad.addColorStop(1, "#10101e");
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, W, H);
-    }
 
     function drawTiles(now) {
       for (let i = 0; i < TILE_COUNT; i++) {
@@ -252,8 +307,6 @@ export default function GridMemory({ card, onResult }) {
         const greenFlash = ts.greenFlash > 0;
 
         ctx.save();
-        ctx.shadowBlur = isLit ? 24 : greenFlash ? 20 : 6;
-        ctx.shadowColor = greenFlash ? "#44ff88" : isLit ? tile.color : tile.color + "55";
 
         // Rounded rect fill
         ctx.beginPath();
@@ -273,15 +326,20 @@ export default function GridMemory({ card, onResult }) {
           ctx.closePath();
         }
 
-        const baseAlpha = isLit ? "ee" : greenFlash ? "cc" : "44";
-        ctx.fillStyle = tile.color + baseAlpha;
+        // Fill: lit = full color, greenFlash = accent tint, inactive = semi-transparent
+        if (isLit) {
+          ctx.fillStyle = tile.color + "EE";
+        } else if (greenFlash) {
+          ctx.fillStyle = tile.color + "CC";
+        } else {
+          ctx.fillStyle = tile.color + "88";
+        }
         ctx.fill();
 
         // Border
         ctx.strokeStyle = isLit ? tile.color : tile.color + "88";
         ctx.lineWidth = isLit ? 2.5 : 1.5;
         ctx.stroke();
-        ctx.shadowBlur = 0;
 
         // Icon
         const iconAlpha = isLit ? 1 : greenFlash ? 0.95 : 0.55;
@@ -305,10 +363,7 @@ export default function GridMemory({ card, onResult }) {
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fillStyle = p.color;
-        ctx.shadowBlur = 5;
-        ctx.shadowColor = p.color;
         ctx.fill();
-        ctx.shadowBlur = 0;
         p.x += p.vx;
         p.y += p.vy;
         p.life -= p.decay;
@@ -319,12 +374,12 @@ export default function GridMemory({ card, onResult }) {
 
     function drawHUD() {
       // Phase label
-      ctx.fillStyle = "rgba(255,255,255,0.85)";
+      ctx.fillStyle = pal.text;
       ctx.font = "bold 15px system-ui";
       ctx.textAlign = "center";
       ctx.fillText(phaseLabel, W / 2, 38);
 
-      // Round dots
+      // Round indicator dots
       const dotSpacing = 28;
       const startX = W / 2 - (TOTAL_ROUNDS - 1) * dotSpacing / 2;
       for (let i = 0; i < TOTAL_ROUNDS; i++) {
@@ -332,17 +387,14 @@ export default function GridMemory({ card, onResult }) {
         const y = 60;
         ctx.beginPath();
         ctx.arc(x, y, i === round ? 6 : 4, 0, Math.PI * 2);
-        ctx.fillStyle = i < round ? "#44ff88" : i === round ? "#ffffff" : "rgba(255,255,255,0.2)";
-        ctx.shadowBlur = i === round ? 8 : 0;
-        ctx.shadowColor = "#ffffff";
+        ctx.fillStyle = i < round ? pal.primary : i === round ? pal.accent : pal.muted + "55";
         ctx.fill();
-        ctx.shadowBlur = 0;
       }
 
       // Sequence progress if in input phase
       if (phase === "input" && round < TOTAL_ROUNDS) {
         const seq = sequences[round];
-        ctx.fillStyle = "rgba(255,255,255,0.5)";
+        ctx.fillStyle = pal.muted;
         ctx.font = "11px system-ui";
         ctx.textAlign = "center";
         ctx.fillText(`${inputStep} / ${seq.length} correct`, W / 2, H - 30);
@@ -355,17 +407,17 @@ export default function GridMemory({ card, onResult }) {
           ctx.beginPath();
           ctx.arc(x, y, 4, 0, Math.PI * 2);
           ctx.fillStyle = i < inputStep
-            ? TILES[seq[i]].color
+            ? pal.accent
             : i === inputStep
-            ? "rgba(255,255,255,0.8)"
-            : "rgba(255,255,255,0.2)";
+            ? pal.primary
+            : pal.muted + "55";
           ctx.fill();
         }
       }
 
       // Misses
       if (misses > 0) {
-        ctx.fillStyle = "rgba(255,100,100,0.7)";
+        ctx.fillStyle = pal.muted;
         ctx.font = "11px system-ui";
         ctx.textAlign = "right";
         ctx.fillText(`Resets: ${misses}`, W - 18, H - 12);
@@ -386,19 +438,24 @@ export default function GridMemory({ card, onResult }) {
       ctx.save();
       ctx.translate(screenShakeOffset.x, screenShakeOffset.y);
 
-      drawBg();
+      drawBg(ctx, W, H, pal);
       drawTiles(now);
       drawParticles();
 
-      // Red tint on wrong
+      // Red tint on wrong (earthy tone)
       if (redTintAlpha > 0) {
-        ctx.fillStyle = `rgba(255,40,40,${redTintAlpha})`;
+        ctx.fillStyle = `rgba(180,60,40,${redTintAlpha})`;
         ctx.fillRect(-10, -10, W + 20, H + 20);
         redTintAlpha = Math.max(0, redTintAlpha - 0.025);
       }
 
       drawHUD();
       ctx.restore();
+
+      // Grain overlay
+      ctx.globalAlpha = 0.07;
+      ctx.drawImage(grain, 0, 0);
+      ctx.globalAlpha = 1;
 
       // Preview phase logic
       if (phase === "preview" && round < TOTAL_ROUNDS) {
@@ -411,7 +468,6 @@ export default function GridMemory({ card, onResult }) {
           previewIndex = currentPreviewIndex;
           advancePreview(now);
         } else if (previewIndex === 0 && elapsed >= 0 && elapsed < stepDuration) {
-          // Trigger first step
           if (!tileState[seq[0]].lit) {
             advancePreview(now);
           }

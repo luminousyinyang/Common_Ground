@@ -26,13 +26,70 @@ function makeSeed(card) {
 }
 
 const PALETTES = [
-  { player: "#44aaff", bg1: "#060a14", bg2: "#0a1220", trail: "#44aaff44" },
-  { player: "#cc44ff", bg1: "#0a0614", bg2: "#100820", trail: "#cc44ff44" },
-  { player: "#44ff99", bg1: "#060f08", bg2: "#0a180c", trail: "#44ff9944" },
-  { player: "#ff8844", bg1: "#100606", bg2: "#180a06", trail: "#ff884444" },
+  { bg:"#EDE8DF", hill1:"#7A9E7E", hill2:"#A8C4A8", blob:"#D4C48A", dots:"#5A7A5E",
+    primary:"#C8543C", secondary:"#6B8C6E", accent:"#D4A850", text:"#2C3A2E", muted:"#7A8A7E", hit:"#4A7A9B" },
+  { bg:"#F0E8DC", hill1:"#C8634C", hill2:"#E0A090", blob:"#E8D4A8", dots:"#B84030",
+    primary:"#4A7A9B", secondary:"#C8634C", accent:"#E8B860", text:"#2A1E18", muted:"#8A6A60", hit:"#7A9E4A" },
+  { bg:"#E4ECF0", hill1:"#5B8FA8", hill2:"#8BB8D0", blob:"#C8D8B0", dots:"#3A6A88",
+    primary:"#2C5F7A", secondary:"#7A9E4A", accent:"#D48C40", text:"#1A2C38", muted:"#5A7888", hit:"#C8543C" },
+  { bg:"#EDEAE2", hill1:"#8BA888", hill2:"#BCC8B4", blob:"#D8A87A", dots:"#6A8A68",
+    primary:"#C47840", secondary:"#4A7A6A", accent:"#8BA888", text:"#28241C", muted:"#6A7060", hit:"#5B8FA8" },
 ];
 
-const OBS_COLORS = ["#ff4466", "#ff9944", "#44ffee", "#cc66ff", "#ffee44"];
+const OBS_COLOR_KEYS = ["secondary", "accent", "hit"];
+const OBS_EXTRA = "#C47840";
+
+// Grain texture generated once
+function buildGrain(w, h) {
+  const oc = document.createElement("canvas");
+  oc.width = w; oc.height = h;
+  const oc2 = oc.getContext("2d");
+  const id = oc2.createImageData(w, h);
+  for (let i = 0; i < id.data.length; i += 4) {
+    const v = Math.floor(Math.random() * 255);
+    id.data[i] = v; id.data[i + 1] = v; id.data[i + 2] = v; id.data[i + 3] = 22;
+  }
+  oc2.putImageData(id, 0, 0);
+  return oc;
+}
+
+// Organic landscape background
+function drawBg(ctx, w, h, pal) {
+  ctx.fillStyle = pal.bg;
+  ctx.fillRect(0, 0, w, h);
+
+  // Bottom hill layer 1 (back)
+  ctx.fillStyle = pal.hill2;
+  ctx.beginPath();
+  ctx.moveTo(0, h);
+  ctx.bezierCurveTo(w * 0.1, h * 0.74, w * 0.3, h * 0.88, w * 0.52, h * 0.80);
+  ctx.bezierCurveTo(w * 0.72, h * 0.72, w * 0.88, h * 0.84, w, h * 0.76);
+  ctx.lineTo(w, h); ctx.closePath(); ctx.fill();
+
+  // Bottom hill layer 2 (front)
+  ctx.fillStyle = pal.hill1;
+  ctx.beginPath();
+  ctx.moveTo(0, h);
+  ctx.bezierCurveTo(w * 0.18, h * 0.84, w * 0.42, h * 0.96, w * 0.65, h * 0.90);
+  ctx.bezierCurveTo(w * 0.82, h * 0.85, w * 0.92, h * 0.94, w, h * 0.88);
+  ctx.lineTo(w, h); ctx.closePath(); ctx.fill();
+
+  // Top-right blob accent
+  ctx.fillStyle = pal.blob + "99";
+  ctx.beginPath();
+  ctx.ellipse(w * 0.88, h * 0.14, w * 0.13, h * 0.11, 0.5, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Dot grid (top-left area)
+  ctx.fillStyle = pal.dots + "66";
+  for (let r = 0; r < 4; r++) {
+    for (let c = 0; c < 5; c++) {
+      ctx.beginPath();
+      ctx.arc(w * 0.06 + c * 10, h * 0.12 + r * 10, 1.8, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+}
 
 function clampScore(v) { return Math.round(Math.min(100, Math.max(0, v))); }
 
@@ -46,9 +103,14 @@ export default function SpaceDodge({ card, onResult }) {
     canvas.height = H;
     const ctx = canvas.getContext("2d");
 
+    const grain = buildGrain(W, H);
+
     const seed = makeSeed(card);
     const rng = makeRng(seed);
-    const palette = PALETTES[Math.floor(rng() * PALETTES.length)];
+    const pal = PALETTES[Math.floor(rng() * PALETTES.length)];
+
+    // Build obstacle color pool from palette
+    const obsColors = [pal.secondary, pal.accent, pal.hit, OBS_EXTRA];
 
     const doneRef = { current: false };
     let rafId = 0;
@@ -64,15 +126,6 @@ export default function SpaceDodge({ card, onResult }) {
     // Obstacles
     const obstacles = [];
     let lastSpawn = startTime;
-
-    // Twinkling stars
-    const stars = Array.from({ length: 50 }, () => ({
-      x: rng() * W, y: rng() * H,
-      r: 0.5 + rng() * 1.5,
-      baseAlpha: 0.15 + rng() * 0.5,
-      twinkleSpeed: 0.02 + rng() * 0.04,
-      twinkleOffset: rng() * Math.PI * 2,
-    }));
 
     function spawnObstacle(now) {
       const side = Math.floor(rng() * 4);
@@ -90,7 +143,7 @@ export default function SpaceDodge({ card, onResult }) {
       vx = (dx / dist) * speed;
       vy = (dy / dist) * speed;
       const r = 14 + rng() * 8;
-      const color = OBS_COLORS[Math.floor(rng() * OBS_COLORS.length)];
+      const color = obsColors[Math.floor(rng() * obsColors.length)];
       obstacles.push({ x, y, vx, vy, r, color, spawnTime: now });
     }
 
@@ -116,34 +169,13 @@ export default function SpaceDodge({ card, onResult }) {
     canvas.addEventListener("mousemove", mouseMoveHandler);
     canvas.addEventListener("touchmove", touchMoveHandler, { passive: false });
 
-    function drawBg(now) {
-      const grad = ctx.createLinearGradient(0, 0, 0, H);
-      grad.addColorStop(0, palette.bg1);
-      grad.addColorStop(1, palette.bg2);
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, W, H);
-    }
-
-    function drawStars(now) {
-      const t = (now - startTime) / 1000;
-      for (const s of stars) {
-        const a = s.baseAlpha + Math.sin(t * s.twinkleSpeed * 60 + s.twinkleOffset) * 0.2;
-        ctx.globalAlpha = Math.max(0.05, a);
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx.fillStyle = "#ffffff";
-        ctx.fill();
-      }
-      ctx.globalAlpha = 1;
-    }
-
     function drawTrail() {
       for (let i = 0; i < trail.length; i++) {
-        const a = (i / trail.length) * 0.4;
+        const a = (i / trail.length) * 0.35;
         ctx.globalAlpha = a;
         ctx.beginPath();
         ctx.arc(trail[i].x, trail[i].y, PLAYER_R * 0.7, 0, Math.PI * 2);
-        ctx.fillStyle = palette.player;
+        ctx.fillStyle = pal.primary;
         ctx.fill();
       }
       ctx.globalAlpha = 1;
@@ -157,30 +189,22 @@ export default function SpaceDodge({ card, onResult }) {
       }
       ctx.beginPath();
       ctx.arc(player.x, player.y, PLAYER_R, 0, Math.PI * 2);
-      const grad = ctx.createRadialGradient(player.x - 4, player.y - 4, 2, player.x, player.y, PLAYER_R);
-      grad.addColorStop(0, "#ffffff");
-      grad.addColorStop(0.4, palette.player);
-      grad.addColorStop(1, palette.player + "44");
-      ctx.fillStyle = grad;
-      ctx.shadowBlur = 18;
-      ctx.shadowColor = palette.player;
+      ctx.fillStyle = pal.primary;
       ctx.fill();
-      ctx.shadowBlur = 0;
+      ctx.strokeStyle = pal.accent;
+      ctx.lineWidth = 2;
+      ctx.stroke();
     }
 
     function drawObstacles() {
       for (const obs of obstacles) {
         ctx.beginPath();
         ctx.arc(obs.x, obs.y, obs.r, 0, Math.PI * 2);
-        const grad = ctx.createRadialGradient(obs.x - 3, obs.y - 3, 2, obs.x, obs.y, obs.r);
-        grad.addColorStop(0, "#ffffff99");
-        grad.addColorStop(0.4, obs.color);
-        grad.addColorStop(1, obs.color + "44");
-        ctx.fillStyle = grad;
-        ctx.shadowBlur = 12;
-        ctx.shadowColor = obs.color;
+        ctx.fillStyle = obs.color + "CC";
         ctx.fill();
-        ctx.shadowBlur = 0;
+        ctx.strokeStyle = obs.color;
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
       }
     }
 
@@ -189,6 +213,7 @@ export default function SpaceDodge({ card, onResult }) {
       ctx.textAlign = "left";
       for (let i = 0; i < MAX_LIVES; i++) {
         ctx.globalAlpha = i < lives ? 1 : 0.2;
+        ctx.fillStyle = "#C8543C";
         ctx.fillText("♥", 18 + i * 26, 26);
       }
       ctx.globalAlpha = 1;
@@ -201,19 +226,17 @@ export default function SpaceDodge({ card, onResult }) {
       const cx = W - 32;
       const cy = 32;
       const r = 20;
-      ctx.strokeStyle = "rgba(255,255,255,0.15)";
+      ctx.strokeStyle = pal.muted + "44";
       ctx.lineWidth = 4;
       ctx.beginPath();
       ctx.arc(cx, cy, r, -Math.PI / 2, Math.PI * 2 - Math.PI / 2);
       ctx.stroke();
-      ctx.strokeStyle = progress > 0.3 ? palette.player : "#ff6644";
-      ctx.shadowBlur = 8;
-      ctx.shadowColor = palette.player;
+      ctx.strokeStyle = progress > 0.3 ? pal.primary : "#B84030";
+      ctx.lineWidth = 4;
       ctx.beginPath();
       ctx.arc(cx, cy, r, -Math.PI / 2, -Math.PI / 2 + progress * Math.PI * 2);
       ctx.stroke();
-      ctx.shadowBlur = 0;
-      ctx.fillStyle = "rgba(255,255,255,0.8)";
+      ctx.fillStyle = pal.text;
       ctx.font = "bold 10px system-ui";
       ctx.textAlign = "center";
       ctx.fillText(Math.ceil(remaining / 1000), cx, cy + 4);
@@ -263,7 +286,6 @@ export default function SpaceDodge({ card, onResult }) {
         const obs = obstacles[i];
         obs.x += obs.vx;
         obs.y += obs.vy;
-        // Remove if off screen for too long
         if (obs.x < -60 || obs.x > W + 60 || obs.y < -60 || obs.y > H + 60) {
           obstacles.splice(i, 1);
           continue;
@@ -290,13 +312,17 @@ export default function SpaceDodge({ card, onResult }) {
       }
 
       // Draw
-      drawBg(now);
-      drawStars(now);
+      drawBg(ctx, W, H, pal);
       drawTrail();
       drawObstacles();
       drawPlayer(now);
       drawHearts();
       drawTimer(now);
+
+      // Grain overlay
+      ctx.globalAlpha = 0.07;
+      ctx.drawImage(grain, 0, 0);
+      ctx.globalAlpha = 1;
 
       rafId = requestAnimationFrame(frame);
     }

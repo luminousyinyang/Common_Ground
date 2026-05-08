@@ -22,11 +22,67 @@ function makeSeed(card) {
 }
 
 const PALETTES = [
-  { bg1: "#0a0a1a", bg2: "#101030", outer: "#4466ff", mid: "#88aaff", bull: "#ccddff", accent: "#ffdd44" },
-  { bg1: "#0d1a0d", bg2: "#102010", outer: "#22cc66", mid: "#66ee99", bull: "#ccffdd", accent: "#ffcc22" },
-  { bg1: "#1a0a10", bg2: "#200810", outer: "#ff4488", mid: "#ff88bb", bull: "#ffccdd", accent: "#44ddff" },
-  { bg1: "#100a1a", bg2: "#180820", outer: "#cc44ff", mid: "#ee88ff", bull: "#f0ccff", accent: "#44ffcc" },
+  { bg:"#EDE8DF", hill1:"#7A9E7E", hill2:"#A8C4A8", blob:"#D4C48A", dots:"#5A7A5E",
+    primary:"#C8543C", secondary:"#6B8C6E", accent:"#D4A850", text:"#2C3A2E", muted:"#7A8A7E", hit:"#4A7A9B" },
+  { bg:"#F0E8DC", hill1:"#C8634C", hill2:"#E0A090", blob:"#E8D4A8", dots:"#B84030",
+    primary:"#4A7A9B", secondary:"#C8634C", accent:"#E8B860", text:"#2A1E18", muted:"#8A6A60", hit:"#7A9E4A" },
+  { bg:"#E4ECF0", hill1:"#5B8FA8", hill2:"#8BB8D0", blob:"#C8D8B0", dots:"#3A6A88",
+    primary:"#2C5F7A", secondary:"#7A9E4A", accent:"#D48C40", text:"#1A2C38", muted:"#5A7888", hit:"#C8543C" },
+  { bg:"#EDEAE2", hill1:"#8BA888", hill2:"#BCC8B4", blob:"#D8A87A", dots:"#6A8A68",
+    primary:"#C47840", secondary:"#4A7A6A", accent:"#8BA888", text:"#28241C", muted:"#6A7060", hit:"#5B8FA8" },
 ];
+
+// Grain texture generated once
+function buildGrain(w, h) {
+  const oc = document.createElement("canvas");
+  oc.width = w; oc.height = h;
+  const oc2 = oc.getContext("2d");
+  const id = oc2.createImageData(w, h);
+  for (let i = 0; i < id.data.length; i += 4) {
+    const v = Math.floor(Math.random() * 255);
+    id.data[i] = v; id.data[i + 1] = v; id.data[i + 2] = v; id.data[i + 3] = 22;
+  }
+  oc2.putImageData(id, 0, 0);
+  return oc;
+}
+
+// Organic landscape background
+function drawBg(ctx, w, h, pal) {
+  ctx.fillStyle = pal.bg;
+  ctx.fillRect(0, 0, w, h);
+
+  // Bottom hill layer 1 (back)
+  ctx.fillStyle = pal.hill2;
+  ctx.beginPath();
+  ctx.moveTo(0, h);
+  ctx.bezierCurveTo(w * 0.1, h * 0.74, w * 0.3, h * 0.88, w * 0.52, h * 0.80);
+  ctx.bezierCurveTo(w * 0.72, h * 0.72, w * 0.88, h * 0.84, w, h * 0.76);
+  ctx.lineTo(w, h); ctx.closePath(); ctx.fill();
+
+  // Bottom hill layer 2 (front)
+  ctx.fillStyle = pal.hill1;
+  ctx.beginPath();
+  ctx.moveTo(0, h);
+  ctx.bezierCurveTo(w * 0.18, h * 0.84, w * 0.42, h * 0.96, w * 0.65, h * 0.90);
+  ctx.bezierCurveTo(w * 0.82, h * 0.85, w * 0.92, h * 0.94, w, h * 0.88);
+  ctx.lineTo(w, h); ctx.closePath(); ctx.fill();
+
+  // Top-right blob accent
+  ctx.fillStyle = pal.blob + "99";
+  ctx.beginPath();
+  ctx.ellipse(w * 0.88, h * 0.14, w * 0.13, h * 0.11, 0.5, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Dot grid (top-left area)
+  ctx.fillStyle = pal.dots + "66";
+  for (let r = 0; r < 4; r++) {
+    for (let c = 0; c < 5; c++) {
+      ctx.beginPath();
+      ctx.arc(w * 0.06 + c * 10, h * 0.12 + r * 10, 1.8, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+}
 
 export default function TargetBurst({ card, onResult }) {
   const canvasRef = useRef(null);
@@ -38,9 +94,11 @@ export default function TargetBurst({ card, onResult }) {
     canvas.height = H;
     const ctx = canvas.getContext("2d");
 
+    const grain = buildGrain(W, H);
+
     const seed = makeSeed(card);
     const rng = makeRng(seed);
-    const palette = PALETTES[Math.floor(rng() * PALETTES.length)];
+    const pal = PALETTES[Math.floor(rng() * PALETTES.length)];
 
     const doneRef = { current: false };
     let rafId = 0;
@@ -132,23 +190,15 @@ export default function TargetBurst({ card, onResult }) {
         nearest.hitScore = pts;
         earnedPts += pts;
         hits++;
-        spawnParticles(nearest.x, nearest.y, palette.bull, 14);
+        spawnParticles(nearest.x, nearest.y, pal.primary, 14);
       } else {
         decoyHits++;
         earnedPts = Math.max(0, earnedPts - 5);
-        spawnParticles(nearest.x, nearest.y, "#ff4444", 8);
+        spawnParticles(nearest.x, nearest.y, "#B84030", 8);
       }
     }
 
     canvas.addEventListener("click", handleClick);
-
-    function drawBg() {
-      const grad = ctx.createLinearGradient(0, 0, 0, H);
-      grad.addColorStop(0, palette.bg1);
-      grad.addColorStop(1, palette.bg2);
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, W, H);
-    }
 
     function drawTarget(t, now) {
       const r = getRadius(t, now);
@@ -161,46 +211,34 @@ export default function TargetBurst({ card, onResult }) {
         // Outer ring
         ctx.beginPath();
         ctx.arc(t.x, t.y, r, 0, Math.PI * 2);
-        ctx.strokeStyle = `${palette.outer}${Math.round(alpha * 255).toString(16).padStart(2, "0")}`;
+        ctx.strokeStyle = pal.primary + Math.round(alpha * 255).toString(16).padStart(2, "0");
         ctx.lineWidth = 2.5;
-        ctx.shadowBlur = 10;
-        ctx.shadowColor = palette.outer;
         ctx.stroke();
-        ctx.shadowBlur = 0;
         // Mid ring
         if (r > 8) {
           ctx.beginPath();
           ctx.arc(t.x, t.y, r * 0.6, 0, Math.PI * 2);
-          ctx.strokeStyle = `${palette.mid}${Math.round(alpha * 255).toString(16).padStart(2, "0")}`;
+          ctx.strokeStyle = pal.accent + Math.round(alpha * 255).toString(16).padStart(2, "0");
           ctx.lineWidth = 2;
-          ctx.shadowBlur = 8;
-          ctx.shadowColor = palette.mid;
           ctx.stroke();
-          ctx.shadowBlur = 0;
         }
         // Bull
         if (r > 4) {
           ctx.beginPath();
           ctx.arc(t.x, t.y, r * 0.28, 0, Math.PI * 2);
-          ctx.fillStyle = `${palette.bull}${Math.round(alpha * 200).toString(16).padStart(2, "0")}`;
-          ctx.shadowBlur = 12;
-          ctx.shadowColor = palette.bull;
+          ctx.fillStyle = pal.primary + Math.round(alpha * 200).toString(16).padStart(2, "0");
           ctx.fill();
-          ctx.shadowBlur = 0;
         }
       } else {
-        // Decoy: red X ring
+        // Decoy: X ring
         ctx.beginPath();
         ctx.arc(t.x, t.y, r, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(255,40,40,${alpha * 0.9})`;
+        ctx.strokeStyle = `rgba(184,64,48,${alpha * 0.9})`;
         ctx.lineWidth = 2.5;
-        ctx.shadowBlur = 10;
-        ctx.shadowColor = "#ff2222";
         ctx.stroke();
-        ctx.shadowBlur = 0;
         // X
         const xSize = r * 0.55;
-        ctx.strokeStyle = `rgba(255,80,80,${alpha})`;
+        ctx.strokeStyle = `rgba(184,64,48,${alpha})`;
         ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.moveTo(t.x - xSize, t.y - xSize);
@@ -217,10 +255,7 @@ export default function TargetBurst({ card, onResult }) {
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fillStyle = p.color;
-        ctx.shadowBlur = 6;
-        ctx.shadowColor = p.color;
         ctx.fill();
-        ctx.shadowBlur = 0;
       }
       ctx.globalAlpha = 1;
     }
@@ -230,15 +265,12 @@ export default function TargetBurst({ card, onResult }) {
       const barH = 6;
       const x = 20;
       const y = H - 18;
-      ctx.fillStyle = "rgba(255,255,255,0.12)";
+      ctx.fillStyle = "rgba(44,58,46,0.12)";
       ctx.beginPath();
       ctx.roundRect(x, y, barW, barH, 3);
       ctx.fill();
       const prog = (total - active) / total;
-      const grad = ctx.createLinearGradient(x, 0, x + barW, 0);
-      grad.addColorStop(0, palette.outer);
-      grad.addColorStop(1, palette.accent);
-      ctx.fillStyle = grad;
+      ctx.fillStyle = pal.primary;
       ctx.beginPath();
       ctx.roundRect(x, y, barW * prog, barH, 3);
       ctx.fill();
@@ -246,7 +278,7 @@ export default function TargetBurst({ card, onResult }) {
 
     function frame(now) {
       const elapsed = now - startTime;
-      drawBg();
+      drawBg(ctx, W, H, pal);
 
       let activeCount = 0;
       let waitingCount = 0;
@@ -287,12 +319,17 @@ export default function TargetBurst({ card, onResult }) {
       drawProgressBar(TOTAL_TARGETS - finishedTargets, TOTAL_TARGETS);
 
       // Score HUD
-      ctx.fillStyle = "rgba(255,255,255,0.8)";
+      ctx.fillStyle = pal.text;
       ctx.font = "bold 13px system-ui";
       ctx.textAlign = "left";
       ctx.fillText(`Score: ${earnedPts}`, 20, 20);
       ctx.textAlign = "right";
       ctx.fillText(`Hits: ${hits}/${GOOD_COUNT}`, W - 20, 20);
+
+      // Grain overlay
+      ctx.globalAlpha = 0.07;
+      ctx.drawImage(grain, 0, 0);
+      ctx.globalAlpha = 1;
 
       const allDone = targets.every(t => t.state === "hit" || t.state === "expired");
       if (allDone && particles.length === 0 && !doneRef.current) {
