@@ -284,11 +284,16 @@ html[data-surface="blacktop"] .landing-cta2 {
 }
 
 .landing-footer-brand {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
   font-family: var(--display-font);
   font-size: 1.15rem;
   font-weight: 700;
   letter-spacing: var(--display-letter-spacing);
   text-transform: var(--display-transform);
+  color: var(--ink);
 }
 
 .landing-footer p {
