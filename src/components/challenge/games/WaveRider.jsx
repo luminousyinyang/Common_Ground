@@ -1,7 +1,5 @@
 import React, { useEffect, useRef } from "react";
 
-const W = 480;
-const H = 300;
 const ORB_COUNT = 14;
 const LEAD_IN_MS = 1200;
 const TRAVEL_MS = 1300;
@@ -95,9 +93,16 @@ export default function WaveRider({ card, onResult }) {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    canvas.width = W;
-    canvas.height = H;
+    const dpr = window.devicePixelRatio || 1;
+    const rect0 = canvas.getBoundingClientRect();
+    const W = rect0.width || 480;
+    const H = rect0.height || 300;
+    canvas.width = Math.round(W * dpr);
+    canvas.height = Math.round(H * dpr);
     const ctx = canvas.getContext("2d");
+    ctx.scale(dpr, dpr);
+    const displayFont = getComputedStyle(document.documentElement).getPropertyValue('--display-font').trim() || 'system-ui';
+    const labelFont = getComputedStyle(document.documentElement).getPropertyValue('--label-font').trim() || 'system-ui';
 
     const grain = buildGrain(W, H);
 
@@ -241,7 +246,7 @@ export default function WaveRider({ card, onResult }) {
 
         // Beat index label
         ctx.fillStyle = pal.text;
-        ctx.font = "bold 9px system-ui";
+        ctx.font = `bold 9px ${labelFont}`;
         ctx.textAlign = "center";
         ctx.fillText(orb.index + 1, x, y + 4);
       }
@@ -267,7 +272,7 @@ export default function WaveRider({ card, onResult }) {
       const progress = (orbs.filter(o => o.scored || o.expired).length) / ORB_COUNT;
 
       ctx.fillStyle = pal.text;
-      ctx.font = "11px system-ui";
+      ctx.font = `11px ${labelFont}`;
       ctx.textAlign = "left";
       ctx.fillText(`${bpm} BPM`, 18, 22);
 
@@ -288,14 +293,14 @@ export default function WaveRider({ card, onResult }) {
 
       // Score
       ctx.fillStyle = pal.text;
-      ctx.font = "bold 13px system-ui";
+      ctx.font = `bold 13px ${labelFont}`;
       ctx.textAlign = "center";
       ctx.fillText(`${totalPts} pts`, W / 2, 22);
 
       // Tap hint
       if (elapsed < LEAD_IN_MS) {
         ctx.fillStyle = pal.muted;
-        ctx.font = "12px system-ui";
+        ctx.font = `12px ${labelFont}`;
         ctx.textAlign = "center";
         ctx.fillText("Tap SPACE or click when orbs reach the line", W / 2, H / 2);
       }
@@ -311,7 +316,7 @@ export default function WaveRider({ card, onResult }) {
 
       // Grain overlay
       ctx.globalAlpha = 0.07;
-      ctx.drawImage(grain, 0, 0);
+      ctx.drawImage(grain, 0, 0, W, H);
       ctx.globalAlpha = 1;
 
       const allDone = orbs.every(o => o.scored || o.expired);

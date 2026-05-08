@@ -1,7 +1,5 @@
 import React, { useEffect, useRef } from "react";
 
-const W = 480;
-const H = 380;
 const TILE_COUNT = 4;
 const ROUND_SEQUENCES = [3, 4, 5, 4];
 const TOTAL_ROUNDS = ROUND_SEQUENCES.length;
@@ -47,19 +45,7 @@ const TILES = [
 const TILE_SIZE = 110;
 const TILE_GAP = 20;
 const TILE_RADIUS = 16;
-const GRID_X = W / 2 - TILE_SIZE - TILE_GAP / 2;
 const GRID_Y = 80;
-
-function getTileRect(i) {
-  const col = i % 2;
-  const row = Math.floor(i / 2);
-  return {
-    x: GRID_X + col * (TILE_SIZE + TILE_GAP),
-    y: GRID_Y + row * (TILE_SIZE + TILE_GAP),
-    w: TILE_SIZE,
-    h: TILE_SIZE,
-  };
-}
 
 function drawIcon(ctx, icon, cx, cy, size, color) {
   ctx.fillStyle = color;
@@ -157,9 +143,27 @@ export default function GridMemory({ card, onResult }) {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    canvas.width = W;
-    canvas.height = H;
+    const dpr = window.devicePixelRatio || 1;
+    const rect0 = canvas.getBoundingClientRect();
+    const W = rect0.width || 480;
+    const H = rect0.height || 380;
+    canvas.width = Math.round(W * dpr);
+    canvas.height = Math.round(H * dpr);
     const ctx = canvas.getContext("2d");
+    ctx.scale(dpr, dpr);
+    const displayFont = getComputedStyle(document.documentElement).getPropertyValue('--display-font').trim() || 'system-ui';
+    const labelFont = getComputedStyle(document.documentElement).getPropertyValue('--label-font').trim() || 'system-ui';
+    const GRID_X = W / 2 - TILE_SIZE - TILE_GAP / 2;
+    const getTileRect = (i) => {
+      const col = i % 2;
+      const row = Math.floor(i / 2);
+      return {
+        x: GRID_X + col * (TILE_SIZE + TILE_GAP),
+        y: GRID_Y + row * (TILE_SIZE + TILE_GAP),
+        w: TILE_SIZE,
+        h: TILE_SIZE,
+      };
+    };
 
     const grain = buildGrain(W, H);
 
@@ -240,9 +244,8 @@ export default function GridMemory({ card, onResult }) {
     function handleClick(e) {
       if (doneRef.current || phase !== "input") return;
       const rect = canvas.getBoundingClientRect();
-      const sx = W / rect.width;
-      const cx = (e.clientX - rect.left) * sx;
-      const cy = (e.clientY - rect.top) * sx;
+      const cx = e.clientX - rect.left;
+      const cy = e.clientY - rect.top;
 
       for (let i = 0; i < TILE_COUNT; i++) {
         const tr = getTileRect(i);
@@ -375,7 +378,7 @@ export default function GridMemory({ card, onResult }) {
     function drawHUD() {
       // Phase label
       ctx.fillStyle = pal.text;
-      ctx.font = "bold 15px system-ui";
+      ctx.font = `bold 15px ${displayFont}`;
       ctx.textAlign = "center";
       ctx.fillText(phaseLabel, W / 2, 38);
 
@@ -395,7 +398,7 @@ export default function GridMemory({ card, onResult }) {
       if (phase === "input" && round < TOTAL_ROUNDS) {
         const seq = sequences[round];
         ctx.fillStyle = pal.muted;
-        ctx.font = "11px system-ui";
+        ctx.font = `11px ${labelFont}`;
         ctx.textAlign = "center";
         ctx.fillText(`${inputStep} / ${seq.length} correct`, W / 2, H - 30);
 
@@ -418,7 +421,7 @@ export default function GridMemory({ card, onResult }) {
       // Misses
       if (misses > 0) {
         ctx.fillStyle = pal.muted;
-        ctx.font = "11px system-ui";
+        ctx.font = `11px ${labelFont}`;
         ctx.textAlign = "right";
         ctx.fillText(`Resets: ${misses}`, W - 18, H - 12);
       }
@@ -454,7 +457,7 @@ export default function GridMemory({ card, onResult }) {
 
       // Grain overlay
       ctx.globalAlpha = 0.07;
-      ctx.drawImage(grain, 0, 0);
+      ctx.drawImage(grain, 0, 0, W, H);
       ctx.globalAlpha = 1;
 
       // Preview phase logic

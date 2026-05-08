@@ -1,7 +1,5 @@
 import React, { useEffect, useRef } from "react";
 
-const W = 480;
-const H = 340;
 const TOTAL_TARGETS = 13;
 const GOOD_COUNT = 10;
 const DECOY_COUNT = 3;
@@ -90,9 +88,16 @@ export default function TargetBurst({ card, onResult }) {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    canvas.width = W;
-    canvas.height = H;
+    const dpr = window.devicePixelRatio || 1;
+    const rect0 = canvas.getBoundingClientRect();
+    const W = rect0.width || 480;
+    const H = rect0.height || 340;
+    canvas.width = Math.round(W * dpr);
+    canvas.height = Math.round(H * dpr);
     const ctx = canvas.getContext("2d");
+    ctx.scale(dpr, dpr);
+    const displayFont = getComputedStyle(document.documentElement).getPropertyValue('--display-font').trim() || 'system-ui';
+    const labelFont = getComputedStyle(document.documentElement).getPropertyValue('--label-font').trim() || 'system-ui';
 
     const grain = buildGrain(W, H);
 
@@ -162,9 +167,8 @@ export default function TargetBurst({ card, onResult }) {
     function handleClick(e) {
       if (doneRef.current) return;
       const rect = canvas.getBoundingClientRect();
-      const sx = W / rect.width;
-      const cx = (e.clientX - rect.left) * sx;
-      const cy = (e.clientY - rect.top) * sx;
+      const cx = e.clientX - rect.left;
+      const cy = e.clientY - rect.top;
       const now = performance.now();
 
       let nearest = null;
@@ -320,7 +324,7 @@ export default function TargetBurst({ card, onResult }) {
 
       // Score HUD
       ctx.fillStyle = pal.text;
-      ctx.font = "bold 13px system-ui";
+      ctx.font = `bold 13px ${labelFont}`;
       ctx.textAlign = "left";
       ctx.fillText(`Score: ${earnedPts}`, 20, 20);
       ctx.textAlign = "right";
@@ -328,7 +332,7 @@ export default function TargetBurst({ card, onResult }) {
 
       // Grain overlay
       ctx.globalAlpha = 0.07;
-      ctx.drawImage(grain, 0, 0);
+      ctx.drawImage(grain, 0, 0, W, H);
       ctx.globalAlpha = 1;
 
       const allDone = targets.every(t => t.state === "hit" || t.state === "expired");

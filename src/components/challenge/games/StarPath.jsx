@@ -1,7 +1,5 @@
 import React, { useEffect, useRef } from "react";
 
-const W = 480;
-const H = 340;
 const WAYPOINT_COUNT = 8;
 const MARGIN = 70;
 const STAR_R = 22;
@@ -101,9 +99,16 @@ export default function StarPath({ card, onResult }) {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    canvas.width = W;
-    canvas.height = H;
+    const dpr = window.devicePixelRatio || 1;
+    const rect0 = canvas.getBoundingClientRect();
+    const W = rect0.width || 480;
+    const H = rect0.height || 340;
+    canvas.width = Math.round(W * dpr);
+    canvas.height = Math.round(H * dpr);
     const ctx = canvas.getContext("2d");
+    ctx.scale(dpr, dpr);
+    const displayFont = getComputedStyle(document.documentElement).getPropertyValue('--display-font').trim() || 'system-ui';
+    const labelFont = getComputedStyle(document.documentElement).getPropertyValue('--label-font').trim() || 'system-ui';
 
     const grain = buildGrain(W, H);
 
@@ -156,9 +161,8 @@ export default function StarPath({ card, onResult }) {
     function handleClick(e) {
       if (doneRef.current) return;
       const rect = canvas.getBoundingClientRect();
-      const sx = W / rect.width;
-      const cx = (e.clientX - rect.left) * sx;
-      const cy = (e.clientY - rect.top) * sx;
+      const cx = e.clientX - rect.left;
+      const cy = e.clientY - rect.top;
 
       for (let i = 0; i < waypoints.length; i++) {
         const w = waypoints[i];
@@ -249,7 +253,7 @@ export default function StarPath({ card, onResult }) {
         // Number label
         ctx.globalAlpha = isVisited ? 0.5 : 0.9;
         ctx.fillStyle = pal.text;
-        ctx.font = `bold ${isActive ? "13px" : "11px"} system-ui`;
+        ctx.font = `bold ${isActive ? "13px" : "11px"} ${labelFont}`;
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         ctx.fillText(i + 1, 0, 1);
@@ -279,7 +283,7 @@ export default function StarPath({ card, onResult }) {
 
     function drawHUD() {
       ctx.fillStyle = pal.text;
-      ctx.font = "bold 12px system-ui";
+      ctx.font = `bold 12px ${labelFont}`;
       ctx.textAlign = "left";
       ctx.fillText(`Step ${Math.min(currentStep + 1, WAYPOINT_COUNT)} of ${WAYPOINT_COUNT}`, 18, 22);
 
@@ -322,7 +326,7 @@ export default function StarPath({ card, onResult }) {
 
       // Grain overlay
       ctx.globalAlpha = 0.07;
-      ctx.drawImage(grain, 0, 0);
+      ctx.drawImage(grain, 0, 0, W, H);
       ctx.globalAlpha = 1;
 
       rafId = requestAnimationFrame(frame);

@@ -1,7 +1,5 @@
 import React, { useEffect, useRef } from "react";
 
-const W = 480;
-const H = 360;
 const GAME_DURATION_MS = 20000;
 const PLAYER_R = 14;
 const MAX_LIVES = 3;
@@ -99,9 +97,16 @@ export default function SpaceDodge({ card, onResult }) {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    canvas.width = W;
-    canvas.height = H;
+    const dpr = window.devicePixelRatio || 1;
+    const rect0 = canvas.getBoundingClientRect();
+    const W = rect0.width || 480;
+    const H = rect0.height || 360;
+    canvas.width = Math.round(W * dpr);
+    canvas.height = Math.round(H * dpr);
     const ctx = canvas.getContext("2d");
+    ctx.scale(dpr, dpr);
+    const displayFont = getComputedStyle(document.documentElement).getPropertyValue('--display-font').trim() || 'system-ui';
+    const labelFont = getComputedStyle(document.documentElement).getPropertyValue('--label-font').trim() || 'system-ui';
 
     const grain = buildGrain(W, H);
 
@@ -149,18 +154,16 @@ export default function SpaceDodge({ card, onResult }) {
 
     function mouseMoveHandler(e) {
       const rect = canvas.getBoundingClientRect();
-      const sx = W / rect.width;
-      player.targetX = (e.clientX - rect.left) * sx;
-      player.targetY = (e.clientY - rect.top) * sx;
+      player.targetX = e.clientX - rect.left;
+      player.targetY = e.clientY - rect.top;
     }
 
     function touchMoveHandler(e) {
       e.preventDefault();
       if (e.touches.length > 0) {
         const rect = canvas.getBoundingClientRect();
-        const sx = W / rect.width;
-        player.x = (e.touches[0].clientX - rect.left) * sx;
-        player.y = (e.touches[0].clientY - rect.top) * sx;
+        player.x = e.touches[0].clientX - rect.left;
+        player.y = e.touches[0].clientY - rect.top;
         player.targetX = player.x;
         player.targetY = player.y;
       }
@@ -209,7 +212,7 @@ export default function SpaceDodge({ card, onResult }) {
     }
 
     function drawHearts() {
-      ctx.font = "18px system-ui";
+      ctx.font = `18px ${labelFont}`;
       ctx.textAlign = "left";
       for (let i = 0; i < MAX_LIVES; i++) {
         ctx.globalAlpha = i < lives ? 1 : 0.2;
@@ -237,7 +240,7 @@ export default function SpaceDodge({ card, onResult }) {
       ctx.arc(cx, cy, r, -Math.PI / 2, -Math.PI / 2 + progress * Math.PI * 2);
       ctx.stroke();
       ctx.fillStyle = pal.text;
-      ctx.font = "bold 10px system-ui";
+      ctx.font = `bold 10px ${labelFont}`;
       ctx.textAlign = "center";
       ctx.fillText(Math.ceil(remaining / 1000), cx, cy + 4);
     }
@@ -321,7 +324,7 @@ export default function SpaceDodge({ card, onResult }) {
 
       // Grain overlay
       ctx.globalAlpha = 0.07;
-      ctx.drawImage(grain, 0, 0);
+      ctx.drawImage(grain, 0, 0, W, H);
       ctx.globalAlpha = 1;
 
       rafId = requestAnimationFrame(frame);
