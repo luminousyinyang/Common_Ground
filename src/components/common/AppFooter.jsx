@@ -5,7 +5,7 @@ function AppFooter({ onNavigate, isLoggedIn, onLogout }) {
     <footer className="landing-footer">
       <div className="landing-footer-inner">
         <div>
-          <strong className="landing-footer-brand">Common Ground</strong>
+          <button className="landing-footer-brand" type="button" onClick={() => onNavigate("/")}>Common Ground</button>
           <p>Team USA hometown discovery tool</p>
         </div>
         <nav className="landing-footer-nav" aria-label="Footer">

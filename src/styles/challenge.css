@@ -829,3 +829,16 @@ html[data-surface="blacktop"] .game-board.has-game-background .open-lane-readout
   font-size: 0.86rem;
   font-weight: 760;
 }
+
+/* Canvas game container */
+.game-surface {
+  display: flex;
+  align-items: stretch;
+  min-height: 340px;
+}
+.game-surface canvas {
+  border-radius: 12px;
+  flex: 1;
+  min-height: 300px;
+  touch-action: none;
+}
