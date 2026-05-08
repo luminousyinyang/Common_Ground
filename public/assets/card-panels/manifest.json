@@ -1,7 +1,7 @@
 {
   "model": "gemini-3-pro-image-preview",
   "location": "global",
-  "updatedAt": "2026-05-08T14:26:18.631Z",
+  "updatedAt": "2026-05-08T18:30:11.653Z",
   "states": {
     "CO": {
       "olympic": {
@@ -15409,7 +15409,8 @@
             "firebaseCollection": "cardPanels",
             "reusedFromDataScopeId": "both"
           }
-        }
+        },
+        "milanoCortina2026": {}
       },
       "olympic": {
         "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fok%2Fok-olympic.png?alt=media&token=038349d8-c27b-4e99-9730-52e363838e97",
@@ -15516,6 +15517,595 @@
         "firebaseProjectId": "common-ground-tests",
         "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/ok/ok-paralympic.png",
         "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/ok/ok-paralympic.png",
+        "firebaseCollection": "cardPanels"
+      }
+    },
+    "OR": {
+      "scopes": {
+        "both": {
+          "olympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2For%2For-olympic.png?alt=media&token=8593f703-e324-4373-be0b-298677f7eb1d",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T18:32:13.888Z",
+            "dataScopeId": "both",
+            "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "Oregon olympic Snowboarding",
+            "primarySportTag": "Snowboarding",
+            "topSportTags": [
+              "Snowboarding",
+              "Track and Field",
+              "3x3 Basketball"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Snowboarding",
+              "moduleMix": [
+                "Terrain/Environment Lens",
+                "Watch Hook",
+                "Hidden Skill"
+              ],
+              "subtitle": "Winter action sport · judged runs and timed races · mountain terrain",
+              "qaFacts": {
+                "howItWorks": "Snowboarding includes both judged events like halfpipe and slopestyle, and timed head-to-head races like snowboard cross. In judged formats, riders link tricks across a set course to earn a score based on difficulty, amplitude, and execution, while racers simply aim to be the first across the finish line.",
+                "watchValue": "Look for how riders approach the lip of a jump or the wall of a pipe. The thrill is watching them spot their landing mid-air, shifting their board to touch down smoothly before instantly setting up the next trick.",
+                "stateConnection": "Oregon's Cascade mountains, high-elevation terrain, and distinct wet and dry climate zones could help fans understand why winter equipment sports appear associated with this state.",
+                "cardTrait": "Snowboarding connects to Pattern recognition through the way riders memorize complex course layouts, linking specific trick sequences to navigate changing mountain features."
+              },
+              "factChips": [
+                "Judged and timed events",
+                "Halfpipe, slopestyle, and big air",
+                "Snowboard cross racing",
+                "Trick execution and amplitude"
+              ],
+              "relatedTags": [
+                "Track and Field",
+                "3x3 Basketball"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "e59cd2a8e07fb12d202e76061d878c23685fdbf905d2db1422ca62335bbee969",
+            "paletteTheme": "Coastal Current",
+            "promptHash": "49f878aa35fe89f67fe8ef68103847f178c86dce0d2e313a0df3d73b089636bb",
+            "notes": "",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2For%2For-olympic.png?alt=media&token=8593f703-e324-4373-be0b-298677f7eb1d",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/or/or-olympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/or/or-olympic.png",
+            "firebaseCollection": "cardPanels"
+          },
+          "paralympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2For%2For-paralympic.png?alt=media&token=11342e22-64d3-4b2e-80b3-6ea75d8da0f2",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T18:33:06.409Z",
+            "dataScopeId": "both",
+            "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "Oregon paralympic Para Alpine Skiing",
+            "primarySportTag": "Para Alpine Skiing",
+            "topSportTags": [
+              "Para Alpine Skiing",
+              "Para-Cycling",
+              "Wheelchair Basketball"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Para Alpine Skiing",
+              "moduleMix": [
+                "Rules Snapshot",
+                "Terrain/Environment Lens",
+                "Hidden Skill"
+              ],
+              "subtitle": "Downhill speed · gate navigation · adaptive equipment · fastest time wins",
+              "qaFacts": {
+                "howItWorks": "Para alpine skiing features competitors racing down a mountain course marked by colored gates. The objective is to complete the layout as quickly as possible, and the athlete with the fastest total time wins. Skiers use adaptive gear like sit-skis or outriggers, and missing a single gate results in an automatic disqualification.",
+                "watchValue": "The excitement comes from watching how competitors process the terrain at high speeds. Notice the subtle weight shifts and edge control as skiers carve tight lines around the gates while anticipating the next turn.",
+                "stateConnection": "Oregon's Cascade mountains and distinct winter climate zones could help fans understand why snow-based equipment stories fit this state card.",
+                "cardTrait": "Para alpine skiing connects to Pattern Recognition through the way skiers must memorize gate layouts and adjust their route instantly as the snow surface changes."
+              },
+              "factChips": [
+                "Fastest total time wins",
+                "Adaptive ski gear",
+                "Gate navigation",
+                "Reading snow conditions"
+              ],
+              "relatedTags": [
+                "Para-Cycling",
+                "Wheelchair Basketball"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "d21adea75d5e204d0beaa7ab3e0940db4232078d419be98a90424912d8734153",
+            "paletteTheme": "Coastal Current",
+            "promptHash": "ec4ee01e7f7546e3f55b4d1ea618fe7640e218dc8b1d74aba4230b035ed36586",
+            "notes": "",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2For%2For-paralympic.png?alt=media&token=11342e22-64d3-4b2e-80b3-6ea75d8da0f2",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/or/or-paralympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/or/or-paralympic.png",
+            "firebaseCollection": "cardPanels"
+          }
+        },
+        "paris2024": {
+          "olympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2For%2Fparis2024%2For-paris2024-olympic.png?alt=media&token=33125efa-33bc-4654-9ecd-296a5ed01c1e",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T18:33:58.078Z",
+            "dataScopeId": "paris2024",
+            "dataScopeLabel": "Olympic Games Paris 2024",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "Oregon olympic Rowing",
+            "primarySportTag": "Rowing",
+            "topSportTags": [
+              "Track and Field",
+              "3x3 Basketball",
+              "Fencing"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Rowing",
+              "moduleMix": [
+                "Watch Hook",
+                "Terrain/Environment Lens",
+                "Hidden Skill"
+              ],
+              "subtitle": "Water-based racing · synchronized rhythm · backward facing",
+              "qaFacts": {
+                "howItWorks": "Rowing is a water-based race where athletes propel boats using oars across a set distance, typically 2,000 meters. The first boat to cross the finish line wins, and a unique mechanic is that competitors face backward while racing, relying on a coxswain or steering systems to stay in their lane.",
+                "watchValue": "Look closely at the blade work and the stroke rate to see who is gaining an edge. The tension builds when crews perfectly synchronize their movements to keep the boat gliding smoothly, then suddenly increase their stroke count for a final sprint.",
+                "stateConnection": "Oregon's extensive river networks, Pacific coastline, and varied climate zones could help fans understand why water-based endurance stories fit this state card.",
+                "cardTrait": "Rowing connects to Pattern Recognition through the consistent, repeating rhythm of the stroke cycle, where athletes maintain exact timing and blade placement even as water conditions change."
+              },
+              "factChips": [
+                "2,000-meter course",
+                "Backward-facing competitors",
+                "Synchronized stroke rhythm",
+                "Oar blade placement"
+              ],
+              "relatedTags": [
+                "Track and Field",
+                "3x3 Basketball",
+                "Fencing"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "eec648b7c474689288fd68118c5c8df437176724bf25d9f4f42909a4a2b610ef",
+            "paletteTheme": "Coastal Current",
+            "promptHash": "e4e4ea4a778236941f2e991962d205e89a2a946a7672a308279ebe5781d0d133",
+            "notes": "",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2For%2Fparis2024%2For-paris2024-olympic.png?alt=media&token=33125efa-33bc-4654-9ecd-296a5ed01c1e",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/or/paris2024/or-paris2024-olympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/or/paris2024/or-paris2024-olympic.png",
+            "firebaseCollection": "cardPanels"
+          },
+          "paralympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2For%2Fparis2024%2For-paris2024-paralympic.png?alt=media&token=943530bb-7940-461d-a5da-013ef9e36ec2",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T18:35:25.590Z",
+            "dataScopeId": "paris2024",
+            "dataScopeLabel": "Olympic Games Paris 2024",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "Oregon paralympic Para-Cycling",
+            "primarySportTag": "Para-Cycling",
+            "topSportTags": [
+              "Para-Cycling",
+              "Wheelchair Basketball",
+              "Wheelchair Tennis"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Para-Cycling",
+              "moduleMix": [
+                "Gear/Setup",
+                "Pace Shift",
+                "Terrain/Environment Lens"
+              ],
+              "subtitle": "Road and track racing · adaptive equipment · pace control · route strategy",
+              "qaFacts": {
+                "howItWorks": "Para-cycling features both track and road events, utilizing standard bicycles, tricycles, handcycles, and tandems based on classification. The competitor who crosses the finish line with the fastest total time wins, navigating the course through precise pacing and equipment control.",
+                "watchValue": "The drama spikes when riders navigate sharp corners or adjust their cadence to match a shifting road gradient. Look for how athletes manage their energy during breakaways or tight pack formations, where a subtle change in rhythm alters the race.",
+                "stateConnection": "Oregon's varied landscape of Cascade mountain climbs, high desert flats, and coastal routes could help fans understand why endurance and pace control stories fit this state card.",
+                "cardTrait": "Para-cycling connects to Pattern Recognition through the way riders must memorize track lines, anticipate road curves, and read shifting pack formations at high speeds."
+              },
+              "factChips": [
+                "Track and road events",
+                "Bicycles, tricycles, and handcycles",
+                "Tandem racing with pilots",
+                "Pace and cadence control"
+              ],
+              "relatedTags": [
+                "Wheelchair Basketball",
+                "Wheelchair Tennis"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "be999400cf1398bdf9f39e5138d741037b5f4e13772c7e93dec3b727b4738cd6",
+            "paletteTheme": "Coastal Current",
+            "promptHash": "850dddecdefe5631bf81781447a6c951a94d6c0b300f439a4285ccc707bb05a8",
+            "notes": "",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2For%2Fparis2024%2For-paris2024-paralympic.png?alt=media&token=943530bb-7940-461d-a5da-013ef9e36ec2",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/or/paris2024/or-paris2024-paralympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/or/paris2024/or-paris2024-paralympic.png",
+            "firebaseCollection": "cardPanels"
+          }
+        },
+        "milanoCortina2026": {
+          "olympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2For%2For-olympic.png?alt=media&token=8593f703-e324-4373-be0b-298677f7eb1d",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T18:32:13.888Z",
+            "dataScopeId": "milanoCortina2026",
+            "dataScopeLabel": "Olympic Winter Games Milano Cortina 2026",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "Oregon olympic Snowboarding",
+            "primarySportTag": "Snowboarding",
+            "topSportTags": [
+              "Snowboarding",
+              "Track and Field",
+              "3x3 Basketball"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Snowboarding",
+              "moduleMix": [
+                "Terrain/Environment Lens",
+                "Watch Hook",
+                "Hidden Skill"
+              ],
+              "subtitle": "Winter action sport · judged runs and timed races · mountain terrain",
+              "qaFacts": {
+                "howItWorks": "Snowboarding includes both judged events like halfpipe and slopestyle, and timed head-to-head races like snowboard cross. In judged formats, riders link tricks across a set course to earn a score based on difficulty, amplitude, and execution, while racers simply aim to be the first across the finish line.",
+                "watchValue": "Look for how riders approach the lip of a jump or the wall of a pipe. The thrill is watching them spot their landing mid-air, shifting their board to touch down smoothly before instantly setting up the next trick.",
+                "stateConnection": "Oregon's Cascade mountains, high-elevation terrain, and distinct wet and dry climate zones could help fans understand why winter equipment sports appear associated with this state.",
+                "cardTrait": "Snowboarding connects to Pattern recognition through the way riders memorize complex course layouts, linking specific trick sequences to navigate changing mountain features."
+              },
+              "factChips": [
+                "Judged and timed events",
+                "Halfpipe, slopestyle, and big air",
+                "Snowboard cross racing",
+                "Trick execution and amplitude"
+              ],
+              "relatedTags": [
+                "Track and Field",
+                "3x3 Basketball"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "e59cd2a8e07fb12d202e76061d878c23685fdbf905d2db1422ca62335bbee969",
+            "paletteTheme": "Coastal Current",
+            "promptHash": "49f878aa35fe89f67fe8ef68103847f178c86dce0d2e313a0df3d73b089636bb",
+            "notes": "Reused generated panel because this data view matches an existing panel.",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2For%2For-olympic.png?alt=media&token=8593f703-e324-4373-be0b-298677f7eb1d",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/or/or-olympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/or/or-olympic.png",
+            "firebaseCollection": "cardPanels",
+            "reusedFromDataScopeId": "both"
+          },
+          "paralympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2For%2For-paralympic.png?alt=media&token=11342e22-64d3-4b2e-80b3-6ea75d8da0f2",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T18:33:06.409Z",
+            "dataScopeId": "milanoCortina2026",
+            "dataScopeLabel": "Olympic Winter Games Milano Cortina 2026",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "Oregon paralympic Para Alpine Skiing",
+            "primarySportTag": "Para Alpine Skiing",
+            "topSportTags": [
+              "Para Alpine Skiing",
+              "Para-Cycling",
+              "Wheelchair Basketball"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Para Alpine Skiing",
+              "moduleMix": [
+                "Rules Snapshot",
+                "Terrain/Environment Lens",
+                "Hidden Skill"
+              ],
+              "subtitle": "Downhill speed · gate navigation · adaptive equipment · fastest time wins",
+              "qaFacts": {
+                "howItWorks": "Para alpine skiing features competitors racing down a mountain course marked by colored gates. The objective is to complete the layout as quickly as possible, and the athlete with the fastest total time wins. Skiers use adaptive gear like sit-skis or outriggers, and missing a single gate results in an automatic disqualification.",
+                "watchValue": "The excitement comes from watching how competitors process the terrain at high speeds. Notice the subtle weight shifts and edge control as skiers carve tight lines around the gates while anticipating the next turn.",
+                "stateConnection": "Oregon's Cascade mountains and distinct winter climate zones could help fans understand why snow-based equipment stories fit this state card.",
+                "cardTrait": "Para alpine skiing connects to Pattern Recognition through the way skiers must memorize gate layouts and adjust their route instantly as the snow surface changes."
+              },
+              "factChips": [
+                "Fastest total time wins",
+                "Adaptive ski gear",
+                "Gate navigation",
+                "Reading snow conditions"
+              ],
+              "relatedTags": [
+                "Para-Cycling",
+                "Wheelchair Basketball"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "d21adea75d5e204d0beaa7ab3e0940db4232078d419be98a90424912d8734153",
+            "paletteTheme": "Coastal Current",
+            "promptHash": "ec4ee01e7f7546e3f55b4d1ea618fe7640e218dc8b1d74aba4230b035ed36586",
+            "notes": "Reused generated panel because this data view matches an existing panel.",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2For%2For-paralympic.png?alt=media&token=11342e22-64d3-4b2e-80b3-6ea75d8da0f2",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/or/or-paralympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/or/or-paralympic.png",
+            "firebaseCollection": "cardPanels",
+            "reusedFromDataScopeId": "both"
+          }
+        }
+      },
+      "olympic": {
+        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2For%2For-olympic.png?alt=media&token=8593f703-e324-4373-be0b-298677f7eb1d",
+        "localUrl": null,
+        "model": "gemini-3-pro-image-preview",
+        "location": "global",
+        "mimeType": "image/png",
+        "generatedAt": "2026-05-08T18:32:13.888Z",
+        "dataScopeId": "both",
+        "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+        "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+        "promptSummary": "Oregon olympic Snowboarding",
+        "primarySportTag": "Snowboarding",
+        "topSportTags": [
+          "Snowboarding",
+          "Track and Field",
+          "3x3 Basketball"
+        ],
+        "cardBackCopy": {
+          "featuredCue": "Snowboarding",
+          "moduleMix": [
+            "Terrain/Environment Lens",
+            "Watch Hook",
+            "Hidden Skill"
+          ],
+          "subtitle": "Winter action sport · judged runs and timed races · mountain terrain",
+          "qaFacts": {
+            "howItWorks": "Snowboarding includes both judged events like halfpipe and slopestyle, and timed head-to-head races like snowboard cross. In judged formats, riders link tricks across a set course to earn a score based on difficulty, amplitude, and execution, while racers simply aim to be the first across the finish line.",
+            "watchValue": "Look for how riders approach the lip of a jump or the wall of a pipe. The thrill is watching them spot their landing mid-air, shifting their board to touch down smoothly before instantly setting up the next trick.",
+            "stateConnection": "Oregon's Cascade mountains, high-elevation terrain, and distinct wet and dry climate zones could help fans understand why winter equipment sports appear associated with this state.",
+            "cardTrait": "Snowboarding connects to Pattern recognition through the way riders memorize complex course layouts, linking specific trick sequences to navigate changing mountain features."
+          },
+          "factChips": [
+            "Judged and timed events",
+            "Halfpipe, slopestyle, and big air",
+            "Snowboard cross racing",
+            "Trick execution and amplitude"
+          ],
+          "relatedTags": [
+            "Track and Field",
+            "3x3 Basketball"
+          ],
+          "complianceWarnings": []
+        },
+        "cardBackCopySource": "gemini",
+        "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+        "cardBackCopyModel": "gemini-3.1-pro-preview",
+        "cardBackCopyPromptHash": "e59cd2a8e07fb12d202e76061d878c23685fdbf905d2db1422ca62335bbee969",
+        "paletteTheme": "Coastal Current",
+        "promptHash": "49f878aa35fe89f67fe8ef68103847f178c86dce0d2e313a0df3d73b089636bb",
+        "notes": "",
+        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2For%2For-olympic.png?alt=media&token=8593f703-e324-4373-be0b-298677f7eb1d",
+        "storageBucket": "common-ground-tests.firebasestorage.app",
+        "firebaseProjectId": "common-ground-tests",
+        "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/or/or-olympic.png",
+        "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/or/or-olympic.png",
+        "firebaseCollection": "cardPanels"
+      },
+      "paralympic": {
+        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2For%2For-paralympic.png?alt=media&token=11342e22-64d3-4b2e-80b3-6ea75d8da0f2",
+        "localUrl": null,
+        "model": "gemini-3-pro-image-preview",
+        "location": "global",
+        "mimeType": "image/png",
+        "generatedAt": "2026-05-08T18:33:06.409Z",
+        "dataScopeId": "both",
+        "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+        "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+        "promptSummary": "Oregon paralympic Para Alpine Skiing",
+        "primarySportTag": "Para Alpine Skiing",
+        "topSportTags": [
+          "Para Alpine Skiing",
+          "Para-Cycling",
+          "Wheelchair Basketball"
+        ],
+        "cardBackCopy": {
+          "featuredCue": "Para Alpine Skiing",
+          "moduleMix": [
+            "Rules Snapshot",
+            "Terrain/Environment Lens",
+            "Hidden Skill"
+          ],
+          "subtitle": "Downhill speed · gate navigation · adaptive equipment · fastest time wins",
+          "qaFacts": {
+            "howItWorks": "Para alpine skiing features competitors racing down a mountain course marked by colored gates. The objective is to complete the layout as quickly as possible, and the athlete with the fastest total time wins. Skiers use adaptive gear like sit-skis or outriggers, and missing a single gate results in an automatic disqualification.",
+            "watchValue": "The excitement comes from watching how competitors process the terrain at high speeds. Notice the subtle weight shifts and edge control as skiers carve tight lines around the gates while anticipating the next turn.",
+            "stateConnection": "Oregon's Cascade mountains and distinct winter climate zones could help fans understand why snow-based equipment stories fit this state card.",
+            "cardTrait": "Para alpine skiing connects to Pattern Recognition through the way skiers must memorize gate layouts and adjust their route instantly as the snow surface changes."
+          },
+          "factChips": [
+            "Fastest total time wins",
+            "Adaptive ski gear",
+            "Gate navigation",
+            "Reading snow conditions"
+          ],
+          "relatedTags": [
+            "Para-Cycling",
+            "Wheelchair Basketball"
+          ],
+          "complianceWarnings": []
+        },
+        "cardBackCopySource": "gemini",
+        "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+        "cardBackCopyModel": "gemini-3.1-pro-preview",
+        "cardBackCopyPromptHash": "d21adea75d5e204d0beaa7ab3e0940db4232078d419be98a90424912d8734153",
+        "paletteTheme": "Coastal Current",
+        "promptHash": "ec4ee01e7f7546e3f55b4d1ea618fe7640e218dc8b1d74aba4230b035ed36586",
+        "notes": "",
+        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2For%2For-paralympic.png?alt=media&token=11342e22-64d3-4b2e-80b3-6ea75d8da0f2",
+        "storageBucket": "common-ground-tests.firebasestorage.app",
+        "firebaseProjectId": "common-ground-tests",
+        "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/or/or-paralympic.png",
+        "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/or/or-paralympic.png",
+        "firebaseCollection": "cardPanels"
+      }
+    },
+    "PA": {
+      "scopes": {
+        "both": {
+          "olympic": {
+            "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fpa%2Fpa-olympic.png?alt=media&token=9e5b33b6-7e8e-4b63-8522-071fb72c82e8",
+            "localUrl": null,
+            "model": "gemini-3-pro-image-preview",
+            "location": "global",
+            "mimeType": "image/png",
+            "generatedAt": "2026-05-08T18:36:37.227Z",
+            "dataScopeId": "both",
+            "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+            "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+            "promptSummary": "Pennsylvania olympic Rowing",
+            "primarySportTag": "Rowing",
+            "topSportTags": [
+              "Field Hockey",
+              "Rowing",
+              "Swimming"
+            ],
+            "cardBackCopy": {
+              "featuredCue": "Rowing",
+              "moduleMix": [
+                "Rules Snapshot",
+                "Watch Hook",
+                "Terrain/Environment Lens"
+              ],
+              "subtitle": "2,000-meter course · synchronized strokes · backward-facing athletes",
+              "qaFacts": {
+                "howItWorks": "Athletes race narrow boats called shells down a straight 2,000-meter water course. Competitors face backward and use long oars to propel the boat, aiming to cross the finish line first. The crew with the fastest total race time wins, relying on perfect timing to keep the boat moving efficiently.",
+                "watchValue": "The tension builds as multiple boats glide side-by-side in a test of pure synchronization. Look for how the entire crew moves as a single unit, matching their blade placement perfectly to keep the shell balanced and moving smoothly.",
+                "stateConnection": "Pennsylvania's historic river valleys, active urban waterways, and four-season climate might suggest a natural environment for pacing and endurance sports on the water.",
+                "cardTrait": "Rowing connects to Line control through the steady, perfectly straight path the boat must carve down its lane, where every synchronized stroke keeps the shell on a precise trajectory."
+              },
+              "factChips": [
+                "2,000-meter straight course",
+                "Backward-facing athletes",
+                "Synchronized stroke rate",
+                "Fastest total time wins"
+              ],
+              "relatedTags": [
+                "Field Hockey",
+                "Swimming"
+              ],
+              "complianceWarnings": []
+            },
+            "cardBackCopySource": "gemini",
+            "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+            "cardBackCopyModel": "gemini-3.1-pro-preview",
+            "cardBackCopyPromptHash": "485a97e350d5b60c4ced02026a433c151777b9f8d74ebba5fced2ba2ef938aea",
+            "paletteTheme": "Coastal Current",
+            "promptHash": "5e081ddb1aa6346c32334a843654119b5678870772af6c457cf102b7b6bf8d2f",
+            "notes": "",
+            "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fpa%2Fpa-olympic.png?alt=media&token=9e5b33b6-7e8e-4b63-8522-071fb72c82e8",
+            "storageBucket": "common-ground-tests.firebasestorage.app",
+            "firebaseProjectId": "common-ground-tests",
+            "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/pa/pa-olympic.png",
+            "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/pa/pa-olympic.png",
+            "firebaseCollection": "cardPanels"
+          }
+        }
+      },
+      "olympic": {
+        "url": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fpa%2Fpa-olympic.png?alt=media&token=9e5b33b6-7e8e-4b63-8522-071fb72c82e8",
+        "localUrl": null,
+        "model": "gemini-3-pro-image-preview",
+        "location": "global",
+        "mimeType": "image/png",
+        "generatedAt": "2026-05-08T18:36:37.227Z",
+        "dataScopeId": "both",
+        "dataScopeLabel": "Olympic Games Paris 2024 + Olympic Winter Games Milano Cortina 2026",
+        "promptVersion": "common-ground-card-panel-v13-track-surface-logic",
+        "promptSummary": "Pennsylvania olympic Rowing",
+        "primarySportTag": "Rowing",
+        "topSportTags": [
+          "Field Hockey",
+          "Rowing",
+          "Swimming"
+        ],
+        "cardBackCopy": {
+          "featuredCue": "Rowing",
+          "moduleMix": [
+            "Rules Snapshot",
+            "Watch Hook",
+            "Terrain/Environment Lens"
+          ],
+          "subtitle": "2,000-meter course · synchronized strokes · backward-facing athletes",
+          "qaFacts": {
+            "howItWorks": "Athletes race narrow boats called shells down a straight 2,000-meter water course. Competitors face backward and use long oars to propel the boat, aiming to cross the finish line first. The crew with the fastest total race time wins, relying on perfect timing to keep the boat moving efficiently.",
+            "watchValue": "The tension builds as multiple boats glide side-by-side in a test of pure synchronization. Look for how the entire crew moves as a single unit, matching their blade placement perfectly to keep the shell balanced and moving smoothly.",
+            "stateConnection": "Pennsylvania's historic river valleys, active urban waterways, and four-season climate might suggest a natural environment for pacing and endurance sports on the water.",
+            "cardTrait": "Rowing connects to Line control through the steady, perfectly straight path the boat must carve down its lane, where every synchronized stroke keeps the shell on a precise trajectory."
+          },
+          "factChips": [
+            "2,000-meter straight course",
+            "Backward-facing athletes",
+            "Synchronized stroke rate",
+            "Fastest total time wins"
+          ],
+          "relatedTags": [
+            "Field Hockey",
+            "Swimming"
+          ],
+          "complianceWarnings": []
+        },
+        "cardBackCopySource": "gemini",
+        "cardBackCopyVersion": "common-ground-card-back-v14-basic-rules",
+        "cardBackCopyModel": "gemini-3.1-pro-preview",
+        "cardBackCopyPromptHash": "485a97e350d5b60c4ced02026a433c151777b9f8d74ebba5fced2ba2ef938aea",
+        "paletteTheme": "Coastal Current",
+        "promptHash": "5e081ddb1aa6346c32334a843654119b5678870772af6c457cf102b7b6bf8d2f",
+        "notes": "",
+        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/common-ground-tests.firebasestorage.app/o/card-panels%2Fcommon-ground-card-panel-v13-track-surface-logic%2Fpa%2Fpa-olympic.png?alt=media&token=9e5b33b6-7e8e-4b63-8522-071fb72c82e8",
+        "storageBucket": "common-ground-tests.firebasestorage.app",
+        "firebaseProjectId": "common-ground-tests",
+        "storagePath": "card-panels/common-ground-card-panel-v13-track-surface-logic/pa/pa-olympic.png",
+        "gsUri": "gs://common-ground-tests.firebasestorage.app/card-panels/common-ground-card-panel-v13-track-surface-logic/pa/pa-olympic.png",
         "firebaseCollection": "cardPanels"
       }
     }

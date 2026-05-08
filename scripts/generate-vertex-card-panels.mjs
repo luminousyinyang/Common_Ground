@@ -26,6 +26,8 @@ const imageMaxAttempts = positiveInteger(process.env.CARD_IMAGE_MAX_ATTEMPTS, 3)
 const imageRetryDelayMs = positiveInteger(process.env.CARD_IMAGE_RETRY_DELAY_MS, 5000);
 const vertexRequestMaxAttempts = positiveInteger(process.env.VERTEX_REQUEST_MAX_ATTEMPTS, Math.max(imageMaxAttempts, 8));
 const vertexRateLimitRetryDelayMs = positiveInteger(process.env.VERTEX_RATE_LIMIT_RETRY_DELAY_MS, 60000);
+const firebaseWriteMaxAttempts = positiveInteger(process.env.FIREBASE_WRITE_MAX_ATTEMPTS, 6);
+const firebaseWriteRetryDelayMs = positiveInteger(process.env.FIREBASE_WRITE_RETRY_DELAY_MS, 10000);
 const imageRequestTimeoutMs = positiveInteger(process.env.CARD_IMAGE_REQUEST_TIMEOUT_MS, 900000);
 const textRequestTimeoutMs = positiveInteger(process.env.CARD_COPY_REQUEST_TIMEOUT_MS, 120000);
 const PROMPT_VERSION = "common-ground-card-panel-v13-track-surface-logic";
@@ -1455,6 +1457,41 @@ function retryDelayForVertexError(error, attempt) {
   return (isRateLimited ? vertexRateLimitRetryDelayMs : imageRetryDelayMs) * attempt;
 }
 
+async function withFirebaseRetry(label, operation) {
+  let lastError;
+  for (let attempt = 1; attempt <= firebaseWriteMaxAttempts; attempt += 1) {
+    try {
+      return await operation();
+    } catch (error) {
+      lastError = error;
+      if (!isRetryableFirebaseError(error) || attempt >= firebaseWriteMaxAttempts) throw error;
+      const delayMs = firebaseWriteRetryDelayMs * attempt;
+      console.warn(`${label} failed on attempt ${attempt}/${firebaseWriteMaxAttempts}: ${error.message}`);
+      console.warn(`Retrying Firebase write in ${Math.round(delayMs / 1000)}s...`);
+      await sleep(delayMs);
+    }
+  }
+  throw lastError;
+}
+
+function isRetryableFirebaseError(error) {
+  const code = String(error?.code || error?.errno || error?.cause?.code || "");
+  const message = String(error?.message || "");
+  return [
+    "ECONNREFUSED",
+    "ECONNRESET",
+    "ETIMEDOUT",
+    "EAI_AGAIN",
+    "ENOTFOUND",
+    "socket hang up",
+    "network timeout",
+    "deadline",
+    "unavailable",
+    "internal",
+    "resource-exhausted"
+  ].some((token) => code.toUpperCase().includes(token.toUpperCase()) || message.toLowerCase().includes(token.toLowerCase()));
+}
+
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -1524,21 +1561,23 @@ async function savePanelToFirebase({ card, dataScope, program, imageBuffer, mime
   const downloadToken = randomUUID();
   const file = bucket.file(storagePath);
 
-  await file.save(imageBuffer, {
-    resumable: false,
-    metadata: {
-      cacheControl: "public, max-age=31536000, immutable",
-      contentType: mimeType,
+  await withFirebaseRetry(`Upload ${card.stateCode} ${dataScope.id} ${program} to Firebase Storage`, () =>
+    file.save(imageBuffer, {
+      resumable: false,
       metadata: {
-        firebaseStorageDownloadTokens: downloadToken,
-        commonGroundStateCode: card.stateCode,
-        commonGroundDataScope: dataScope.id,
-        commonGroundProgram: program,
-        commonGroundPromptVersion: PROMPT_VERSION,
-        commonGroundPromptHash: hashText(prompt)
+        cacheControl: "public, max-age=31536000, immutable",
+        contentType: mimeType,
+        metadata: {
+          firebaseStorageDownloadTokens: downloadToken,
+          commonGroundStateCode: card.stateCode,
+          commonGroundDataScope: dataScope.id,
+          commonGroundProgram: program,
+          commonGroundPromptVersion: PROMPT_VERSION,
+          commonGroundPromptHash: hashText(prompt)
+        }
       }
-    }
-  });
+    })
+  );
 
   const downloadUrl = firebaseDownloadUrl(storageBucket, storagePath, downloadToken);
   const firebaseRecord = {
@@ -1554,38 +1593,62 @@ async function savePanelToFirebase({ card, dataScope, program, imageBuffer, mime
   };
 
   const stateDoc = db.collection("cardPanels").doc(card.stateCode);
-  await stateDoc.set({
-    stateCode: card.stateCode,
-    stateName: card.stateName,
-    dataScopes: {
-      [dataScope.id]: {
-        label: dataScope.label,
+  await withFirebaseRetry(`Write Firestore metadata for ${card.stateCode} ${dataScope.id} ${program}`, async () => {
+    await stateDoc.set({
+      stateCode: card.stateCode,
+      stateName: card.stateName,
+      dataScopes: {
+        [dataScope.id]: {
+          label: dataScope.label,
+          sharedTrait: card.sharedTrait,
+          hometownPresenceBucket: card.hometownPresenceBucket,
+          hometownRosterCounts: card.hometownRosterCounts,
+          panels: {
+            [program]: firebaseRecord
+          }
+        }
+      },
+      model,
+      cardCopyModel,
+      location,
+      promptVersion: PROMPT_VERSION,
+      paletteTheme: panelRecord.paletteTheme,
+      updatedAt: FieldValue.serverTimestamp(),
+      ...(dataScope.id === "both" ? {
         sharedTrait: card.sharedTrait,
         hometownPresenceBucket: card.hometownPresenceBucket,
         hometownRosterCounts: card.hometownRosterCounts,
         panels: {
           [program]: firebaseRecord
         }
-      }
-    },
-    model,
-    cardCopyModel,
-    location,
-    promptVersion: PROMPT_VERSION,
-    paletteTheme: panelRecord.paletteTheme,
-    updatedAt: FieldValue.serverTimestamp(),
-    ...(dataScope.id === "both" ? {
+      } : {})
+    }, { merge: true });
+
+    if (dataScope.id === "both") {
+      await stateDoc.collection("panels").doc(program).set({
+        ...firebaseRecord,
+        stateCode: card.stateCode,
+        stateName: card.stateName,
+        dataScopeId: dataScope.id,
+        dataScopeLabel: dataScope.label,
+        program,
+        prompt,
+        updatedAt: FieldValue.serverTimestamp()
+      }, { merge: true });
+    }
+
+    await stateDoc.collection("scopes").doc(dataScope.id).set({
+      dataScopeId: dataScope.id,
+      dataScopeLabel: dataScope.label,
+      stateCode: card.stateCode,
+      stateName: card.stateName,
       sharedTrait: card.sharedTrait,
       hometownPresenceBucket: card.hometownPresenceBucket,
       hometownRosterCounts: card.hometownRosterCounts,
-      panels: {
-        [program]: firebaseRecord
-      }
-    } : {})
-  }, { merge: true });
+      updatedAt: FieldValue.serverTimestamp()
+    }, { merge: true });
 
-  if (dataScope.id === "both") {
-    await stateDoc.collection("panels").doc(program).set({
+    await stateDoc.collection("scopes").doc(dataScope.id).collection("panels").doc(program).set({
       ...firebaseRecord,
       stateCode: card.stateCode,
       stateName: card.stateName,
@@ -1595,29 +1658,7 @@ async function savePanelToFirebase({ card, dataScope, program, imageBuffer, mime
       prompt,
       updatedAt: FieldValue.serverTimestamp()
     }, { merge: true });
-  }
-
-  await stateDoc.collection("scopes").doc(dataScope.id).set({
-    dataScopeId: dataScope.id,
-    dataScopeLabel: dataScope.label,
-    stateCode: card.stateCode,
-    stateName: card.stateName,
-    sharedTrait: card.sharedTrait,
-    hometownPresenceBucket: card.hometownPresenceBucket,
-    hometownRosterCounts: card.hometownRosterCounts,
-    updatedAt: FieldValue.serverTimestamp()
-  }, { merge: true });
-
-  await stateDoc.collection("scopes").doc(dataScope.id).collection("panels").doc(program).set({
-    ...firebaseRecord,
-    stateCode: card.stateCode,
-    stateName: card.stateName,
-    dataScopeId: dataScope.id,
-    dataScopeLabel: dataScope.label,
-    program,
-    prompt,
-    updatedAt: FieldValue.serverTimestamp()
-  }, { merge: true });
+  });
 
   console.log(`Uploaded ${card.stateCode} ${program} to gs://${storageBucket}/${storagePath}`);
   console.log(`Wrote Firestore cardPanels/${card.stateCode}/scopes/${dataScope.id}/panels/${program}`);
@@ -1628,39 +1669,62 @@ async function savePanelToFirebase({ card, dataScope, program, imageBuffer, mime
 async function writePanelMetadataToFirebase({ card, dataScope, program, prompt, panelRecord }) {
   const { db, FieldValue } = await getFirebaseClients();
   const stateDoc = db.collection("cardPanels").doc(card.stateCode);
-
-  await stateDoc.set({
-    stateCode: card.stateCode,
-    stateName: card.stateName,
-    dataScopes: {
-      [dataScope.id]: {
-        label: dataScope.label,
+  await withFirebaseRetry(`Sync Firestore metadata for ${card.stateCode} ${dataScope.id} ${program}`, async () => {
+    await stateDoc.set({
+      stateCode: card.stateCode,
+      stateName: card.stateName,
+      dataScopes: {
+        [dataScope.id]: {
+          label: dataScope.label,
+          sharedTrait: card.sharedTrait,
+          hometownPresenceBucket: card.hometownPresenceBucket,
+          hometownRosterCounts: card.hometownRosterCounts,
+          panels: {
+            [program]: panelRecord
+          }
+        }
+      },
+      model,
+      cardCopyModel,
+      location,
+      promptVersion: PROMPT_VERSION,
+      paletteTheme: panelRecord.paletteTheme,
+      updatedAt: FieldValue.serverTimestamp(),
+      ...(dataScope.id === "both" ? {
         sharedTrait: card.sharedTrait,
         hometownPresenceBucket: card.hometownPresenceBucket,
         hometownRosterCounts: card.hometownRosterCounts,
         panels: {
           [program]: panelRecord
         }
-      }
-    },
-    model,
-    cardCopyModel,
-    location,
-    promptVersion: PROMPT_VERSION,
-    paletteTheme: panelRecord.paletteTheme,
-    updatedAt: FieldValue.serverTimestamp(),
-    ...(dataScope.id === "both" ? {
+      } : {})
+    }, { merge: true });
+
+    if (dataScope.id === "both") {
+      await stateDoc.collection("panels").doc(program).set({
+        ...panelRecord,
+        stateCode: card.stateCode,
+        stateName: card.stateName,
+        dataScopeId: dataScope.id,
+        dataScopeLabel: dataScope.label,
+        program,
+        prompt,
+        updatedAt: FieldValue.serverTimestamp()
+      }, { merge: true });
+    }
+
+    await stateDoc.collection("scopes").doc(dataScope.id).set({
+      dataScopeId: dataScope.id,
+      dataScopeLabel: dataScope.label,
+      stateCode: card.stateCode,
+      stateName: card.stateName,
       sharedTrait: card.sharedTrait,
       hometownPresenceBucket: card.hometownPresenceBucket,
       hometownRosterCounts: card.hometownRosterCounts,
-      panels: {
-        [program]: panelRecord
-      }
-    } : {})
-  }, { merge: true });
+      updatedAt: FieldValue.serverTimestamp()
+    }, { merge: true });
 
-  if (dataScope.id === "both") {
-    await stateDoc.collection("panels").doc(program).set({
+    await stateDoc.collection("scopes").doc(dataScope.id).collection("panels").doc(program).set({
       ...panelRecord,
       stateCode: card.stateCode,
       stateName: card.stateName,
@@ -1670,29 +1734,7 @@ async function writePanelMetadataToFirebase({ card, dataScope, program, prompt, 
       prompt,
       updatedAt: FieldValue.serverTimestamp()
     }, { merge: true });
-  }
-
-  await stateDoc.collection("scopes").doc(dataScope.id).set({
-    dataScopeId: dataScope.id,
-    dataScopeLabel: dataScope.label,
-    stateCode: card.stateCode,
-    stateName: card.stateName,
-    sharedTrait: card.sharedTrait,
-    hometownPresenceBucket: card.hometownPresenceBucket,
-    hometownRosterCounts: card.hometownRosterCounts,
-    updatedAt: FieldValue.serverTimestamp()
-  }, { merge: true });
-
-  await stateDoc.collection("scopes").doc(dataScope.id).collection("panels").doc(program).set({
-    ...panelRecord,
-    stateCode: card.stateCode,
-    stateName: card.stateName,
-    dataScopeId: dataScope.id,
-    dataScopeLabel: dataScope.label,
-    program,
-    prompt,
-    updatedAt: FieldValue.serverTimestamp()
-  }, { merge: true });
+  });
 
   console.log(`Synced Firestore metadata for cardPanels/${card.stateCode}/scopes/${dataScope.id}/panels/${program}`);
 }

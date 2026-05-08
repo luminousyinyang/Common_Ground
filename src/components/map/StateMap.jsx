@@ -37,6 +37,15 @@ const TERRITORY_INSET = {
   paddingY: 10
 };
 
+function DiscoveredCheck({ x, y, scale }) {
+  return (
+    <g transform={`translate(${x} ${y}) scale(${scale})`} pointerEvents="none">
+      <circle className="check-bg" r="9" />
+      <polyline className="check-tick" points="-3.5,0.8 -1,3.3 5,-3.8" />
+    </g>
+  );
+}
+
 function RosterTooltip({ card, position }) {
   if (!card || !position) return null;
   const counts = getRosterCounts(card);
@@ -483,12 +492,7 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
                   const centroid = path.centroid(item);
                   if (!Number.isFinite(centroid[0]) || !Number.isFinite(centroid[1])) return null;
                   const s = 1 / viewport.scale;
-                  return (
-                    <g key={`chk-${code}`} transform={`translate(${centroid[0]} ${centroid[1]}) scale(${s})`} pointerEvents="none">
-                      <circle className="check-bg" r="9" />
-                      <polyline className="check-tick" points="-3.5,0.8 -1,3.3 5,-3.8" />
-                    </g>
-                  );
+                  return <DiscoveredCheck key={`chk-${code}`} x={centroid[0]} y={centroid[1]} scale={s} />;
                 })}
               </g>
             )}
@@ -503,8 +507,15 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
                   const className = [
                     "territory-inset",
                     noAthletes ? "no-athletes" : signal,
-                    code === selectedCode ? "is-selected" : ""
+                    code === selectedCode ? "is-selected" : "",
+                    discoveredCodes.has(code) ? "is-discovered" : ""
                   ].filter(Boolean).join(" ");
+                  const checkCentroid = insetPath.centroid(item);
+                  const canShowCheck = showCompleted &&
+                    discoveredCodes.has(code) &&
+                    Number.isFinite(checkCentroid[0]) &&
+                    Number.isFinite(checkCentroid[1]);
+                  const checkScale = 1 / viewport.scale;
 
                   return (
                     <g
@@ -539,6 +550,7 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
                     >
                       <rect className="territory-inset-hit" x="0" y="0" width={TERRITORY_INSET.width} height={TERRITORY_INSET.height} rx="10" />
                       <path className="territory-inset-shape" d={insetPath(item)} />
+                      {canShowCheck && <DiscoveredCheck x={checkCentroid[0]} y={checkCentroid[1]} scale={checkScale} />}
                     </g>
                   );
                 })}

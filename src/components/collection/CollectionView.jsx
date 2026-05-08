@@ -57,7 +57,7 @@ function CollectionView({ states, discoveredCodes, onSelect, panelManifest, isLo
   const allDiscovered = collectionStates.filter((card) => discoveredCodes.has(card.stateCode));
   const allUndiscovered = collectionStates.filter((card) => !discoveredCodes.has(card.stateCode));
   const discoveredStates = filterByRegion(allDiscovered, activeRegion);
-  const previewStates = filterByRegion(allUndiscovered, activeRegion).slice(0, 12);
+  const previewStates = filterByRegion(allUndiscovered, activeRegion);
   const remaining = allUndiscovered.length;
   const progressPct = collectionStates.length ? Math.round((allDiscovered.length / collectionStates.length) * 100) : 0;
 
