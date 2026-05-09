@@ -78,7 +78,7 @@ If no key is present, the server returns compliance-safe fallback copy.
 
 - React/Vite app promoted to the main repo root.
 - Actual U.S. state boundary map from `us-atlas` TopoJSON rendered with D3 and `topojson-client`, with a territory inset for supported U.S. territories.
-- 51 geography cards generated from public TeamUSA.com Paris 2024 and Milano Cortina 2026 Olympic and Paralympic roster sources, currently 50 states plus U.S. Virgin Islands.
+- 51 geography cards generated from public TeamUSA.com Olympic Games Paris 2024, Paralympic Games Paris 2024, Olympic Winter Games Milano Cortina 2026, and Paralympic Winter Games Milano Cortina 2026 roster sources, currently 50 states plus U.S. Virgin Islands.
 - Hover tooltip showing Olympic, Paralympic, and total public hometown geography athlete counts before clicking.
 - Map controls for wheel/trackpad zoom, drag panning, reset, and browser-local state matching.
 - Unified sports-card view with abstract generated bitmap art on the front and aggregate sourced data on the back.
@@ -101,7 +101,7 @@ Generated frontend data lives at `public/data/state-cards.json`.
 
 The ingest pipeline:
 
-- Uses public TeamUSA.com Paris 2024 and Milano Cortina 2026 roster sources.
+- Uses public TeamUSA.com Olympic Games Paris 2024, Paralympic Games Paris 2024, Olympic Winter Games Milano Cortina 2026, and Paralympic Winter Games Milano Cortina 2026 roster sources.
 - Filters to records with U.S. hometown-state or supported U.S. territory abbreviations.
 - Deduplicates athletes across imported rosters in memory before writing aggregate counts.
 - Aggregates by geography and sport family.

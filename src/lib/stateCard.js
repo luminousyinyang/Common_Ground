@@ -409,17 +409,40 @@ export function panelFeaturedSportList(panel, limit = 3) {
 
 export function datasetLabelForCard(card) {
   const scopeId = card?.dataScopeId || "both";
-  if (scopeId === "paris2024") return "Paris 2024 dataset";
-  if (scopeId === "milanoCortina2026") return "Milano Cortina 2026 dataset";
-  if (scopeId === "both") return "combined Paris 2024 and Milano Cortina 2026 dataset";
-  return "selected Team USA dataset";
+  if (scopeId === "paris2024") return "Olympic Games Paris 2024 and Paralympic Games Paris 2024 dataset";
+  if (scopeId === "milanoCortina2026") return "Olympic Winter Games Milano Cortina 2026 and Paralympic Winter Games Milano Cortina 2026 dataset";
+  if (scopeId === "both") {
+    return "Olympic Games Paris 2024, Paralympic Games Paris 2024, Olympic Winter Games Milano Cortina 2026, and Paralympic Winter Games Milano Cortina 2026 dataset";
+  }
+  return "selected dataset";
+}
+
+export function datasetLabelForSportMix(card, programLabel) {
+  const scopeId = card?.dataScopeId || "both";
+  const isParalympic = /^paralympic/i.test(String(programLabel || ""));
+  if (scopeId === "paris2024") {
+    return isParalympic
+      ? "Paralympic Games Paris 2024 dataset"
+      : "Olympic Games Paris 2024 dataset";
+  }
+  if (scopeId === "milanoCortina2026") {
+    return isParalympic
+      ? "Paralympic Winter Games Milano Cortina 2026 dataset"
+      : "Olympic Winter Games Milano Cortina 2026 dataset";
+  }
+  if (scopeId === "both") {
+    return isParalympic
+      ? "combined Paralympic Games Paris 2024 and Paralympic Winter Games Milano Cortina 2026 dataset"
+      : "combined Olympic Games Paris 2024 and Olympic Winter Games Milano Cortina 2026 dataset";
+  }
+  return "selected dataset";
 }
 
 export function sportMixPreviewDetail(card, panel, programLabel) {
   const allSports = panelSportList(panel);
   const featuredSports = panelFeaturedSportList(panel);
   const stateName = card?.stateName || "This state";
-  const datasetLabel = datasetLabelForCard(card);
+  const datasetLabel = datasetLabelForSportMix(card, programLabel);
   if (!allSports.length) return `${panel?.sportFamily || "No sourced sport-family view"} appears in the ${datasetLabel}.`;
   if (allSports.length > featuredSports.length) {
     return `${stateName} includes ${allSports.length} ${programLabel} sports from the ${datasetLabel}. Featured examples: ${joinReadableList(featuredSports)}.`;

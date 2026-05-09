@@ -4,10 +4,10 @@ The MVP dataset is generated from approved public TeamUSA.com roster sources and
 
 ## Source Inputs
 
-- TeamUSA.com Paris 2024 Olympic roster
-- TeamUSA.com Paris 2024 Paralympic roster
-- TeamUSA.com Milano Cortina 2026 Olympic roster
-- TeamUSA.com Milano Cortina 2026 Paralympic roster
+- TeamUSA.com Olympic Games Paris 2024 roster
+- TeamUSA.com Paralympic Games Paris 2024 roster
+- TeamUSA.com Olympic Winter Games Milano Cortina 2026 roster
+- TeamUSA.com Paralympic Winter Games Milano Cortina 2026 roster
 - NOAA public climate context labels
 - `us-atlas` TopoJSON derived from U.S. Census cartographic state and territory boundaries
 
