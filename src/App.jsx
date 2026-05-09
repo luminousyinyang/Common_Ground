@@ -204,6 +204,7 @@ function App() {
   const [briefingLoading, setBriefingLoading] = useState(false);
   const [loadError, setLoadError] = useState(null);
   const [isCardModalOpen, setIsCardModalOpen] = useState(false);
+  const [cardReturnState, setCardReturnState] = useState(null);
   const [discoveredCodes, setDiscoveredCodes] = useState(() => new Set());
   const [playedCodes, setPlayedCodes] = useState(() => new Set());
   const [panelManifest, setPanelManifest] = useState(EMPTY_CARD_PANEL_MANIFEST);
@@ -548,7 +549,7 @@ function App() {
               <ChallengeView
                 card={selectedCard}
                 briefing={activeBriefing}
-                onReturn={() => navigate("/map")}
+                onReturn={() => { navigate("/map"); setIsCardModalOpen(true); }}
                 panelManifest={activePanelManifest}
                 onGameComplete={() => markPlayed(selectedCode)}
               />
@@ -576,7 +577,10 @@ function App() {
           briefing={activeBriefing}
           briefingLoading={briefingLoading}
           onRefreshBriefing={() => refreshBriefing(selectedCard)}
-          onOpenChallenge={() => {
+          onOpenChallenge={(state) => {
+            setCardReturnState(state && typeof state.flipped === "boolean"
+              ? { ...state, stateCode: selectedCode }
+              : null);
             setIsCardModalOpen(false);
             navigate("/challenge");
           }}
@@ -585,6 +589,8 @@ function App() {
           cardExperience={cardExperience}
           onCollect={() => markDiscovered(selectedCode)}
           isUnlocked={playedCodes.has(selectedCode)}
+          defaultFlipped={cardReturnState?.stateCode === selectedCode ? cardReturnState.flipped : false}
+          defaultIsBackExpanded={cardReturnState?.stateCode === selectedCode ? cardReturnState.isBackExpanded : false}
         />
       )}
       <button
