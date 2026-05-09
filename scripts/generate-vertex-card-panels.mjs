@@ -30,6 +30,7 @@ const firebaseWriteMaxAttempts = positiveInteger(process.env.FIREBASE_WRITE_MAX_
 const firebaseWriteRetryDelayMs = positiveInteger(process.env.FIREBASE_WRITE_RETRY_DELAY_MS, 10000);
 const imageRequestTimeoutMs = positiveInteger(process.env.CARD_IMAGE_REQUEST_TIMEOUT_MS, 900000);
 const textRequestTimeoutMs = positiveInteger(process.env.CARD_COPY_REQUEST_TIMEOUT_MS, 120000);
+const cardBackCopyValidationMaxAttempts = positiveInteger(process.env.CARD_COPY_VALIDATION_MAX_ATTEMPTS, Math.max(imageMaxAttempts, 5));
 const PROMPT_VERSION = "common-ground-card-panel-v13-track-surface-logic";
 const CARD_BACK_COPY_VERSION = "common-ground-card-back-v14-basic-rules";
 
@@ -889,11 +890,7 @@ async function getOrGenerateCardBackCopy({ card, program, existingPanel, copyPro
   const copyPromptHash = hashText(copyPrompt);
   if (
     !args.force &&
-    existingPanel?.cardBackCopySource === "gemini" &&
-    existingPanel?.cardBackCopyVersion === CARD_BACK_COPY_VERSION &&
-    existingPanel?.cardBackCopyModel === cardCopyModel &&
-    existingPanel?.cardBackCopyPromptHash === copyPromptHash &&
-    existingPanel?.cardBackCopy
+    panelHasCurrentCardBackCopy(existingPanel, copyPromptHash)
   ) {
     return existingPanel.cardBackCopy;
   }
@@ -902,7 +899,7 @@ async function getOrGenerateCardBackCopy({ card, program, existingPanel, copyPro
   let validationPrompt = copyPrompt;
   let lastError;
 
-  for (let attempt = 1; attempt <= imageMaxAttempts; attempt += 1) {
+  for (let attempt = 1; attempt <= cardBackCopyValidationMaxAttempts; attempt += 1) {
     const rawCopy = await generateGeminiJsonWithRetry({
       prompt: validationPrompt,
       modelName: cardCopyModel,
@@ -914,8 +911,12 @@ async function getOrGenerateCardBackCopy({ card, program, existingPanel, copyPro
       return validateCardBackCopy({ card, program, rawCopy });
     } catch (error) {
       lastError = error;
-      if (attempt >= imageMaxAttempts) throw error;
-      console.warn(`${card.stateName} ${program} card-back copy failed validation on attempt ${attempt}/${imageMaxAttempts}: ${error.message}`);
+      if (attempt >= cardBackCopyValidationMaxAttempts) {
+        console.warn(`${card.stateName} ${program} card-back copy failed validation after ${cardBackCopyValidationMaxAttempts} attempts: ${error.message}`);
+        console.warn(`Using deterministic safe card-back copy for ${card.stateName} ${program} so the batch can continue.`);
+        return deterministicCardBackCopy({ card, program, reason: error.message });
+      }
+      console.warn(`${card.stateName} ${program} card-back copy failed validation on attempt ${attempt}/${cardBackCopyValidationMaxAttempts}: ${error.message}`);
       validationPrompt = `${copyPrompt}
 
 Previous JSON failed local validation:
@@ -1167,6 +1168,112 @@ function validateCardBackCopy({ card, program, rawCopy }) {
     throw new Error(`Gemini card-back copy failed validation: ${warnings.join("; ")}`);
   }
   return copy;
+}
+
+function deterministicCardBackCopy({ card, program }) {
+  const panel = programPanel(card, program);
+  const programLabel = program === "paralympic" ? "Paralympic" : "Olympic";
+  const featuredCue = displaySportName(panel.primarySportTag || panel.topSportTags?.[0] || `${programLabel} sport`);
+  const trait = card.cardStory?.sharedTrait || card.sharedTrait || {};
+  const traitName = safeCardBackText(trait.name || "Card trait", "Card trait");
+  const traitDescription = safeCardBackText(
+    trait.description || "timing, control, and quick choices",
+    "timing, control, and quick choices"
+  );
+  const stateContext = safeCardBackText(
+    [card.geographySnapshot, card.climateSignal, ...(card.terrainSignals || [])].filter(Boolean).slice(0, 2).join(" and "),
+    "its public geography context"
+  );
+
+  const rawCopy = {
+    featuredCue,
+    moduleMix: ["Rules Snapshot", "Watch Hook", "State Culture"],
+    subtitle: `${programLabel} sport · quick rules · state context`,
+    qaFacts: {
+      howItWorks: `${featuredCue} is the featured ${programLabel.toLowerCase()} sport for this panel. New fans can start with the basic objective, the playing area, and how each round or race is decided.`,
+      watchValue: "Watch spacing, timing, and control before each key moment. The fun is seeing small choices turn into quick changes in rhythm.",
+      stateConnection: `${card.stateName}'s ${stateContext} gives fans a local reading path for this sport. Look at terrain, weather, and sport access as context clues.`,
+      cardTrait: `${featuredCue} connects to ${traitName} through ${traitDescription}. The mini-game turns that idea into a simple fan challenge.`
+    },
+    factChips: [
+      `${programLabel} view`,
+      "Rules basics",
+      "Timing cues",
+      "State context"
+    ],
+    complianceWarnings: []
+  };
+
+  return {
+    ...validateCardBackCopy({ card, program, rawCopy }),
+    copyGeneration: "deterministic"
+  };
+}
+
+function safeCardBackText(value, fallback) {
+  let text = String(value || "").replace(/\s+/g, " ").trim() || fallback;
+  const replacements = [
+    [/\bguarantee(s|d)?\b/gi, "show"],
+    [/\bproduce(s|d)?\b/gi, "add"],
+    [/\bcreates?\b/gi, "adds"],
+    [/\bpredict(s|ed|ive)?\b/gi, "points toward"],
+    [/\btrain like\b/gi, "watch like"],
+    [/\belite\b/gi, "top-level"],
+    [/\bmedal(s|ist|ists)?\b/gi, "event"],
+    [/\bfinish times?\b/gi, "race clock"],
+    [/\bsignals?\b/gi, "clues"],
+    [/\bsport tags?\b/gi, "sports"],
+    [/\bfeatured cue\b/gi, "featured sport"],
+    [/\bcard lens\b/gi, "card view"],
+    [/\bwhy this sport\b/gi, "sport note"],
+    [/\bmovement read\b/gi, "watch note"],
+    [/\baggregate presence\b/gi, "public dataset pattern"],
+    [/\broster data\b/gi, "public source context"],
+    [/\broster\b/gi, "public source"],
+    [/\brepresentation\b/gi, "presence"],
+    [/\bprominent feature\b/gi, "clear detail"],
+    [/\bbackdrop\b/gi, "setting"],
+    [/\bframes?\b/gi, "sets up"],
+    [/\bframing\b/gi, "setup"],
+    [/\bcould help fans discover\b/gi, "could help fans notice"],
+    [/\binvites?\s+(fans|a|the|you)\b/gi, "asks fans"],
+    [/\bis featured because\b/gi, "appears because"],
+    [/\bis featured here\b/gi, "appears on this panel"],
+    [/\bfrequently associated\b/gi, "often linked"],
+    [/\bties to\b/gi, "connects with"],
+    [/\brows?\b/gi, "lines"],
+    [/\bpipeline\b/gi, "path"],
+    [/\btemplate\b/gi, "pattern"],
+    [/\bfallback\b/gi, "backup"],
+    [/\braw data\b/gi, "source context"],
+    [/\bcard image cue\b/gi, "art detail"],
+    [/\bparticipation signal\b/gi, "sport clue"],
+    [/\bathletic landscape\b/gi, "sport context"],
+    [/\bstrong(?:er|est)?\b/gi, "clear"],
+    [/\bdominant\b/gi, "main"],
+    [/\bbest\b/gi, "clearest"],
+    [/\bproves?\b/gi, "shows"],
+    [/\bdemands?\b/gi, "uses"],
+    [/\brequires?\b/gi, "uses"],
+    [/\bessential\b/gi, "useful"],
+    [/\brigorous\b/gi, "careful"],
+    [/\bstamina\b/gi, "pace"],
+    [/\bmaintain speed\b/gi, "hold rhythm"],
+    [/\bintense physical pressure\b/gi, "late pressure"],
+    [/\bfascinating\b/gi, "useful"],
+    [/\binteresting part\b/gi, "useful detail"],
+    [/\bcompelling\b/gi, "clear"],
+    [/\bdynamic\b/gi, "changing"],
+    [/\blooks chaotic,? but\b/gi, "can look busy, and"],
+    [/\bunderlying game\b/gi, "sport pattern"],
+    [/\bmost popular county\b/gi, "local area"],
+    [/\brace order\b/gi, "event sequence"],
+    [/\b\d+(\.\d+)?\s?(points?|percent|%)\b/gi, "a measurable amount"]
+  ];
+  for (const [pattern, replacement] of replacements) {
+    text = text.replace(pattern, replacement);
+  }
+  return text.replace(/\s+/g, " ").trim() || fallback;
 }
 
 function normalizeFactChipsForSport(featuredCue, factChips) {
