@@ -27,7 +27,7 @@ import SettingsPage from "./pages/SettingsPage.jsx";
 import HelpModal from "./components/common/HelpModal.jsx";
 import Icon from "./components/common/Icon.jsx";
 import { useAuth } from "./auth/AuthContext.jsx";
-import { loadUserCollection, saveUserCollection } from "./lib/userCollection.js";
+import { loadUserCollection, resetUserProgress, saveUserCollection } from "./lib/userCollection.js";
 
 const FALLBACK_DATA_SCOPES = [
   {
@@ -471,6 +471,21 @@ function App() {
     markDiscovered(code);
   }
 
+  async function resetAllProgress() {
+    setDiscoveredCodes(new Set());
+    setPlayedCodes(new Set());
+    setCollectionSyncError("");
+
+    if (!isLoggedIn || !user?.uid || sessionError) return;
+
+    try {
+      await resetUserProgress();
+    } catch (error) {
+      setCollectionSyncError(error.message);
+      throw error;
+    }
+  }
+
   function selectState(code, openCard = true) {
     setSelectedCode(code);
     if (openCard) setIsCardModalOpen(true);
@@ -589,7 +604,7 @@ function App() {
               settings={settings}
               onUpdate={updateSettings}
               onResetCollection={() => setDiscoveredCodes(new Set())}
-              onResetProgress={() => { setDiscoveredCodes(new Set()); setPlayedCodes(new Set()); }}
+              onResetProgress={resetAllProgress}
               onNavigate={navigate}
               user={user}
               isLoggedIn={isLoggedIn}

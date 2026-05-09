@@ -365,6 +365,34 @@ async function loadScoreHistoryEntries(db, uid, gameType, limit = DEFAULT_SCORE_
   return snapshot.docs.map(scoreHistoryEntryFromDoc);
 }
 
+async function deleteQueryDocuments(db, query, batchSize = 450) {
+  let deletedCount = 0;
+
+  for (;;) {
+    const snapshot = await query.limit(batchSize).get();
+    if (snapshot.empty) return deletedCount;
+
+    const batch = db.batch();
+    snapshot.docs.forEach((doc) => batch.delete(doc.ref));
+    await batch.commit();
+    deletedCount += snapshot.size;
+  }
+}
+
+async function deleteUserScoreHistory(db, uid) {
+  let deletedRuns = 0;
+  const historyRef = db.collection("userGameScoreHistory").doc(uid);
+
+  for (const gameType of SCORE_HISTORY_GAME_TYPES) {
+    const gameRef = historyRef.collection("games").doc(gameType);
+    deletedRuns += await deleteQueryDocuments(db, gameRef.collection("runs"));
+    await gameRef.delete();
+  }
+
+  await historyRef.delete();
+  return deletedRuns;
+}
+
 function normalizeJsonText(text) {
   return text
     .trim()
@@ -1263,6 +1291,43 @@ async function handleApi(req, res, url) {
     return true;
   }
 
+  if (url.pathname === "/api/user/progress" && req.method === "DELETE") {
+    let user;
+    try {
+      user = await currentAuthUser(req);
+    } catch (error) {
+      clearSessionCookie(res);
+      sendJson(res, 401, { error: `Session is not valid: ${error.message}` });
+      return true;
+    }
+
+    if (!user) {
+      sendJson(res, 401, { error: "Log in to reset your progress." });
+      return true;
+    }
+
+    try {
+      const { db, FieldValue } = await getFirebaseAdmin();
+      const deletedScoreRuns = await deleteUserScoreHistory(db, user.uid);
+      await db.collection("userCollections").doc(user.uid).set({
+        discoveredCodes: [],
+        playedCodes: [],
+        uid: user.uid,
+        updatedAt: FieldValue.serverTimestamp()
+      }, { merge: true });
+
+      sendJson(res, 200, {
+        ok: true,
+        discoveredCodes: [],
+        playedCodes: [],
+        deletedScoreRuns
+      });
+    } catch (error) {
+      sendJson(res, 500, { error: `Could not reset progress: ${error.message}` });
+    }
+    return true;
+  }
+
   if (url.pathname === "/api/user/collection" && (req.method === "GET" || req.method === "PUT")) {
     let user;
     try {
@@ -1294,18 +1359,21 @@ async function handleApi(req, res, url) {
 
     const body = await readBody(req);
     const payload = body ? JSON.parse(body) : {};
-    const discoveredCodes = normalizeCodeList(payload.discoveredCodes || ["CO"], dataset);
+    const discoveredCodes = normalizeCodeList(
+      Array.isArray(payload.discoveredCodes) ? payload.discoveredCodes : ["CO"],
+      dataset
+    );
     const playedCodes = normalizeCodeList(payload.playedCodes || [], dataset);
 
     await collectionRef.set({
-      discoveredCodes: discoveredCodes.length ? discoveredCodes : ["CO"],
+      discoveredCodes,
       playedCodes,
       uid: user.uid,
       updatedAt: FieldValue.serverTimestamp()
     }, { merge: true });
 
     sendJson(res, 200, {
-      discoveredCodes: discoveredCodes.length ? discoveredCodes : ["CO"],
+      discoveredCodes,
       playedCodes
     });
     return true;

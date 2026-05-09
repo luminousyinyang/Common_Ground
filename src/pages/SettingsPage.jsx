@@ -33,6 +33,8 @@ function ToggleRow({ label, description, checked, onChange }) {
 
 function SettingsPage({ settings, onUpdate, onResetCollection, onResetProgress, onNavigate, user, isLoggedIn }) {
   const [resetConfirm, setResetConfirm] = useState(null);
+  const [resetBusy, setResetBusy] = useState(null);
+  const [resetError, setResetError] = useState("");
   const headingRef = useRef(null);
   const navigate = useNavigate();
 
@@ -40,12 +42,21 @@ function SettingsPage({ settings, onUpdate, onResetCollection, onResetProgress, 
     headingRef.current?.focus();
   }, []);
 
-  function handleReset(type) {
+  async function handleReset(type) {
     if (resetConfirm === type) {
-      if (type === "collection") onResetCollection();
-      else onResetProgress();
-      setResetConfirm(null);
+      setResetBusy(type);
+      setResetError("");
+      try {
+        if (type === "collection") await onResetCollection();
+        else await onResetProgress();
+        setResetConfirm(null);
+      } catch (error) {
+        setResetError(error.message || "Could not reset progress.");
+      } finally {
+        setResetBusy(null);
+      }
     } else {
+      setResetError("");
       setResetConfirm(type);
     }
   }
@@ -122,7 +133,7 @@ function SettingsPage({ settings, onUpdate, onResetCollection, onResetProgress, 
           <h2 className="settings-section-title" id="data-heading">Data & Progress</h2>
           <div className="settings-section-body">
             <p className="settings-info-text">
-              Collection and challenge progress is stored locally in your browser.
+              Collection and challenge progress is saved to your account and mirrored in this browser.
             </p>
             <div className="settings-danger-row">
               <div>
@@ -133,8 +144,9 @@ function SettingsPage({ settings, onUpdate, onResetCollection, onResetProgress, 
                 type="button"
                 className={`settings-danger-btn${resetConfirm === "collection" ? " is-confirm" : ""}`}
                 onClick={() => handleReset("collection")}
+                disabled={Boolean(resetBusy)}
               >
-                {resetConfirm === "collection" ? "Confirm reset" : "Reset"}
+                {resetBusy === "collection" ? "Resetting..." : resetConfirm === "collection" ? "Confirm reset" : "Reset"}
               </button>
             </div>
             <div className="settings-danger-row">
@@ -146,12 +158,14 @@ function SettingsPage({ settings, onUpdate, onResetCollection, onResetProgress, 
                 type="button"
                 className={`settings-danger-btn${resetConfirm === "progress" ? " is-confirm" : ""}`}
                 onClick={() => handleReset("progress")}
+                disabled={Boolean(resetBusy)}
               >
-                {resetConfirm === "progress" ? "Confirm reset" : "Reset"}
+                {resetBusy === "progress" ? "Resetting..." : resetConfirm === "progress" ? "Confirm reset" : "Reset"}
               </button>
             </div>
+            {resetError ? <p className="settings-reset-error">{resetError}</p> : null}
             {resetConfirm && (
-              <button type="button" className="ghost-button small" onClick={() => setResetConfirm(null)}>
+              <button type="button" className="ghost-button small" onClick={() => setResetConfirm(null)} disabled={Boolean(resetBusy)}>
                 Cancel
               </button>
             )}

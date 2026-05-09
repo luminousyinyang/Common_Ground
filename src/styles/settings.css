@@ -258,10 +258,22 @@ html[data-surface="blacktop"] .settings-toggle-thumb {
   outline-offset: 2px;
 }
 
+.settings-danger-btn:disabled {
+  cursor: wait;
+  opacity: 0.68;
+}
+
 .settings-danger-btn.is-confirm {
   border-color: #b91c1c;
   color: #b91c1c;
   background: color-mix(in srgb, #b91c1c 8%, var(--glass-strong));
+}
+
+.settings-reset-error {
+  margin: -4px 0 0;
+  color: #b91c1c;
+  font-size: 0.8rem;
+  line-height: 1.4;
 }
 
 /* About */

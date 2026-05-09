@@ -25,3 +25,11 @@ export async function saveUserCollection({ discoveredCodes, playedCodes }) {
   });
   return parseJsonResponse(response);
 }
+
+export async function resetUserProgress() {
+  const response = await fetch("/api/user/progress", {
+    method: "DELETE",
+    headers: { Accept: "application/json" }
+  });
+  return parseJsonResponse(response);
+}
