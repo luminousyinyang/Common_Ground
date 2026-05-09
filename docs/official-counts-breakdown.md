@@ -1,6 +1,6 @@
 # Official Counts Breakdown
 
-Counts are deduplicated public TeamUSA.com athletes from the imported Paris 2024 and Milano Cortina 2026 roster sources with U.S. hometown-state or supported U.S. territory fields. They are not a complete historical Team USA athlete census.
+Counts are deduplicated public TeamUSA.com athletes from the imported Olympic Games Paris 2024, Paralympic Games Paris 2024, Olympic Winter Games Milano Cortina 2026, and Paralympic Winter Games Milano Cortina 2026 roster sources with U.S. hometown-state or supported U.S. territory fields. They are not a complete historical Team USA athlete census.
 
 | Geography | Olympic | Paralympic | Total | Signal |
 | --- | ---: | ---: | ---: | --- |

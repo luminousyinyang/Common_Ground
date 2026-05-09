@@ -37,6 +37,11 @@ const TERRITORY_INSET = {
   paddingY: 10
 };
 
+function dataScopeMenuLabel(option) {
+  if (option?.id === "both") return "Paris 2024 + Milano Cortina 2026";
+  return option?.shortLabel || option?.label || "Selected dataset";
+}
+
 function DiscoveredCheck({ x, y, scale }) {
   return (
     <g transform={`translate(${x} ${y}) scale(${scale})`} pointerEvents="none">
@@ -597,10 +602,12 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
                   <button
                     key={option.id}
                     role="menuitem"
+                    aria-label={`${dataScopeMenuLabel(option)} data view${option.description ? `: ${option.description}` : ""}`}
+                    title={option.description || option.label}
                     className={`map-filter-option${activeDataScope === option.id ? " is-active" : ""}`}
                     onClick={() => { onDataScopeChange(option.id); setFilterOpen(false); }}
                   >
-                    {option.label}
+                    {dataScopeMenuLabel(option)}
                   </button>
                 ))}
               </div>

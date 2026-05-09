@@ -620,17 +620,40 @@ function panelFeaturedSportList(panel, limit = 3) {
 
 function datasetLabelForCard(card) {
   const scopeId = card?.dataScopeId || "both";
-  if (scopeId === "paris2024") return "Paris 2024 dataset";
-  if (scopeId === "milanoCortina2026") return "Milano Cortina 2026 dataset";
-  if (scopeId === "both") return "combined Paris 2024 and Milano Cortina 2026 dataset";
-  return "selected Team USA dataset";
+  if (scopeId === "paris2024") return "Olympic Games Paris 2024 and Paralympic Games Paris 2024 dataset";
+  if (scopeId === "milanoCortina2026") return "Olympic Winter Games Milano Cortina 2026 and Paralympic Winter Games Milano Cortina 2026 dataset";
+  if (scopeId === "both") {
+    return "Olympic Games Paris 2024, Paralympic Games Paris 2024, Olympic Winter Games Milano Cortina 2026, and Paralympic Winter Games Milano Cortina 2026 dataset";
+  }
+  return "selected dataset";
+}
+
+function datasetLabelForSportMix(card, programLabel) {
+  const scopeId = card?.dataScopeId || "both";
+  const isParalympic = /^paralympic/i.test(String(programLabel || ""));
+  if (scopeId === "paris2024") {
+    return isParalympic
+      ? "Paralympic Games Paris 2024 dataset"
+      : "Olympic Games Paris 2024 dataset";
+  }
+  if (scopeId === "milanoCortina2026") {
+    return isParalympic
+      ? "Paralympic Winter Games Milano Cortina 2026 dataset"
+      : "Olympic Winter Games Milano Cortina 2026 dataset";
+  }
+  if (scopeId === "both") {
+    return isParalympic
+      ? "combined Paralympic Games Paris 2024 and Paralympic Winter Games Milano Cortina 2026 dataset"
+      : "combined Olympic Games Paris 2024 and Olympic Winter Games Milano Cortina 2026 dataset";
+  }
+  return "selected dataset";
 }
 
 function sportMixPreviewDetail(card, panel, programLabel) {
   const allSports = panelSportList(panel);
   const featuredSports = panelFeaturedSportList(panel);
   const stateName = card?.stateName || "This state";
-  const datasetLabel = datasetLabelForCard(card);
+  const datasetLabel = datasetLabelForSportMix(card, programLabel);
   if (!allSports.length) return `${panel?.sportFamily || "No sourced sport-family view"} appears in the ${datasetLabel}.`;
   if (allSports.length > featuredSports.length) {
     return `${stateName} includes ${allSports.length} ${programLabel} sports from the ${datasetLabel}. Featured examples: ${joinReadableList(featuredSports)}.`;
@@ -768,6 +791,18 @@ function complianceCheckBriefing(briefing, card) {
     if (pattern.test(text)) warnings.push(`Unsafe phrase pattern: ${pattern}`);
   }
 
+  const shorthandGamesText = text
+    .replace(/\bOlympic Games Paris 2024\b/gi, "")
+    .replace(/\bParalympic Games Paris 2024\b/gi, "")
+    .replace(/\bOlympic Winter Games Milano Cortina 2026\b/gi, "")
+    .replace(/\bParalympic Winter Games Milano Cortina 2026\b/gi, "");
+  if (/\bParis\s*2024\b/i.test(shorthandGamesText)) {
+    warnings.push("Use approved full Games reference instead of Paris 2024 shorthand.");
+  }
+  if (/\bMilano\s+Cortina\s*2026\b/i.test(shorthandGamesText)) {
+    warnings.push("Use approved full Games reference instead of Milano Cortina 2026 shorthand.");
+  }
+
   const requiredFields = ["stateSnapshot", "sportMix", "geographyLens", "whatToNotice", "surprisingConnection", "sharedStateSignal", "gameIntro"];
   for (const field of requiredFields) {
     if (typeof briefing[field] === "object") {
@@ -884,6 +919,7 @@ Use allSportTags as the complete selected-data-view sport list, but do not enume
 ${programDepthGuidance}
 If olympicPanel.cardBackCopy or paralympicPanel.cardBackCopy are present, use that Gemini card-back copy as supporting context, but do not simply repeat it.
 Do not expose internal implementation terms such as "row", "pipeline", "fallback", "template", "card image cue", "featured cue", "card lens", "sport tag", "sport tags", "raw data", "signal", "participation signal", "aggregate presence", or "athletic landscape".
+When referencing the source dataset, use the approved Games terminology from dataViewLabel. Never use shorthand such as "Paris 2024 dataset" or "Milano Cortina 2026 dataset."
 Do not use these weak or internal-sounding words and phrases: "backdrop", "frame", "framing", "could help fans discover", "state signal", "high signal", "medium signal", "low signal".
 Avoid overstatement words such as "strong", "dominant", "best", or "proves".
 Do not use athlete names, finish times, scores, rankings, medals, or claims that geography causes success.
@@ -921,6 +957,9 @@ ${JSON.stringify({
   climateSignal: card.climateSignal,
   terrainSignals: card.terrainSignals,
   hometownPresenceBucket: card.hometownPresenceBucket,
+  dataViewLabel: datasetLabelForCard(card),
+  olympicDataViewLabel: datasetLabelForSportMix(card, "Olympic"),
+  paralympicDataViewLabel: datasetLabelForSportMix(card, "Paralympic"),
   topHometownSignals: card.topHometownSignals || [],
   cardStory: stripRecordCounts(card.cardStory),
   sportConnection: {
@@ -942,8 +981,7 @@ ${JSON.stringify({
     topSportTags: (card.paralympicPanel?.topSportTags || []).map(displaySportName),
     sportTagCandidates: (card.paralympicPanel?.sportTagCandidates || []).map(normalizeCandidate),
     cardBackCopy: card.paralympicPanel?.cardBackCopy
-  },
-  sourceLabels: (card.sourceRefs || []).map((source) => source.label)
+  }
 }, null, 2)}`;
 }
 
@@ -966,6 +1004,7 @@ Exact counts are allowed only inside hometownAreas when copied from provided top
 Do not imply geography causes athletic outcomes.
 Use conditional wording such as "may suggest", "could help fans understand", "appears in the state view", and "could show how".
 Remove every word or phrase flagged by the validator. In particular, do not use any form of "guarantee", "frame", "framing", "backdrop", "signal", "row", "roster data", "athletic landscape", "dominant", "best", or "strong".
+Use approved Games terminology for source datasets, such as "Olympic Games Paris 2024" or "Paralympic Winter Games Milano Cortina 2026." Never use shorthand such as "Paris 2024 dataset" or "Milano Cortina 2026 dataset."
 Use "does not imply performance outcomes" instead of any sentence containing the word "guarantee".
 Use "could help fans understand" or "could show how" instead of "frame", "framing", or "backdrop".
 ${sharedSignalRepairGuidance}
@@ -989,6 +1028,9 @@ State context:
 ${JSON.stringify({
   stateCode: card.stateCode,
   stateName: card.stateName,
+  dataViewLabel: datasetLabelForCard(card),
+  olympicDataViewLabel: datasetLabelForSportMix(card, "Olympic"),
+  paralympicDataViewLabel: datasetLabelForSportMix(card, "Paralympic"),
   geographySnapshot: card.geographySnapshot,
   topHometownSignals: card.topHometownSignals || [],
   olympicSports: panelSportList(card.olympicPanel),
