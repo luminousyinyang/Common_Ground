@@ -38,7 +38,9 @@ const TERRITORY_INSET = {
 };
 
 function dataScopeMenuLabel(option) {
-  if (option?.id === "both") return "Paris 2024 + Milano Cortina 2026";
+  if (option?.id === "paris2024") return "Olympic & Paralympic Games Paris 2024";
+  if (option?.id === "milanoCortina2026") return "Olympic & Paralympic Winter Games Milano Cortina 2026";
+  if (option?.id === "both") return "Both";
   return option?.shortLabel || option?.label || "Selected dataset";
 }
 
