@@ -17,6 +17,7 @@ const PUBLIC_DIR = path.join(__dirname, "public");
 const DIST_DIR = path.join(__dirname, "dist");
 const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-3.1-pro-preview";
 const GAME_REFLECTION_MODEL = process.env.GAME_REFLECTION_MODEL || process.env.GEMINI_GAME_MODEL || "gemini-3.1-flash-lite";
+const BRIEFING_REPAIR_ATTEMPTS = 2;
 const GOOGLE_CLOUD_PROJECT = process.env.GOOGLE_CLOUD_PROJECT || process.env.GCLOUD_PROJECT || "";
 const GOOGLE_CLOUD_LOCATION = process.env.GOOGLE_CLOUD_LOCATION || "global";
 const VERTEX_SCOPE = "https://www.googleapis.com/auth/cloud-platform";
@@ -1452,32 +1453,49 @@ async function handleApi(req, res, url) {
       }
 
       const briefing = briefingWithCompleteSportMix(JSON.parse(normalizeJsonText(gemini.text)), card);
-      const validationWarnings = complianceCheckBriefing(briefing, card);
+      let validationWarnings = complianceCheckBriefing(briefing, card);
       if (validationWarnings.length > 0) {
-        try {
-          const repairedGemini = await callGemini(buildBriefingRepairPrompt(card, briefing, validationWarnings));
+        let rejectedBriefing = briefing;
+        let repairAttempts = 0;
+
+        while (repairAttempts < BRIEFING_REPAIR_ATTEMPTS && validationWarnings.length > 0) {
+          repairAttempts += 1;
+          let repairedGemini = null;
+          try {
+            repairedGemini = await callGemini(buildBriefingRepairPrompt(card, rejectedBriefing, validationWarnings));
+          } catch {
+            break;
+          }
+
           if (repairedGemini) {
-            const repairedBriefing = briefingWithCompleteSportMix(JSON.parse(normalizeJsonText(repairedGemini.text)), card);
-            const repairedWarnings = complianceCheckBriefing(repairedBriefing, card);
-            if (repairedWarnings.length === 0) {
+            try {
+              rejectedBriefing = briefingWithCompleteSportMix(JSON.parse(normalizeJsonText(repairedGemini.text)), card);
+              validationWarnings = complianceCheckBriefing(rejectedBriefing, card);
+            } catch {
+              break;
+            }
+
+            if (validationWarnings.length === 0) {
               sendJson(res, 200, {
                 source: "gemini-rewrite",
                 model: repairedGemini.model,
-                briefing: repairedBriefing,
-                complianceWarnings: repairedBriefing.complianceWarnings || []
+                briefing: rejectedBriefing,
+                complianceWarnings: rejectedBriefing.complianceWarnings || [],
+                repairAttempts
               });
               return true;
             }
+          } else {
+            break;
           }
-        } catch {
-          // Fall back below with the original local validation warnings.
         }
 
         sendJson(res, 200, {
           source: "fallback-after-validation",
           model: gemini.model,
           briefing: safeFallbackBriefing(card, "Gemini output was replaced after local compliance validation."),
-          complianceWarnings: validationWarnings
+          complianceWarnings: validationWarnings,
+          repairAttempts
         });
         return true;
       }
