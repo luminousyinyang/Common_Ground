@@ -1451,7 +1451,7 @@ html[data-surface="blacktop"] .card-art.is-compact .paralympic-art-panel .art-vi
   z-index: 100;
   display: grid;
   place-items: center;
-  padding: var(--space-4);
+  padding: var(--space-4) var(--space-4) max(var(--space-4), calc(var(--space-4) + env(safe-area-inset-bottom)));
   background: color-mix(in srgb, var(--ink) 42%, transparent);
   backdrop-filter: blur(16px) saturate(0.82);
 }
