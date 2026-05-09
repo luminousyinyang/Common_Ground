@@ -8,7 +8,7 @@
   --bg: #f2f3f5;
   --surface: #f7f8fa;
   --surface-soft: #e8eaed;
-  --muted: #667085;
+  --muted: #5e6a80;
   --navy: #07145f;
   --navy-2: #10217d;
   --line: rgba(7, 20, 95, 0.18);
@@ -22,7 +22,7 @@
   --green-dark: #0b1d74;
   --blue: #07145f;
   --ice: #dceafa;
-  --coral: #b96543;
+  --coral: #ae5c42;
   --sand: #f4d8c8;
   --gold: #9f5b31;
   --paper-accent-a: rgba(210, 225, 250, 0.38);
@@ -39,7 +39,7 @@
   --glass-line: color-mix(in srgb, var(--paper-2) 78%, transparent);
   --copy-strong: color-mix(in srgb, var(--ink) 82%, transparent);
   --copy: color-mix(in srgb, var(--ink) 74%, transparent);
-  --copy-soft: color-mix(in srgb, var(--ink) 58%, transparent);
+  --copy-soft: color-mix(in srgb, var(--ink) 68%, transparent);
   --solid-ink: var(--ink);
   --solid-ink-text: var(--ink-contrast);
   --map-high: #07145f;
@@ -82,7 +82,7 @@ html[data-theme="alpine-press"] {
   --paralympic-tint: #f1ddc8;
   --cta: #143c5c;
   --blue: #143c5c;
-  --coral: #ad704f;
+  --coral: #9e6146;
   --gold: #94643d;
   --paper-accent-a: rgba(220, 236, 247, 0.7);
   --paper-accent-b: rgba(241, 221, 200, 0.66);
@@ -112,7 +112,7 @@ html[data-theme="desert-indigo"] {
   --paralympic-tint: #f0d4c4;
   --cta: #31295f;
   --blue: #31295f;
-  --coral: #b06b4a;
+  --coral: #a05f42;
   --gold: #9a7340;
   --paper-accent-a: rgba(226, 228, 250, 0.66);
   --paper-accent-b: rgba(240, 212, 196, 0.66);
@@ -142,7 +142,7 @@ html[data-theme="midnight-sand"] {
   --paralympic-tint: #e8ddd6;
   --cta: #1c2e50;
   --blue: #1c2e50;
-  --coral: #a7653e;
+  --coral: #9d5e38;
   --gold: #8f6d35;
   --paper-accent-a: rgba(220, 212, 200, 0.40);
   --paper-accent-b: rgba(215, 205, 195, 0.32);

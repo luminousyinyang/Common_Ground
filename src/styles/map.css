@@ -239,11 +239,15 @@
   fill: var(--map-low);
   filter: drop-shadow(0 8px 18px color-mix(in srgb, #000000 16%, transparent));
   pointer-events: none;
-  stroke: var(--glass-line);
+  stroke: var(--line-strong);
   stroke-linejoin: round;
   stroke-width: 1.2;
   transition: fill 160ms ease, opacity 160ms ease, stroke 160ms ease;
   vector-effect: non-scaling-stroke;
+}
+
+html[data-surface="blacktop"] .territory-inset-shape {
+  stroke: rgba(245, 247, 255, 0.42);
 }
 
 .territory-inset.medium .territory-inset-shape {
