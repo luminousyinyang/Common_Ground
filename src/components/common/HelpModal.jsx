@@ -43,7 +43,7 @@ function HelpModal({ open, onClose }) {
               <div className="help-step-icon"><Icon name="map" size={20} strokeWidth={1.6} /></div>
               <div className="help-step-text">
                 <p className="help-step-title">Explore the map</p>
-                <p className="help-step-desc">Click any U.S. state to open its card and add it to your collection. Hover to preview the state name.</p>
+                <p className="help-step-desc">Click any Athlete Hub to open its card and add it to your collection. Hover to preview the hub name.</p>
               </div>
             </li>
             <li className="help-step">
@@ -57,14 +57,14 @@ function HelpModal({ open, onClose }) {
               <div className="help-step-icon"><Icon name="cards" size={20} strokeWidth={1.6} /></div>
               <div className="help-step-text">
                 <p className="help-step-title">Your collection</p>
-                <p className="help-step-desc">Head to the <strong>Collection</strong> tab to browse all the state cards you've discovered. Click a card to flip it and read the back.</p>
+                <p className="help-step-desc">Head to the <strong>Collection</strong> tab to browse all the sports cards you've discovered. Click a card to flip it and read the back.</p>
               </div>
             </li>
             <li className="help-step">
               <div className="help-step-icon"><Icon name="game" size={20} strokeWidth={1.6} /></div>
               <div className="help-step-text">
                 <p className="help-step-title">Fan skill challenges</p>
-                <p className="help-step-desc">Open any state card and tap <strong>Play Challenge</strong> or <strong>Fan Challenge</strong> on the back. Each challenge is a short mini-game inspired by that state's featured sport trait.</p>
+                <p className="help-step-desc">Open any Athlete Hub card and tap <strong>Play Challenge</strong> or <strong>Fan Challenge</strong> on the back. Each challenge is a short mini-game inspired by that hub's featured sport trait.</p>
               </div>
             </li>
             <li className="help-step">

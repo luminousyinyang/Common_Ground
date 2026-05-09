@@ -138,7 +138,7 @@ function SettingsPage({ settings, onUpdate, onResetCollection, onResetProgress, 
             <div className="settings-danger-row">
               <div>
                 <div className="settings-danger-label">Reset collection</div>
-                <div className="settings-danger-desc">Remove all discovered state cards</div>
+                <div className="settings-danger-desc">Remove all discovered sports cards</div>
               </div>
               <button
                 type="button"

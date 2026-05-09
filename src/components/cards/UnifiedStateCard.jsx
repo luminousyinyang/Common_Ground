@@ -41,7 +41,7 @@ function SourceMethodPanel({ refs }) {
     <section className="source-method-panel" aria-label="Sources and method">
       <span className="footer-panel-kicker">Sources & Method</span>
       <SourceList refs={refs} />
-      <p>Public Team USA athletes are deduplicated across imported rosters and grouped by hometown state and city. Gemini turns aggregate state, sport, and geography inputs into the state briefing and sport-lens notes.</p>
+      <p>Public Team USA athletes are deduplicated across imported rosters and grouped by hometown geography and city. Gemini turns aggregate hub, sport, and geography inputs into the hub briefing and sport-lens notes.</p>
     </section>
   );
 }
@@ -52,7 +52,7 @@ function lowerFirstCopy(value = "") {
 }
 
 function StateChallengePanel({ card, onOpenChallenge, isUnlocked }) {
-  const stateName = card?.stateName || "This state";
+  const stateName = card?.stateName || "This hub";
   const featuredPanels = featuredPanelsForCard(card);
   const isSinglePanel = featuredPanels.length === 1;
   const olympicCue = getPanelVisualCue(card?.olympicPanel);
@@ -61,13 +61,13 @@ function StateChallengePanel({ card, onOpenChallenge, isUnlocked }) {
   const onlyCue = onlyPanel ? getPanelVisualCue(onlyPanel) : "";
   const onlyProgram = onlyPanel?.program === "paralympic" ? "Paralympic" : "Olympic";
   const traitName = lowerFirstCopy(plainTraitHeadline(card));
-  const actionCopy = isUnlocked ? "Play anytime." : `Play to unlock the ${stateName} state card.`;
+  const actionCopy = isUnlocked ? "Play anytime." : `Play to unlock the ${stateName} Athlete Hub card.`;
   const challengeCopy = isSinglePanel
     ? `${actionCopy} This quick challenge is inspired by ${onlyCue}, the featured ${onlyProgram} sport on this card. Get a feel for its featured sport trait: ${traitName}.`
     : `${actionCopy} This quick challenge is inspired by ${olympicCue} and ${paralympicCue}, the featured sports on this card. Get a feel for their shared trait: ${traitName}.`;
 
   return (
-    <section className="state-challenge-panel" aria-label={`${stateName} state challenge`}>
+    <section className="state-challenge-panel" aria-label={`${stateName} hub challenge`}>
       <div className="state-challenge-copy">
         <span className="footer-panel-kicker">Fan Challenge</span>
         <p>{challengeCopy}</p>
@@ -79,7 +79,16 @@ function StateChallengePanel({ card, onOpenChallenge, isUnlocked }) {
   );
 }
 
-function SportPanel({ panel }) {
+function sportPanelQaLabel(card, key, label) {
+  if (key !== "stateConnection") return label;
+  return card?.stateCode === "VI" ? "Island connection" : label;
+}
+
+function geographyConnectionLabel(card) {
+  return card?.stateCode === "VI" ? "Island connection" : "State connection";
+}
+
+function SportPanel({ panel, card }) {
   const copy = getPanelBackCopyForDisplay(panel);
   const visualCue = copy.featuredCue || getPanelVisualCue(panel);
   const factChips = Array.isArray(copy.factChips) ? copy.factChips.filter(Boolean).slice(0, 4) : [];
@@ -98,7 +107,7 @@ function SportPanel({ panel }) {
         <div className="panel-qa-list">
           {qaRows.map(([key, label, value]) => (
             <div className="panel-qa-row" key={key}>
-              <span>{label}</span>
+              <span>{sportPanelQaLabel(card, key, label)}</span>
               <strong>{value}</strong>
             </div>
           ))}
@@ -177,7 +186,7 @@ function SportMixDialog({ stateName, groups, onClose }) {
 
 function SportMixSection({ card, value }) {
   const [showAll, setShowAll] = useState(false);
-  const stateName = card?.stateName || "This state";
+  const stateName = card?.stateName || "This hub";
   const olympicSports = panelSportList(card?.olympicPanel);
   const paralympicSports = panelSportList(card?.paralympicPanel);
   const olympicFeatured = panelFeaturedSportList(card?.olympicPanel);
@@ -228,7 +237,7 @@ function BriefingPanel({ payload, loading, onRefresh, compact = false, card }) {
       <section className={`briefing-panel ${compact ? "is-compact" : ""}`}>
         <div className="panel-heading-row">
           <div className="briefing-heading-copy">
-            <h3>Gemini State Briefing</h3>
+            <h3>Gemini Hub Briefing</h3>
             <p>Generated from aggregate public roster + geography inputs.</p>
           </div>
           <button className="ghost-button small" type="button" onClick={onRefresh}>Refresh</button>
@@ -243,7 +252,7 @@ function BriefingPanel({ payload, loading, onRefresh, compact = false, card }) {
     <section className={`briefing-panel ${compact ? "is-compact" : ""}`}>
       <div className="panel-heading-row">
         <div className="briefing-heading-copy">
-          <h3>Gemini State Briefing</h3>
+          <h3>Gemini Hub Briefing</h3>
           <p>Generated from aggregate public roster + geography inputs.</p>
         </div>
         <button className="ghost-button small" type="button" onClick={onRefresh}>Refresh</button>
@@ -432,7 +441,7 @@ function CompactCardBack({ card, briefing, onReadFullBriefing }) {
     <div className={`compact-back-shell ${hasMoreToScroll ? "has-more-scroll" : ""}`}>
       <div className="compact-card-back" ref={scrollRef}>
         <header className="compact-back-header">
-          <span>Common Ground State Card</span>
+          <span>Common Ground Athlete Hub Card</span>
           <h3>{card.stateName}</h3>
           <p>{themeName}</p>
         </header>
@@ -448,12 +457,12 @@ function CompactCardBack({ card, briefing, onReadFullBriefing }) {
         </section>
 
         <section className="compact-connection-block">
-          <span>{card.stateName} connection</span>
+          <span>{geographyConnectionLabel(card)}</span>
           <p>{compactStateConnection(card, briefing)}</p>
         </section>
 
         <button className="compact-read-more" type="button" onClick={onReadFullBriefing}>
-          Read full state briefing
+          Read full hub briefing
         </button>
       </div>
 
@@ -471,7 +480,7 @@ function StateSummary({ card }) {
   return (
     <section className="state-summary">
       <div>
-        <p className="eyebrow">Selected state</p>
+        <p className="eyebrow">Selected hub</p>
         <h2>{card.stateName}</h2>
       </div>
       <p>{card.geographySnapshot}</p>
@@ -658,7 +667,7 @@ function UnifiedStateCard({
           >
             <article
               className={frontClass}
-              aria-label={`${card.stateName} state card front`}
+              aria-label={`${card.stateName} Athlete Hub card front`}
               role="button"
               tabIndex={displayBack ? -1 : 0}
               onClick={toggleFlip}
@@ -667,25 +676,25 @@ function UnifiedStateCard({
               <CardArt card={card} />
             </article>
 
-            <article className={backClass} aria-label={`${card.stateName} state card details`}>
+            <article className={backClass} aria-label={`${card.stateName} Athlete Hub card details`}>
               {isBackExpanded ? (
                 <div className={`expanded-back-shell ${hasMoreFullBackScroll ? "has-more-scroll" : ""}`}>
                   <div className="card-back-scroll" ref={fullBackScrollRef}>
                     <div className="card-header">
-                      <p className="eyebrow">State-level insights</p>
+                      <p className="eyebrow">Athlete Hub insights</p>
                       <h3>{card.stateName}</h3>
                       <p>{card.geographySnapshot}</p>
                       <div className="metric-row compact-metrics">
-                      <span className="metric">State athletes <strong>{counts.total}</strong></span>
+                      <span className="metric">Hub athletes <strong>{counts.total}</strong></span>
                       <span className="metric">Olympic athletes <strong>{counts.olympic}</strong></span>
                       <span className="metric">Paralympic athletes <strong>{counts.paralympic}</strong></span>
                       </div>
-                    <p className="metric-row-note">Public Team USA athletes by hometown state, deduplicated across imported rosters and not a complete athlete census.</p>
+                    <p className="metric-row-note">Public Team USA athletes by hometown geography, deduplicated across imported rosters and not a complete athlete census.</p>
                     </div>
                     <HometownAreasCard card={card} payload={briefing} compact />
                     <FeaturedSportsIntro card={card} />
                     <div className={`program-panel-grid ${isSinglePanel ? "is-single-panel" : ""}`}>
-                      {displayPanels.map((panel) => <SportPanel key={panel.program} panel={panel} />)}
+                      {displayPanels.map((panel) => <SportPanel key={panel.program} panel={panel} card={card} />)}
                     </div>
                     <section className="trait-band">
                       <div className="trait-heading-copy">
@@ -700,7 +709,7 @@ function UnifiedStateCard({
                   </div>
 
                   {hasMoreFullBackScroll && (
-                    <button className="expanded-back-scroll-cue" type="button" aria-label="Scroll full state briefing" onClick={scrollFullBackBriefing}>
+                    <button className="expanded-back-scroll-cue" type="button" aria-label="Scroll full hub briefing" onClick={scrollFullBackBriefing}>
                       <Icon name="arrow-down" size={17} strokeWidth={2} />
                     </button>
                   )}

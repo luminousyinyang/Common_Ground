@@ -37,7 +37,7 @@ function MiniStateCard({ card, discovered, onSelect }) {
       type="button"
       onClick={discovered ? () => onSelect(card.stateCode) : undefined}
       disabled={!discovered}
-      aria-label={discovered ? `Open ${card.stateName} state insight card` : `${card.stateName} — not yet discovered`}
+      aria-label={discovered ? `Open ${card.stateName} Athlete Hub card` : `${card.stateName} — not yet discovered`}
     >
       <div className="mini-card-art-wrap">
         <CardArt card={card} compact />
@@ -70,15 +70,15 @@ function CollectionView({ states, discoveredCodes, onSelect, isLoggedIn, authLoa
         <div className="collection-gate">
           <div className="collection-gate-content">
             <span className="collection-gate-icon"><Icon name="cards" size={32} strokeWidth={1.3} /></span>
-            <h2 className="collection-gate-title">Save your state insights</h2>
-            <p className="collection-gate-body">Create an account to save discovered state cards, track your progress across available state cards, and return to your collection anytime.</p>
+            <h2 className="collection-gate-title">Save your Athlete Hub cards</h2>
+            <p className="collection-gate-body">Create an account to save discovered Athlete Hub cards, track your progress across available sports cards, and return to your collection anytime.</p>
             <button className="primary-button" type="button" onClick={onLogin}>Log in to Save Collection</button>
           </div>
           <div className="collection-gate-blur" aria-hidden="true">
             <div className="collection-header">
               <div>
-                <p className="eyebrow">State Insight Cards</p>
-                <h2>My State Insight Cards</h2>
+                <p className="eyebrow">Athlete Hub Cards</p>
+                <h2>My Athlete Hub Cards</h2>
               </div>
             </div>
             <div className="card-grid">
@@ -96,11 +96,11 @@ function CollectionView({ states, discoveredCodes, onSelect, isLoggedIn, authLoa
       <div className="collection-header">
         <div>
           <p className="eyebrow">Your collection</p>
-          <h2>My State Insight Cards</h2>
+          <h2>My Athlete Hub Cards</h2>
           <p className="safe-note">Browse what you've discovered, compare patterns, and complete your collection.</p>
         </div>
         <div className="collection-progress-stack">
-          <span className="collection-count">{allDiscovered.length} / {collectionStates.length}</span>
+          <span className="collection-count">{allDiscovered.length} / {collectionStates.length} sports cards discovered</span>
           <div className="collection-progress-track" aria-hidden="true">
             <div className="collection-progress-fill" style={{ width: `${progressPct}%` }} />
           </div>
@@ -130,7 +130,7 @@ function CollectionView({ states, discoveredCodes, onSelect, isLoggedIn, authLoa
       {previewStates.length > 0 && (
         <>
           <div className="section-divider" />
-          <p className="eyebrow muted-eyebrow">Not yet discovered — explore the map to unlock ({remaining} remaining)</p>
+          <p className="eyebrow muted-eyebrow">Not yet discovered — explore the map to unlock ({remaining} sports cards remaining)</p>
           <div className="card-grid">
             {previewStates.map((card) => (
               <MiniStateCard key={card.stateCode} card={card} discovered={false} onSelect={onSelect} />

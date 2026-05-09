@@ -525,7 +525,7 @@ function App() {
     </div>
   ) : (!dataset || !mapTopology || !geoTopology || !selectedCard) ? (
     <div className="load-state">
-      <p>Loading map and sourced state aggregates...</p>
+      <p>Loading map and sourced Athlete Hub aggregates...</p>
     </div>
   ) : null;
 
@@ -553,10 +553,10 @@ function App() {
                   <div className="section-heading">
                     <div>
                       <p className="eyebrow">Geography-powered fan discovery</p>
-                      <h2 id="mapTitle">State Atlas</h2>
+                      <h2 id="mapTitle">Athlete Hub Atlas</h2>
                     </div>
                   </div>
-                  <p className="safe-note">Explore aggregate Team USA athlete hometown and geography data by state. Darker states indicate higher hometown representation in the selected dataset.</p>
+                  <p className="safe-note">Explore aggregate Team USA athlete hometown and geography data by Athlete Hub. Darker hubs indicate higher hometown representation in the selected dataset.</p>
                   <StateMap
                     mapTopology={mapTopology}
                     features={features}

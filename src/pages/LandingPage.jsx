@@ -24,7 +24,7 @@ function LandingPage({ onNavigate, onLogin, onLogout, darkMode, onToggleDarkMode
             <img className="landing-hero-graphic" src="/assets/graphics/Hero Graphic.png" alt="" aria-hidden="true" />
             <div className="landing-hero-content">
               <p className="eyebrow landing-eyebrow">Team USA Discovery</p>
-              <h1 className="landing-hero-title">Explore Team USA by State</h1>
+              <h1 className="landing-hero-title">Explore Team USA Athlete Hubs</h1>
               <p className="landing-hero-body">Discover how public Team USA athlete hometown data, geography, climate, and community signals could help reveal regional patterns across the USA.</p>
               <div className="landing-cta-row">
                 <button className="primary-button" type="button" onClick={() => onNavigate("/map")}>Explore the Map</button>
@@ -43,17 +43,17 @@ function LandingPage({ onNavigate, onLogin, onLogout, darkMode, onToggleDarkMode
           <div className="landing-features-grid">
             <div className="landing-feature-card">
               <div className="landing-feature-img">
-                <img src="/assets/graphics/Interactive Map.png" alt="Interactive U.S. map showing state-level Team USA data" />
+                <img src="/assets/graphics/Interactive Map.png" alt="Interactive U.S. map showing Team USA Athlete Hub data" />
               </div>
               <h3>Interactive Map</h3>
-              <p>Click any state to explore aggregate hometown representation, sport presence, and regional geography signals.</p>
+              <p>Click any hub to explore aggregate hometown representation, sport presence, and regional geography signals.</p>
             </div>
             <div className="landing-feature-card">
               <div className="landing-feature-img">
-                <img src="/assets/graphics/State Cards.png" alt="State Insight Cards" />
+                <img src="/assets/graphics/State Cards.png" alt="Athlete Hub Cards" />
               </div>
-              <h3>State Insight Cards</h3>
-              <p>Unlock a card for each state with top cities, sport categories, and key public-data takeaways.</p>
+              <h3>Athlete Hub Cards</h3>
+              <p>Unlock a card for each hub with top cities, sport categories, and key public-data takeaways.</p>
             </div>
             <div className="landing-feature-card">
               <div className="landing-feature-img">
@@ -69,7 +69,7 @@ function LandingPage({ onNavigate, onLogin, onLogout, darkMode, onToggleDarkMode
       <section className="landing-cta2">
         <div className="landing-section-inner landing-cta2-inner">
           <h2 className="landing-cta2-title">Start Exploring Today</h2>
-          <p className="landing-cta2-body">No account required to explore. Select states on the map to reveal state insight cards and learn how regional patterns connect to Team USA sport presence.</p>
+          <p className="landing-cta2-body">No account required to explore. Select hubs on the map to reveal Athlete Hub cards and learn how regional patterns connect to Team USA sport presence.</p>
           <button className="primary-button" type="button" onClick={() => onNavigate("/map")}>Begin Exploring</button>
         </div>
       </section>

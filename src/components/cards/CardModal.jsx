@@ -38,11 +38,11 @@ function CardModal({
   }, [card.stateCode]);
 
   return (
-    <div className="card-modal-backdrop" role="dialog" aria-modal="true" aria-label={`${card.stateName} state insight card`}>
-      <button className="modal-scrim" type="button" aria-label="Close state card" onClick={onClose} />
+    <div className="card-modal-backdrop" role="dialog" aria-modal="true" aria-label={`${card.stateName} Athlete Hub card`}>
+      <button className="modal-scrim" type="button" aria-label="Close Athlete Hub card" onClick={onClose} />
       <div className={`card-modal-panel card-open-${openAnimation.id} card-interaction-${interaction.id} card-layout-${cardLayout.id} ${isBackExpanded ? "is-back-expanded" : ""}`}>
         <div className="modal-close-row">
-          <button className="modal-close-button" type="button" onClick={onClose} aria-label="Close state card" />
+          <button className="modal-close-button" type="button" onClick={onClose} aria-label="Close Athlete Hub card" />
         </div>
         <UnifiedStateCard
           card={card}

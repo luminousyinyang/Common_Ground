@@ -43,7 +43,7 @@ const ABSTRACT_CARD_THEME_NAMES = [
   "Heat Control",
   "City Timing",
   "Focus Lines",
-  "State Sync"
+  "Hub Sync"
 ];
 
 function generatedGameExperienceForCard(cardOrTrait) {
@@ -101,7 +101,7 @@ export function traitConnectionSentence(card, olympicCue, paralympicCue) {
     return `The featured sport trait is ${connectionTraitDescription(card)}. In ${cue}, that can mean ${example}.`;
   }
   if (featuredPanels.length === 0) {
-    return "This selected dataset does not have a featured sport trait for this state because no sourced sport appears on the card.";
+    return "This selected dataset does not have a featured sport trait for this hub because no sourced sport appears on the card.";
   }
   const olympicLabel = olympicCue || getPanelVisualCue(card?.olympicPanel) || "the Olympic sport";
   const paralympicLabel = paralympicCue || getPanelVisualCue(card?.paralympicPanel) || "the Paralympic sport";
@@ -190,8 +190,8 @@ export function fallbackBriefing(card, reason = "The Gemini backend is not avail
     model: "safe-fallback",
     briefing: {
       stateSnapshot: hasSinglePanel
-        ? `In the public aggregate Team USA state data, ${card.stateName} shows a sourced ${onlyProgram} sport list from the ${datasetLabelForCard(card)}, with a featured card example from ${onlyCue}. That does not mean geography causes outcomes; it gives fans a safer way to explore why that sport environment appears in this state view.`
-        : `In the public aggregate Team USA state data, ${card.stateName} shows Olympic and Paralympic sport lists from the ${datasetLabelForCard(card)}, with featured card examples from ${olympicCue} and ${paralympicCue}. That does not mean geography causes outcomes; it gives fans a safer way to explore why different sport environments appear in one state view.`,
+        ? `In the public aggregate Team USA Athlete Hub data, ${card.stateName} shows a sourced ${onlyProgram} sport list from the ${datasetLabelForCard(card)}, with a featured card example from ${onlyCue}. That does not mean geography causes outcomes; it gives fans a safer way to explore why that sport environment appears in this hub view.`
+        : `In the public aggregate Team USA Athlete Hub data, ${card.stateName} shows Olympic and Paralympic sport lists from the ${datasetLabelForCard(card)}, with featured card examples from ${olympicCue} and ${paralympicCue}. That does not mean geography causes outcomes; it gives fans a safer way to explore why different sport environments appear in one hub view.`,
       sportMix: [
         panelSportList(card.olympicPanel).length
           ? {
@@ -207,14 +207,14 @@ export function fallbackBriefing(card, reason = "The Gemini backend is not avail
           : null
       ].filter(Boolean),
       geographyLens: hasSinglePanel
-        ? `${card.geographySnapshot} could help fans understand why this sport environment appears in the aggregate state view.`
-        : `${card.geographySnapshot} could help fans understand why varied sport environments appear in this aggregate state view.`,
+        ? `${card.geographySnapshot} could help fans understand why this sport environment appears in the aggregate hub view.`
+        : `${card.geographySnapshot} could help fans understand why varied sport environments appear in this aggregate hub view.`,
       hometownAreas: formatHometownAreas(card.topHometownSignals),
       whatToNotice: hasSinglePanel
         ? `The useful fan read is the featured sport's viewing pattern: notice how ${sportTraitExample(onlyCue, onlyPanel)}. The card keeps the missing program side out of the featured panel instead of inventing a comparison.`
         : "The useful fan read is contrast: some sports emphasize spacing and quick decisions, while others emphasize rhythm, stillness, pacing, equipment, or transitions.",
       surprisingConnection: hasSinglePanel
-        ? `${onlyCue} can still open a broader state story; fans can watch how ${connectionTraitDescription(card)} shows up through one sourced featured sport.`
+        ? `${onlyCue} can still open a broader hub story; fans can watch how ${connectionTraitDescription(card)} shows up through one sourced featured sport.`
         : `${olympicCue} and ${paralympicCue} do not need to look alike to share a viewing idea; both can point fans toward control when timing, surface, or spacing changes.`,
       sharedStateSignal: traitConnectionSentence(card, olympicCue, paralympicCue),
       gameIntro: `Try a short fan challenge inspired by ${lowerFirst(plainTraitHeadline(card))}.`,
@@ -441,7 +441,7 @@ export function datasetLabelForSportMix(card, programLabel) {
 export function sportMixPreviewDetail(card, panel, programLabel) {
   const allSports = panelSportList(panel);
   const featuredSports = panelFeaturedSportList(panel);
-  const stateName = card?.stateName || "This state";
+  const stateName = card?.stateName || "This hub";
   const datasetLabel = datasetLabelForSportMix(card, programLabel);
   if (!allSports.length) return `${panel?.sportFamily || "No sourced sport-family view"} appears in the ${datasetLabel}.`;
   if (allSports.length > featuredSports.length) {
@@ -512,12 +512,12 @@ export function panelProgramLabel(panel) {
 
 export function featuredSportsIntro(card) {
   const featuredPanels = featuredPanelsForCard(card);
-  const stateName = card?.stateName || "this state";
+  const stateName = card?.stateName || "this hub";
 
   if (featuredPanels.length === 1) {
     const panel = featuredPanels[0];
     const cue = getPanelVisualCue(panel);
-    return `${cue} is the featured ${shortProgramName(panel.program)} sport lens for ${stateName}. The notes below explain how the sport works and how ${stateName}'s geography connects to the state story.`;
+    return `${cue} is the featured ${shortProgramName(panel.program)} sport lens for ${stateName}. The notes below explain how the sport works and how ${stateName}'s geography connects to the hub story.`;
   }
 
   if (featuredPanels.length === 0) {
@@ -526,15 +526,15 @@ export function featuredSportsIntro(card) {
 
   const olympicCue = getPanelVisualCue(card?.olympicPanel);
   const paralympicCue = getPanelVisualCue(card?.paralympicPanel);
-  return `${olympicCue} and ${paralympicCue} are the featured Olympic and Paralympic sport lenses for ${stateName}. The notes below explain how each sport works and how ${stateName}'s geography connects to the state story.`;
+  return `${olympicCue} and ${paralympicCue} are the featured Olympic and Paralympic sport lenses for ${stateName}. The notes below explain how each sport works and how ${stateName}'s geography connects to the hub story.`;
 }
 
 export function getPanelTopSportText(panel) {
-  if (panel?.aggregateSignal === "insufficient_data") return `No sourced public ${shortProgramName(panel?.program)} athlete signal is available for this state.`;
+  if (panel?.aggregateSignal === "insufficient_data") return `No sourced public ${shortProgramName(panel?.program)} athlete signal is available for this hub.`;
   const count = panelAthleteCount(panel);
   const familySignal = sportFamilySignalName(panel);
   const signalPrefix = familySignal ? `${familySignal} is present from ` : "";
-  return `${signalPrefix}${athleteCountLabel(count)}. This low-volume sport cue is shown as state context, not an athlete-level claim.`;
+  return `${signalPrefix}${athleteCountLabel(count)}. This low-volume sport cue is shown as hub context, not an athlete-level claim.`;
 }
 
 export function panelThemePhrase(panel) {
@@ -640,7 +640,7 @@ export function factChipsForSport(visualCue, panel) {
 export function moduleMixForSport(visualCue, panel) {
   const sport = String(visualCue || "").toLowerCase();
   const family = String(panel?.sportFamily || "").toLowerCase();
-  if (/water polo/.test(sport)) return ["Hidden Skill", "State Culture", "Watch Hook"];
+  if (/water polo/.test(sport)) return ["Hidden Skill", "Hub Culture", "Watch Hook"];
   if (/triathlon/.test(sport)) return ["Pace Shift", "Gear/Setup", "Broadcast Moment"];
   if (/skateboarding|gymnastics|climbing|surfing|equestrian|breaking/.test(sport)) return ["Hidden Skill", "Terrain/Environment Lens", "Watch Hook"];
   if (/cycling/.test(sport)) return ["Gear/Setup", "Pace Shift", "Terrain/Environment Lens"];
@@ -863,7 +863,7 @@ export function getGameExperience(card) {
       ? "Focus Window Challenge"
       : challengeType === "focus_hold"
         ? "Open Space Challenge"
-    : generatedGameName || `${GAME_TYPE_LABELS[challengeType] || "State Sync"} Challenge`;
+    : generatedGameName || `${GAME_TYPE_LABELS[challengeType] || "Hub Sync"} Challenge`;
   return {
     version: generated?.version,
     source: generated?.source || "deterministic-fallback",
@@ -906,7 +906,7 @@ export function gameBoardClass(baseClass, gameExperience) {
 export function briefingSections(briefing = {}) {
   if (briefing.stateSnapshot || briefing.whatToNotice || briefing.sharedStateSignal) {
     return [
-      ["State Snapshot", briefing.stateSnapshot],
+      ["Hub Snapshot", briefing.stateSnapshot],
       ["Sport Mix", briefing.sportMix],
       ["Geography Lens", briefing.geographyLens],
       ["What To Notice", briefing.whatToNotice],
@@ -916,7 +916,7 @@ export function briefingSections(briefing = {}) {
 
   if (briefing.stateScene || briefing.sportMix || briefing.whyInteresting) {
     return [
-      ["State Snapshot", briefing.stateScene],
+      ["Hub Snapshot", briefing.stateScene],
       ["Sport Mix", [briefing.sportMix?.olympic, briefing.sportMix?.paralympic].filter(Boolean)],
       ["Geography Lens", briefing.geographyLens],
       ["What To Notice", briefing.whyInteresting],
@@ -925,7 +925,7 @@ export function briefingSections(briefing = {}) {
   }
 
   return [
-    ["State Snapshot", briefing.summary],
+    ["Hub Snapshot", briefing.summary],
     ["Sport Mix", [
       briefing.olympicNarrative ? `Olympic side: ${briefing.olympicNarrative}` : "",
       briefing.paralympicNarrative ? `Paralympic side: ${briefing.paralympicNarrative}` : ""
@@ -999,11 +999,11 @@ export function compactStateConnection(card, briefing) {
   const featuredSignals = signals.length > 3 ? [signals[0], signals[1], signals.at(-1)] : signals.slice(0, 3);
   const readableGeography = joinReadableList(featuredSignals.map(sentenceCaseGeographySignal)) || card.geographySnapshot || "geography";
   const sportScope = hasSingleFeaturedPanel(card) ? "this sport environment appears" : "varied sport environments appear";
-  return compactSnippet(`${possessiveStateName(card.stateName)} ${readableGeography} could help fans understand why ${sportScope} in this state.`, 165);
+  return compactSnippet(`${possessiveStateName(card.stateName)} ${readableGeography} could help fans understand why ${sportScope} in this hub.`, 165);
 }
 
 function possessiveStateName(stateName) {
-  const name = String(stateName || "This state").trim();
+  const name = String(stateName || "This hub").trim();
   return /s$/i.test(name) ? `${name}'` : `${name}'s`;
 }
 

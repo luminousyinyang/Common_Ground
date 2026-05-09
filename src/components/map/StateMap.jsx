@@ -18,11 +18,11 @@ function SignalLegend() {
 function MapProgressBar({ discovered, total }) {
   const pct = total > 0 ? Math.round((discovered / total) * 100) : 0;
   return (
-    <div className="map-progress" aria-label={`${discovered} of ${total} states explored`}>
+    <div className="map-progress" aria-label={`${discovered} of ${total} sports cards discovered`}>
       <div className="map-progress-track" aria-hidden="true">
         <div className="map-progress-fill" style={{ width: `${pct}%` }} />
       </div>
-      <span>{discovered} / {total} states explored · {pct}%</span>
+      <span>{discovered} / {total} sports cards discovered · {pct}%</span>
     </div>
   );
 }
@@ -79,7 +79,7 @@ function RosterTooltip({ card, position }) {
 }
 
 function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCode, onSelect, discoveredCodes = new Set(), totalStates = 0, showCompleted = false, onToggleCompleted, dataScopeOptions = [], activeDataScope = "both", onDataScopeChange }) {
-  const [hint, setHint] = useState("Select or focus a state to preview Team USA athlete hometown counts and sport presence.");
+  const [hint, setHint] = useState("Select or focus an Athlete Hub to preview Team USA athlete hometown counts and sport presence.");
   const [hoverTip, setHoverTip] = useState(null);
   const [viewport, setViewport] = useState({ scale: 1, x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
@@ -295,12 +295,12 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
 
   function locateCurrentState() {
     if (!navigator.geolocation) {
-      setHint("Browser location is not available here. You can still choose a state from the picker.");
+      setHint("Browser location is not available here. You can still choose an Athlete Hub from the map.");
       return;
     }
 
     setIsLocating(true);
-    setHint("Requesting browser location. Coordinates stay in this local app and are only used to match a state boundary.");
+    setHint("Requesting browser location. Coordinates stay in this local app and are only used to match a geography boundary.");
     navigator.geolocation.getCurrentPosition(
       ({ coords }) => {
         const point = [coords.longitude, coords.latitude];
@@ -313,14 +313,14 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
           centerOnCode(matchedCode, 2.6);
           setHint(`${formatMapHint(matchedCard)} Located from browser coordinates.`);
         } else if (matchedCode) {
-          setHint(`Your browser location matched ${matchedFeature.properties.name}, but no state card is loaded for it yet.`);
+          setHint(`Your browser location matched ${matchedFeature.properties.name}, but no Athlete Hub card is loaded for it yet.`);
         } else {
           setHint("Could not match the browser location to a supported U.S. geography boundary.");
         }
         setIsLocating(false);
       },
       () => {
-        setHint("Location was not available. You can still zoom and select a state manually.");
+        setHint("Location was not available. You can still zoom and select an Athlete Hub manually.");
         setIsLocating(false);
       },
       { enableHighAccuracy: false, maximumAge: 300000, timeout: 10000 }
@@ -433,7 +433,7 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
           className={`state-map ${isDragging ? "is-dragging" : ""}`}
           viewBox="0 0 975 610"
           role="img"
-          aria-label="Interactive U.S. map. Select a state to explore Team USA athlete hometown patterns."
+          aria-label="Interactive U.S. map. Select an Athlete Hub to explore Team USA athlete hometown patterns."
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerEnd}
@@ -464,7 +464,7 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
                     data-state-code={code}
                     role={card && !noAthletes ? "button" : "img"}
                     tabIndex={card && !noAthletes ? 0 : -1}
-                    aria-label={card ? `${card.stateName} — ${noAthletes ? "no athletes in this dataset" : `${counts.olympic} Olympic, ${counts.paralympic} Paralympic athletes`}` : `${item.properties.name} — no state data loaded`}
+                    aria-label={card ? `${card.stateName} — ${noAthletes ? "no athletes in this dataset" : `${counts.olympic} Olympic, ${counts.paralympic} Paralympic athletes`}` : `${item.properties.name} — no Athlete Hub data loaded`}
                     onMouseEnter={(event) => describeFeature(item, event)}
                     onMouseMove={(event) => describeFeature(item, event)}
                     onFocus={() => describeFeature(item)}
@@ -581,7 +581,7 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
             className={`map-control-button${showCompleted ? " is-active" : ""}`}
             type="button"
             onClick={onToggleCompleted}
-            aria-label="Toggle show completed states"
+            aria-label="Toggle completed sports cards"
             aria-pressed={showCompleted}
             data-tooltip="Show completed"
           >

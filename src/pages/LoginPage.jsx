@@ -133,7 +133,7 @@ function LoginPage({
           <div className="login-left-overlay">
             <h2 className="login-left-title">Common Ground</h2>
             <p className="login-left-tagline">Discover. Collect. Connect.</p>
-            <p className="login-left-body">Track your state-card discoveries and save your collection across sessions. Build your complete 50-state card set.</p>
+            <p className="login-left-body">Track your sports-card discoveries and save your collection across sessions. Build your complete Athlete Hub card set.</p>
           </div>
         </div>
 
