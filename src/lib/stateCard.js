@@ -741,6 +741,16 @@ function getGeneratedPanelForCardProgram(card, program, manifest) {
   ) || null;
 }
 
+function generatedPanelArtUrl(panel) {
+  if (
+    panel?.url &&
+    !FRAMED_CARD_PANEL_PROMPT_VERSIONS.has(panel.promptVersion)
+  ) {
+    return panel.url;
+  }
+  return "";
+}
+
 function generatedGameExperienceSourceForCard(card, manifest) {
   const stateEntry = statePanelEntryForCard(card, manifest);
   const scopeId = card?.dataScopeId || "both";
@@ -753,13 +763,11 @@ function generatedGameExperienceSourceForCard(card, manifest) {
 }
 
 export function getPanelArtUrl(card, program, manifest) {
+  const currentPanel = card?.[`${program}Panel`];
+  if (currentPanel?.generatedArtUrl) return currentPanel.generatedArtUrl;
   const panel = getGeneratedPanelForCardProgram(card, program, manifest);
-  if (
-    panel?.url &&
-    !FRAMED_CARD_PANEL_PROMPT_VERSIONS.has(panel.promptVersion)
-  ) {
-    return panel.url;
-  }
+  const artUrl = generatedPanelArtUrl(panel);
+  if (artUrl) return artUrl;
   const theme = getCardTheme(card);
   return CARD_ART[theme] || CARD_ART.neutral;
 }
@@ -771,7 +779,8 @@ export function getGeneratedGameExperience(statePanels = {}) {
   return experience;
 }
 
-export function mergeGeneratedPanelData(card, manifest) {
+export function mergeGeneratedPanelData(card, manifest, options = {}) {
+  const { includeCopy = true } = options;
   const statePanels = statePanelEntryForCard(card, manifest);
   const scopedGameExperienceSource = generatedGameExperienceSourceForCard(card, manifest);
   if (!card || (!statePanels.olympic && !statePanels.paralympic && !statePanels.scopes && !statePanels.gameExperience && !statePanels.game)) return card;
@@ -783,9 +792,16 @@ export function mergeGeneratedPanelData(card, manifest) {
 
   function mergePanel(program, panel) {
     const generated = matchingPanels[program] || {};
+    const generatedArtUrl = generatedPanelArtUrl(generated);
+    const mergedPanel = {
+      ...panel,
+      generatedArtUrl: generatedArtUrl || panel.generatedArtUrl
+    };
+    if (!includeCopy) return mergedPanel;
+
     const hasCurrentCardCopy = generated.cardBackCopyVersion === CURRENT_CARD_BACK_COPY_VERSION && generated.cardBackCopy;
     return {
-      ...panel,
+      ...mergedPanel,
       cardBackCopy: hasCurrentCardCopy ? generated.cardBackCopy : panel.cardBackCopy,
       cardBackCopySource: hasCurrentCardCopy ? generated.cardBackCopySource : panel.cardBackCopySource,
       cardBackCopyModel: hasCurrentCardCopy ? generated.cardBackCopyModel : panel.cardBackCopyModel,

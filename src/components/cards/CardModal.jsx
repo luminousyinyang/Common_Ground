@@ -10,7 +10,6 @@ function CardModal({
   onRefreshBriefing,
   onOpenChallenge,
   onClose,
-  panelManifest,
   onCollect,
   isUnlocked,
   defaultFlipped = false,
@@ -54,7 +53,6 @@ function CardModal({
           onOpenChallenge={onOpenChallenge}
           isBackExpanded={isBackExpanded}
           onBackExpandedChange={setIsBackExpanded}
-          panelManifest={panelManifest}
           onCollect={onCollect}
           isUnlocked={isUnlocked}
           initialFlipped={defaultFlipped}

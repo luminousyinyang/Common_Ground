@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { EMPTY_CARD_PANEL_MANIFEST, PANEL_QA_ROWS } from "../../lib/constants.js";
+import { PANEL_QA_ROWS } from "../../lib/constants.js";
 import {
   briefingSections,
   compactPanelCopy,
@@ -496,7 +496,6 @@ function UnifiedStateCard({
   onOpenChallenge,
   isBackExpanded,
   onBackExpandedChange,
-  panelManifest = EMPTY_CARD_PANEL_MANIFEST,
   onCollect,
   isUnlocked,
   initialFlipped = false,
@@ -665,7 +664,7 @@ function UnifiedStateCard({
               onClick={toggleFlip}
               onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggleFlip(); } }}
             >
-              <CardArt card={card} panelManifest={panelManifest} />
+              <CardArt card={card} />
             </article>
 
             <article className={backClass} aria-label={`${card.stateName} state card details`}>

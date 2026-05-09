@@ -223,6 +223,7 @@ function App() {
   });
   const [collectionReadyUid, setCollectionReadyUid] = useState(null);
   const [collectionSyncError, setCollectionSyncError] = useState("");
+  const isAppRoute = location.pathname !== "/" && location.pathname !== "/login";
 
   useEffect(() => {
     try {
@@ -339,31 +340,49 @@ function App() {
     Promise.all([
       getJson("/data/state-cards.json"),
       getJson("/data/us-states-albers-10m.json"),
-      getJson("/data/us-states-geographic-10m.json"),
-      getJson("/assets/card-panels/manifest.json").catch(() => EMPTY_CARD_PANEL_MANIFEST)
+      getJson("/data/us-states-geographic-10m.json")
     ])
-      .then(([nextDataset, nextMapTopology, nextGeoTopology, nextPanelManifest]) => {
+      .then(([nextDataset, nextMapTopology, nextGeoTopology]) => {
         setDataset(nextDataset);
         setMapTopology(nextMapTopology);
         setGeoTopology(nextGeoTopology);
-        setPanelManifest(nextPanelManifest || EMPTY_CARD_PANEL_MANIFEST);
       })
       .catch((error) => setLoadError(error.message));
   }, []);
 
+  useEffect(() => {
+    if (!isAppRoute) return undefined;
+
+    let cancelled = false;
+    getJson("/assets/card-panels/manifest.json")
+      .then((nextPanelManifest) => {
+        if (!cancelled) setPanelManifest(nextPanelManifest || EMPTY_CARD_PANEL_MANIFEST);
+      })
+      .catch(() => {
+        if (!cancelled) setPanelManifest(EMPTY_CARD_PANEL_MANIFEST);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [isAppRoute]);
+
   const dataScopeOptions = useMemo(() => scopeOptionsForDataset(dataset), [dataset]);
   const activeDataScope = dataScopeOptions.some((option) => option.id === dataScope) ? dataScope : "both";
   const selectedDataScope = dataScopeOptions.find((option) => option.id === activeDataScope) || FALLBACK_DATA_SCOPES[0];
-  const scopedStates = useMemo(
+  const baseScopedStates = useMemo(
     () => (dataset?.states || []).map((card) => stateCardForScope(card, activeDataScope)),
     [dataset, activeDataScope]
   );
+  const scopedStates = useMemo(
+    () => baseScopedStates.map((card) => mergeGeneratedPanelData(card, panelManifest, { includeCopy: false })),
+    [baseScopedStates, panelManifest]
+  );
   const cardsByCode = useMemo(() => new Map(scopedStates.map((card) => [card.stateCode, card])), [scopedStates]);
-  const selectedBaseCard = cardsByCode.get(selectedCode) || scopedStates[0];
-  const activePanelManifest = panelManifest;
+  const selectedDisplayCard = cardsByCode.get(selectedCode) || scopedStates[0];
   const selectedCard = useMemo(
-    () => selectedBaseCard ? mergeGeneratedPanelData(selectedBaseCard, activePanelManifest) : selectedBaseCard,
-    [selectedBaseCard, activePanelManifest]
+    () => selectedDisplayCard ? mergeGeneratedPanelData(selectedDisplayCard, panelManifest) : selectedDisplayCard,
+    [selectedDisplayCard, panelManifest]
   );
   const cardExperience = useMemo(() => ({
     openAnimation: CARD_OPEN_PRESETS.find((p) => p.id === settings.cardOpenAnimation) || CARD_OPEN_PRESETS[0],
@@ -372,7 +391,6 @@ function App() {
   }), [settings.cardOpenAnimation, settings.cardInteraction, settings.cardLayout]);
   const selectedBriefingKey = briefingKeyForCard(selectedCard);
   const activeBriefing = briefing?.briefingKey === selectedBriefingKey ? briefing : null;
-  const isAppRoute = location.pathname !== "/" && location.pathname !== "/login";
   const isCardBriefingVisible = isAppRoute && isCardModalOpen;
 
   const globalSourceRefs = useMemo(() => (dataset?.meta?.sourceRefs || []).filter((ref) => ref.sourceType !== "teamusa"), [dataset]);
@@ -549,7 +567,6 @@ function App() {
                 states={scopedStates}
                 discoveredCodes={discoveredCodes}
                 onSelect={(code) => selectState(code)}
-                panelManifest={activePanelManifest}
                 isLoggedIn={isLoggedIn}
                 authLoading={authLoading}
                 collectionSyncError={collectionSyncError}
@@ -563,7 +580,6 @@ function App() {
                 card={selectedCard}
                 briefing={activeBriefing}
                 onReturn={() => { navigate("/map"); setIsCardModalOpen(true); }}
-                panelManifest={activePanelManifest}
                 onGameComplete={() => markPlayed(selectedCode)}
               />
             )
@@ -598,7 +614,6 @@ function App() {
             navigate("/challenge");
           }}
           onClose={() => setIsCardModalOpen(false)}
-          panelManifest={activePanelManifest}
           cardExperience={cardExperience}
           onCollect={() => markDiscovered(selectedCode)}
           isUnlocked={playedCodes.has(selectedCode)}

@@ -30,7 +30,7 @@ function hasCollectionData(card) {
   return getRosterCounts(card).total > 0;
 }
 
-function MiniStateCard({ card, discovered, onSelect, panelManifest }) {
+function MiniStateCard({ card, discovered, onSelect }) {
   return (
     <button
       className={`mini-card ${discovered ? "is-discovered" : "is-locked"}`}
@@ -40,7 +40,7 @@ function MiniStateCard({ card, discovered, onSelect, panelManifest }) {
       aria-label={discovered ? `Open ${card.stateName} state insight card` : `${card.stateName} — not yet discovered`}
     >
       <div className="mini-card-art-wrap">
-        <CardArt card={card} compact panelManifest={panelManifest} />
+        <CardArt card={card} compact />
         {!discovered && (
           <div className="mini-card-lock-overlay">
             <Icon name="lock" size={24} strokeWidth={1.8} />
@@ -51,7 +51,7 @@ function MiniStateCard({ card, discovered, onSelect, panelManifest }) {
   );
 }
 
-function CollectionView({ states, discoveredCodes, onSelect, panelManifest, isLoggedIn, authLoading, collectionSyncError, onLogin }) {
+function CollectionView({ states, discoveredCodes, onSelect, isLoggedIn, authLoading, collectionSyncError, onLogin }) {
   const [activeRegion, setActiveRegion] = useState("all");
   const collectionStates = useMemo(() => states.filter(hasCollectionData), [states]);
   const allDiscovered = collectionStates.filter((card) => discoveredCodes.has(card.stateCode));
@@ -83,7 +83,7 @@ function CollectionView({ states, discoveredCodes, onSelect, panelManifest, isLo
             </div>
             <div className="card-grid">
               {collectionStates.slice(0, 12).map((card) => (
-                <MiniStateCard key={card.stateCode} card={card} discovered={discoveredCodes.has(card.stateCode)} onSelect={() => {}} panelManifest={panelManifest} />
+                <MiniStateCard key={card.stateCode} card={card} discovered={discoveredCodes.has(card.stateCode)} onSelect={() => {}} />
               ))}
             </div>
           </div>
@@ -123,7 +123,7 @@ function CollectionView({ states, discoveredCodes, onSelect, panelManifest, isLo
 
       <div className="card-grid">
         {discoveredStates.map((card) => (
-          <MiniStateCard key={card.stateCode} card={card} discovered onSelect={onSelect} panelManifest={panelManifest} />
+          <MiniStateCard key={card.stateCode} card={card} discovered onSelect={onSelect} />
         ))}
       </div>
 
@@ -133,7 +133,7 @@ function CollectionView({ states, discoveredCodes, onSelect, panelManifest, isLo
           <p className="eyebrow muted-eyebrow">Not yet discovered — explore the map to unlock ({remaining} remaining)</p>
           <div className="card-grid">
             {previewStates.map((card) => (
-              <MiniStateCard key={card.stateCode} card={card} discovered={false} onSelect={onSelect} panelManifest={panelManifest} />
+              <MiniStateCard key={card.stateCode} card={card} discovered={false} onSelect={onSelect} />
             ))}
           </div>
         </>

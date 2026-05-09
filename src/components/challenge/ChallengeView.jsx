@@ -100,7 +100,7 @@ function ScoreHistoryPanel({ entries, currentRun, gameLabel, isLoggedIn, loading
   );
 }
 
-function ChallengeView({ card, briefing, onReturn, panelManifest, onGameComplete }) {
+function ChallengeView({ card, briefing, onReturn, onGameComplete }) {
   const { isLoggedIn } = useAuth();
   const [started, setStarted] = useState(false);
   const [result, setResult] = useState(null);
@@ -214,7 +214,7 @@ function ChallengeView({ card, briefing, onReturn, panelManifest, onGameComplete
       </div>
       <div className="challenge-grid">
         <section className="challenge-copy">
-          <CardArt card={card} compact panelManifest={panelManifest} />
+          <CardArt card={card} compact />
           <p className="state-pill">{card.stateName} - {GAME_TYPE_LABELS[challengeType] || challengeType.replaceAll("_", " ")}</p>
           <h3>{connectionHeadline}</h3>
           <p className="challenge-intro">{gameExperience.gameIntro || briefing?.briefing?.gameIntro || `Try a short fan challenge inspired by ${connectionHeadline.toLowerCase()}.`}</p>
