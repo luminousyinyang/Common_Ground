@@ -18,6 +18,10 @@ const DIST_DIR = path.join(__dirname, "dist");
 const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-3.1-pro-preview";
 const GAME_REFLECTION_MODEL = process.env.GAME_REFLECTION_MODEL || process.env.GEMINI_GAME_MODEL || "gemini-3.1-flash-lite";
 const BRIEFING_REPAIR_ATTEMPTS = 2;
+const VERTEX_REQUEST_MAX_ATTEMPTS = positiveInteger(process.env.VERTEX_API_MAX_ATTEMPTS || process.env.VERTEX_REQUEST_MAX_ATTEMPTS, 3);
+const VERTEX_REQUEST_TIMEOUT_MS = positiveInteger(process.env.VERTEX_API_TIMEOUT_MS || process.env.VERTEX_REQUEST_TIMEOUT_MS, 45000);
+const VERTEX_RETRY_DELAY_MS = positiveInteger(process.env.VERTEX_API_RETRY_DELAY_MS || process.env.VERTEX_RETRY_DELAY_MS, 750);
+const VERTEX_RATE_LIMIT_RETRY_DELAY_MS = positiveInteger(process.env.VERTEX_API_RATE_LIMIT_RETRY_DELAY_MS || process.env.VERTEX_RATE_LIMIT_RETRY_DELAY_MS, 2000);
 const GOOGLE_CLOUD_PROJECT = process.env.GOOGLE_CLOUD_PROJECT || process.env.GCLOUD_PROJECT || "";
 const GOOGLE_CLOUD_LOCATION = process.env.GOOGLE_CLOUD_LOCATION || "global";
 const VERTEX_SCOPE = "https://www.googleapis.com/auth/cloud-platform";
@@ -1127,9 +1131,9 @@ function vertexEndpoint(model = GEMINI_MODEL) {
   return `${host}/v1/projects/${encodeURIComponent(GOOGLE_CLOUD_PROJECT)}/locations/${encodeURIComponent(GOOGLE_CLOUD_LOCATION)}/publishers/google/models/${encodeURIComponent(model)}:generateContent`;
 }
 
-async function getVertexAccessToken() {
-  if (process.env.VERTEX_ACCESS_TOKEN) return process.env.VERTEX_ACCESS_TOKEN;
-  if (process.env.GOOGLE_OAUTH_ACCESS_TOKEN) return process.env.GOOGLE_OAUTH_ACCESS_TOKEN;
+async function getVertexAccessToken({ forceRefresh = false } = {}) {
+  if (!forceRefresh && process.env.VERTEX_ACCESS_TOKEN) return process.env.VERTEX_ACCESS_TOKEN;
+  if (!forceRefresh && process.env.GOOGLE_OAUTH_ACCESS_TOKEN) return process.env.GOOGLE_OAUTH_ACCESS_TOKEN;
 
   try {
     const response = await fetch(
@@ -1180,31 +1184,103 @@ async function getGcloudAccessToken() {
   return null;
 }
 
-async function callVertexGemini(prompt, model = GEMINI_MODEL) {
-  const token = await getVertexAccessToken();
-  const response = await fetch(vertexEndpoint(model), {
-    method: "POST",
-    headers: {
-      "Authorization": `Bearer ${token}`,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      contents: [{ role: "USER", parts: [{ text: prompt }] }],
-      generationConfig: {
-        responseMimeType: "application/json",
-        temperature: 0.35
-      }
-    })
-  });
+function positiveInteger(value, fallback) {
+  const number = Number(value);
+  return Number.isFinite(number) && number > 0 ? Math.floor(number) : fallback;
+}
 
-  if (!response.ok) {
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function vertexHttpError(status, errorText, attempt) {
+  const error = new Error(`Vertex Gemini request failed: ${status} ${errorText}`);
+  error.status = status;
+  error.vertexAttempts = attempt;
+  return error;
+}
+
+function withVertexAttempts(error, attempt) {
+  const normalized = error instanceof Error ? error : new Error(String(error));
+  normalized.vertexAttempts = attempt;
+  return normalized;
+}
+
+function isRetryableVertexError(status, errorText = "") {
+  return [408, 409, 429, 500, 502, 503, 504].includes(status)
+    || /\b(resource_exhausted|exhausted|temporar(?:y|ily)|unavailable|deadline|timeout)\b/i.test(errorText);
+}
+
+function retryAfterHeaderMs(response) {
+  const value = response?.headers?.get?.("retry-after");
+  if (!value) return 0;
+  const seconds = Number(value);
+  if (Number.isFinite(seconds) && seconds >= 0) return seconds * 1000;
+  const dateMs = Date.parse(value);
+  return Number.isFinite(dateMs) ? Math.max(0, dateMs - Date.now()) : 0;
+}
+
+function vertexRetryDelayMs(response, attempt) {
+  const retryAfter = retryAfterHeaderMs(response);
+  if (retryAfter) return retryAfter;
+  const baseDelay = response?.status === 429 ? VERTEX_RATE_LIMIT_RETRY_DELAY_MS : VERTEX_RETRY_DELAY_MS;
+  return baseDelay * attempt;
+}
+
+async function callVertexGemini(prompt, model = GEMINI_MODEL) {
+  let token = await getVertexAccessToken();
+  let lastError = null;
+
+  for (let attempt = 1; attempt <= VERTEX_REQUEST_MAX_ATTEMPTS; attempt += 1) {
+    let response;
+    try {
+      response = await fetch(vertexEndpoint(model), {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        },
+        signal: AbortSignal.timeout(VERTEX_REQUEST_TIMEOUT_MS),
+        body: JSON.stringify({
+          contents: [{ role: "USER", parts: [{ text: prompt }] }],
+          generationConfig: {
+            responseMimeType: "application/json",
+            temperature: 0.35
+          }
+        })
+      });
+    } catch (error) {
+      lastError = withVertexAttempts(error, attempt);
+      if (attempt >= VERTEX_REQUEST_MAX_ATTEMPTS) throw lastError;
+      await sleep(vertexRetryDelayMs(null, attempt));
+      continue;
+    }
+
+    if (response.ok) {
+      const data = await response.json();
+      const text = data.candidates?.[0]?.content?.parts?.map((part) => part.text || "").join("\n") || "";
+      return { text, model: `${model} via Vertex AI`, vertexAttempts: attempt };
+    }
+
     const errorText = await response.text();
-    throw new Error(`Vertex Gemini request failed: ${response.status} ${errorText}`);
+    lastError = vertexHttpError(response.status, errorText, attempt);
+    const shouldRefreshToken = response.status === 401;
+    const shouldRetry = attempt < VERTEX_REQUEST_MAX_ATTEMPTS && (
+      shouldRefreshToken || isRetryableVertexError(response.status, errorText)
+    );
+    if (!shouldRetry) throw lastError;
+
+    if (shouldRefreshToken) {
+      try {
+        token = await getVertexAccessToken({ forceRefresh: true });
+      } catch {
+        throw lastError;
+      }
+    }
+    await sleep(vertexRetryDelayMs(response, attempt));
   }
 
-  const data = await response.json();
-  const text = data.candidates?.[0]?.content?.parts?.map((part) => part.text || "").join("\n") || "";
-  return { text, model: `${model} via Vertex AI` };
+  throw lastError || new Error("Vertex Gemini request failed before a response was available.");
 }
 
 async function handleApi(req, res, url) {
@@ -1481,6 +1557,8 @@ async function handleApi(req, res, url) {
                 model: repairedGemini.model,
                 briefing: rejectedBriefing,
                 complianceWarnings: rejectedBriefing.complianceWarnings || [],
+                vertexAttempts: gemini.vertexAttempts,
+                repairVertexAttempts: repairedGemini.vertexAttempts,
                 repairAttempts
               });
               return true;
@@ -1495,6 +1573,7 @@ async function handleApi(req, res, url) {
           model: gemini.model,
           briefing: safeFallbackBriefing(card, "Gemini output was replaced after local compliance validation."),
           complianceWarnings: validationWarnings,
+          vertexAttempts: gemini.vertexAttempts,
           repairAttempts
         });
         return true;
@@ -1504,14 +1583,16 @@ async function handleApi(req, res, url) {
         source: "gemini",
         model: gemini.model,
         briefing,
-        complianceWarnings: briefing.complianceWarnings || []
+        complianceWarnings: briefing.complianceWarnings || [],
+        vertexAttempts: gemini.vertexAttempts
       });
     } catch (error) {
       sendJson(res, 200, {
         source: "fallback-after-error",
         model: GEMINI_MODEL,
         briefing: safeFallbackBriefing(card, error.message),
-        complianceWarnings: [error.message]
+        complianceWarnings: [error.message],
+        vertexAttempts: error.vertexAttempts
       });
     }
     return true;
