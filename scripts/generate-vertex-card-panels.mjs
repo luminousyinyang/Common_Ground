@@ -609,6 +609,40 @@ function programPanel(card, program) {
   return program === "paralympic" ? card.paralympicPanel : card.olympicPanel;
 }
 
+function isWinterSportPanel(panel) {
+  const text = [
+    panel?.primarySportTag,
+    panel?.sportFamily,
+    ...(panel?.topSportTags || []),
+    ...(panel?.sportTagCandidates || []).flatMap((candidate) => [
+      candidate?.sportTag,
+      candidate?.sportFamily,
+      ...(candidate?.themeTags || [])
+    ])
+  ].filter(Boolean).join(" ").toLowerCase();
+  return /\bwinter\b|ski|snow|ice|bobsled|luge|skeleton|speedskating|short track|figure skating|curling|hockey/.test(text);
+}
+
+function isWarmStateWithoutLocalWinterContext(card) {
+  const text = [
+    card?.geographySnapshot,
+    card?.climateSignal,
+    ...(card?.terrainSignals || [])
+  ].filter(Boolean).join(" ").toLowerCase();
+  const warmContext = /tropical|subtropical|warm|desert|heat|gulf|peninsula|island|coast|year-round water/.test(text);
+  const localWinterContext = /cold|snow|winter|ice|mountain|alpine|high elevation/.test(text);
+  return warmContext && !localWinterContext;
+}
+
+function stateConnectionGuidanceForCardBack(card, panel) {
+  if (!isWinterSportPanel(panel) || !isWarmStateWithoutLocalWinterContext(card)) return [];
+  return [
+    "This is a Winter Games sport for a warm or low-snow state. Treat the state geography as contrast and access context, not as the sport's local competition surface.",
+    "Do not imply that local beaches, paved paths, flat terrain, warm weather, or year-round outdoor culture are where the winter sport is practiced or where sport-specific technique is developed.",
+    "Use cautious wording about indoor ice rinks, specialized ice/snow/sliding venues, off-ice or dryland preparation, or travel to winter venues. Do not claim a specific athlete trained at a specific place."
+  ];
+}
+
 function displaySportName(value) {
   const text = String(value || "").trim();
   if (/^paratriathlon$/i.test(text)) return "Para triathlon";
@@ -959,7 +993,8 @@ function buildCardBackCopyPrompt(card, program) {
       geographyConnection: panel.geographyConnection,
       sourceLabels: (panel.sourceRefs || []).map((source) => source.label)
     },
-    sourceBackedSportFacts: sourceBackedSportFacts(featuredSport)
+    sourceBackedSportFacts: sourceBackedSportFacts(featuredSport),
+    stateConnectionGuidance: stateConnectionGuidanceForCardBack(card, panel)
   };
 
   return `You are Gemini writing the back of one collectible Common Ground state card panel.
@@ -970,6 +1005,7 @@ Do not mention exact athlete-record counts.
 Sport education is allowed: you may explain how scoring works, how winning works, rule clocks, field-of-play numbers, event distances, and whether the fastest total race time wins.
 Do not say geography causes, creates, produces, predicts, or guarantees athletic results.
 Use conditional fan-discovery language such as "may suggest", "could help fans understand", "appears associated with", or "could show how".
+For stateConnection, follow stateConnectionGuidance when provided. For Winter Games sports in warm, flat, coastal, or low-snow states, do not imply that local outdoor paths, beaches, warm weather, or flat terrain are the sport's practice surface or directly develop sport-specific technique. Use the state as contrast and mention specialized access such as indoor ice, dryland/off-ice preparation, or travel to winter venues only in cautious, non-athlete-specific language.
 Keep the copy useful for a sports fan, not a data engineer.
 Do not use internal words like "row", "pipeline", "raw data", "card image cue", "featured cue", "card lens", "sport tag", "sport tags", "template", "fallback", "signal", "participation signal", "aggregate presence", or "athletic landscape".
 Do not write "state signal", "high signal", "medium signal", "low signal", or "high aggregate presence" in final copy. Use the bucket only to decide whether the copy should be specific or generalized.
@@ -1163,7 +1199,7 @@ function validateCardBackCopy({ card, program, rawCopy }) {
       ? rawCopy.complianceWarnings.map((warning) => String(warning || "").trim()).filter(Boolean)
       : []
   };
-  const warnings = complianceCheckCardBackCopy(copy);
+  const warnings = complianceCheckCardBackCopy(copy, { card, panel });
   if (warnings.length) {
     throw new Error(`Gemini card-back copy failed validation: ${warnings.join("; ")}`);
   }
@@ -1192,7 +1228,7 @@ function deterministicCardBackCopy({ card, program }) {
     qaFacts: {
       howItWorks: `${featuredCue} is the featured ${programLabel.toLowerCase()} sport for this panel. New fans can start with the basic objective, the playing area, and how each round or race is decided.`,
       watchValue: "Watch spacing, timing, and control before each key moment. The fun is seeing small choices turn into quick changes in rhythm.",
-      stateConnection: `${card.stateName}'s ${stateContext} gives fans a local reading path for this sport. Look at terrain, weather, and sport access as context clues.`,
+      stateConnection: deterministicStateConnection({ card, panel, stateContext }),
       cardTrait: `${featuredCue} connects to ${traitName} through ${traitDescription}. The mini-game turns that idea into a simple fan challenge.`
     },
     factChips: [
@@ -1208,6 +1244,13 @@ function deterministicCardBackCopy({ card, program }) {
     ...validateCardBackCopy({ card, program, rawCopy }),
     copyGeneration: "deterministic"
   };
+}
+
+function deterministicStateConnection({ card, panel, stateContext }) {
+  if (isWinterSportPanel(panel) && isWarmStateWithoutLocalWinterContext(card)) {
+    return `${card.stateName}'s ${stateContext} contrasts with winter sport surfaces, so fans can read this card through specialized access, indoor ice or dryland preparation where relevant, and travel to winter venues.`;
+  }
+  return `${card.stateName}'s ${stateContext} gives fans a local reading path for this sport. Look at terrain, weather, and sport access as context clues.`;
 }
 
 function safeCardBackText(value, fallback) {
@@ -1286,7 +1329,7 @@ function normalizeFactChipsForSport(featuredCue, factChips) {
   return nextChips;
 }
 
-function complianceCheckCardBackCopy(copy) {
+function complianceCheckCardBackCopy(copy, context = {}) {
   const text = [
     copy.featuredCue,
     copy.subtitle,
@@ -1354,12 +1397,32 @@ function complianceCheckCardBackCopy(copy) {
     /\b\d+(\.\d+)?\s?(points?|percent|%)\b/i
   ];
   const warnings = bannedPatterns.filter((pattern) => pattern.test(text)).map((pattern) => `Unsafe phrase pattern: ${pattern}`);
+  warnings.push(...warmWinterStateConnectionWarnings(copy, context));
   for (const tag of copy.relatedTags || []) {
     if (tag && new RegExp(`\\b${escapeRegExp(tag)}\\b`, "i").test(text)) {
       warnings.push(`Featured panel mentioned non-featured sport tag: ${tag}`);
     }
   }
   return warnings.concat((copy.complianceWarnings || []).filter(Boolean));
+}
+
+function warmWinterStateConnectionWarnings(copy, { card, panel } = {}) {
+  if (!isWinterSportPanel(panel) || !isWarmStateWithoutLocalWinterContext(card)) return [];
+  const stateConnection = String(copy?.qaFacts?.stateConnection || "");
+  const warnings = [];
+  if (/\bpaved (coastal )?paths?\b/i.test(stateConnection)) {
+    warnings.push("Warm-state winter sport stateConnection should not use paved paths as the sport surface.");
+  }
+  if (/\bdevelop(s|ed)?\b.*\b(mechanics|technique|skills)\b/i.test(stateConnection) || /\btranslate(s|d)? to winter\b/i.test(stateConnection)) {
+    warnings.push("Warm-state winter sport stateConnection should not imply local geography develops sport-specific winter technique.");
+  }
+  if (
+    /\byear-round outdoor (culture|access)\b/i.test(stateConnection) &&
+    !/\bcontrast|indoor|dryland|off-ice|specialized|travel|winter venue|ice rink/i.test(stateConnection)
+  ) {
+    warnings.push("Warm-state winter sport stateConnection should treat outdoor access as contrast or preparation context.");
+  }
+  return warnings;
 }
 
 function escapeRegExp(value) {

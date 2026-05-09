@@ -572,6 +572,12 @@ function UnifiedStateCard({
     };
   }, [card.stateCode, isBackExpanded, briefing, briefingLoading]);
 
+  useEffect(() => {
+    if (!displayBack && !isBackExpanded) return;
+    if (briefing || briefingLoading) return;
+    onRefreshBriefing?.();
+  }, [displayBack, isBackExpanded, briefing, briefingLoading, onRefreshBriefing]);
+
   function toggleFlip() {
     if (flipPhase !== null) return;
     setFlipPhase("out");

@@ -15,7 +15,7 @@ The MVP dataset is generated from approved public TeamUSA.com roster sources and
 
 The ingest script lives at `scripts/ingest-teamusa-paris2024.mjs`.
 
-It filters public roster records to U.S. hometown-state or supported U.S. territory abbreviations, deduplicates athletes across imported rosters in memory, aggregates by geography and sport family, and strips individual-level fields before writing frontend data.
+It filters public roster records to U.S. hometown-state or supported U.S. territory abbreviations, filters athlete sport tags to the source Games season, deduplicates athletes across imported rosters in memory, aggregates by geography and sport family, and strips individual-level fields before writing frontend data.
 
 The expanded card briefing can also show top city-level hometown areas when the public TeamUSA.com hometown city field has enough aggregate support for that state. These are labeled as public athletes, not a complete athlete census.
 

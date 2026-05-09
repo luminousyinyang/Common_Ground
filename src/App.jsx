@@ -192,6 +192,7 @@ function App() {
 
   const [dataset, setDataset] = useState(null);
   const briefingRequestRef = useRef(0);
+  const briefingAbortRef = useRef(null);
   const [helpOpen, setHelpOpen] = useState(false);
   const [mapTopology, setMapTopology] = useState(null);
   const [geoTopology, setGeoTopology] = useState(null);
@@ -371,6 +372,8 @@ function App() {
   }), [settings.cardOpenAnimation, settings.cardInteraction, settings.cardLayout]);
   const selectedBriefingKey = briefingKeyForCard(selectedCard);
   const activeBriefing = briefing?.briefingKey === selectedBriefingKey ? briefing : null;
+  const isAppRoute = location.pathname !== "/" && location.pathname !== "/login";
+  const isCardBriefingVisible = isAppRoute && isCardModalOpen;
 
   const globalSourceRefs = useMemo(() => (dataset?.meta?.sourceRefs || []).filter((ref) => ref.sourceType !== "teamusa"), [dataset]);
   const sourceRefs = selectedCard && dataset ? uniqueSourceRefs([...(selectedCard.sourceRefs || []), ...globalSourceRefs]) : [];
@@ -399,27 +402,39 @@ function App() {
     if (!card) return;
     const requestId = briefingRequestRef.current + 1;
     briefingRequestRef.current = requestId;
+    briefingAbortRef.current?.abort();
+    const controller = new AbortController();
+    briefingAbortRef.current = controller;
     setBriefingLoading(true);
     setBriefing(null);
     try {
       const payload = await getJson("/api/gemini/state-briefing", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ stateSyncCardJson: card })
+        body: JSON.stringify({ stateSyncCardJson: card }),
+        signal: controller.signal
       });
       if (requestId !== briefingRequestRef.current) return;
       setBriefing(briefingPayloadForCard(payload, card));
     } catch (error) {
+      if (error?.name === "AbortError") return;
       if (requestId !== briefingRequestRef.current) return;
       setBriefing(briefingPayloadForCard(fallbackBriefing(card, error.message), card));
     } finally {
-      if (requestId === briefingRequestRef.current) setBriefingLoading(false);
+      if (requestId === briefingRequestRef.current) {
+        setBriefingLoading(false);
+        briefingAbortRef.current = null;
+      }
     }
   }
 
   useEffect(() => {
-    if (selectedCard) refreshBriefing(selectedCard);
-  }, [selectedCard]);
+    if (isCardBriefingVisible) return;
+    briefingRequestRef.current += 1;
+    briefingAbortRef.current?.abort();
+    briefingAbortRef.current = null;
+    setBriefingLoading(false);
+  }, [isCardBriefingVisible, selectedBriefingKey]);
 
   function markDiscovered(code) {
     setDiscoveredCodes((current) => {
@@ -469,8 +484,6 @@ function App() {
     isLoggedIn,
     user
   };
-
-  const isAppRoute = location.pathname !== "/" && location.pathname !== "/login";
 
   const appGuard = loadError ? (
     <div className="load-state">

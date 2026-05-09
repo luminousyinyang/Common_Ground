@@ -23,6 +23,7 @@ const ROSTER_SOURCES = [
     label: "TeamUSA.com Paris 2024 Olympic roster",
     url: SOURCE_URLS.paris2024Olympic,
     contentTag: "Olympic Games Paris 2024, Qualified",
+    season: "Summer",
     limit: 700
   },
   {
@@ -33,6 +34,7 @@ const ROSTER_SOURCES = [
     label: "TeamUSA.com Paris 2024 Paralympic roster",
     url: SOURCE_URLS.paris2024Paralympic,
     contentTag: "Paralympic Games Paris 2024, Qualified",
+    season: "Summer",
     limit: 400
   },
   {
@@ -43,6 +45,7 @@ const ROSTER_SOURCES = [
     label: "TeamUSA.com Milano Cortina 2026 Olympic roster",
     url: SOURCE_URLS.milanoCortina2026Olympic,
     contentTag: "Olympic Winter Games Milano Cortina 2026, Qualified",
+    season: "Winter",
     limit: 300
   },
   {
@@ -53,6 +56,7 @@ const ROSTER_SOURCES = [
     label: "TeamUSA.com Milano Cortina 2026 Paralympic roster",
     url: SOURCE_URLS.milanoCortina2026Paralympic,
     contentTag: "Paralympic Winter Games Milano Cortina 2026, Qualified",
+    season: "Winter",
     limit: 150
   }
 ];
@@ -349,7 +353,10 @@ function ingestEntries(aggregate, entries, source, excludedStateCodes, blankStat
     const city = normalizeCityName(athlete?.bio?.quick_facts?.hometown?.city);
     if (city && firstStateProgramAppearance) incrementHometownArea(programAggregate.hometownAreas, city, program);
 
-    const sportTitles = unique((athlete.sport || []).map((sport) => sport?.title).filter(Boolean));
+    const sportTitles = unique((athlete.sport || [])
+      .filter((sport) => sportMatchesSourceSeason(sport, source))
+      .map((sport) => sport?.title)
+      .filter(Boolean));
     for (const title of sportTitles) {
       const sportKey = `${athleteKey}::${normalizeSportKey(title)}`;
       if (programAggregate.sportKeys.has(sportKey)) continue;
@@ -358,6 +365,12 @@ function ingestEntries(aggregate, entries, source, excludedStateCodes, blankStat
       increment(programAggregate.families, sportFamilyFor(title));
     }
   }
+}
+
+function sportMatchesSourceSeason(sport, source) {
+  const expectedSeason = String(source?.season || "").trim().toLowerCase();
+  const sportSeason = String(sport?.season || "").trim().toLowerCase();
+  return !expectedSeason || !sportSeason || sportSeason === expectedSeason;
 }
 
 function athleteDedupeKey(athlete) {
@@ -469,7 +482,7 @@ function buildDataset({ aggregate, scopeAggregates = {}, retrievedAt, rosterPayl
       aggregationPolicy: "The build script deduplicates athletes across imported TeamUSA.com roster sources in memory, then strips athlete names, profile URLs, images, biographies, medals, finish placements, and other individual-level fields before writing frontend data. State cards display aggregate public Team USA athlete counts only where needed for fan context.",
       hometownAreaPolicy: `Top hometown areas are city-level aggregate public athlete counts only, require at least ${HOMETOWN_SIGNAL_MINIMUM} public athlete${HOMETOWN_SIGNAL_MINIMUM === 1 ? "" : "s"}, and do not expose athlete names, profiles, images, or individual records.`,
       bucketPolicy: "Combined state bucket: insufficient data = 0 sourced public athletes, low = 1-4, medium = 5-19, high = 20+. Low-volume program panels may show a fallback sport cue when public athletes exist; stronger featured sport signals have 3+ sourced public athletes.",
-      coverageNote: "Only TeamUSA.com Paris 2024 and Milano Cortina 2026 roster records with a U.S. state or supported U.S. territory abbreviation in the public hometown state field are used for cards. Unsupported or blank geography values are excluded from card output.",
+      coverageNote: "Only TeamUSA.com Paris 2024 and Milano Cortina 2026 roster records with a U.S. state or supported U.S. territory abbreviation in the public hometown state field are used for cards. Sport tags are filtered to the source Games season so Paris views count Summer sports and Milano Cortina views count Winter sports. Unsupported or blank geography values are excluded from card output.",
       excludedStateCodes,
       blankStateProgramBuckets,
       excludedRowsByProgram,

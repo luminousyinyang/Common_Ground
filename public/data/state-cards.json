@@ -29917,18 +29917,17 @@
             "program": "paralympic",
             "label": "Paralympic Sport Family",
             "sourceAthleteCount": 11,
-            "sportFamily": "Endurance / Winter Equipment",
+            "sportFamily": "Endurance / Pace Control",
             "aggregateSignal": "high",
-            "primarySportTag": "Para Nordic Skiing",
+            "primarySportTag": "Para-Rowing",
             "topSportTags": [
               "Para Swimming",
               "Wheelchair Basketball",
-              "Para Nordic Skiing"
+              "Para Table Tennis"
             ],
             "allSportTags": [
               "Para Swimming",
               "Wheelchair Basketball",
-              "Para Nordic Skiing",
               "Para Table Tennis",
               "Para Track and Field",
               "Para-Rowing",
@@ -29961,25 +29960,9 @@
                 ]
               },
               {
-                "sportTag": "Para Nordic Skiing",
-                "recordCount": 1,
-                "rank": 3,
-                "bucket": "low",
-                "sportFamily": "Endurance / Winter Equipment",
-                "themeTags": [
-                  "adaptive",
-                  "endurance",
-                  "equipment",
-                  "outdoor",
-                  "pace",
-                  "rhythm",
-                  "winter"
-                ]
-              },
-              {
                 "sportTag": "Para Table Tennis",
                 "recordCount": 1,
-                "rank": 4,
+                "rank": 3,
                 "bucket": "low",
                 "sportFamily": "Precision / Focus",
                 "themeTags": [
@@ -29992,7 +29975,7 @@
               {
                 "sportTag": "Para Track and Field",
                 "recordCount": 1,
-                "rank": 5,
+                "rank": 4,
                 "bucket": "low",
                 "sportFamily": "Endurance / Pace Control",
                 "themeTags": [
@@ -30006,7 +29989,7 @@
               {
                 "sportTag": "Para-Rowing",
                 "recordCount": 1,
-                "rank": 6,
+                "rank": 5,
                 "bucket": "low",
                 "sportFamily": "Endurance / Pace Control",
                 "themeTags": [
@@ -30021,7 +30004,7 @@
               {
                 "sportTag": "Sitting Volleyball",
                 "recordCount": 1,
-                "rank": 7,
+                "rank": 6,
                 "bucket": "low",
                 "sportFamily": "Team / Spatial Awareness",
                 "themeTags": [
@@ -30032,7 +30015,7 @@
               {
                 "sportTag": "Wheelchair Rugby",
                 "recordCount": 1,
-                "rank": 8,
+                "rank": 7,
                 "bucket": "low",
                 "sportFamily": "Team / Spatial Awareness",
                 "themeTags": [
@@ -30043,7 +30026,7 @@
               }
             ],
             "geographyConnection": "Upper Midwest lakes, cold winters, forests and plains, ice and snow season could help fans frame the state's Paralympic sport-family presence without implying geography causes outcomes.",
-            "geminiNote": "Public roster tags in this panel include Para Swimming, Wheelchair Basketball, and Para Nordic Skiing; the state context may suggest a fan discovery lens, not a performance claim.",
+            "geminiNote": "Public roster tags in this panel include Para Swimming, Wheelchair Basketball, and Para Table Tennis; the state context may suggest a fan discovery lens, not a performance claim.",
             "sourceRefs": [
               {
                 "id": "paris2024Paralympic",
@@ -30057,7 +30040,7 @@
               }
             ],
             "featuredSportRecordCount": 1,
-            "featuredSportRank": 3,
+            "featuredSportRank": 5,
             "featuredSportBucket": "low"
           },
           "sharedTrait": {
@@ -30066,7 +30049,7 @@
             "challengeType": "cadence_keeper"
           },
           "cardStory": {
-            "themeName": "Rhythm and pacing",
+            "themeName": "Rhythm in changing conditions",
             "geographySignal": [
               "Upper Midwest Lakes",
               "Cold Winters",
@@ -30089,19 +30072,18 @@
             },
             "paralympicFeatured": {
               "program": "paralympic",
-              "sportTag": "Para Nordic Skiing",
-              "sportFamily": "Endurance / Winter Equipment",
+              "sportTag": "Para-Rowing",
+              "sportFamily": "Endurance / Pace Control",
               "recordCount": 1,
-              "rank": 3,
+              "rank": 5,
               "bucket": "low",
               "themeTags": [
                 "adaptive",
                 "endurance",
-                "equipment",
                 "outdoor",
                 "pace",
                 "rhythm",
-                "winter"
+                "water"
               ]
             },
             "sharedTrait": {
@@ -30111,7 +30093,7 @@
             },
             "fanChallengeName": "Rhythm Shift Challenge",
             "pairingPolicy": "sourced_coherent",
-            "pairingScore": 68.2,
+            "pairingScore": 65.6,
             "gameExperience": {
               "version": "common-ground-game-experience-v3-shared-trait-examples",
               "source": "deterministic-diversity-pass",
