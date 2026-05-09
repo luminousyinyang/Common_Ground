@@ -933,10 +933,32 @@ export function briefingSections(briefing = {}) {
   ].filter(([, value]) => Array.isArray(value) ? value.length : String(value || "").trim());
 }
 
+const SENTENCE_SAFE_ABBREVIATIONS = [
+  /\bU\.S\.A\./g,
+  /\bU\.S\./g,
+  /\bD\.C\./g
+];
+
+const SENTENCE_ABBREVIATION_DOT = "__CG_SENTENCE_DOT__";
+
+function protectSentenceAbbreviations(value) {
+  return SENTENCE_SAFE_ABBREVIATIONS.reduce(
+    (text, pattern) => text.replace(pattern, (match) => match.replace(/\./g, SENTENCE_ABBREVIATION_DOT)),
+    value
+  );
+}
+
+function restoreSentenceAbbreviations(value) {
+  return String(value || "").replaceAll(SENTENCE_ABBREVIATION_DOT, ".");
+}
+
 export function compactSentences(value, maxSentences = 2) {
   const text = String(value || "").replace(/\s+/g, " ").trim();
   if (!text) return "";
-  const sentences = text.match(/[^.!?]+[.!?]+|[^.!?]+$/g)?.map((item) => item.trim()).filter(Boolean) || [text];
+  const protectedText = protectSentenceAbbreviations(text);
+  const sentences = protectedText.match(/[^.!?]+[.!?]+|[^.!?]+$/g)
+    ?.map((item) => restoreSentenceAbbreviations(item.trim()))
+    .filter(Boolean) || [text];
   return sentences.slice(0, maxSentences).join(" ");
 }
 
