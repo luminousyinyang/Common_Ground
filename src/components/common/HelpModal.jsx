@@ -61,6 +61,13 @@ function HelpModal({ open, onClose }) {
               </div>
             </li>
             <li className="help-step">
+              <div className="help-step-icon"><Icon name="game" size={20} strokeWidth={1.6} /></div>
+              <div className="help-step-text">
+                <p className="help-step-title">Fan skill challenges</p>
+                <p className="help-step-desc">Open any state card and tap <strong>Play Challenge</strong> or <strong>Fan Challenge</strong> on the back. Each challenge is a short mini-game inspired by that state's featured sport trait.</p>
+              </div>
+            </li>
+            <li className="help-step">
               <div className="help-step-icon"><Icon name="settings" size={20} strokeWidth={1.6} /></div>
               <div className="help-step-text">
                 <p className="help-step-title">Settings & accessibility</p>

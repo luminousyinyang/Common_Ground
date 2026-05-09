@@ -2206,3 +2206,37 @@ html[data-reduce-motion="1"] .card-modal-panel.card-interaction-foil-sweep .spor
 html[data-reduce-motion="1"] .card-modal-panel.card-interaction-case-shine .sports-card-face::after {
   animation: none !important;
 }
+
+/* ── Mobile: fixed-size card modal with vertical scroll ── */
+@media (max-width: 600px) {
+  /* Lock expanded panel to a consistent size — no width or height changes */
+  .card-modal-panel.is-back-expanded,
+  .card-modal-panel.card-layout-floating-card.is-back-expanded,
+  .card-modal-panel.card-layout-wide-back.is-back-expanded {
+    width: min(460px, calc(100vw - 32px));
+    height: calc(100svh - 80px);
+    max-height: calc(100svh - 80px);
+    overflow: hidden;
+  }
+
+  /* Remove nested container appearance — panel border is the only outer shell */
+  .card-modal-panel.is-back-expanded .card-back-scroll,
+  .card-modal-panel.card-layout-wide-back.is-back-expanded .card-back-scroll {
+    border: none;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+    padding: var(--space-2) var(--space-1);
+    max-height: calc(100svh - 210px);
+  }
+
+  /* Stack program panels vertically on mobile */
+  .card-modal-panel.is-back-expanded .program-panel-grid {
+    flex-direction: column;
+  }
+
+  .card-modal-panel.is-back-expanded .program-panel-grid > .panel:first-child {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+}
