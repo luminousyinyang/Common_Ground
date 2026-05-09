@@ -431,12 +431,10 @@ main {
 
 .safe-note {
   margin: var(--space-3) 0;
-  border-left: 4px solid var(--ink);
-  border-radius: 0 12px 12px 0;
-  padding: 9px 12px;
   color: var(--copy-strong);
-  background: var(--glass-faint);
+  background: transparent;
   font-size: 0.9rem;
+  font-style: italic;
   line-height: 1.5;
 }
 
