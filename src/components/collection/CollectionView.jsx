@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Icon from "../common/Icon.jsx";
 import CardArt from "../cards/CardArt.jsx";
 import { getRosterCounts } from "../../lib/stateCard.js";
@@ -54,12 +54,21 @@ function MiniStateCard({ card, discovered, onSelect }) {
 function CollectionView({ states, discoveredCodes, onSelect, isLoggedIn, authLoading, collectionSyncError, onLogin }) {
   const [activeRegion, setActiveRegion] = useState("all");
   const collectionStates = useMemo(() => states.filter(hasCollectionData), [states]);
+  const availableRegions = useMemo(
+    () => REGIONS.filter((region) => region.id === "all" || filterByRegion(collectionStates, region.id).length > 0),
+    [collectionStates]
+  );
+  const effectiveRegion = availableRegions.some((region) => region.id === activeRegion) ? activeRegion : "all";
   const allDiscovered = collectionStates.filter((card) => discoveredCodes.has(card.stateCode));
   const allUndiscovered = collectionStates.filter((card) => !discoveredCodes.has(card.stateCode));
-  const discoveredStates = filterByRegion(allDiscovered, activeRegion);
-  const previewStates = filterByRegion(allUndiscovered, activeRegion);
+  const discoveredStates = filterByRegion(allDiscovered, effectiveRegion);
+  const previewStates = filterByRegion(allUndiscovered, effectiveRegion);
   const remaining = allUndiscovered.length;
   const progressPct = collectionStates.length ? Math.round((allDiscovered.length / collectionStates.length) * 100) : 0;
+
+  useEffect(() => {
+    if (effectiveRegion !== activeRegion) setActiveRegion(effectiveRegion);
+  }, [activeRegion, effectiveRegion]);
 
   return (
     <section className="collection-view">
@@ -108,13 +117,13 @@ function CollectionView({ states, discoveredCodes, onSelect, isLoggedIn, authLoa
       </div>
 
       <div className="collection-filter-row" role="group" aria-label="Filter by region">
-        {REGIONS.map((region) => (
+        {availableRegions.map((region) => (
           <button
             key={region.id}
             type="button"
-            className={`filter-tag${activeRegion === region.id ? " is-active" : ""}`}
+            className={`filter-tag${effectiveRegion === region.id ? " is-active" : ""}`}
             onClick={() => setActiveRegion(region.id)}
-            aria-pressed={activeRegion === region.id}
+            aria-pressed={effectiveRegion === region.id}
           >
             {region.label}
           </button>

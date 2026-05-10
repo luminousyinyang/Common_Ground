@@ -7,6 +7,7 @@ import {
   CARD_OPEN_PRESETS,
   CARD_INTERACTION_PRESETS,
   CARD_LAYOUT_PRESETS,
+  DISABLED_STATE_CODES,
   EMPTY_CARD_PANEL_MANIFEST,
   FIPS_TO_CODE
 } from "./lib/constants.js";
@@ -56,7 +57,7 @@ const DATA_SCOPE_STORAGE_KEY = "common-ground-data-scope";
 
 function normalizeStateCode(value = "") {
   const code = String(value || "").trim().toUpperCase();
-  return /^[A-Z]{2}$/.test(code) ? code : "";
+  return /^[A-Z]{2}$/.test(code) && !DISABLED_STATE_CODES.has(code) ? code : "";
 }
 
 function readStoredValue(key, fallback = "") {
@@ -101,6 +102,10 @@ function stateCardForScope(card, scopeId) {
     ...stripNestedScopes(scopedCard),
     dataScopeId: scopeId
   };
+}
+
+function isEnabledStateCard(card) {
+  return card?.stateCode && !DISABLED_STATE_CODES.has(card.stateCode);
 }
 
 function briefingKeyForCard(card) {
@@ -371,7 +376,9 @@ function App() {
   const activeDataScope = dataScopeOptions.some((option) => option.id === dataScope) ? dataScope : "both";
   const selectedDataScope = dataScopeOptions.find((option) => option.id === activeDataScope) || FALLBACK_DATA_SCOPES[0];
   const baseScopedStates = useMemo(
-    () => (dataset?.states || []).map((card) => stateCardForScope(card, activeDataScope)),
+    () => (dataset?.states || [])
+      .filter(isEnabledStateCard)
+      .map((card) => stateCardForScope(card, activeDataScope)),
     [dataset, activeDataScope]
   );
   const scopedStates = useMemo(
@@ -379,6 +386,10 @@ function App() {
     [baseScopedStates, panelManifest]
   );
   const cardsByCode = useMemo(() => new Map(scopedStates.map((card) => [card.stateCode, card])), [scopedStates]);
+  const visibleDiscoveredCodes = useMemo(
+    () => new Set([...discoveredCodes].filter((code) => cardsByCode.has(code))),
+    [cardsByCode, discoveredCodes]
+  );
   const selectedDisplayCard = cardsByCode.get(selectedCode) || scopedStates[0];
   const selectedCard = useMemo(
     () => selectedDisplayCard ? mergeGeneratedPanelData(selectedDisplayCard, panelManifest) : selectedDisplayCard,
@@ -455,6 +466,7 @@ function App() {
   }, [isCardBriefingVisible, selectedBriefingKey]);
 
   function markDiscovered(code) {
+    if (!cardsByCode.has(code)) return;
     setDiscoveredCodes((current) => {
       const next = new Set(current);
       next.add(code);
@@ -463,6 +475,7 @@ function App() {
   }
 
   function markPlayed(code) {
+    if (!cardsByCode.has(code)) return;
     setPlayedCodes((current) => {
       const next = new Set(current);
       next.add(code);
@@ -564,7 +577,7 @@ function App() {
                     cardsByCode={cardsByCode}
                     selectedCode={selectedCode}
                     onSelect={selectState}
-                    discoveredCodes={discoveredCodes}
+                    discoveredCodes={visibleDiscoveredCodes}
                     totalStates={scopedStates.length}
                     showCompleted={showCompleted}
                     onToggleCompleted={() => setShowCompleted((c) => !c)}
@@ -580,7 +593,7 @@ function App() {
             appGuard || (
               <CollectionView
                 states={scopedStates}
-                discoveredCodes={discoveredCodes}
+                discoveredCodes={visibleDiscoveredCodes}
                 onSelect={(code) => selectState(code)}
                 isLoggedIn={isLoggedIn}
                 authLoading={authLoading}

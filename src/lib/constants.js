@@ -53,6 +53,9 @@ export const FIPS_TO_CODE = {
   "78": "VI"
 };
 
+// Keep generated territory data available, but hide disabled codes from app surfaces.
+export const DISABLED_STATE_CODES = new Set(["VI"]);
+
 export const VIEW_LABELS = {
   explorer: "Map Explorer",
   collection: "My Sport Cards",
