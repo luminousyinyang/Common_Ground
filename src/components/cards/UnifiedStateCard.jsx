@@ -284,23 +284,47 @@ function HometownAreaRow({ area }) {
   );
 }
 
+const FOCUSABLE_SELECTORS = 'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
+
 function HometownAreasDialog({ stateName, areas, onClose }) {
+  const panelRef = useRef(null);
+  const returnFocusRef = useRef(typeof document !== "undefined" ? document.activeElement : null);
+
+  useEffect(() => {
+    const returnTo = returnFocusRef.current;
+    const first = panelRef.current?.querySelector(FOCUSABLE_SELECTORS);
+    (first || panelRef.current)?.focus();
+    return () => { returnTo?.focus?.(); };
+  }, []);
+
   useEffect(() => {
     function onKey(event) {
-      if (event.key === "Escape") onClose();
+      if (event.key === "Escape") { onClose(); return; }
+      if (event.key !== "Tab") return;
+      const panel = panelRef.current;
+      if (!panel) return;
+      const focusable = Array.from(panel.querySelectorAll(FOCUSABLE_SELECTORS));
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey) {
+        if (document.activeElement === first) { event.preventDefault(); last.focus(); }
+      } else {
+        if (document.activeElement === last) { event.preventDefault(); first.focus(); }
+      }
     }
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
   }, [onClose]);
 
   return createPortal(
-    <div className="hometown-area-dialog-backdrop" role="dialog" aria-modal="true" aria-label={`${stateName} hometown areas`}>
+    <div className="hometown-area-dialog-backdrop" role="dialog" aria-modal="true" aria-labelledby="hometown-dialog-heading">
       <button className="hometown-area-dialog-scrim" type="button" aria-label="Close hometown areas" onClick={onClose} />
-      <section className="hometown-area-dialog-panel">
+      <section className="hometown-area-dialog-panel" ref={panelRef} tabIndex={-1}>
         <div className="hometown-area-dialog-heading">
           <div>
             <p className="eyebrow">Team USA roster view</p>
-            <h3>{stateName} Athlete Hometowns</h3>
+            <h3 id="hometown-dialog-heading">{stateName} Athlete Hometowns</h3>
           </div>
           <button className="modal-close-button" type="button" onClick={onClose} aria-label="Close hometown areas" />
         </div>

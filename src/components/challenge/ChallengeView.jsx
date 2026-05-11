@@ -222,10 +222,10 @@ function ChallengeView({ card, briefing, onReturn, onGameComplete }) {
           {!started && <button className="primary-button wide" type="button" onClick={start}>{result ? "Try Again" : "Start Challenge"}</button>}
         </section>
         <section className="game-surface">
-          {!started && !result && <div className="game-status">Press start when you are ready.</div>}
+          {!started && !result && <div className="game-status" role="status">Press start when you are ready.</div>}
           {started && <ChallengeGame challengeType={challengeType} card={card} onResult={onResult} gameExperience={gameExperience} />}
           {result && (
-            <div className="game-result">
+            <div className="game-result" role="status" aria-live="polite">
               <p><strong>Personal result:</strong> {result.summary}</p>
               {result.metrics?.length ? (
                 <dl className="game-result-metrics">

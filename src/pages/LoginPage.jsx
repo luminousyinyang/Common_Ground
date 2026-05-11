@@ -140,21 +140,21 @@ function LoginPage({
         <div className="login-right">
           <div className="login-form-wrap">
             <div className="login-tabs" role="tablist">
-              <button ref={loginTabRef} className={`login-tab ${tab === "login" ? "is-active" : ""}`} type="button" role="tab" aria-selected={tab === "login"} onClick={() => setTab("login")}>Login</button>
-              <button ref={createTabRef} className={`login-tab ${tab === "create" ? "is-active" : ""}`} type="button" role="tab" aria-selected={tab === "create"} onClick={() => setTab("create")}>Create Account</button>
+              <button ref={loginTabRef} className={`login-tab ${tab === "login" ? "is-active" : ""}`} type="button" role="tab" aria-selected={tab === "login"} aria-controls="login-panel" id="login-tab" onClick={() => setTab("login")}>Login</button>
+              <button ref={createTabRef} className={`login-tab ${tab === "create" ? "is-active" : ""}`} type="button" role="tab" aria-selected={tab === "create"} aria-controls="create-panel" id="create-tab" onClick={() => setTab("create")}>Create Account</button>
               {indicator.width > 0 && (
                 <div className="login-tab-indicator" style={{ width: indicator.width, transform: `translateX(${indicator.left}px)` }} aria-hidden="true" />
               )}
             </div>
 
             {tab === "login" && (
-              <form className="login-form" onSubmit={handleSubmit}>
+              <form id="login-panel" role="tabpanel" aria-labelledby="login-tab" className="login-form" onSubmit={handleSubmit}>
                 <div className="login-form-header">
                   <h3>Welcome back</h3>
                   <p>Sign in to save your collection</p>
                 </div>
-                {activeError && <p className="login-message is-error">{activeError}</p>}
-                {notice && <p className="login-message is-success">{notice}</p>}
+                {activeError && <p className="login-message is-error" role="alert">{activeError}</p>}
+                {notice && <p className="login-message is-success" role="status">{notice}</p>}
                 <label className="login-field">
                   <span>Email</span>
                   <input className="login-input" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" autoComplete="email" required />
@@ -177,13 +177,13 @@ function LoginPage({
             )}
 
             {tab === "create" && (
-              <form className="login-form" onSubmit={handleSubmit}>
+              <form id="create-panel" role="tabpanel" aria-labelledby="create-tab" className="login-form" onSubmit={handleSubmit}>
                 <div className="login-form-header">
                   <h3>Create your account</h3>
                   <p>Start tracking your discoveries</p>
                 </div>
-                {activeError && <p className="login-message is-error">{activeError}</p>}
-                {notice && <p className="login-message is-success">{notice}</p>}
+                {activeError && <p className="login-message is-error" role="alert">{activeError}</p>}
+                {notice && <p className="login-message is-success" role="status">{notice}</p>}
                 <div className="login-name-row">
                   <label className="login-field">
                     <span>First name</span>

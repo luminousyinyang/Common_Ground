@@ -525,6 +525,8 @@ export default function StarPath({ card, onResult }) {
   return (
     <canvas
       ref={canvasRef}
+      role="img"
+      aria-label="Star path challenge game canvas"
       style={{ width: "100%", height: "100%", display: "block", touchAction: "none" }}
     />
   );

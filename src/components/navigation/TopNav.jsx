@@ -2,6 +2,8 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Icon from "../common/Icon.jsx";
 
+const FOCUSABLE_SEL = 'a[href],button:not([disabled]),input:not([disabled]),[tabindex]:not([tabindex="-1"])';
+
 function displayNameForUser(user) {
   return user?.name || user?.email || "Signed in";
 }
@@ -23,6 +25,8 @@ function TopNav({ onNavigate, onLogin, onLogout, darkMode, onToggleDarkMode, onO
   const dragRef = useRef({ active: false, startX: 0, startView: null });
   const accountMenuRef = useRef(null);
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
+  const mobileMenuRef = useRef(null);
+  const hamburgerRef = useRef(null);
 
   const isAppPage = pathname === "/map" || pathname === "/collection" || pathname === "/challenge" || pathname === "/methodology" || pathname === "/settings";
   const isTabPage = pathname === "/map" || pathname === "/collection";
@@ -80,12 +84,37 @@ function TopNav({ onNavigate, onLogin, onLogout, darkMode, onToggleDarkMode, onO
 
   function closeMenu() {
     setMenuOpen(false);
-    setTimeout(() => setMenuMounted(false), CLOSE_MS);
+    setTimeout(() => { setMenuMounted(false); hamburgerRef.current?.focus(); }, CLOSE_MS);
   }
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
+  }, [menuOpen]);
+
+  // Focus trap for mobile menu
+  useEffect(() => {
+    if (!menuOpen || !mobileMenuRef.current) return undefined;
+    const menu = mobileMenuRef.current;
+    const firstFocusable = menu.querySelector(FOCUSABLE_SEL);
+    firstFocusable?.focus();
+
+    function onKeyDown(event) {
+      if (event.key === "Escape") { closeMenu(); hamburgerRef.current?.focus(); return; }
+      if (event.key !== "Tab") return;
+      const focusable = Array.from(menu.querySelectorAll(FOCUSABLE_SEL));
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey) {
+        if (document.activeElement === first) { event.preventDefault(); last.focus(); }
+      } else {
+        if (document.activeElement === last) { event.preventDefault(); first.focus(); }
+      }
+    }
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [menuOpen]);
 
   useEffect(() => {
@@ -158,6 +187,7 @@ function TopNav({ onNavigate, onLogin, onLogout, darkMode, onToggleDarkMode, onO
               ref={mapTabRef}
               className={`top-nav-tab ${pathname === "/map" ? "is-active" : ""}`}
               type="button"
+              aria-current={pathname === "/map" ? "page" : undefined}
               onClick={() => onNavigate("/map")}
             >
               <Icon name="map" size={15} />
@@ -167,6 +197,7 @@ function TopNav({ onNavigate, onLogin, onLogout, darkMode, onToggleDarkMode, onO
               ref={collTabRef}
               className={`top-nav-tab ${pathname === "/collection" ? "is-active" : ""}`}
               type="button"
+              aria-current={pathname === "/collection" ? "page" : undefined}
               onClick={() => onNavigate("/collection")}
             >
               <Icon name="cards" size={15} />
@@ -218,6 +249,7 @@ function TopNav({ onNavigate, onLogin, onLogout, darkMode, onToggleDarkMode, onO
             )}
           </div>
           <button
+            ref={hamburgerRef}
             className={`hamburger-btn${menuOpen ? " is-open" : ""}`}
             type="button"
             onClick={menuOpen ? closeMenu : openMenu}
@@ -235,6 +267,7 @@ function TopNav({ onNavigate, onLogin, onLogout, darkMode, onToggleDarkMode, onO
       {menuMounted && (
         <div
           id="mobile-menu"
+          ref={mobileMenuRef}
           className={`mobile-menu-overlay${menuOpen ? " is-open" : ""}`}
           role="dialog"
           aria-modal="true"
@@ -253,6 +286,7 @@ function TopNav({ onNavigate, onLogin, onLogout, darkMode, onToggleDarkMode, onO
             <button
               className={`mobile-menu-link${pathname === "/" ? " is-active" : ""}`}
               type="button"
+              aria-current={pathname === "/" ? "page" : undefined}
               onClick={() => go("/")}
               style={{ "--i": 0 }}
             >
@@ -262,6 +296,7 @@ function TopNav({ onNavigate, onLogin, onLogout, darkMode, onToggleDarkMode, onO
             <button
               className={`mobile-menu-link${pathname === "/map" ? " is-active" : ""}`}
               type="button"
+              aria-current={pathname === "/map" ? "page" : undefined}
               onClick={() => go("/map")}
               style={{ "--i": 1 }}
             >
@@ -271,6 +306,7 @@ function TopNav({ onNavigate, onLogin, onLogout, darkMode, onToggleDarkMode, onO
             <button
               className={`mobile-menu-link${pathname === "/collection" ? " is-active" : ""}`}
               type="button"
+              aria-current={pathname === "/collection" ? "page" : undefined}
               onClick={() => go("/collection")}
               style={{ "--i": 2 }}
             >
@@ -280,6 +316,7 @@ function TopNav({ onNavigate, onLogin, onLogout, darkMode, onToggleDarkMode, onO
             <button
               className={`mobile-menu-link${pathname === "/settings" ? " is-active" : ""}`}
               type="button"
+              aria-current={pathname === "/settings" ? "page" : undefined}
               onClick={() => go("/settings")}
               style={{ "--i": 3 }}
             >

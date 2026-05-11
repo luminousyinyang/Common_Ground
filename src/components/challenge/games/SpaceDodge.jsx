@@ -353,6 +353,8 @@ export default function SpaceDodge({ card, onResult }) {
   return (
     <canvas
       ref={canvasRef}
+      role="img"
+      aria-label="Space dodge challenge game canvas"
       style={{ width: "100%", height: "100%", display: "block", cursor: "none" }}
     />
   );

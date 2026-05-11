@@ -326,6 +326,18 @@ html[data-surface="blacktop"] .landing-cta2 {
   transition: color 120ms ease;
 }
 
+.landing-footer-brand:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+.landing-footer-link:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+  color: var(--ink);
+}
+
 @media (hover: hover) {
   .landing-hero-content .ghost-button:hover svg {
     animation: bounce-down 900ms ease-in-out infinite;

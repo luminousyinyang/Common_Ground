@@ -527,6 +527,8 @@ export default function GridMemory({ card, onResult }) {
   return (
     <canvas
       ref={canvasRef}
+      role="img"
+      aria-label="Grid memory challenge game canvas"
       style={{ width: "100%", height: "100%", display: "block" }}
     />
   );

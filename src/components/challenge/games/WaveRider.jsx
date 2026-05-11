@@ -420,6 +420,8 @@ export default function WaveRider({ card, onResult }) {
   return (
     <canvas
       ref={canvasRef}
+      role="img"
+      aria-label="Wave rhythm challenge game canvas"
       style={{ width: "100%", height: "100%", display: "block" }}
     />
   );

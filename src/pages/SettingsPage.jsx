@@ -13,7 +13,7 @@ function userInitial(user) {
 
 function ToggleRow({ label, description, checked, onChange }) {
   return (
-    <label className="settings-toggle-row">
+    <div className="settings-toggle-row">
       <div className="settings-toggle-info">
         <span className="settings-toggle-label">{label}</span>
         {description && <span className="settings-toggle-desc">{description}</span>}
@@ -22,12 +22,13 @@ function ToggleRow({ label, description, checked, onChange }) {
         type="button"
         role="switch"
         aria-checked={checked}
+        aria-label={label}
         className={`settings-toggle${checked ? " is-on" : ""}`}
-        onClick={(e) => { e.preventDefault(); onChange(!checked); }}
+        onClick={() => onChange(!checked)}
       >
-        <span className="settings-toggle-thumb" />
+        <span className="settings-toggle-thumb" aria-hidden="true" />
       </button>
-    </label>
+    </div>
   );
 }
 
@@ -163,7 +164,7 @@ function SettingsPage({ settings, onUpdate, onResetCollection, onResetProgress, 
                 {resetBusy === "progress" ? "Resetting..." : resetConfirm === "progress" ? "Confirm reset" : "Reset"}
               </button>
             </div>
-            {resetError ? <p className="settings-reset-error">{resetError}</p> : null}
+            {resetError ? <p className="settings-reset-error" role="alert">{resetError}</p> : null}
             {resetConfirm && (
               <button type="button" className="ghost-button small" onClick={() => setResetConfirm(null)} disabled={Boolean(resetBusy)}>
                 Cancel

@@ -7,10 +7,10 @@ import { getRosterCounts, formatMapHint } from "../../lib/stateCard.js";
 function SignalLegend() {
   return (
     <div className="legend" aria-label="Athlete hometown representation legend">
-      <span className="legend-item"><i className="signal-dot high" /><span>High representation</span></span>
-      <span className="legend-item"><i className="signal-dot medium" /><span>Medium</span></span>
-      <span className="legend-item"><i className="signal-dot low" /><span>Low</span></span>
-      <span className="legend-item"><i className="signal-dot no-athletes" /><span>No athletes</span></span>
+      <span className="legend-item"><i className="signal-dot high" aria-hidden="true" /><span>High representation</span></span>
+      <span className="legend-item"><i className="signal-dot medium" aria-hidden="true" /><span>Medium</span></span>
+      <span className="legend-item"><i className="signal-dot low" aria-hidden="true" /><span>Low</span></span>
+      <span className="legend-item"><i className="signal-dot no-athletes" aria-hidden="true" /><span>No athletes</span></span>
     </div>
   );
 }
@@ -432,7 +432,7 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
           ref={svgRef}
           className={`state-map ${isDragging ? "is-dragging" : ""}`}
           viewBox="0 0 975 610"
-          role="img"
+          role="application"
           aria-label="Interactive U.S. map. Select a state to explore Team USA athlete hometown patterns."
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
@@ -617,6 +617,7 @@ function StateMap({ mapTopology, features, geoFeatures, cardsByCode, selectedCod
           </div>
         </div>
       </div>
+      <div className="sr-only" aria-live="polite" aria-atomic="true">{hint}</div>
       <SignalLegend />
       <MapProgressBar discovered={discoveredCodes.size} total={totalStates} />
     </>

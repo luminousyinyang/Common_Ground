@@ -311,6 +311,32 @@ html[data-surface="blacktop"] .login-google:focus-visible {
   text-decoration: underline;
 }
 
+.login-tab:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: -2px;
+  color: var(--ink);
+}
+
+.login-pw-toggle:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+  border-radius: 3px;
+  color: var(--ink);
+}
+
+.login-forgot:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+  border-radius: 3px;
+  color: var(--ink);
+}
+
+.login-terms-link:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
 @media (hover: hover) {
   .login-pw-toggle:hover {
     color: var(--ink);

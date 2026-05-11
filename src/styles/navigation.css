@@ -518,6 +518,63 @@ html[data-surface="blacktop"] .top-nav-login-btn {
   opacity: 0;
 }
 
+.top-nav-brand:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+.top-nav-tab:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+  color: var(--ink);
+}
+
+.top-nav-login-btn:focus-visible {
+  background: #152340;
+  border-color: #152340;
+  color: #ffffff;
+  box-shadow: 4px 4px 0 #CFA14D;
+  transform: translateY(-3px);
+  outline: none;
+}
+
+html[data-surface="blacktop"] .top-nav-login-btn:focus-visible {
+  background: color-mix(in srgb, var(--cta) 85%, white);
+  border-color: color-mix(in srgb, var(--cta) 85%, white);
+  box-shadow: 4px 4px 0 #9D4D32;
+  outline: none;
+}
+
+.hamburger-btn:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.mobile-menu-close:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.mobile-menu-link:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: -2px;
+  color: var(--gold);
+}
+
+.mobile-menu-row:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: -2px;
+  color: var(--ink);
+}
+
+.top-nav-menu-item:focus-visible {
+  outline: none;
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+
 @media (hover: hover) {
   .top-nav-brand:hover {
     opacity: 0.8;

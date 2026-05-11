@@ -6,6 +6,7 @@ import AppFooter from "../common/AppFooter.jsx";
 function AppShell({ onNavigate, onLogin, onLogout, darkMode, onToggleDarkMode, onOpenHelp, authLoading, isLoggedIn, user }) {
   return (
     <div className="app-frame-v2">
+      <a href="#main-content" className="skip-link">Skip to main content</a>
       <TopNav
         onNavigate={onNavigate}
         onLogin={onLogin}
@@ -18,7 +19,7 @@ function AppShell({ onNavigate, onLogin, onLogout, darkMode, onToggleDarkMode, o
         user={user}
       />
       <div className="workspace-v2">
-        <main>
+        <main id="main-content" aria-label="Main content">
           <Outlet />
         </main>
       </div>

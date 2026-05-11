@@ -68,10 +68,12 @@
   transition: background 120ms ease;
 }
 
-.help-close-btn:hover {
+.help-close-btn:hover,
+.help-close-btn:focus-visible {
   background: var(--ink);
   border-color: var(--ink);
   color: var(--paper);
+  outline: none;
 }
 
 /* Body */
@@ -182,6 +184,17 @@
 
 .help-footer-close-btn:hover {
   opacity: 0.85;
+}
+
+.help-footer-close-btn:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.help-fab:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+  transform: scale(1.05);
 }
 
 html[data-reduce-motion="1"] .help-overlay,
