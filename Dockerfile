@@ -9,7 +9,6 @@ COPY index.html vite.config.js server.js ./
 COPY src ./src
 COPY public ./public
 COPY scripts ./scripts
-COPY docs ./docs
 COPY README.md LICENSE ./
 
 ARG VITE_FIREBASE_API_KEY
