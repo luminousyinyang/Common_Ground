@@ -36,44 +36,53 @@ Open `http://127.0.0.1:5173`.
 
 The Vite dev server proxies `/api` calls to `http://127.0.0.1:3000`. If the API server is not running, the browser app still uses safe local fallback copy for testing.
 
-## Gemini Configuration
+## Environment Variables
 
-The app keeps Gemini calls server-side. In Cloud Run, the API uses Vertex AI through the attached Cloud Run service account, so no credentials file is needed in the container.
+Create one `.env` file at the repo root. `server.js`, the generation scripts, and `scripts/deploy-cloud-run.sh` all read this same file. Vite only exposes variables prefixed with `VITE_` to the browser build. `.env` is ignored by git and Docker, so keep real values there instead of in the README.
 
-```bash
+```dotenv
+# Google Cloud / Vertex AI Gemini
 GOOGLE_CLOUD_PROJECT=[PROJECT-ID]
 GOOGLE_CLOUD_LOCATION=global
 GEMINI_MODEL=gemini-3.1-pro-preview
 GAME_REFLECTION_MODEL=gemini-3.1-flash-lite
+
+# Firebase browser auth
+VITE_FIREBASE_API_KEY=[WEB-API-KEY]
+VITE_FIREBASE_AUTH_DOMAIN=[FIREBASE-PROJECT-ID].firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=[FIREBASE-PROJECT-ID]
+VITE_FIREBASE_APP_ID=[WEB-APP-ID]
+
+# Firebase Admin / generated panel storage
+FIREBASE_STORAGE_BUCKET=[FIREBASE-PROJECT-ID].firebasestorage.app
+GOOGLE_APPLICATION_CREDENTIALS=/absolute/path/to/local-service-account.json
+
+# Optional when it differs from VITE_FIREBASE_PROJECT_ID or the credentials JSON project
+# FIREBASE_PROJECT_ID=[FIREBASE-PROJECT-ID]
+
+# Cloud Run deploy script
+CLOUD_RUN_SERVICE=common-ground
+CLOUD_RUN_MIN_INSTANCES=1
+
+# Optional Firebase web config fields
+# VITE_FIREBASE_STORAGE_BUCKET=[FIREBASE-PROJECT-ID].firebasestorage.app
+# VITE_FIREBASE_MESSAGING_SENDER_ID=[SENDER-ID]
+
+# Optional tuning / auth overrides
+# FIREBASE_SESSION_DAYS=5
+# VERTEX_AUTH_MODE=auto
+# VERTEX_ACCESS_TOKEN=[ACCESS-TOKEN]
+# GEMINI_API_KEY=[API-KEY]
+# GOOGLE_API_KEY=[API-KEY]
+# CARD_IMAGE_REQUEST_TIMEOUT_MS=900000
+# CARD_IMAGE_MAX_ATTEMPTS=3
+# CARD_IMAGE_RETRY_DELAY_MS=5000
+# CARD_COPY_MODEL=gemini-3.1-pro-preview
 ```
 
-Local development can use `gcloud auth login`, `VERTEX_ACCESS_TOKEN`, or an API-key fallback:
+For local Vertex AI calls, run `gcloud auth login` or set `VERTEX_ACCESS_TOKEN`. For Cloud Run, do not ship a service-account JSON file; the deployed service uses its attached service account instead.
 
-```bash
-gcloud auth login
-npm run api
-```
-
-API-key fallback is still supported for local testing:
-
-```bash
-GEMINI_API_KEY=your_key npm run api
-GOOGLE_API_KEY=your_key npm run api
-```
-
-Default models:
-
-```text
-State briefing: gemini-3.1-pro-preview
-Post-game reflection: gemini-3.1-flash-lite
-```
-
-Override with:
-
-```bash
-GEMINI_MODEL=gemini-3.1-pro-preview npm run api
-GAME_REFLECTION_MODEL=gemini-3-flash-preview npm run api
-```
+API-key fallback is still supported for local Gemini testing. Use it instead of Vertex mode by leaving `GOOGLE_CLOUD_PROJECT` unset and setting `GEMINI_API_KEY` or `GOOGLE_API_KEY` in `.env`.
 
 Gemini-backed routes:
 
@@ -157,21 +166,7 @@ Generated panels are scope-aware for `both`, `paris2024`, and `milanoCortina2026
 
 The panel generator uses state-aware palette stories, so California, Florida, Texas, Colorado, and other geographies can produce distinct collectible-card color systems instead of always defaulting to blue Olympic panels and orange Paralympic panels. It also prompts for full-bleed artwork, since the React card supplies the actual frame and labels.
 
-To store generated panels in Firebase Storage and Firestore instead of local image files, configure:
-
-```bash
-GOOGLE_CLOUD_PROJECT=project-5a3d84b2-8508-4778-995
-GOOGLE_CLOUD_LOCATION=global
-FIREBASE_PROJECT_ID=common-ground-tests
-FIREBASE_STORAGE_BUCKET=common-ground-tests.firebasestorage.app
-GOOGLE_APPLICATION_CREDENTIALS=/absolute/path/to/local-service-account.json
-```
-
-For local Firebase generation, `GOOGLE_APPLICATION_CREDENTIALS` is used by Firebase Admin for Firestore and Storage. `FIREBASE_PROJECT_ID` is optional when the JSON key belongs to the Firebase project, but it makes the split-project setup explicit. Vertex image generation uses `gcloud auth print-access-token` by default when that JSON key belongs to a different project than `GOOGLE_CLOUD_PROJECT`, so run:
-
-```bash
-gcloud auth login
-```
+For local Firebase generation, `GOOGLE_APPLICATION_CREDENTIALS` is used by Firebase Admin for Firestore and Storage. `FIREBASE_PROJECT_ID` is optional when the JSON key belongs to the Firebase project, but keeping it in `.env` makes split-project setups explicit. Vertex image generation uses `gcloud auth print-access-token` by default when that JSON key belongs to a different project than `GOOGLE_CLOUD_PROJECT`.
 
 Then run one state:
 
@@ -193,35 +188,7 @@ Set `VERTEX_AUTH_MODE=service_account` only if you intentionally want Vertex to 
 
 The app supports Firebase Authentication with email/password and Google sign-in. The browser uses the Firebase Web SDK for sign-in and token refresh, then sends the Firebase ID token to the Node server. The server verifies that token with Firebase Admin, creates an HTTP-only `common_ground_session` Firebase session cookie, and uses that session for `/api/user/collection` sync.
 
-Add the Firebase web-app config values to local `.env` for Vite:
-
-```bash
-VITE_FIREBASE_API_KEY=[WEB-API-KEY]
-VITE_FIREBASE_AUTH_DOMAIN=common-ground-tests.firebaseapp.com
-VITE_FIREBASE_PROJECT_ID=common-ground-tests
-VITE_FIREBASE_STORAGE_BUCKET=common-ground-tests.firebasestorage.app
-VITE_FIREBASE_MESSAGING_SENDER_ID=[SENDER-ID]
-VITE_FIREBASE_APP_ID=[WEB-APP-ID]
-```
-
-Keep the Admin SDK config server-side:
-
-```bash
-FIREBASE_PROJECT_ID=common-ground-tests
-GOOGLE_APPLICATION_CREDENTIALS=/absolute/path/to/local-service-account.json
-FIREBASE_SESSION_DAYS=5
-```
-
-For Cloud Run, do not ship a service-account JSON file. Use the attached service account with Firebase Auth/Firestore access, token-signing access for Firebase session cookies, and set the same `VITE_FIREBASE_*` values at build/deploy time. If `FIREBASE_PROJECT_ID` is omitted, the deploy script uses `VITE_FIREBASE_PROJECT_ID` so the browser ID token audience matches Firebase Admin. `FIREBASE_SESSION_DAYS` is interpreted as days, supports fractional values, and is clamped between Firebase's 5-minute and 2-week session-cookie limits.
-
-Image generation can take several minutes on preview models. The generator uses a long request timeout by default; tune it with:
-
-```bash
-CARD_IMAGE_REQUEST_TIMEOUT_MS=900000
-CARD_IMAGE_MAX_ATTEMPTS=3
-CARD_IMAGE_RETRY_DELAY_MS=5000
-CARD_COPY_MODEL=gemini-3.1-pro-preview
-```
+Keep browser Firebase values in the `VITE_FIREBASE_*` keys and server/Admin values in the non-`VITE_` keys from the root `.env` example. If `FIREBASE_PROJECT_ID` is omitted, the deploy script uses `VITE_FIREBASE_PROJECT_ID` so the browser ID token audience matches Firebase Admin. `FIREBASE_SESSION_DAYS` is interpreted as days, supports fractional values, and is clamped between Firebase's 5-minute and 2-week session-cookie limits.
 
 ## Compliance Notes
 
@@ -244,17 +211,7 @@ Deploy with the included script:
 npm run deploy:cloud-run
 ```
 
-The script reads `.env`, builds the app, enables required Google Cloud services, creates or reuses the `common-ground-vertex` service account, grants Vertex, Firestore, Firebase Auth, Storage, and Firebase token-signing permissions, builds the Docker image with Cloud Build, and deploys Cloud Run with:
-
-```bash
-GOOGLE_CLOUD_PROJECT=[PROJECT-ID]
-GOOGLE_CLOUD_LOCATION=global
-GEMINI_MODEL=gemini-3.1-pro-preview
-GAME_REFLECTION_MODEL=gemini-3.1-flash-lite
-FIREBASE_STORAGE_BUCKET=[PROJECT-ID].firebasestorage.app
-FIREBASE_ADMIN_SERVICE_ACCOUNT=common-ground-vertex@[PROJECT-ID].iam.gserviceaccount.com
-CLOUD_RUN_MIN_INSTANCES=1
-```
+The script reads `.env`, builds the app, enables required Google Cloud services, creates or reuses the `common-ground-vertex` service account, grants Vertex, Firestore, Firebase Auth, Storage, and Firebase token-signing permissions, builds the Docker image with Cloud Build, and deploys Cloud Run.
 
 Cloud Run uses its attached service account for Vertex AI, Firestore, and Firebase Storage. Do not upload or set a service-account JSON credentials file in Cloud Run.
 
