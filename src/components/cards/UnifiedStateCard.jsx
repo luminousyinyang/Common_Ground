@@ -61,10 +61,10 @@ function StateChallengePanel({ card, onOpenChallenge, isUnlocked }) {
   const onlyCue = onlyPanel ? getPanelVisualCue(onlyPanel) : "";
   const onlyProgram = onlyPanel?.program === "paralympic" ? "Paralympic" : "Olympic";
   const traitName = lowerFirstCopy(plainTraitHeadline(card));
-  const actionCopy = isUnlocked ? "Play anytime." : `Play to unlock the ${stateName} state card.`;
+  const playPrompt = isUnlocked ? "Replay anytime to get" : "Play to get";
   const challengeCopy = isSinglePanel
-    ? `${actionCopy} This quick challenge is inspired by ${onlyCue}, the featured ${onlyProgram} sport on this card. Get a feel for its featured sport trait: ${traitName}.`
-    : `${actionCopy} This quick challenge is inspired by ${olympicCue} and ${paralympicCue}, the featured sports on this card. Get a feel for their shared trait: ${traitName}.`;
+    ? `This quick challenge is inspired by ${onlyCue}, the featured ${onlyProgram} sport on this card. ${playPrompt} a feel for its featured sport trait: ${traitName}.`
+    : `This quick challenge is inspired by ${olympicCue} and ${paralympicCue}, the featured sports on this card. ${playPrompt} a feel for their shared trait: ${traitName}.`;
 
   return (
     <section className="state-challenge-panel" aria-label={`${stateName} state challenge`}>
