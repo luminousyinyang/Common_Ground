@@ -381,10 +381,6 @@ h4 {
   font-weight: 750;
 }
 
-main {
-  padding: clamp(18px, 2.8vw, 32px);
-}
-
 .page-panel {
   border: 1px solid var(--line);
   border-radius: 22px;
@@ -637,6 +633,10 @@ html[data-surface="blacktop"] .primary-button:focus-visible {
 
 .workspace-v2 > main {
   padding: clamp(20px, 3vw, 32px) clamp(32px, 5vw, 80px);
+}
+
+.workspace-v2 > main:has(.landing-page) {
+  padding: 0;
 }
 
 .view-slider-viewport {

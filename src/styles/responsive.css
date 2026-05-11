@@ -58,10 +58,6 @@
     padding-inline: 10px;
     font-size: 0.9rem;
   }
-
-  main {
-    padding: 16px;
-  }
 }
 
 @media (max-width: 640px) {
@@ -114,10 +110,6 @@
   .data-scope-control,
   .data-scope-control select {
     width: 100%;
-  }
-
-  main {
-    padding: 12px;
   }
 
 
