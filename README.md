@@ -1,4 +1,12 @@
-# Common Ground
+<p align="center">
+  <img src="public/assets/graphics/favicon.ico" alt="Common Ground logo" width="64" height="64" />
+</p>
+
+<h1 align="center">Common Ground</h1>
+
+<p align="center">
+  Geography-powered Team USA fan discovery map for aggregate Olympic and Paralympic state signals.
+</p>
 
 Common Ground is a geography-powered fan discovery app for Challenge 2: The Hometown Success Engine. It lets fans select a U.S. state or supported U.S. territory, inspect one unified Olympic and Paralympic card, read a Gemini-generated briefing, and try a short fan challenge tied to the card's shared trait.
 
@@ -88,6 +96,16 @@ If no key is present, the server returns compliance-safe fallback copy.
 - Focus Window, Rhythm Shift, and Open Space fan challenges.
 - Methodology page with source labels, excluded-row policy, and counts breakdown.
 - Cloud Run-ready server and Dockerfile.
+
+## Architecture
+
+The app uses a React/Vite frontend, a Node production server, Vertex AI Gemini for server-side generation and briefings, and Firebase for auth, user collections, score history, generated panel metadata, and generated image storage.
+
+<p align="center">
+  <img src="assets/architecture.png" alt="Common Ground architecture diagram" width="100%" />
+</p>
+
+The diagram source lives at `assets/architecture.mmd`; the rendered README image lives at `assets/architecture.png`.
 
 ## Real Data Notes
 
@@ -246,8 +264,12 @@ Cloud Run uses its attached service account for Vertex AI, Firestore, and Fireba
 - `src/main.jsx` - React app, map, unified card, collection, challenge, and methodology views.
 - `src/styles.css` - Common Ground visual system.
 - `server.js` - Cloud Run static server and Gemini API routes.
+- `assets/architecture.mmd` - Mermaid source for the architecture diagram.
+- `assets/architecture.png` - rendered architecture diagram used in this README.
 - `public/data/state-cards.json` - aggregate state/territory-level dataset.
 - `public/data/us-states-*.json` - state boundary TopoJSON.
+- `public/assets/graphics/favicon.ico` - app favicon and README logo.
+- `public/assets/graphics/` - app feature graphics and visual assets.
 - `public/assets/card-art/` - generated abstract card-art PNGs.
 - `public/assets/card-panels/` - optional Vertex AI Gemini Olympic/Paralympic front-card image panels.
 - `scripts/ingest-teamusa-paris2024.mjs` - public-data ingest pipeline.
