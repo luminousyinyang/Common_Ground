@@ -18,6 +18,7 @@ function LandingPage({ onNavigate, onLogin, onLogout, darkMode, onToggleDarkMode
         user={user}
       />
 
+      <main id="main-content">
       <section className="landing-hero">
         <div className="landing-section-inner">
           <div className="landing-hero-container">
@@ -74,6 +75,7 @@ function LandingPage({ onNavigate, onLogin, onLogout, darkMode, onToggleDarkMode
         </div>
       </section>
 
+      </main>
       <AppFooter onNavigate={onNavigate} isLoggedIn={isLoggedIn} onLogout={onLogout} />
     </div>
   );

@@ -127,6 +127,7 @@ function LoginPage({
         user={user}
       />
 
+      <main id="main-content">
       <div className="login-layout">
         <div className="login-left">
           <img className="login-left-graphic" src="/assets/graphics/Login Graphic.png" alt="" aria-hidden="true" />
@@ -217,6 +218,7 @@ function LoginPage({
         </div>
       </div>
 
+      </main>
       <AppFooter onNavigate={onNavigate} isLoggedIn={isLoggedIn} onLogout={onLogout} />
     </div>
   );
