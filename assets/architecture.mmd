@@ -1,0 +1,71 @@
+flowchart TD
+    %% Styling
+    classDef page fill:#E3F2FD,stroke:#1E88E5,stroke-width:2px,color:#000
+    classDef component fill:#F3E5F5,stroke:#8E24AA,stroke-width:2px,color:#000
+    classDef backend fill:#FFF3E0,stroke:#F57C00,stroke-width:2px,color:#000
+    classDef database fill:#E8F5E9,stroke:#43A047,stroke-width:2px,color:#000
+
+    %% Client Layer
+    subgraph Client["📱 Frontend (React + Vite)"]
+        direction TB
+        
+        subgraph Pages["Main Views"]
+            direction LR
+            Landing[Landing Page]:::page --> Map[Map Explorer]:::page
+            Map --> Collection[My Sport Cards]:::page
+        end
+
+        subgraph Components["Modal & Components"]
+            direction TB
+            Modal[State Card Modal Popup]:::component
+            Challenge[Challenge Game]:::component
+            
+            subgraph CardDetails["Card Data Visualization"]
+                direction LR
+                CardArt[Card Art Display]:::component
+                CardBack[Back of Card Info]:::component
+            end
+            
+            Modal --> CardDetails
+            Modal --> Challenge
+        end
+        
+        Map -.-> Modal
+        Collection -.-> Modal
+    end
+
+    %% Backend Layer
+    subgraph Services["☁️ Backend Services"]
+        direction TB
+
+        Node["Node server.js:<br/>- Serves React dist + public assets<br/>- Auth/session API<br/>- Collection + score APIs<br/>- Server-side Gemini calls + validation"]:::backend
+        
+        subgraph Gemini["Vertex AI Gemini Processing"]
+            direction LR
+            GenArt["gemini-3-pro-image-preview:<br/>Build-time card panel images<br/><br/>Optional backgrounds:<br/>gemini-3.1-flash-image-preview"]:::backend
+            GenText["gemini-3.1-pro-preview:<br/>- Back-of-card copy<br/>- State briefings<br/>- Sport connections<br/><br/>gemini-3.1-flash-lite:<br/>- Game recaps / reflections"]:::backend
+        end
+
+        subgraph Firebase["Firebase Platform"]
+            direction LR
+            Auth["Firebase Auth:<br/>Email/password + Google sign-in"]:::database
+            DB[("Cloud Firestore:<br/>- User profiles<br/>- Saved collections<br/>- Private challenge score history<br/>- Generated panel metadata")]:::database
+            Storage["Firebase Storage:<br/>- Generated card panel PNGs<br/>- Optional game backgrounds"]:::database
+        end
+    end
+
+    %% Data Flow
+    CardArt -.->|"Loads Generated PNGs"| Storage
+    CardBack -.->|"Uses Generated Card Copy"| GenText
+    Challenge -.->|"Fetches Dynamic Recap"| GenText
+    Modal -.->|"Fetches State Briefing"| GenText
+    
+    Pages -.->|"Firebase Web SDK Sign-In"| Auth
+    Pages -.->|"Creates Server Session"| Node
+    Collection -.->|"Syncs Saved Collection"| Node
+    Challenge <-->|"Reads & Writes Scores"| Node
+
+    Node -.->|"Verifies Session"| Auth
+    Node -.->|"Reads & Writes User Data"| DB
+    Node -.->|"Calls Gemini Server-Side"| GenText
+    GenArt -.->|"Writes Build-Time Images"| Storage
