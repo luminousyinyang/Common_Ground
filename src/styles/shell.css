@@ -2,6 +2,11 @@
   box-sizing: border-box;
 }
 
+::selection {
+  background: var(--ink);
+  color: var(--ink-contrast);
+}
+
 html {
   min-height: 100%;
   background: var(--bg);

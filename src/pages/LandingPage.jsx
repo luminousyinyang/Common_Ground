@@ -21,7 +21,7 @@ function LandingPage({ onNavigate, onLogin, onLogout, darkMode, onToggleDarkMode
       <section className="landing-hero">
         <div className="landing-section-inner">
           <div className="landing-hero-container">
-            <img className="landing-hero-graphic" src="/assets/graphics/Hero Graphic.png" alt="" aria-hidden="true" />
+            <img className="landing-hero-graphic" src="/assets/graphics/Hero Graphic.png" alt="" aria-hidden="true" draggable="false" />
             <div className="landing-hero-content">
               <p className="eyebrow landing-eyebrow">Team USA Discovery</p>
               <h1 className="landing-hero-title">Explore Team USA by State</h1>
@@ -43,21 +43,21 @@ function LandingPage({ onNavigate, onLogin, onLogout, darkMode, onToggleDarkMode
           <div className="landing-features-grid">
             <div className="landing-feature-card">
               <div className="landing-feature-img">
-                <img src="/assets/graphics/Interactive Map.png" alt="Interactive U.S. map showing state-level Team USA data" />
+                <img src="/assets/graphics/Interactive Map.png" alt="Interactive U.S. map showing state-level Team USA data" draggable="false" />
               </div>
               <h3>Interactive Map</h3>
               <p>Click any state to explore aggregate hometown representation, sport presence, and regional geography signals.</p>
             </div>
             <div className="landing-feature-card">
               <div className="landing-feature-img">
-                <img src="/assets/graphics/State Cards.png" alt="State Insight Cards" />
+                <img src="/assets/graphics/State Cards.png" alt="State Insight Cards" draggable="false" />
               </div>
               <h3>State Insight Cards</h3>
               <p>Unlock a card for each state with top cities, sport categories, and key public-data takeaways.</p>
             </div>
             <div className="landing-feature-card">
               <div className="landing-feature-img">
-                <img src="/assets/graphics/Fan Challenges.png" alt="Fan Challenges" />
+                <img src="/assets/graphics/Fan Challenges.png" alt="Fan Challenges" draggable="false" />
               </div>
               <h3>Fan Challenges</h3>
               <p>Try short challenges that help fans learn how regional landscapes and communities connect to Team USA sport presence.</p>
