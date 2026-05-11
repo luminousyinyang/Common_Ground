@@ -8,7 +8,7 @@
   Geography-powered Team USA fan discovery map for aggregate Olympic and Paralympic state signals.
 </p>
 
-Common Ground is a geography-powered fan discovery app for Challenge 2: The Hometown Success Engine. It lets fans select a U.S. state or supported U.S. territory, inspect one unified Olympic and Paralympic card, read a Gemini-generated briefing, and try a short fan challenge tied to the card's shared trait.
+Common Ground is a geography-powered fan discovery app for Challenge 2: The Hometown Success Engine. It lets fans select a U.S. state, inspect one unified Olympic and Paralympic state insight card, read a Gemini-generated briefing, and try a short fan challenge tied to the card's shared trait.
 
 This repository is licensed under Apache License 2.0.
 
@@ -84,22 +84,23 @@ If no key is present, the server returns compliance-safe fallback copy.
 
 ## What Is Implemented
 
-- React/Vite app promoted to the main repo root.
-- Actual U.S. state boundary map from `us-atlas` TopoJSON rendered with D3 and `topojson-client`, with a territory inset for supported U.S. territories.
-- 51 geography cards generated from public TeamUSA.com Olympic Games Paris 2024, Paralympic Games Paris 2024, Olympic Winter Games Milano Cortina 2026, and Paralympic Winter Games Milano Cortina 2026 roster sources, currently 50 states plus U.S. Virgin Islands.
+- React/Vite app with home, map, collection, challenge, login, and settings routes.
+- Actual U.S. state boundary map from `us-atlas` TopoJSON rendered with D3 and `topojson-client`.
+- 50 U.S. state insight cards generated from public TeamUSA.com Olympic Games Paris 2024, Paralympic Games Paris 2024, Olympic Winter Games Milano Cortina 2026, and Paralympic Winter Games Milano Cortina 2026 roster sources.
+- Data-scope controls for Paris 2024, Milano Cortina 2026, or both datasets together.
 - Hover tooltip showing Olympic, Paralympic, and total public hometown geography athlete counts before clicking.
 - Map controls for wheel/trackpad zoom, drag panning, reset, and browser-local state matching.
-- Unified sports-card view with abstract generated bitmap art on the front and aggregate sourced data on the back.
-- Expanded card briefing includes top city-level hometown areas when aggregate public athlete counts support the state view.
-- Guest "My Sport Cards" collection of discovered states, with no forced login.
+- Unified state insight card with generated Olympic and Paralympic panel art when available, abstract bitmap fallback art, aggregate sourced data, sport lists, top city-level hometown areas, and a Sources & Method panel.
+- No account required to explore the map and open cards; login is required to view and sync the My State Insight Cards collection across sessions.
 - Gemini state briefing and game reflection endpoints with local validation and fallback copy.
-- Focus Window, Rhythm Shift, and Open Space fan challenges.
-- Methodology page with source labels, excluded-row policy, and counts breakdown.
+- Focus Window, Rhythm Shift, Precision Trace, Open Space, and Pattern Scout fan challenges.
+- Private signed-in score history for fan challenges; guests can still play and see an unsaved local result.
+- Settings page for dark mode, reduced motion, larger text, high contrast, visible focus rings, and signed-in progress reset.
 - Cloud Run-ready server and Dockerfile.
 
 ## Architecture
 
-The app uses a React/Vite frontend, a Node production server, Vertex AI Gemini for server-side generation and briefings, and Firebase for auth, user collections, score history, generated panel metadata, and generated image storage.
+The app uses a React/Vite frontend, a Node production server, Vertex AI Gemini for server-side generation and briefings, and Firebase for auth, saved collections, private score history, generated panel metadata, and generated panel image storage.
 
 <p align="center">
   <img src="assets/architecture.png" alt="Common Ground architecture diagram" width="100%" />
@@ -120,7 +121,7 @@ Generated frontend data lives at `public/data/state-cards.json`.
 The ingest pipeline:
 
 - Uses public TeamUSA.com Olympic Games Paris 2024, Paralympic Games Paris 2024, Olympic Winter Games Milano Cortina 2026, and Paralympic Winter Games Milano Cortina 2026 roster sources.
-- Filters to records with U.S. hometown-state or supported U.S. territory abbreviations.
+- Filters to records with U.S. hometown geography abbreviations
 - Deduplicates athletes across imported rosters in memory before writing aggregate counts.
 - Aggregates by geography and sport family.
 - Aggregates top city-level hometown areas as public athlete counts.
@@ -129,7 +130,7 @@ The ingest pipeline:
 
 "Official counts" in this prototype means deduplicated public TeamUSA.com athletes from the imported rosters with supported U.S. hometown geography fields. It is not a complete historical Team USA athlete census.
 
-See `docs/official-counts-breakdown.md` for the full state and supported territory table.
+Dataset source references, retrieval dates, excluded-row counts, and aggregation policies are embedded in `public/data/state-cards.json` under `meta`.
 
 ## Generated Card Art
 
@@ -141,7 +142,7 @@ npm run generate:card-art
 
 Assets are written to `public/assets/card-art`. They are geometric, decorative, and do not contain athlete likeness, official marks, logos, rings, medals, flags, or embedded text.
 
-The sports-card front can also use Vertex AI Gemini image panels, with one Olympic panel image and one Paralympic panel image per state. The same generator uses Gemini text generation to write the back-of-card Olympic and Paralympic panel copy from the aggregate top sport tags and geography context.
+The state-card front can also use Vertex AI Gemini image panels, with one Olympic panel image and one Paralympic panel image per state. The same generator uses Gemini text generation to write the back-of-card Olympic and Paralympic panel copy from the aggregate top sport tags and geography context.
 
 ```bash
 npm run generate:card-panels -- --states CO
@@ -178,7 +179,7 @@ Then run one state:
 npm run generate:card-panels:firebase -- --states CA --data-scopes both,paris2024,milanoCortina2026
 ```
 
-Or all supported geographies:
+Or all generated records in the data file:
 
 ```bash
 npm run generate:card-panels:firebase -- --all
@@ -261,12 +262,17 @@ Cloud Run uses its attached service account for Vertex AI, Firestore, and Fireba
 
 ## File Map
 
-- `src/main.jsx` - React app, map, unified card, collection, challenge, and methodology views.
-- `src/styles.css` - Common Ground visual system.
+- `src/main.jsx` - React entry point and provider setup.
+- `src/App.jsx` - app routing, state selection, data-scope handling, card modal state, and collection sync.
+- `src/components/` - map, card, collection, challenge, shell, navigation, and shared UI components.
+- `src/pages/` - landing, login, and settings pages.
+- `src/lib/` - dataset shaping, Firebase helpers, score history, and shared constants.
+- `src/auth/` - Firebase Auth provider and session lifecycle.
+- `src/styles/` - Common Ground visual system.
 - `server.js` - Cloud Run static server and Gemini API routes.
 - `assets/architecture.mmd` - Mermaid source for the architecture diagram.
 - `assets/architecture.png` - rendered architecture diagram used in this README.
-- `public/data/state-cards.json` - aggregate state/territory-level dataset.
+- `public/data/state-cards.json` - aggregate geography-level dataset used to build the 50 enabled state cards.
 - `public/data/us-states-*.json` - state boundary TopoJSON.
 - `public/assets/graphics/favicon.ico` - app favicon and README logo.
 - `public/assets/graphics/` - app feature graphics and visual assets.
@@ -275,4 +281,3 @@ Cloud Run uses its attached service account for Vertex AI, Firestore, and Fireba
 - `scripts/ingest-teamusa-paris2024.mjs` - public-data ingest pipeline.
 - `scripts/generate-card-art.mjs` - local abstract bitmap generator.
 - `scripts/generate-vertex-card-panels.mjs` - Vertex AI Gemini card-panel image generator.
-- `docs/` - product, data, Gemini, compliance, demo, and count docs.

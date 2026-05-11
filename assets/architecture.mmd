@@ -6,43 +6,48 @@ flowchart TD
     classDef database fill:#E8F5E9,stroke:#43A047,stroke-width:2px,color:#000
 
     %% Client Layer
-    subgraph Client["📱 Frontend (React + Vite)"]
+    subgraph Client["Frontend (React + Vite)"]
         direction TB
-        
-        subgraph Pages["Main Views"]
+
+        subgraph Pages["App Routes"]
             direction LR
-            Landing[Landing Page]:::page --> Map[Map Explorer]:::page
-            Map --> Collection[My Sport Cards]:::page
+            Landing["Home"]:::page --> Map["State Atlas"]:::page
+            Map --> Collection["My State Insight Cards"]:::page
+            Map --> Challenge["Fan Challenge"]:::page
+            Landing --> Login["Login"]:::page
+            Map --> Settings["Settings"]:::page
+            Collection --> Settings
         end
 
-        subgraph Components["Modal & Components"]
+        subgraph Components["Card Experience"]
             direction TB
-            Modal[State Card Modal Popup]:::component
-            Challenge[Challenge Game]:::component
-            
-            subgraph CardDetails["Card Data Visualization"]
+            Modal["State Insight Card Modal"]:::component
+            Briefing["Gemini State Briefing"]:::component
+
+            subgraph CardDetails["Card Data View"]
                 direction LR
-                CardArt[Card Art Display]:::component
-                CardBack[Back of Card Info]:::component
+                CardArt["Generated or Fallback Card Art"]:::component
+                CardBack["Aggregate Data + Sources & Method"]:::component
             end
-            
+
             Modal --> CardDetails
+            Modal --> Briefing
             Modal --> Challenge
         end
-        
+
         Map -.-> Modal
         Collection -.-> Modal
     end
 
     %% Backend Layer
-    subgraph Services["☁️ Backend Services"]
+    subgraph Services["Backend Services"]
         direction TB
 
-        Node["Node server.js:<br/>- Serves React dist + public assets<br/>- Auth/session API<br/>- Collection + score APIs<br/>- Server-side Gemini calls + validation"]:::backend
-        
+        Node["Node server.js:<br/>- Serves React dist + public assets<br/>- Auth/session API<br/>- Collection + private score history APIs<br/>- Server-side Gemini calls + validation"]:::backend
+
         subgraph Gemini["Vertex AI Gemini Processing"]
             direction LR
-            GenArt["gemini-3-pro-image-preview:<br/>Build-time card panel images<br/><br/>Optional backgrounds:<br/>gemini-3.1-flash-image-preview"]:::backend
+            GenArt["gemini-3-pro-image-preview:<br/>Build-time card panel images"]:::backend
             GenText["gemini-3.1-pro-preview:<br/>- Back-of-card copy<br/>- State briefings<br/>- Sport connections<br/><br/>gemini-3.1-flash-lite:<br/>- Game recaps / reflections"]:::backend
         end
 
@@ -50,22 +55,22 @@ flowchart TD
             direction LR
             Auth["Firebase Auth:<br/>Email/password + Google sign-in"]:::database
             DB[("Cloud Firestore:<br/>- User profiles<br/>- Saved collections<br/>- Private challenge score history<br/>- Generated panel metadata")]:::database
-            Storage["Firebase Storage:<br/>- Generated card panel PNGs<br/>- Optional game backgrounds"]:::database
+            Storage["Firebase Storage:<br/>Generated card panel PNGs"]:::database
         end
     end
 
     %% Data Flow
-    CardArt -.->|"Loads Generated PNGs"| Storage
-    CardBack -.->|"Uses Generated Card Copy"| GenText
-    Challenge -.->|"Fetches Dynamic Recap"| GenText
-    Modal -.->|"Fetches State Briefing"| GenText
-    
-    Pages -.->|"Firebase Web SDK Sign-In"| Auth
-    Pages -.->|"Creates Server Session"| Node
-    Collection -.->|"Syncs Saved Collection"| Node
-    Challenge <-->|"Reads & Writes Scores"| Node
+    CardArt -.->|"Loads generated PNGs"| Storage
+    CardBack -.->|"Uses generated card copy"| GenText
+    Briefing -.->|"Fetches state briefing"| GenText
+    Challenge -.->|"Fetches dynamic recap"| GenText
 
-    Node -.->|"Verifies Session"| Auth
-    Node -.->|"Reads & Writes User Data"| DB
-    Node -.->|"Calls Gemini Server-Side"| GenText
-    GenArt -.->|"Writes Build-Time Images"| Storage
+    Pages -.->|"Firebase Web SDK sign-in"| Auth
+    Pages -.->|"Creates server session"| Node
+    Collection -.->|"Syncs saved collection"| Node
+    Challenge <-->|"Reads & writes private scores"| Node
+
+    Node -.->|"Verifies session"| Auth
+    Node -.->|"Reads & writes user data"| DB
+    Node -.->|"Calls Gemini server-side"| GenText
+    GenArt -.->|"Writes build-time images"| Storage
