@@ -10,7 +10,7 @@
 
 Common Ground is a geography-powered fan discovery app for Challenge 2: The Hometown Success Engine. It lets fans select a U.S. state, inspect one unified Olympic and Paralympic state insight card, read a Gemini-generated briefing, and try a short fan challenge tied to the card's shared trait.
 
-This repository is licensed under Apache License 2.0.
+This repository is licensed under [Apache License 2.0](LICENSE).
 
 ## Run Locally
 
